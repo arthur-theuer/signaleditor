@@ -38,7 +38,6 @@
   />
   <button class="hl" onclick={onNew}>Neue Signaldatei</button>
   <button class="hl" onclick={() => fileInput.click()}>Signaldatei laden</button>
-  <button class="hl" onclick={() => {}}>Signaldatei exportieren</button>
   <button class="primary-btn hl hl-primary" onclick={() => {}}>Meldungen exportieren</button>
 
   <div style="flex: 1;"></div>

@@ -125,11 +125,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: calc(var(--row-height) / 2 - var(--card-gap) / 2);
+    width: var(--unit);
     flex-shrink: 0;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--color-text-muted);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-text-secondary);
     font-family: monospace;
+    background: var(--color-bg-raised);
+    border: var(--card-border);
+    border-radius: var(--card-radius);
   }
 </style>
