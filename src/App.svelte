@@ -4,11 +4,14 @@
   import { saveState, undo as historyUndo, redo as historyRedo, canUndo, canRedo, clearHistory } from './lib/history.svelte';
   import { isQuelleneintrag } from './lib/types';
   import { autoStitchQuellen } from './lib/sources';
+  import { generateYAML } from './lib/yaml';
+  import { downloadMeldungenHTML } from './lib/reports';
   import Toolbar from './components/Toolbar.svelte';
   import MetaFields from './components/MetaFields.svelte';
   import SignalList from './components/SignalList.svelte';
   import AddBar from './components/AddBar.svelte';
   import YamlPanel from './components/YamlPanel.svelte';
+  import MeldungenPanel from './components/MeldungenPanel.svelte';
 
   let data: Editordaten = $state({
     strecke: { id: '', name: '', linie: '', streckenvideos: [] },
@@ -72,6 +75,11 @@
     if (restored) { data = restored; }
   }
 
+  function handleExportMeldungen() {
+    const yamlContent = generateYAML(data);
+    downloadMeldungenHTML(data, yamlContent);
+  }
+
   // Warn before leaving with unsaved changes
   $effect(() => {
     const handler = (e: BeforeUnloadEvent) => {
@@ -123,6 +131,7 @@
   onFileLoad={handleFileLoad}
   onUndo={handleUndo}
   onRedo={handleRedo}
+  onExportMeldungen={handleExportMeldungen}
 />
 
 <div class="main-content">
@@ -156,7 +165,7 @@
     <div class="meldungen-section visible">
       <div class="meldungen-panel">
         <div class="section-header">Meldungen</div>
-        <!-- Phase 5: MeldungenPanel component goes here -->
+        <MeldungenPanel signale={data.signale} />
       </div>
     </div>
   {/if}
