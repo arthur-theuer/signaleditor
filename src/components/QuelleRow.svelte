@@ -145,7 +145,7 @@
 </div>
 
 <style>
-  .quelle-cell { background: #e3f2fd; height: calc(var(--row-height) * 2 + var(--card-gap)); }
+  .quelle-cell { background: #e3f2fd; }
   .quelle-inner { display: flex; flex-direction: column; height: 100%; }
   .quelle-top {
     display: flex;
