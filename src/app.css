@@ -76,6 +76,19 @@ body {
   padding: 0 var(--page-gap);
 }
 
+/* Base signal-cell: shared by all row type components */
+.signal-cell {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-raised);
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: var(--row-height);
+}
+
 .section-header {
   padding: 12px;
   font-weight: 600;

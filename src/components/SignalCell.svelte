@@ -159,17 +159,7 @@
 </div>
 
 <style>
-  .signal-cell {
-    display: flex;
-    flex-direction: column;
-    background: var(--color-bg-raised);
-    border: var(--card-border);
-    border-radius: var(--card-radius);
-    position: relative;
-    flex: 1;
-    min-width: 0;
-    height: var(--row-height);
-  }
+  /* Base .signal-cell styles are in app.css */
   .signal-cell-inner { display: flex; height: 100%; flex-shrink: 0; }
   .signal-input-wrapper {
     flex: 1;
