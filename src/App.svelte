@@ -3,6 +3,7 @@
   import { parseYAMLContent, extractYAMLFromHTML } from './lib/yaml';
   import Toolbar from './components/Toolbar.svelte';
   import MetaFields from './components/MetaFields.svelte';
+  import SignalList from './components/SignalList.svelte';
   import AddBar from './components/AddBar.svelte';
   import YamlPanel from './components/YamlPanel.svelte';
 
@@ -87,8 +88,9 @@
       <div class="signals-list">
         {#if data.signale.length === 0}
           <div class="empty-state">Keine Signale vorhanden</div>
+        {:else}
+          <SignalList bind:signale={data.signale} {showKm} onchange={markDirty} />
         {/if}
-        <!-- Phase 3: SignalList component goes here -->
       </div>
       <AddBar
         onAddSignal={() => { data.signale = [...data.signale, { id: data.signale.length, signal_1: '', signal_2: '' }]; markDirty(); }}
