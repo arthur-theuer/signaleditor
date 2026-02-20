@@ -77,7 +77,7 @@
     onInsertKnoten={() => insertAt(idx, makeKnoten(idx))}
     onInsertQuelle={() => insertAt(idx, makeQuelle(idx))}
   />
-  <div class="signal-row">
+  <div class="signal-row" class:first={idx === 0} class:last={idx === signale.length - 1}>
     <div class="signal-id">{idx}</div>
 
     <KmCell
@@ -119,8 +119,8 @@
     align-items: stretch;
     min-height: calc(var(--row-height) + var(--row-gap) * 2);
   }
-  .signal-row:first-child { padding-top: var(--card-gap); }
-  .signal-row:last-child { padding-bottom: var(--card-gap); }
+  .signal-row.first { padding-top: var(--card-gap); min-height: calc(var(--row-height) + var(--card-gap) + var(--row-gap)); }
+  .signal-row.last { padding-bottom: var(--card-gap); min-height: calc(var(--row-height) + var(--row-gap) + var(--card-gap)); }
   .signal-id {
     display: flex;
     align-items: center;
