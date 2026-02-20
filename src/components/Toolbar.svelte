@@ -3,20 +3,28 @@
     showKm,
     showYaml,
     showMeldungen,
+    undoEnabled,
+    redoEnabled,
     onToggleKm,
     onToggleYaml,
     onToggleMeldungen,
     onNew,
     onFileLoad,
+    onUndo,
+    onRedo,
   }: {
     showKm: boolean;
     showYaml: boolean;
     showMeldungen: boolean;
+    undoEnabled: boolean;
+    redoEnabled: boolean;
     onToggleKm: () => void;
     onToggleYaml: () => void;
     onToggleMeldungen: () => void;
     onNew: () => void;
     onFileLoad: (event: Event) => void;
+    onUndo: () => void;
+    onRedo: () => void;
   } = $props();
 
   let fileInput: HTMLInputElement;
@@ -25,9 +33,8 @@
 <div class="header">
   <h1>Signaleditor</h1>
 
-  <!-- Undo/redo — Phase 4 -->
-  <button class="undo-redo-btn hl" disabled title="Rückgängig (Ctrl+Z)">←</button>
-  <button class="undo-redo-btn hl" disabled title="Wiederholen (Ctrl+Y)">→</button>
+  <button class="undo-redo-btn hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">←</button>
+  <button class="undo-redo-btn hl" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">→</button>
 
   <input
     type="file"

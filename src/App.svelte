@@ -1,6 +1,9 @@
 <script lang="ts">
   import type { Editordaten } from './lib/types';
   import { parseYAMLContent, extractYAMLFromHTML } from './lib/yaml';
+  import { saveState, undo as historyUndo, redo as historyRedo, canUndo, canRedo, clearHistory } from './lib/history.svelte';
+  import { isQuelleneintrag } from './lib/types';
+  import { autoStitchQuellen } from './lib/sources';
   import Toolbar from './components/Toolbar.svelte';
   import MetaFields from './components/MetaFields.svelte';
   import SignalList from './components/SignalList.svelte';
@@ -24,6 +27,7 @@
       signale: [],
     };
     dirty = false;
+    clearHistory();
   }
 
   function loadFile(content: string, filename: string) {
@@ -38,6 +42,7 @@
     }
     data = parseYAMLContent(content);
     dirty = false;
+    clearHistory();
   }
 
   function handleFileLoad(event: Event) {
@@ -53,7 +58,18 @@
   }
 
   function markDirty() {
+    saveState(data);
     dirty = true;
+  }
+
+  function handleUndo() {
+    const restored = historyUndo(data);
+    if (restored) { data = restored; }
+  }
+
+  function handleRedo() {
+    const restored = historyRedo(data);
+    if (restored) { data = restored; }
   }
 
   // Warn before leaving with unsaved changes
@@ -66,17 +82,47 @@
     window.addEventListener('beforeunload', handler);
     return () => window.removeEventListener('beforeunload', handler);
   });
+
+  // Auto-stitch quellen when datei values change
+  $effect(() => {
+    const quellenDateien = data.signale
+      .filter(isQuelleneintrag)
+      .map(s => s.quelle.datei)
+      .join(',');
+    if (quellenDateien) {
+      autoStitchQuellen(data.signale);
+    }
+  });
+
+  // Keyboard shortcuts
+  $effect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        handleUndo();
+      } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+        e.preventDefault();
+        handleRedo();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  });
 </script>
 
 <Toolbar
   {showKm}
   {showYaml}
   {showMeldungen}
+  undoEnabled={canUndo()}
+  redoEnabled={canRedo()}
   onToggleKm={() => showKm = !showKm}
   onToggleYaml={() => showYaml = !showYaml}
   onToggleMeldungen={() => showMeldungen = !showMeldungen}
   onNew={newFile}
   onFileLoad={handleFileLoad}
+  onUndo={handleUndo}
+  onRedo={handleRedo}
 />
 
 <div class="main-content">
