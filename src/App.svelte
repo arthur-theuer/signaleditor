@@ -169,7 +169,7 @@
     border-radius: var(--container-radius);
     overflow: hidden;
   }
-  .signals-list { padding-top: var(--half-gap); }
+  .signals-list { padding: var(--half-gap) 0; }
   .meldungen-section {
     width: 280px;
     flex-shrink: 0;
