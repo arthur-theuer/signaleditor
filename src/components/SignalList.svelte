@@ -357,16 +357,16 @@
   .signal-row.dragging { opacity: 0.4; }
   .signal-row.drag-ready :global(.signal-actions) { visibility: hidden; }
   .signal-row.drag-over-top::before,
-  .signal-row.drag-over-bottom::after {
+  .signal-row.drag-over-bottom::before {
     content: '';
     position: absolute;
     left: var(--card-gap);
     right: var(--card-gap);
-    height: 2px;
-    background: var(--color-focus);
+    height: 0;
+    box-shadow: 0 0 0 1px var(--color-focus);
     border-radius: 1px;
     z-index: 5;
   }
-  .signal-row.drag-over-top::before { top: calc(var(--half-gap) * -1 - 1px); }
-  .signal-row.drag-over-bottom::after { bottom: calc(var(--half-gap) * -1 - 1px); }
+  .signal-row.drag-over-top::before { top: calc(var(--half-gap) * -1); }
+  .signal-row.drag-over-bottom::before { bottom: calc(var(--half-gap) * -1); }
 </style>
