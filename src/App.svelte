@@ -64,9 +64,15 @@
   }
 
   function markDirty() {
-    saveState(data);
     dirty = true;
   }
+
+  // Save undo state when any input receives focus (captures "before edit" state)
+  $effect(() => {
+    const handler = () => saveState(data);
+    document.addEventListener('focusin', handler);
+    return () => document.removeEventListener('focusin', handler);
+  });
 
   function handleUndo() {
     const restored = historyUndo(data);

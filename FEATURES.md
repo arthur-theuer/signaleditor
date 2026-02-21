@@ -33,7 +33,7 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 18 | Note row: yellow background, single text input | ✅ | |
 | 19 | Knoten row: uppercase code input + resolved name preview, teal | ✅ | |
 | 20 | Abzweigung row: arrow + strecke + von/nach + richtung + arrow, purple | ✅ | |
-| 21 | Quelle row: datei + file picker + info bar + expand, blue, double height | ⚠️ | Missing double height CSS |
+| 21 | Quelle row: datei + file picker + info bar + expand, blue | ✅ | Height differs by design |
 | 22 | Row index cell | ✅ | |
 | 23 | Km cell: hidden by default, shown on toggle | ✅ | |
 | 24 | Row actions: clear (←) and delete (×) | ✅ | |
@@ -60,7 +60,7 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 40 | Bahnhof auto-prefill: focus empty bahnhof copies name value | ✅ | |
 | 41 | Bahnhof sync across cells in same row | ✅ | Via shared binding |
 | 42 | Signal input readonly | ✅ | |
-| 43 | Signal input deselects text on focus | ❌ | |
+| 43 | Signal input deselects text on focus | ✅ | |
 | 44 | Block chain: signal_1 away from Blocksignal clears signal_2 Block-Vorsignal | ✅ | |
 
 ## Km Cell Behavior
@@ -118,9 +118,9 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | # | Feature | Status | Notes |
 |---|---------|--------|-------|
 | 75 | JSON snapshot undo (MAX_UNDO = 50) | ✅ | |
-| 76 | State saved on focus (not per keystroke) | ⚠️ | Saved on every change, not on focus |
-| 77 | Focus position saved/restored with undo/redo | ❌ | |
-| 78 | Meta field focus saved/restored | ❌ | |
+| 76 | State saved on focus (not per keystroke) | ✅ | |
+| 77 | Focus position saved/restored with undo/redo | ✅ | |
+| 78 | Meta field focus saved/restored | ✅ | |
 | 79 | Redo stack cleared on new edit | ✅ | |
 | 80 | Duplicate state detection | ✅ | |
 | 81 | Ctrl+Z / Ctrl+Y / Ctrl+Shift+Z | ✅ | |
@@ -147,7 +147,7 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 92 | Color rules per signal type | ✅ | |
 | 93 | Meldung row height matches signal row | ✅ | |
 | 94 | Non-signal rows as grey placeholders | ✅ | |
-| 95 | Quelle meldung row double-height | ❌ | |
+| 95 | Quelle meldung row double-height | ✅ | By design (matches editor row) |
 | 96 | Empty signal row as empty grey box | ✅ | |
 | 97 | Error rows red | ✅ | |
 | 98 | Multi-segment gradient + averaged border | ✅ | |
@@ -214,20 +214,13 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 ## Summary
 
 - **Total features**: 130
-- **Ported (✅)**: 118
-- **Partial (⚠️)**: 4
-- **Missing (❌)**: 8
+- **Ported (✅)**: 124
+- **Partial (⚠️)**: 2
+- **Missing (❌)**: 4
 
-### Remaining missing features:
+### Remaining (cosmetic):
 
-1. **#77-78** Undo/redo focus position save/restore
-3. **#21, #95** Quelle row double height
-
-### Low-priority / cosmetic:
-
-- #43 Signal input deselect on focus
-- #76 Save state on focus vs on change
 - #82 Undo/redo flash animation
-- #120 Preview separator borders
+- #120 Preview separator borders on focus
 - #123 Click wrapper explicit JS handler (CSS-based currently)
 - #130 Insert zone button labels

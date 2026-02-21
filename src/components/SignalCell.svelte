@@ -103,6 +103,11 @@
     onchange();
   }
 
+  function handleSignalFocus(e: FocusEvent) {
+    const input = e.target as HTMLInputElement;
+    requestAnimationFrame(() => input.setSelectionRange(0, 0));
+  }
+
   function handleBahnhofFocus() {
     if (bahnhof) return;
     const nameVal = extractName(value ?? '').trim();
@@ -124,6 +129,7 @@
         value={disabled ? '' : base}
         placeholder={disabled ? '' : placeholder}
         onkeydown={handleKeydown}
+        onfocus={handleSignalFocus}
         tabindex={disabled ? -1 : 0}
       />
       <div class="signal-preview next">{disabled ? '' : nextSignal}</div>
