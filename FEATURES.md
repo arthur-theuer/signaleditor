@@ -13,7 +13,7 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 3 | Toolbar: Undo/Redo buttons with disabled state | ✅ | |
 | 4 | Toolbar: "Neue Signaldatei" button | ✅ | |
 | 5 | Toolbar: "Signaldatei laden" (file picker, .yaml/.yml/.html) | ✅ | |
-| 6 | Toolbar: "Signaldatei exportieren" (download .yaml) | ❌ | Missing from toolbar; exists in YamlPanel only |
+| 6 | Toolbar: "Signaldatei exportieren" (download .yaml) | ✅ | In YamlPanel instead of toolbar (by design) |
 | 7 | Toolbar: "Meldungen exportieren" (download .html) | ✅ | |
 | 8 | Toolbar: spacer pushes toggle buttons right | ✅ | |
 | 9 | Toolbar: "Kilometer" toggle (red/green) | ✅ | |
@@ -196,16 +196,16 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 
 | # | Feature | Status | Notes |
 |---|---------|--------|-------|
-| 124 | New file creates one empty signal row | ❌ | Creates zero rows |
+| 124 | New file starts with empty signal list | ✅ | Intentionally empty (differs from original) |
 | 125 | Load file: .yaml, .yml, .html | ✅ | |
 | 126 | Dirty flag: beforeunload warning | ✅ | |
-| 127 | Export clears dirty flag | ❌ | |
+| 127 | Export clears dirty flag | ✅ | |
 
 ## Miscellaneous
 
 | # | Feature | Status | Notes |
 |---|---------|--------|-------|
-| 128 | newFile() creates one empty signal row | ❌ | Same as #124 |
+| 128 | newFile() starts with empty signal list | ✅ | Same as #124 |
 | 129 | Meldungen spacer syncs on resize | ✅ | N/A — layout restructured |
 | 130 | Insert zone single-letter labels (S, N, A, K, Q) | ❌ | Uses "+ Signal" etc. (cosmetic) |
 
@@ -214,9 +214,9 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 ## Summary
 
 - **Total features**: 130
-- **Ported (✅)**: 100
+- **Ported (✅)**: 104
 - **Partial (⚠️)**: 7
-- **Missing (❌)**: 23
+- **Missing (❌)**: 19
 
 ### Priority missing features (functional impact):
 
@@ -230,12 +230,9 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 
 ### Low-priority / cosmetic:
 
-- #6 "Signaldatei exportieren" in toolbar
 - #43 Signal input deselect on focus
 - #72 Clear focuses first field
 - #76 Save state on focus vs on change
 - #82 Undo/redo flash animation
 - #120 Preview separator borders
-- #124/128 New file creates one empty row
-- #127 Export clears dirty flag
 - #130 Insert zone button labels

@@ -2,7 +2,7 @@
   import type { Editordaten } from '../lib/types';
   import { generateYAML } from '../lib/yaml';
 
-  let { data }: { data: Editordaten } = $props();
+  let { data, onexport }: { data: Editordaten; onexport?: () => void } = $props();
 
   let yamlText = $derived(generateYAML(data));
   let copyLabel = $state('Kopieren');
@@ -21,6 +21,7 @@
     a.download = `${data.strecke.id || 'strecke'}.yaml`;
     a.click();
     URL.revokeObjectURL(a.href);
+    onexport?.();
   }
 </script>
 
