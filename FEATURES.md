@@ -105,7 +105,7 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 65 | Insert zones between rows | ✅ | |
 | 66 | Insert zone before first row | ✅ | |
 | 67 | Insert signal: autofills km | ✅ | |
-| 68 | Insert note/abzweigung/quelle: autofills km | ❌ | Non-signal inserts don't autofill km |
+| 68 | Insert note/abzweigung/quelle: autofills km | ✅ | |
 | 69 | Insert knoten: no km autofill | ✅ | |
 | 70 | Delete row | ✅ | |
 | 71 | Clear row: resets to empty signal regardless of type | ✅ | |
@@ -214,14 +214,13 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 ## Summary
 
 - **Total features**: 130
-- **Ported (✅)**: 117
+- **Ported (✅)**: 118
 - **Partial (⚠️)**: 4
-- **Missing (❌)**: 9
+- **Missing (❌)**: 8
 
 ### Remaining missing features:
 
-1. **#68** Insert note/abzweigung/quelle: autofill km from previous row
-2. **#77-78** Undo/redo focus position save/restore
+1. **#77-78** Undo/redo focus position save/restore
 3. **#21, #95** Quelle row double height
 
 ### Low-priority / cosmetic:

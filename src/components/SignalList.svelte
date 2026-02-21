@@ -166,6 +166,10 @@
   }
 
   function insertAt(idx: number, entry: Eintrag) {
+    if (showKm && idx > 0) {
+      const prev = signale[idx - 1];
+      if (prev.km !== undefined) entry.km = parseFloat((prev.km + 0.1).toFixed(1));
+    }
     signale = [...signale.slice(0, idx), entry, ...signale.slice(idx)];
     reindex();
     onchange();
@@ -241,6 +245,10 @@
   }
 
   function appendEntry(entry: Eintrag) {
+    if (showKm && signale.length > 0) {
+      const prev = signale[signale.length - 1];
+      if (prev.km !== undefined) entry.km = parseFloat((prev.km + 0.1).toFixed(1));
+    }
     signale = [...signale, entry];
     reindex();
     onchange();
