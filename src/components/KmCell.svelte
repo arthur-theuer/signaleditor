@@ -106,6 +106,8 @@
   .km-preview.next { order: -1; align-items: center; padding-top: 2px; }
   .km-preview.prev { order: 1; align-items: center; padding-bottom: 2px; }
   .km-cell-inner:focus-within .km-preview { opacity: 0.5; }
+  .km-cell-inner:focus-within .km-preview.prev { border-bottom: 1px solid var(--color-border); }
+  .km-cell-inner:focus-within .km-preview.next { border-top: 1px solid var(--color-border); }
   .km-input {
     flex: var(--input-flex);
     padding: 0 8px;

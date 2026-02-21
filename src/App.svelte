@@ -112,14 +112,23 @@
     }
   });
 
+  function flashUndoRedoBtn(id: string) {
+    const btn = document.getElementById(id) as HTMLButtonElement | null;
+    if (!btn || btn.disabled) return;
+    btn.classList.add('hl-flash');
+    setTimeout(() => btn.classList.remove('hl-flash'), 100);
+  }
+
   // Keyboard shortcuts
   $effect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
         e.preventDefault();
+        flashUndoRedoBtn('undoBtn');
         handleUndo();
       } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
         e.preventDefault();
+        flashUndoRedoBtn('redoBtn');
         handleRedo();
       }
     };

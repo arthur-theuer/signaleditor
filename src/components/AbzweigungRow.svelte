@@ -42,7 +42,7 @@
       cycleVonNach(-1);
     } else if (e.key === 'Escape') {
       e.preventDefault();
-      eintrag.abzweigung.von_nach = '' as 'von' | 'nach';
+      eintrag.abzweigung.von_nach = '';
       onchange();
     } else if (e.key.length === 1) {
       e.preventDefault();

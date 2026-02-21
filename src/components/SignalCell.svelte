@@ -37,14 +37,12 @@
 
   let currentIdx = $derived(base ? enumList.indexOf(base) : -1);
   let prevSignal = $derived(
-    base === '' ? '' :
     currentIdx >= 0 ? enumList[(currentIdx - 1 + enumList.length) % enumList.length] :
-    enumList[enumList.length - 1]
+    enumList[enumList.length - 1] ?? ''
   );
   let nextSignal = $derived(
-    base === '' ? '' :
     currentIdx >= 0 ? enumList[(currentIdx + 1) % enumList.length] :
-    enumList[0]
+    enumList[0] ?? ''
   );
 
   // Derive placeholder
@@ -214,6 +212,8 @@
     pointer-events: none;
   }
   .signal-input-wrapper:focus-within .signal-preview { opacity: 0.5; }
+  .signal-input-wrapper:focus-within .signal-preview.prev { border-bottom: 1px solid var(--color-border); }
+  .signal-input-wrapper:focus-within .signal-preview.next { border-top: 1px solid var(--color-border); }
   .signal-preview.prev { order: -1; align-items: center; padding-top: 2px; }
   .signal-preview.next { order: 1; align-items: center; padding-bottom: 2px; }
 

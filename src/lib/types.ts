@@ -1,7 +1,7 @@
 export type Abzweigung = {
   seite: 'links' | 'rechts';
   strecke: string;
-  von_nach: 'von' | 'nach';
+  von_nach: 'von' | 'nach' | '';
   richtung: string;
 };
 

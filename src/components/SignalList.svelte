@@ -250,7 +250,7 @@
     return { id: idx, notiz: '' };
   }
   function makeAbzweigung(idx: number): Abzweigungseintrag {
-    return { id: idx, abzweigung: { strecke: '', richtung: '', von_nach: 'von', seite: 'links' } };
+    return { id: idx, abzweigung: { strecke: '', richtung: '', von_nach: '', seite: 'links' } };
   }
   function makeKnoten(idx: number): Knoteneintrag {
     return { id: idx, knoten: '' };
