@@ -12,10 +12,7 @@
 
   let preview = $derived(KNOTEN[eintrag.knoten.toUpperCase()] || '');
 
-  function handleInput(e: Event) {
-    eintrag.knoten = (e.target as HTMLInputElement).value;
-    onchange();
-  }
+
 </script>
 
 <div class="signal-cell knoten-cell">
@@ -24,8 +21,8 @@
       <input
         type="text"
         class="knoten-input"
-        value={eintrag.knoten}
-        oninput={handleInput}
+        bind:value={eintrag.knoten}
+        oninput={onchange}
         placeholder="Code"
         autocomplete="off"
         autocorrect="off"

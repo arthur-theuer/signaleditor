@@ -4,7 +4,7 @@
   import { KNOTEN } from '../lib/constants';
   import { resolveQuelle, cacheQuelle } from '../lib/sources';
   import { parseYAMLContent, extractYAMLFromHTML } from '../lib/yaml';
-  import { escapeHtml } from '../lib/colors';
+
 
   let {
     eintrag = $bindable(),
@@ -55,10 +55,7 @@
     });
   });
 
-  function handleDateiInput(e: Event) {
-    eintrag.quelle.datei = (e.target as HTMLInputElement).value;
-    onchange();
-  }
+
 
   function handleFileLoad(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -80,20 +77,9 @@
     input.value = '';
   }
 
-  function renderResolvedRow(s: Eintrag): string {
-    if (isAbzweigungseintrag(s)) {
-      const abz = s.abzweigung;
-      const arrow = (abz.seite === 'links') === (abz.von_nach === 'nach') ? '&lt;&lt;' : '&gt;&gt;';
-      return `<div class="quelle-resolved-row abz">${arrow} ${escapeHtml(abz.strecke)} ${abz.von_nach} ${escapeHtml(abz.richtung)} ${arrow}</div>`;
-    } else if (isNotizeintrag(s)) {
-      return `<div class="quelle-resolved-row" style="color:#f57f17;font-style:italic">${escapeHtml(s.notiz || 'Notiz')}</div>`;
-    } else if (isKnoteneintrag(s)) {
-      return `<div class="quelle-resolved-row" style="color:#00695c;font-weight:600">${escapeHtml(s.knoten)} ${KNOTEN[s.knoten] ? `(${escapeHtml(KNOTEN[s.knoten])})` : ''}</div>`;
-    } else if (isSignaleintrag(s)) {
-      const parts = [s.signal_1, s.signal_2].filter(Boolean);
-      return `<div class="quelle-resolved-row">${escapeHtml(parts.join(' | ') || '(leer)')}</div>`;
-    }
-    return '';
+  function abzArrow(s: import('../lib/types').Abzweigungseintrag): string {
+    const abz = s.abzweigung;
+    return (abz.seite === 'links') === (abz.von_nach === 'nach') ? '<<' : '>>';
   }
 </script>
 
@@ -103,8 +89,8 @@
       <input
         type="text"
         class="quelle-datei"
-        value={eintrag.quelle.datei}
-        oninput={handleDateiInput}
+        bind:value={eintrag.quelle.datei}
+        oninput={onchange}
         placeholder="Datei (z.B. videos/652_rp_zh.yaml)"
         autocomplete="off"
         autocorrect="off"
@@ -137,7 +123,15 @@
     {#if expanded && resolveResult && !resolveResult.error}
       <div class="quelle-resolved visible">
         {#each resolveResult.signale as s}
-          {@html renderResolvedRow(s)}
+          {#if isAbzweigungseintrag(s)}
+            <div class="quelle-resolved-row abz">{abzArrow(s)} {s.abzweigung.strecke} {s.abzweigung.von_nach} {s.abzweigung.richtung} {abzArrow(s)}</div>
+          {:else if isNotizeintrag(s)}
+            <div class="quelle-resolved-row notiz">{s.notiz || 'Notiz'}</div>
+          {:else if isKnoteneintrag(s)}
+            <div class="quelle-resolved-row knoten">{s.knoten}{KNOTEN[s.knoten] ? ` (${KNOTEN[s.knoten]})` : ''}</div>
+          {:else if isSignaleintrag(s)}
+            <div class="quelle-resolved-row">{[s.signal_1, s.signal_2].filter(Boolean).join(' | ') || '(leer)'}</div>
+          {/if}
         {/each}
       </div>
     {/if}
@@ -205,12 +199,20 @@
     font-family: monospace;
   }
   .expanded { height: auto; }
-  :global(.quelle-resolved-row) {
+  .quelle-resolved-row {
     padding: 2px 12px;
     border-bottom: 1px solid #eee;
   }
-  :global(.quelle-resolved-row.abz) {
+  .quelle-resolved-row.abz {
     color: #7b1fa2;
     font-style: italic;
+  }
+  .quelle-resolved-row.notiz {
+    color: #f57f17;
+    font-style: italic;
+  }
+  .quelle-resolved-row.knoten {
+    color: #00695c;
+    font-weight: 600;
   }
 </style>

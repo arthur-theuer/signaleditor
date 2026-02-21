@@ -30,19 +30,13 @@
   } = $props();
 
   let fileInput: HTMLInputElement;
-
-  function flashBtn(btn: HTMLButtonElement) {
-    if (btn.disabled) return;
-    btn.classList.add('hl-flash');
-    setTimeout(() => btn.classList.remove('hl-flash'), 100);
-  }
 </script>
 
 <div class="header">
   <h1>Signaleditor</h1>
 
-  <button id="undoBtn" class="undo-redo-btn hl" disabled={!undoEnabled} onclick={(e) => { flashBtn(e.currentTarget as HTMLButtonElement); onUndo(); }} title="Rückgängig (Ctrl+Z)">←</button>
-  <button id="redoBtn" class="undo-redo-btn hl" disabled={!redoEnabled} onclick={(e) => { flashBtn(e.currentTarget as HTMLButtonElement); onRedo(); }} title="Wiederholen (Ctrl+Y)">→</button>
+  <button id="undoBtn" class="undo-redo-btn hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">←</button>
+  <button id="redoBtn" class="undo-redo-btn hl" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">→</button>
 
   <input
     type="file"

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Editordaten } from './lib/types';
   import { parseYAMLContent, extractYAMLFromHTML } from './lib/yaml';
-  import { saveState, undo as historyUndo, redo as historyRedo, canUndo, canRedo, clearHistory } from './lib/history.svelte';
+  import { History } from './lib/history.svelte';
   import { isQuelleneintrag } from './lib/types';
   import { autoStitchQuellen } from './lib/sources';
   import { generateYAML } from './lib/yaml';
@@ -18,6 +18,8 @@
     signale: [],
   });
 
+  const history = new History();
+
   let dirty = $state(false);
   let showKm = $state(false);
   let showYaml = $state(false);
@@ -30,7 +32,7 @@
       signale: [],
     };
     dirty = false;
-    clearHistory();
+    history.clear();
   }
 
   function loadFile(content: string, filename: string) {
@@ -45,7 +47,7 @@
     }
     data = parseYAMLContent(content);
     dirty = false;
-    clearHistory();
+    history.clear();
     if (data.signale.some(s => s.km !== undefined)) {
       showKm = true;
     }
@@ -69,18 +71,20 @@
 
   // Save undo state when any input receives focus (captures "before edit" state)
   $effect(() => {
-    const handler = () => saveState(data);
+    const handler = () => history.save(data);
     document.addEventListener('focusin', handler);
     return () => document.removeEventListener('focusin', handler);
   });
 
   function handleUndo() {
-    const restored = historyUndo(data);
+    flashUndoRedoBtn('undoBtn');
+    const restored = history.undo(data);
     if (restored) { data = restored; }
   }
 
   function handleRedo() {
-    const restored = historyRedo(data);
+    flashUndoRedoBtn('redoBtn');
+    const restored = history.redo(data);
     if (restored) { data = restored; }
   }
 
@@ -124,11 +128,9 @@
     const handler = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
         e.preventDefault();
-        flashUndoRedoBtn('undoBtn');
         handleUndo();
       } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
         e.preventDefault();
-        flashUndoRedoBtn('redoBtn');
         handleRedo();
       }
     };
@@ -141,8 +143,8 @@
   {showKm}
   {showYaml}
   {showMeldungen}
-  undoEnabled={canUndo()}
-  redoEnabled={canRedo()}
+  undoEnabled={history.canUndo}
+  redoEnabled={history.canRedo}
   onToggleKm={() => showKm = !showKm}
   onToggleYaml={() => showYaml = !showYaml}
   onToggleMeldungen={() => showMeldungen = !showMeldungen}

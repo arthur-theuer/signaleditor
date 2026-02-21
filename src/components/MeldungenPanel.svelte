@@ -2,7 +2,7 @@
   import type { Eintrag } from '../lib/types';
   import type { MeldungRow } from '../lib/reports';
   import { generiereAlleMeldungen } from '../lib/reports';
-  import { colorToLightBg, averageColors, escapeHtml } from '../lib/colors';
+  import { colorToLightBg, averageColors } from '../lib/colors';
 
   let { signale }: { signale: Eintrag[] } = $props();
 

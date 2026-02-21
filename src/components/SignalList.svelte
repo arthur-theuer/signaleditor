@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tick } from 'svelte';
   import type { Eintrag, Signaleintrag, Notizeintrag, Knoteneintrag, Abzweigungseintrag, Quelleneintrag } from '../lib/types';
   import { isSignaleintrag, isNotizeintrag, isKnoteneintrag, isAbzweigungseintrag, isQuelleneintrag } from '../lib/types';
   import { autofillRow, isRowEmpty } from '../lib/signals';
@@ -130,21 +131,19 @@
     );
   }
 
-  function focusRowField(rowIdx: number, last = false) {
-    // Use tick to wait for Svelte to render
-    setTimeout(() => {
-      const rowEl = getRowEl(rowIdx);
-      if (!rowEl) return;
-      if (last) {
-        const fields = getFocusableFields(rowEl);
-        if (fields.length > 0) fields[fields.length - 1].focus();
-      } else {
-        getFirstFieldInRow(rowEl)?.focus();
-      }
-    }, 10);
+  async function focusRowField(rowIdx: number, last = false) {
+    await tick();
+    const rowEl = getRowEl(rowIdx);
+    if (!rowEl) return;
+    if (last) {
+      const fields = getFocusableFields(rowEl);
+      if (fields.length > 0) fields[fields.length - 1].focus();
+    } else {
+      getFirstFieldInRow(rowEl)?.focus();
+    }
   }
 
-  function addSignalWithAutofill() {
+  async function addSignalWithAutofill() {
     const newSig: Signaleintrag = { id: signale.length, signal_1: '', signal_2: '' };
     if (signale.length > 0) {
       autofillRow(newSig, signale.length - 1, signale, showKm);
@@ -152,8 +151,8 @@
     signale = [...signale, newSig];
     reindex();
     onchange();
-    focusRowField(signale.length - 1);
-    setTimeout(() => scrollAnchor?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 20);
+    await focusRowField(signale.length - 1);
+    scrollAnchor?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
   function insertSignalAt(idx: number) {
@@ -259,7 +258,7 @@
     return { id: idx, quelle: { datei: '' } };
   }
 
-  function appendEntry(entry: Eintrag) {
+  async function appendEntry(entry: Eintrag) {
     if (showKm && signale.length > 0) {
       const prev = signale[signale.length - 1];
       if (prev.km !== undefined) entry.km = parseFloat((prev.km + 0.1).toFixed(1));
@@ -267,8 +266,8 @@
     signale = [...signale, entry];
     reindex();
     onchange();
-    focusRowField(signale.length - 1);
-    setTimeout(() => scrollAnchor?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 20);
+    await focusRowField(signale.length - 1);
+    scrollAnchor?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
 
