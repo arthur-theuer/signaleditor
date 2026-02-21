@@ -367,6 +367,6 @@
     border-radius: 1px;
     z-index: 5;
   }
-  .signal-row.drag-over-top::before { top: calc(var(--half-gap) * -1); }
-  .signal-row.drag-over-bottom::after { bottom: calc(var(--half-gap) * -1); }
+  .signal-row.drag-over-top::before { top: calc(var(--half-gap) * -1 - 1px); }
+  .signal-row.drag-over-bottom::after { bottom: calc(var(--half-gap) * -1 - 1px); }
 </style>
