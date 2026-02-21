@@ -270,6 +270,7 @@
     <div
       class="signal-row"
       class:dragging={dragIdx === idx}
+      class:drag-ready={dragHandle === idx}
       class:drag-over-top={dragOverIdx === idx && dragOverHalf === 'top'}
       class:drag-over-bottom={dragOverIdx === idx && dragOverHalf === 'bottom'}
       data-row-index={idx}
@@ -354,6 +355,7 @@
   .signal-id:active { cursor: grabbing; }
   .signal-row { position: relative; }
   .signal-row.dragging { opacity: 0.4; }
+  .signal-row.drag-ready :global(.signal-actions) { visibility: hidden; }
   .signal-row.drag-over-top::before,
   .signal-row.drag-over-bottom::after {
     content: '';
