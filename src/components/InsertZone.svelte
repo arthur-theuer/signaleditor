@@ -42,7 +42,7 @@
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: opacity 0.15s;
+
     pointer-events: none;
   }
   .insert-zone:hover .insert-zone-target {
