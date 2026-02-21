@@ -2,7 +2,7 @@ import type { Eintrag, Import, Strecke, Editordaten } from './types';
 import { isImporteintrag, isKnoteneintrag } from './types';
 import { parseYAMLContent, extractYAMLFromHTML } from './yaml';
 
-const quelleCache: Record<string, Editordaten> = {};
+const importCache: Record<string, Editordaten> = {};
 
 export type ResolveResult = {
   signale: Eintrag[];
@@ -10,12 +10,12 @@ export type ResolveResult = {
   error: string | null;
 };
 
-export async function resolveImport(quelle: Import): Promise<ResolveResult> {
-  const datei = quelle.datei;
+export async function resolveImport(imp: Import): Promise<ResolveResult> {
+  const datei = imp.datei;
   if (!datei) return { error: 'Kein Dateipfad angegeben', signale: [] };
 
   try {
-    let parsed = quelleCache[datei];
+    let parsed = importCache[datei];
     if (!parsed) {
       const resp = await fetch('strecken/' + datei);
       if (!resp.ok) throw new Error(`${resp.status} ${resp.statusText}`);
@@ -31,20 +31,20 @@ export async function resolveImport(quelle: Import): Promise<ResolveResult> {
       }
 
       parsed = parseYAMLContent(content);
-      quelleCache[datei] = parsed;
+      importCache[datei] = parsed;
     }
 
     let signale = parsed.signale;
 
-    if (quelle.von) {
-      const idx = signale.findIndex(s => isKnoteneintrag(s) && s.knoten === quelle.von);
-      if (idx === -1) return { error: `Knoten "${quelle.von}" nicht gefunden`, signale: [] };
+    if (imp.von) {
+      const idx = signale.findIndex(s => isKnoteneintrag(s) && s.knoten === imp.von);
+      if (idx === -1) return { error: `Knoten "${imp.von}" nicht gefunden`, signale: [] };
       signale = signale.slice(idx);
     }
 
-    if (quelle.bis) {
-      const idx = signale.findIndex(s => isKnoteneintrag(s) && s.knoten === quelle.bis);
-      if (idx === -1) return { error: `Knoten "${quelle.bis}" nicht gefunden`, signale: [] };
+    if (imp.bis) {
+      const idx = signale.findIndex(s => isKnoteneintrag(s) && s.knoten === imp.bis);
+      if (idx === -1) return { error: `Knoten "${imp.bis}" nicht gefunden`, signale: [] };
       signale = signale.slice(0, idx + 1);
     }
 
@@ -56,23 +56,23 @@ export async function resolveImport(quelle: Import): Promise<ResolveResult> {
 
 /** Cache a manually loaded file (e.g., via FileReader) */
 export function cacheImport(datei: string, data: Editordaten): void {
-  quelleCache[datei] = data;
+  importCache[datei] = data;
 }
 
 export async function autoStitchImporte(signale: Eintrag[]): Promise<void> {
-  const quelleIndices = signale
+  const importIndices = signale
     .map((s, i) => (isImporteintrag(s) ? i : -1))
     .filter(i => i !== -1);
 
-  for (let k = 0; k < quelleIndices.length - 1; k++) {
-    const idxA = quelleIndices[k];
-    const idxB = quelleIndices[k + 1];
+  for (let k = 0; k < importIndices.length - 1; k++) {
+    const idxA = importIndices[k];
+    const idxB = importIndices[k + 1];
     const eA = signale[idxA];
     const eB = signale[idxB];
     if (!isImporteintrag(eA) || !isImporteintrag(eB)) continue;
 
-    const qA = eA.quelle;
-    const qB = eB.quelle;
+    const qA = eA.import;
+    const qB = eB.import;
 
     if (!qA.datei || !qB.datei) continue;
 
@@ -102,12 +102,12 @@ export async function autoStitchImporte(signale: Eintrag[]): Promise<void> {
   }
 }
 
-/** Flatten signale by resolving quelle entries, deduplicating shared knoten at stitch boundaries */
+/** Flatten signale by resolving imp entries, deduplicating shared knoten at stitch boundaries */
 export async function resolveSignaleForMeldungen(signale: Eintrag[]): Promise<Eintrag[]> {
   const flat: Eintrag[] = [];
   for (const sig of signale) {
     if (isImporteintrag(sig)) {
-      const res = await resolveImport(sig.quelle);
+      const res = await resolveImport(sig.import);
       if (res.error) {
         flat.push(sig);
       } else {

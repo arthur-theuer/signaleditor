@@ -20,10 +20,10 @@
   let fileInput: HTMLInputElement;
 
   let vonInfo = $derived(
-    eintrag.quelle.von ? `von: ${eintrag.quelle.von} (${KNOTEN[eintrag.quelle.von] || '?'})` : ''
+    eintrag.import.von ? `von: ${eintrag.import.von} (${KNOTEN[eintrag.import.von] || '?'})` : ''
   );
   let bisInfo = $derived(
-    eintrag.quelle.bis ? `bis: ${eintrag.quelle.bis} (${KNOTEN[eintrag.quelle.bis] || '?'})` : ''
+    eintrag.import.bis ? `bis: ${eintrag.import.bis} (${KNOTEN[eintrag.import.bis] || '?'})` : ''
   );
   let stitchInfo = $derived([vonInfo, bisInfo].filter(Boolean).join(' | '));
 
@@ -43,12 +43,12 @@
 
   // Resolve when datei changes
   $effect(() => {
-    const datei = eintrag.quelle.datei;
+    const datei = eintrag.import.datei;
     if (!datei) {
       resolveResult = null;
       return;
     }
-    resolveImport(eintrag.quelle).then(res => {
+    resolveImport(eintrag.import).then(res => {
       resolveResult = res;
     }).catch(err => {
       resolveResult = { signale: [], error: (err as Error).message };
@@ -70,7 +70,7 @@
       }
       const parsed = parseYAMLContent(content);
       cacheImport(file.name, parsed);
-      eintrag.quelle.datei = file.name;
+      eintrag.import.datei = file.name;
       onchange();
     };
     reader.readAsText(file);
@@ -89,7 +89,7 @@
       <input
         type="text"
         class="import-datei"
-        bind:value={eintrag.quelle.datei}
+        bind:value={eintrag.import.datei}
         oninput={onchange}
         placeholder="Datei (z.B. videos/652_rp_zh.yaml)"
         autocomplete="off"

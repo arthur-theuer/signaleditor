@@ -27,11 +27,11 @@ export function generateYAML(data: Editordaten): string {
     } else if (isKnoteneintrag(sig)) {
       yaml += `    knoten: ${sig.knoten}\n`;
     } else if (isImporteintrag(sig)) {
-      const q = sig.quelle;
+      const q = sig.import;
       const parts = [`datei: ${q.datei}`];
       if (q.von) parts.push(`von: ${q.von}`);
       if (q.bis) parts.push(`bis: ${q.bis}`);
-      yaml += `    quelle: { ${parts.join(', ')} }\n`;
+      yaml += `    import: { ${parts.join(', ')} }\n`;
     } else if (isSignaleintrag(sig)) {
       if (sig.signal_1) yaml += `    signal_1: ${sig.signal_1}\n`;
       if (sig.signal_1b) yaml += `    signal_1b: ${sig.signal_1b}\n`;
@@ -89,19 +89,19 @@ export function parseYAMLContent(content: string): Editordaten {
         if (currentSignal) result.signale.push(currentSignal as Eintrag);
         currentSignal = { id: parseInt(trimmed.split(':')[1].trim()) || result.signale.length };
       } else if (currentSignal) {
-        const quelleMatch = trimmed.match(/^quelle:\s*\{(.+)\}$/);
+        const importMatch = trimmed.match(/^import:\s*\{(.+)\}$/);
         const abzMatch = trimmed.match(/^abzweigung:\s*\{(.+)\}$/);
 
-        if (quelleMatch) {
-          const inner = quelleMatch[1];
+        if (importMatch) {
+          const inner = importMatch[1];
           const dateiMatch = inner.match(/datei:\s*([^,}]+)/);
           const datei = dateiMatch ? dateiMatch[1].trim().replace(/"/g, '') : '';
-          const quelle: Import = { datei };
+          const imp: Import = { datei };
           const vonMatch = inner.match(/(?:^|,)\s*von:\s*([^,}]+)/);
           const bisMatch = inner.match(/(?:^|,)\s*bis:\s*([^,}]+)/);
-          if (vonMatch) quelle.von = vonMatch[1].trim().replace(/"/g, '');
-          if (bisMatch) quelle.bis = bisMatch[1].trim().replace(/"/g, '');
-          currentSignal.quelle = quelle;
+          if (vonMatch) imp.von = vonMatch[1].trim().replace(/"/g, '');
+          if (bisMatch) imp.bis = bisMatch[1].trim().replace(/"/g, '');
+          currentSignal.import = imp;
         } else if (abzMatch) {
           const inner = abzMatch[1];
           const getVal = (key: string): string => {

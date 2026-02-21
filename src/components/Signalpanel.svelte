@@ -255,7 +255,7 @@
     return { id: idx, knoten: '' };
   }
   function makeImport(idx: number): Importeintrag {
-    return { id: idx, quelle: { datei: '' } };
+    return { id: idx, import: { datei: '' } };
   }
 
   async function appendEntry(entry: Eintrag) {

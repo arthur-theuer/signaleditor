@@ -42,7 +42,7 @@ export type Abzweigungseintrag = {
 export type Importeintrag = {
   id: number;
   km?: number;
-  quelle: Import;
+  import: Import;
 };
 
 export type Eintrag =
@@ -70,7 +70,7 @@ export function isAbzweigungseintrag(e: Eintrag): e is Abzweigungseintrag {
 }
 
 export function isImporteintrag(e: Eintrag): e is Importeintrag {
-  return 'quelle' in e;
+  return 'import' in e;
 }
 
 export type Strecke = {

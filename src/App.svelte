@@ -105,13 +105,13 @@
     return () => window.removeEventListener('beforeunload', handler);
   });
 
-  // Auto-stitch quellen when datei values change
+  // Auto-stitch importe when datei values change
   $effect(() => {
-    const quellenDateien = data.signale
+    const importeDateien = data.signale
       .filter(isImporteintrag)
-      .map(s => s.quelle.datei)
+      .map(s => s.import.datei)
       .join(',');
-    if (quellenDateien) {
+    if (importeDateien) {
       autoStitchImporte(data.signale);
     }
   });

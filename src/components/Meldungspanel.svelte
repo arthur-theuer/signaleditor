@@ -24,7 +24,7 @@
         <div class="meldung-row-inner muted">
           <div class="meldung-text muted-text">ABZWEIGUNG</div>
         </div>
-      {:else if m.quelle}
+      {:else if m.import}
         <div class="meldung-row-inner muted">
           <div class="meldung-text muted-text">QUELLE</div>
         </div>

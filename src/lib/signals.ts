@@ -235,7 +235,7 @@ export function autofillRow(
 export function isRowEmpty(eintrag: Eintrag): boolean {
   if (isNotizeintrag(eintrag)) return false;
   if (isAbzweigungseintrag(eintrag)) return false;
-  if ('quelle' in eintrag) return false;
+  if ('import' in eintrag) return false;
   if ('knoten' in eintrag) return false;
   if (!isSignaleintrag(eintrag)) return false;
   return !eintrag.signal_1 && !eintrag.signal_2 && !eintrag.signal_1b && !eintrag.signal_2b;

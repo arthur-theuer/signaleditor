@@ -27,7 +27,7 @@ export type MeldungRow = {
   note?: string;
   knoten?: string;
   abzweigung?: string;
-  quelle?: string;
+  import?: string;
 };
 
 export function generiereAlleMeldungenSync(signale: Eintrag[]): MeldungRow[] {
@@ -88,7 +88,7 @@ export function generiereAlleMeldungenSync(signale: Eintrag[]): MeldungRow[] {
 
     if (isImporteintrag(sig)) {
       meldungen.push({
-        id: sig.id, km: sig.km, quelle: sig.quelle.datei || '(leer)',
+        id: sig.id, km: sig.km, import: sig.import.datei || '(leer)',
         signalname: '', signal_1_display: '', signal_2_display: '',
         segments: [], error: 'Kein Signal',
       });
@@ -158,8 +158,8 @@ export async function downloadMeldungenHTML(data: Editordaten, yamlContent: stri
     if (m.abzweigung) {
       return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#7b1fa2;font-style:italic">${esc(m.abzweigung)}</td></tr>`;
     }
-    if (m.quelle) {
-      return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#999;font-style:italic">Import: ${esc(m.quelle)}</td></tr>`;
+    if (m.import) {
+      return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#999;font-style:italic">Import: ${esc(m.import)}</td></tr>`;
     }
 
     const meldungCell = m.error
