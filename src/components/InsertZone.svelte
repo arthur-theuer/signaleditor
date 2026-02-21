@@ -56,6 +56,9 @@
     opacity: 1;
     pointer-events: auto;
   }
+  .insert-zone-target button:hover { filter: brightness(0.95); }
+  .insert-zone-target button:active { filter: brightness(0.9); }
+  .insert-zone-target button:focus { outline: none; }
   .insert-signal { background: var(--color-bg-raised); color: var(--color-text-secondary); }
   .insert-note { background: var(--color-highlight); color: #f57f17; border-color: #f9a825; }
   .insert-abzweigung { background: #f3e5f5; color: #7b1fa2; border-color: #ba68c8; }
