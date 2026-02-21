@@ -214,6 +214,6 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 ## Summary
 
 - **Total features**: 130
-- **Ported (✅)**: 129
-- **Partial (⚠️)**: 1
+- **Ported (✅)**: 130
+- **Partial (⚠️)**: 0
 - **Missing (❌)**: 0
