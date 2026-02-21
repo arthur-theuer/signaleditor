@@ -190,7 +190,7 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 120 | Focus-within separator borders on previews | ✅ | |
 | 121 | `.hl-primary` variant | ✅ | |
 | 122 | `.hl-flash` variant | ✅ | |
-| 123 | Click wrapper focuses input | ⚠️ | CSS-based, no explicit JS handler |
+| 123 | Click wrapper focuses input | ✅ | |
 
 ## File Operations
 
@@ -214,6 +214,6 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 ## Summary
 
 - **Total features**: 130
-- **Ported (✅)**: 128
-- **Partial (⚠️)**: 2
+- **Ported (✅)**: 129
+- **Partial (⚠️)**: 1
 - **Missing (❌)**: 0
