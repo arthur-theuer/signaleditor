@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Signaleintrag, Eintrag } from '../lib/types';
-  import { isWiederholungssignal, extractSignalBase } from '../lib/signals';
+  import { isWiederholungssignal, isVorsignal, extractSignalBase } from '../lib/signals';
   import Signalzelle from './Signalzelle.svelte';
 
   let {
@@ -16,8 +16,10 @@
   } = $props();
 
   let isWdh = $derived(isWiederholungssignal(eintrag.signal_1));
-  let has1b = $derived(!isWdh && eintrag.signal_1b !== undefined);
-  let has2b = $derived(!isWdh && eintrag.signal_2b !== undefined);
+  let isVs = $derived(isVorsignal(eintrag.signal_1));
+  let signal2Disabled = $derived(isWdh || isVs);
+  let has1b = $derived(!signal2Disabled && eintrag.signal_1b !== undefined);
+  let has2b = $derived(!signal2Disabled && eintrag.signal_2b !== undefined);
 
   function toggleAlt(mainNum: 1 | 2) {
     const altField = `signal_${mainNum}b` as 'signal_1b' | 'signal_2b';
@@ -35,6 +37,9 @@
       delete eintrag.signal_1b;
       delete eintrag.signal_2b;
       eintrag.bahnhof = undefined;
+    } else if (isVorsignal(eintrag.signal_1)) {
+      eintrag.signal_2 = '';
+      delete eintrag.signal_2b;
     }
     // Block chain: clear Block-Vorsignal from signal_2 when signal_1 is no longer Blocksignal
     const base = extractSignalBase(eintrag.signal_1) || '';
@@ -77,9 +82,9 @@
   {rowIdx}
   {signale}
   bind:bahnhof={eintrag.bahnhof}
-  isMainSignal={!isWdh}
+  isMainSignal={!signal2Disabled}
   isAltActive={has2b}
-  disabled={isWdh}
+  disabled={signal2Disabled}
   onToggleAlt={() => toggleAlt(2)}
   onchange={onchange}
 />
