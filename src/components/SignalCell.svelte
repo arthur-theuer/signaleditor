@@ -10,6 +10,7 @@
     bahnhof = $bindable(),
     isMainSignal = false,
     isAltActive = false,
+    disabled = false,
     onToggleAlt,
     onchange,
   }: {
@@ -20,6 +21,7 @@
     bahnhof?: string;
     isMainSignal?: boolean;
     isAltActive?: boolean;
+    disabled?: boolean;
     onToggleAlt?: () => void;
     onchange: () => void;
   } = $props();
@@ -102,19 +104,20 @@
   }
 </script>
 
-<div class="signal-cell" class:has-name={needsName} class:has-bahnhof={needsBahnhof}>
+<div class="signal-cell" class:has-name={needsName && !disabled} class:has-bahnhof={needsBahnhof && !disabled} class:disabled>
   <div class="signal-cell-inner">
     <div class="signal-input-wrapper hl-wrap">
-      <div class="signal-preview prev">{prevSignal}</div>
+      <div class="signal-preview prev">{disabled ? '' : prevSignal}</div>
       <input
         type="text"
         class="signal-input"
         readonly
-        value={base}
-        {placeholder}
+        value={disabled ? '' : base}
+        placeholder={disabled ? '' : placeholder}
         onkeydown={handleKeydown}
+        tabindex={disabled ? -1 : 0}
       />
-      <div class="signal-preview next">{nextSignal}</div>
+      <div class="signal-preview next">{disabled ? '' : nextSignal}</div>
     </div>
     {#if needsName || name}
       <div class="name-wrapper hl-wrap" class:visible={needsName}>

@@ -67,19 +67,18 @@
 {/if}
 
 <!-- signal_2 -->
-{#if !isWdh}
-  <SignalCell
-    bind:value={eintrag.signal_2}
-    field="signal_2"
-    {rowIdx}
-    {signale}
-    bind:bahnhof={eintrag.bahnhof}
-    isMainSignal={true}
-    isAltActive={has2b}
-    onToggleAlt={() => toggleAlt(2)}
-    onchange={onchange}
-  />
-{/if}
+<SignalCell
+  bind:value={eintrag.signal_2}
+  field="signal_2"
+  {rowIdx}
+  {signale}
+  bind:bahnhof={eintrag.bahnhof}
+  isMainSignal={!isWdh}
+  isAltActive={has2b}
+  disabled={isWdh}
+  onToggleAlt={() => toggleAlt(2)}
+  onchange={onchange}
+/>
 
 <!-- signal_2b (alt) -->
 {#if has2b}

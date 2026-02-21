@@ -89,6 +89,10 @@ body {
   height: var(--row-height);
 }
 
+.signal-cell.disabled { background: var(--color-bg); pointer-events: none; }
+.signal-cell.disabled .signal-input { color: var(--color-text-muted); cursor: default; }
+.signal-cell.disabled .signal-preview { display: none; }
+
 .section-header {
   padding: 12px;
   font-weight: 600;
