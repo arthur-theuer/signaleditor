@@ -34,7 +34,6 @@
   function handleDragStart(e: DragEvent, idx: number) {
     e.dataTransfer!.effectAllowed = 'move';
     e.dataTransfer!.setData('text/plain', String(idx));
-    // Delay so the drag ghost captures the row before it fades
     requestAnimationFrame(() => { dragIdx = idx; });
   }
 
@@ -55,7 +54,6 @@
   }
 
   function handleDragLeave(e: DragEvent, idx: number) {
-    // Only clear if actually leaving this row (not entering a child)
     const row = getRowEl(idx);
     if (row && !row.contains(e.relatedTarget as Node)) {
       if (dragOverIdx === idx) {
@@ -69,7 +67,7 @@
     e.preventDefault();
     if (dragIdx === null || dragOverIdx === null || dragOverHalf === null) return;
     let targetIdx = dragOverHalf === 'bottom' ? dragOverIdx + 1 : dragOverIdx;
-    if (targetIdx > dragIdx) targetIdx--; // adjust for removal
+    if (targetIdx > dragIdx) targetIdx--;
     if (targetIdx === dragIdx) { resetDrag(); return; }
     const [moved] = signale.splice(dragIdx, 1);
     signale.splice(targetIdx, 0, moved);
@@ -357,7 +355,7 @@
   .signal-row.dragging { opacity: 0.4; }
   .signal-row.drag-ready :global(.signal-actions) { visibility: hidden; }
   .signal-row.drag-over-top::before,
-  .signal-row.drag-over-bottom::before {
+  .signal-row.drag-over-bottom::after {
     content: '';
     position: absolute;
     left: var(--card-gap);
@@ -368,5 +366,5 @@
     z-index: 5;
   }
   .signal-row.drag-over-top::before { top: calc(var(--half-gap) * -1); }
-  .signal-row.drag-over-bottom::before { bottom: calc(var(--half-gap) * -1); }
+  .signal-row.drag-over-bottom::after { bottom: calc(var(--half-gap) * -1); }
 </style>
