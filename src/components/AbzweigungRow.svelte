@@ -58,7 +58,7 @@
 <div class="signal-cell abzweigung-cell">
   <div class="abzweigung-inner">
     <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
-      <button class="abzweigung-btn abzweigung-arrow" onclick={toggleSeite} onkeydown={handleArrowKeydown}>{arrowGlyph}</button>
+      <button class="abzweigung-btn abzweigung-arrow" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); toggleSeite(); }} onkeydown={handleArrowKeydown}>{arrowGlyph}</button>
     </div>
     <div class="abzweigung-field abzweigung-strecke-field hl-wrap">
       <input
@@ -73,7 +73,7 @@
       />
     </div>
     <div class="abzweigung-field abzweigung-vonnach-field hl-wrap">
-      <button class="abzweigung-btn abzweigung-vonnach" onclick={() => cycleVonNach(1)} onkeydown={handleVonNachKeydown}>
+      <button class="abzweigung-btn abzweigung-vonnach" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleVonNach(1); }} onkeydown={handleVonNachKeydown}>
         {#if eintrag.abzweigung.von_nach}
           {eintrag.abzweigung.von_nach}
         {:else}
