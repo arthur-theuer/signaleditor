@@ -16,6 +16,10 @@
     onExportMeldungen,
     onLogin,
     onLogout,
+    onSave,
+    saving,
+    dirty,
+    currentFileName,
   }: {
     showKm: boolean;
     showYaml: boolean;
@@ -33,12 +37,16 @@
     onExportMeldungen: () => void;
     onLogin: () => void;
     onLogout: () => void;
+    onSave: () => void;
+    saving: boolean;
+    dirty: boolean;
+    currentFileName: string | null;
   } = $props();
 
   let fileInput: HTMLInputElement;
 </script>
 
-<div class="header">
+<div class="header" class:logged-out={!loggedIn}>
   <h1>Signaleditor</h1>
 
   <button id="undoBtn" class="undo-redo-btn hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">←</button>
@@ -56,13 +64,28 @@
   <button class="hl" onclick={() => fileInput.click()}>Datei laden</button>
   <button class="primary-btn hl hl-primary" onclick={onExportMeldungen}>Meldungen exportieren</button>
 
+  {#if loggedIn}
+    <button
+      class="save-btn hl"
+      onclick={onSave}
+      disabled={saving || !dirty}
+      title="Speichern (Ctrl+S)"
+    >
+      {#if saving}
+        Speichern...
+      {:else}
+        Speichern
+      {/if}
+    </button>
+  {/if}
+
   <button
     class="lock-btn hl"
     class:unlocked={loggedIn}
     onclick={() => loggedIn ? onLogout() : onLogin()}
     title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
   >
-    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
       {#if loggedIn}
         <path d="M7 11V7a5 5 0 0 1 9.9-1" />
@@ -71,6 +94,13 @@
       {/if}
     </svg>
   </button>
+
+  {#if loggedIn && currentFileName}
+    <span class="file-indicator">
+      {#if dirty}<span class="dirty-dot"></span>{/if}
+      {currentFileName}
+    </span>
+  {/if}
 
   <div style="flex: 1;"></div>
 
@@ -92,6 +122,9 @@
     background: var(--color-bg);
     padding: var(--page-gap) 0 12px 0;
   }
+  .header.logged-out {
+    background: var(--color-red-bg);
+  }
   .header::after {
     content: '';
     position: absolute;
@@ -101,6 +134,9 @@
     height: 12px;
     background: linear-gradient(var(--color-bg), transparent);
     pointer-events: none;
+  }
+  .header.logged-out::after {
+    background: linear-gradient(var(--color-red-bg), transparent);
   }
   .header h1 { margin-right: 16px; }
   .header button {
@@ -164,5 +200,30 @@
     background: var(--color-green-bg);
     border-color: var(--color-green);
     color: var(--color-green);
+  }
+  .save-btn {
+    background: var(--color-focus);
+    color: white;
+    border-color: var(--color-focus-hover);
+  }
+  .save-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .file-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-family: monospace;
+    color: var(--color-text-secondary);
+    padding: 0 8px;
+  }
+  .dirty-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-clear);
+    flex-shrink: 0;
   }
 </style>

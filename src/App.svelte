@@ -7,6 +7,8 @@
   import { generateYAML } from './lib/yaml';
   import { downloadMeldungenHTML } from './lib/reports';
   import { isLoggedIn, login, logout } from './lib/auth.svelte';
+  import { dateiId, isVideodaten } from './lib/types';
+  import { saveFile, createFile } from './lib/api';
   import Toolbar from './components/Toolbar.svelte';
   import Metafelder from './components/Metafelder.svelte';
   import Signalpanel from './components/Signalpanel.svelte';
@@ -22,11 +24,14 @@
   let showKm = $state(false);
   let showYaml = $state(false);
   let showMeldungen = $state(false);
+  let currentFileName = $state<string | null>(null);
+  let saving = $state(false);
 
   function newFile(typ: Dateityp) {
     if (dirty && !confirm('Ungespeicherte Änderungen verwerfen?')) return;
     data = typ === 'video' ? emptyVideodaten() : emptyStreckendaten();
     dirty = false;
+    currentFileName = null;
     history.clear();
   }
 
@@ -42,6 +47,7 @@
     }
     data = parseYAMLContent(content);
     dirty = false;
+    currentFileName = null;
     history.clear();
     if (data.signale.some(s => s.km !== undefined)) {
       showKm = true;
@@ -94,6 +100,47 @@
     logout();
   }
 
+  async function handleSave() {
+    if (!isLoggedIn() || saving) return;
+
+    const id = dateiId(data);
+    if (!id) {
+      alert('Bitte zuerst alle Metadaten ausfüllen (ID kann nicht abgeleitet werden).');
+      return;
+    }
+
+    const fileName = `${id}.yaml`;
+    const typ = isVideodaten(data) ? 'videos' : 'strecken';
+    const content = generateYAML(data);
+
+    saving = true;
+    try {
+      if (currentFileName) {
+        await saveFile(typ as 'videos' | 'strecken', currentFileName, content);
+      } else {
+        try {
+          await createFile(typ as 'videos' | 'strecken', fileName, content);
+        } catch (e: any) {
+          if (e.message?.includes('already exists')) {
+            if (!confirm(`Datei "${fileName}" existiert bereits. Überschreiben?`)) {
+              saving = false;
+              return;
+            }
+            await saveFile(typ as 'videos' | 'strecken', fileName, content);
+          } else {
+            throw e;
+          }
+        }
+      }
+      currentFileName = fileName;
+      dirty = false;
+    } catch (e: any) {
+      alert(`Speichern fehlgeschlagen: ${e.message}`);
+    } finally {
+      saving = false;
+    }
+  }
+
   function handleExportMeldungen() {
     const yamlContent = generateYAML(data);
     downloadMeldungenHTML(data, yamlContent);
@@ -132,7 +179,10 @@
   // Keyboard shortcuts
   $effect(() => {
     const handler = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        if (isLoggedIn()) handleSave();
+      } else if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
         e.preventDefault();
         handleUndo();
       } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
@@ -162,6 +212,10 @@
   onExportMeldungen={handleExportMeldungen}
   onLogin={handleLogin}
   onLogout={handleLogout}
+  onSave={handleSave}
+  {saving}
+  {dirty}
+  {currentFileName}
 />
 
 <Metafelder bind:data={data} onchange={markDirty} />
