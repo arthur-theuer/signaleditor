@@ -57,19 +57,19 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 37 | ± alt toggle on hover (not on Wiederholungssignal) | ✅ | |
 | 38 | Alt toggle adds/removes signal_Xb | ✅ | |
 | 39 | Wiederholungssignal: signal_2 disabled, alts removed | ✅ | |
-| 40 | Bahnhof auto-prefill: focus empty bahnhof copies name value | ❌ | |
+| 40 | Bahnhof auto-prefill: focus empty bahnhof copies name value | ✅ | |
 | 41 | Bahnhof sync across cells in same row | ✅ | Via shared binding |
 | 42 | Signal input readonly | ✅ | |
 | 43 | Signal input deselects text on focus | ❌ | |
-| 44 | Block chain: signal_1 away from Blocksignal clears signal_2 Block-Vorsignal | ❌ | |
+| 44 | Block chain: signal_1 away from Blocksignal clears signal_2 Block-Vorsignal | ✅ | |
 
 ## Km Cell Behavior
 
 | # | Feature | Status | Notes |
 |---|---------|--------|-------|
-| 45 | Arrow Up/Down increments/decrements by 0.1 | ❌ | No keydown handler |
-| 46 | Arrow keys use placeholder if input empty | ❌ | |
-| 47 | Escape clears km value | ❌ | |
+| 45 | Arrow Up/Down increments/decrements by 0.1 | ✅ | |
+| 46 | Arrow keys use placeholder if input empty | ✅ | |
+| 47 | Escape clears km value | ✅ | |
 | 48 | Prev/next km previews on focus | ✅ | |
 | 49 | Placeholder from previous row | ✅ | |
 
@@ -108,8 +108,8 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 68 | Insert note/abzweigung/quelle: autofills km | ❌ | Non-signal inserts don't autofill km |
 | 69 | Insert knoten: no km autofill | ✅ | |
 | 70 | Delete row | ✅ | |
-| 71 | Clear row: resets to empty signal regardless of type | ⚠️ | Clears within type, doesn't convert back to signal |
-| 72 | Clear focuses first field | ❌ | |
+| 71 | Clear row: resets to empty signal regardless of type | ✅ | |
+| 72 | Clear focuses first field | ✅ | |
 | 73 | New row focuses first field | ✅ | |
 | 74 | Scroll to anchor after add | ✅ | |
 
@@ -136,7 +136,7 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 86 | YAML format matches original | ✅ | |
 | 87 | YAML parsing: all row types | ✅ | |
 | 88 | HTML import: embedded YAML extraction | ✅ | |
-| 89 | Auto-enable km toggle on file load if data has km | ❌ | |
+| 89 | Auto-enable km toggle on file load if data has km | ✅ | |
 
 ## Meldungen
 
@@ -175,11 +175,11 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | # | Feature | Status | Notes |
 |---|---------|--------|-------|
 | 112 | Arrow button toggles seite on click | ✅ | |
-| 113 | Arrow keys (Left/Right) toggle seite | ❌ | |
-| 114 | Von/nach: Arrow Up/Down cycles, type-ahead | ❌ | Only click cycles |
-| 115 | Von/nach Escape clears | ❌ | |
+| 113 | Arrow keys (Left/Right) toggle seite | ✅ | |
+| 114 | Von/nach: Arrow Up/Down cycles, type-ahead | ✅ | |
+| 115 | Von/nach Escape clears | ✅ | |
 | 116 | Strecke/richtung text inputs | ✅ | |
-| 117 | Arrow glyph depends on seite AND von_nach | ❌ | Only depends on seite |
+| 117 | Arrow glyph depends on seite AND von_nach | ✅ | |
 
 ## Highlight System
 
@@ -214,25 +214,21 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 ## Summary
 
 - **Total features**: 130
-- **Ported (✅)**: 104
-- **Partial (⚠️)**: 7
-- **Missing (❌)**: 19
+- **Ported (✅)**: 117
+- **Partial (⚠️)**: 4
+- **Missing (❌)**: 9
 
-### Priority missing features (functional impact):
+### Remaining missing features:
 
-1. **#44** Block chain: clear signal_2 when signal_1 changes away from Blocksignal
-2. **#45-47** Km cell keyboard handling (Arrow Up/Down, Escape)
-3. **#40** Bahnhof auto-prefill on focus
-4. **#71** Clear row should convert any type back to empty signal
-5. **#113-115, #117** Abzweigung keyboard handling and arrow direction logic
-6. **#77-78** Undo/redo focus position save/restore
-7. **#89** Auto-enable km toggle on file load
+1. **#68** Insert note/abzweigung/quelle: autofill km from previous row
+2. **#77-78** Undo/redo focus position save/restore
+3. **#21, #95** Quelle row double height
 
 ### Low-priority / cosmetic:
 
 - #43 Signal input deselect on focus
-- #72 Clear focuses first field
 - #76 Save state on focus vs on change
 - #82 Undo/redo flash animation
 - #120 Preview separator borders
+- #123 Click wrapper explicit JS handler (CSS-based currently)
 - #130 Insert zone button labels

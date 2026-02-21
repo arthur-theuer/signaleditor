@@ -179,19 +179,9 @@
   }
 
   function clearRow(idx: number) {
-    const e = signale[idx];
-    if (isSignaleintrag(e)) {
-      signale[idx] = { id: e.id, signal_1: '', signal_2: '' } as Signaleintrag;
-    } else if (isNotizeintrag(e)) {
-      signale[idx] = { id: e.id, notiz: '' } as Notizeintrag;
-    } else if (isKnoteneintrag(e)) {
-      signale[idx] = { id: e.id, knoten: '' } as Knoteneintrag;
-    } else if (isAbzweigungseintrag(e)) {
-      signale[idx] = { id: e.id, abzweigung: { strecke: '', richtung: '', von_nach: 'von', seite: 'links' } } as Abzweigungseintrag;
-    } else if (isQuelleneintrag(e)) {
-      signale[idx] = { id: e.id, quelle: { datei: '' } } as Quelleneintrag;
-    }
+    signale[idx] = { id: signale[idx].id, signal_1: '', signal_2: '' } as Signaleintrag;
     onchange();
+    focusRowField(idx);
   }
 
   function reindex() {

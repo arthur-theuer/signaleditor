@@ -9,25 +9,56 @@
     onchange: () => void;
   } = $props();
 
-  let arrowGlyph = $derived(eintrag.abzweigung.seite === 'links' ? '<<' : '>>');
+  let arrowGlyph = $derived(
+    (eintrag.abzweigung.seite === 'links') === (eintrag.abzweigung.von_nach === 'nach') ? '<<' : '>>'
+  );
+
+  const VON_NACH_ENUM: Array<'von' | 'nach'> = ['von', 'nach'];
 
   function toggleSeite() {
     eintrag.abzweigung.seite = eintrag.abzweigung.seite === 'links' ? 'rechts' : 'links';
     onchange();
   }
 
-  function cycleVonNach() {
-    const vals: Array<'von' | 'nach'> = ['von', 'nach'];
-    const idx = vals.indexOf(eintrag.abzweigung.von_nach);
-    eintrag.abzweigung.von_nach = vals[(idx + 1) % vals.length];
+  function cycleVonNach(direction: 1 | -1 = 1) {
+    const idx = VON_NACH_ENUM.indexOf(eintrag.abzweigung.von_nach);
+    eintrag.abzweigung.von_nach = VON_NACH_ENUM[(idx + direction + VON_NACH_ENUM.length) % VON_NACH_ENUM.length];
     onchange();
+  }
+
+  function handleArrowKeydown(e: KeyboardEvent) {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      toggleSeite();
+    }
+  }
+
+  function handleVonNachKeydown(e: KeyboardEvent) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      cycleVonNach(1);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      cycleVonNach(-1);
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      eintrag.abzweigung.von_nach = '' as 'von' | 'nach';
+      onchange();
+    } else if (e.key.length === 1) {
+      e.preventDefault();
+      const match = VON_NACH_ENUM.find(s => s.startsWith(e.key.toLowerCase()));
+      if (match) {
+        eintrag.abzweigung.von_nach = match;
+        onchange();
+      }
+    }
   }
 </script>
 
 <div class="signal-cell abzweigung-cell">
   <div class="abzweigung-inner">
     <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
-      <button class="abzweigung-btn" onclick={toggleSeite}>{arrowGlyph}</button>
+      <button class="abzweigung-btn" onclick={toggleSeite} onkeydown={handleArrowKeydown}>{arrowGlyph}</button>
     </div>
     <div class="abzweigung-field abzweigung-strecke-field hl-wrap">
       <input
@@ -41,7 +72,7 @@
       />
     </div>
     <div class="abzweigung-field abzweigung-vonnach-field hl-wrap">
-      <button class="abzweigung-btn" onclick={cycleVonNach}>
+      <button class="abzweigung-btn" onclick={() => cycleVonNach(1)} onkeydown={handleVonNachKeydown}>
         {#if eintrag.abzweigung.von_nach}
           {eintrag.abzweigung.von_nach}
         {:else}
@@ -61,7 +92,7 @@
       />
     </div>
     <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
-      <button class="abzweigung-btn" tabindex={-1} onclick={toggleSeite}>{arrowGlyph}</button>
+      <button class="abzweigung-btn" tabindex={-1} onclick={toggleSeite} onkeydown={handleArrowKeydown}>{arrowGlyph}</button>
     </div>
   </div>
 </div>

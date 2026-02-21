@@ -46,6 +46,9 @@
     data = parseYAMLContent(content);
     dirty = false;
     clearHistory();
+    if (data.signale.some(s => s.km !== undefined)) {
+      showKm = true;
+    }
   }
 
   function handleFileLoad(event: Event) {

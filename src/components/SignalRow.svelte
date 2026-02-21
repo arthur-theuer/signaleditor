@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Signaleintrag, Eintrag } from '../lib/types';
-  import { isWiederholungssignal } from '../lib/signals';
+  import { isWiederholungssignal, extractSignalBase } from '../lib/signals';
   import SignalCell from './SignalCell.svelte';
 
   let {
@@ -30,12 +30,16 @@
   }
 
   function handleSignalChange() {
-    // Handle Wiederholungssignal: clear signal_2 and alts
     if (isWiederholungssignal(eintrag.signal_1)) {
       eintrag.signal_2 = '';
       delete eintrag.signal_1b;
       delete eintrag.signal_2b;
       eintrag.bahnhof = undefined;
+    }
+    // Block chain: clear Block-Vorsignal from signal_2 when signal_1 is no longer Blocksignal
+    const base = extractSignalBase(eintrag.signal_1) || '';
+    if (!base.startsWith('Blocksignal') && extractSignalBase(eintrag.signal_2 || '') === 'Block-Vorsignal zu') {
+      eintrag.signal_2 = '';
     }
     onchange();
   }

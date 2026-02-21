@@ -102,6 +102,15 @@
     bahnhof = (e.target as HTMLInputElement).value;
     onchange();
   }
+
+  function handleBahnhofFocus() {
+    if (bahnhof) return;
+    const nameVal = extractName(value ?? '').trim();
+    if (nameVal) {
+      bahnhof = nameVal;
+      onchange();
+    }
+  }
 </script>
 
 <div class="signal-cell" class:has-name={needsName && !disabled} class:has-bahnhof={needsBahnhof && !disabled} class:disabled>
@@ -152,6 +161,7 @@
         class="bahnhof-input"
         value={bahnhof || ''}
         oninput={handleBahnhofInput}
+        onfocus={handleBahnhofFocus}
         placeholder="Kurzname"
         autocomplete="off"
         autocorrect="off"

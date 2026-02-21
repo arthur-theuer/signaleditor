@@ -36,6 +36,27 @@
     }
     onchange();
   }
+
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      let val = eintrag.km;
+      if (val === undefined) {
+        val = prevEintrag?.km !== undefined ? prevEintrag.km + 0.1 : 0;
+      }
+      if (e.key === 'ArrowUp') {
+        val = val + 0.1;
+      } else {
+        val = Math.max(0, val - 0.1);
+      }
+      eintrag.km = parseFloat(val.toFixed(1));
+      onchange();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      eintrag.km = undefined;
+      onchange();
+    }
+  }
 </script>
 
 <div class="km-cell" class:visible={showKm}>
@@ -46,6 +67,7 @@
       class="km-input"
       value={kmVal}
       oninput={handleInput}
+      onkeydown={handleKeydown}
       placeholder={prevKm}
     />
     <div class="km-preview prev">{prevKmDisplay}</div>
