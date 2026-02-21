@@ -6,7 +6,7 @@ import {
   isAbzweigungseintrag,
   isImporteintrag,
 } from './types';
-import { KNOTEN, MELDUNG_FARBEN, BAHNHOF_FARBEN } from './constants';
+import { STATIONEN, MELDUNG_FARBEN, BAHNHOF_FARBEN } from './constants';
 import { meldungAusSignaleintrag } from './signals';
 import { resolveSignaleForMeldungen } from './sources';
 
@@ -64,7 +64,7 @@ export function generiereAlleMeldungenSync(signale: Eintrag[]): MeldungRow[] {
     }
 
     if (isKnoteneintrag(sig)) {
-      const resolved = KNOTEN[sig.knoten];
+      const resolved = STATIONEN[sig.knoten];
       const name = resolved ? `${resolved} (${sig.knoten})` : sig.knoten;
       meldungen.push({
         id: sig.id, km: sig.km, knoten: name,

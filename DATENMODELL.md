@@ -59,7 +59,7 @@ type Streckenmeta = {
 - **ID**: `${linie}_${von}_${nach}` → `s9_US_ZUE`
 - **Dateiname**: `strecken/s9_US_ZUE.yaml`
 - **`name`**: Wird aus `KNOTEN[von]`, `via`-Stationen und `KNOTEN[nach]` abgeleitet. Vom Benutzer überschreibbar.
-- **`via`**: Wird aus Knoten-Einträgen in den Signalen autogeneriert. Vom Benutzer überschreibbar.
+- **`via`**: Vom Benutzer eingetragen (Zwischenstationen der Route).
 - **`streckenvideos`**: Nicht gespeichert. Wird zur Laufzeit aus `Importeintrag.import.datei`-Werten abgeleitet.
 
 ## Validierung

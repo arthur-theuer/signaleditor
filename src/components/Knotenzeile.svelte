@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Knoteneintrag } from '../lib/types';
-  import { KNOTEN } from '../lib/constants';
+  import { STATIONEN } from '../lib/constants';
 
   let {
     eintrag = $bindable(),
@@ -10,7 +10,7 @@
     onchange: () => void;
   } = $props();
 
-  let preview = $derived(KNOTEN[eintrag.knoten.toUpperCase()] || '');
+  let preview = $derived(STATIONEN[eintrag.knoten.toUpperCase()] || '');
 
 
 </script>

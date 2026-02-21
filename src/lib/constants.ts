@@ -77,23 +77,4 @@ export const MELDUNG_FARBEN: Record<string, string> = {
 
 export const BAHNHOF_FARBEN = ['#008000', '#FFA500'] as const;
 
-export const KNOTEN: Record<string, string> = {
-  'AG': 'Arth-Goldau',
-  'AO': 'Aarburg-Oftringen',
-  'BN': 'Bern',
-  'DK': 'Dietikon',
-  'EB': 'Emmenbrücke',
-  'LB': 'Lenzburg',
-  'LZ': 'Luzern',
-  'OL': 'Olten',
-  'OT': 'Othmarsingen',
-  'PF': 'Pfäffikon SZ',
-  'RK': 'Rotkreuz',
-  'RP': 'Rapperswil',
-  'RTR': 'Rothrist',
-  'STB': 'Stettbach',
-  'SU': 'Sursee',
-  'ZF': 'Zofingen',
-  'ZG': 'Zug',
-  'ZUE': 'Zürich HB',
-};
+export { STATIONEN } from './stationen';

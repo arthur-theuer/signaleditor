@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Importeintrag, Eintrag } from '../lib/types';
   import { isSignaleintrag, isAbzweigungseintrag, isNotizeintrag, isKnoteneintrag } from '../lib/types';
-  import { KNOTEN } from '../lib/constants';
+  import { STATIONEN } from '../lib/constants';
   import { resolveImport, cacheImport } from '../lib/sources';
   import { parseYAMLContent, extractYAMLFromHTML } from '../lib/yaml';
 
@@ -20,10 +20,10 @@
   let fileInput: HTMLInputElement;
 
   let vonInfo = $derived(
-    eintrag.import.von ? `von: ${eintrag.import.von} (${KNOTEN[eintrag.import.von] || '?'})` : ''
+    eintrag.import.von ? `von: ${eintrag.import.von} (${STATIONEN[eintrag.import.von] || '?'})` : ''
   );
   let bisInfo = $derived(
-    eintrag.import.bis ? `bis: ${eintrag.import.bis} (${KNOTEN[eintrag.import.bis] || '?'})` : ''
+    eintrag.import.bis ? `bis: ${eintrag.import.bis} (${STATIONEN[eintrag.import.bis] || '?'})` : ''
   );
   let stitchInfo = $derived([vonInfo, bisInfo].filter(Boolean).join(' | '));
 
@@ -128,7 +128,7 @@
           {:else if isNotizeintrag(s)}
             <div class="import-resolved-row notiz">{s.notiz || 'Notiz'}</div>
           {:else if isKnoteneintrag(s)}
-            <div class="import-resolved-row knoten">{s.knoten}{KNOTEN[s.knoten] ? ` (${KNOTEN[s.knoten]})` : ''}</div>
+            <div class="import-resolved-row knoten">{s.knoten}{STATIONEN[s.knoten] ? ` (${STATIONEN[s.knoten]})` : ''}</div>
           {:else if isSignaleintrag(s)}
             <div class="import-resolved-row">{[s.signal_1, s.signal_2].filter(Boolean).join(' | ') || '(leer)'}</div>
           {/if}
