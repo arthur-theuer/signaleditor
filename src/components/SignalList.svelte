@@ -286,7 +286,6 @@
     />
     <div
       class="signal-row"
-      class:dragging={dragIdx === idx}
       class:drag-ready={dragHandle === idx}
       data-row-index={idx}
       draggable={dragHandle === idx}
@@ -372,7 +371,7 @@
   }
   .signal-id:active { cursor: grabbing; }
   .signal-list-inner { position: relative; }
-  .signal-row.dragging { opacity: 0.4; }
+
   .signal-row.drag-ready :global(.signal-actions) { visibility: hidden; }
   .drop-indicator {
     position: absolute;
