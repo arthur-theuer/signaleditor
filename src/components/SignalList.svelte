@@ -29,12 +29,12 @@
   let dragIdx: number | null = $state(null);
   let dragOverIdx: number | null = $state(null);
   let dragOverHalf: 'top' | 'bottom' | null = $state(null);
+  let dragHandle: number | null = $state(null);
 
   function handleDragStart(e: DragEvent, idx: number) {
-    if (!(e.target as HTMLElement).classList.contains('signal-id')) return;
     e.dataTransfer!.effectAllowed = 'move';
     e.dataTransfer!.setData('text/plain', String(idx));
-    // Delay so the drag ghost image captures the row before it fades
+    // Delay so the drag ghost captures the row before it fades
     requestAnimationFrame(() => { dragIdx = idx; });
   }
 
@@ -87,6 +87,7 @@
     dragIdx = null;
     dragOverIdx = null;
     dragOverHalf = null;
+    dragHandle = null;
   }
 
   // Focusable field selector matching the original
@@ -272,6 +273,9 @@
       class:drag-over-top={dragOverIdx === idx && dragOverHalf === 'top'}
       class:drag-over-bottom={dragOverIdx === idx && dragOverHalf === 'bottom'}
       data-row-index={idx}
+      draggable={dragHandle === idx}
+      ondragstart={(e: DragEvent) => handleDragStart(e, idx)}
+      ondragend={handleDragEnd}
       ondragover={(e: DragEvent) => handleDragOver(e, idx)}
       ondragleave={(e: DragEvent) => handleDragLeave(e, idx)}
       ondrop={handleDrop}
@@ -279,9 +283,8 @@
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <div
         class="signal-id"
-        draggable="true"
-        ondragstart={(e: DragEvent) => handleDragStart(e, idx)}
-        ondragend={handleDragEnd}
+        onmousedown={() => dragHandle = idx}
+        onmouseup={() => dragHandle = null}
       >{idx}</div>
 
       <KmCell
@@ -349,7 +352,19 @@
     cursor: grab;
   }
   .signal-id:active { cursor: grabbing; }
+  .signal-row { position: relative; }
   .signal-row.dragging { opacity: 0.4; }
-  .signal-row.drag-over-top { box-shadow: inset 0 3px 0 0 var(--color-focus); }
-  .signal-row.drag-over-bottom { box-shadow: inset 0 -3px 0 0 var(--color-focus); }
+  .signal-row.drag-over-top::before,
+  .signal-row.drag-over-bottom::after {
+    content: '';
+    position: absolute;
+    left: var(--card-gap);
+    right: var(--card-gap);
+    height: 2px;
+    background: var(--color-focus);
+    border-radius: 1px;
+    z-index: 5;
+  }
+  .signal-row.drag-over-top::before { top: calc(var(--half-gap) * -1); }
+  .signal-row.drag-over-bottom::after { bottom: calc(var(--half-gap) * -1); }
 </style>
