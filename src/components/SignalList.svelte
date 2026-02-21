@@ -27,8 +27,7 @@
 
   // Drag-and-drop state
   let dragIdx: number | null = $state(null);
-  let dragOverIdx: number | null = $state(null);
-  let dragOverHalf: 'top' | 'bottom' | null = $state(null);
+  let dropIndicatorIdx: number | null = $state(null); // row showing ::after indicator; drop inserts after this row
   let dragHandle: number | null = $state(null);
 
   function handleDragStart(e: DragEvent, idx: number) {
@@ -39,8 +38,7 @@
 
   function handleDragOver(e: DragEvent, idx: number) {
     if (dragIdx === null || dragIdx === idx) {
-      dragOverIdx = null;
-      dragOverHalf = null;
+      dropIndicatorIdx = null;
       return;
     }
     e.preventDefault();
@@ -49,24 +47,24 @@
     if (!row) return;
     const rect = row.getBoundingClientRect();
     const midY = rect.top + rect.height / 2;
-    dragOverIdx = idx;
-    dragOverHalf = e.clientY < midY ? 'top' : 'bottom';
+    // Top half of row N → indicator on row N-1 (insert before N)
+    // Bottom half of row N → indicator on row N (insert after N)
+    dropIndicatorIdx = e.clientY < midY ? idx - 1 : idx;
   }
 
   function handleDragLeave(e: DragEvent, idx: number) {
     const row = getRowEl(idx);
     if (row && !row.contains(e.relatedTarget as Node)) {
-      if (dragOverIdx === idx) {
-        dragOverIdx = null;
-        dragOverHalf = null;
+      if (dropIndicatorIdx === idx || dropIndicatorIdx === idx - 1) {
+        dropIndicatorIdx = null;
       }
     }
   }
 
   function handleDrop(e: DragEvent) {
     e.preventDefault();
-    if (dragIdx === null || dragOverIdx === null || dragOverHalf === null) return;
-    let targetIdx = dragOverHalf === 'bottom' ? dragOverIdx + 1 : dragOverIdx;
+    if (dragIdx === null || dropIndicatorIdx === null) return;
+    let targetIdx = dropIndicatorIdx + 1;
     if (targetIdx > dragIdx) targetIdx--;
     if (targetIdx === dragIdx) { resetDrag(); return; }
     const [moved] = signale.splice(dragIdx, 1);
@@ -83,8 +81,7 @@
 
   function resetDrag() {
     dragIdx = null;
-    dragOverIdx = null;
-    dragOverHalf = null;
+    dropIndicatorIdx = null;
     dragHandle = null;
   }
 
@@ -269,8 +266,7 @@
       class="signal-row"
       class:dragging={dragIdx === idx}
       class:drag-ready={dragHandle === idx}
-      class:drag-over-top={dragOverIdx === idx && dragOverHalf === 'top'}
-      class:drag-over-bottom={dragOverIdx === idx && dragOverHalf === 'bottom'}
+      class:drop-indicator={dropIndicatorIdx === idx}
       data-row-index={idx}
       draggable={dragHandle === idx}
       ondragstart={(e: DragEvent) => handleDragStart(e, idx)}
@@ -354,17 +350,15 @@
   .signal-row { position: relative; }
   .signal-row.dragging { opacity: 0.4; }
   .signal-row.drag-ready :global(.signal-actions) { visibility: hidden; }
-  .signal-row.drag-over-top::before,
-  .signal-row.drag-over-bottom::after {
+  .signal-row.drop-indicator::after {
     content: '';
     position: absolute;
     left: var(--card-gap);
     right: var(--card-gap);
+    bottom: calc(var(--half-gap) * -1);
     height: 0;
     box-shadow: 0 0 0 1px var(--color-focus);
     border-radius: 1px;
     z-index: 5;
   }
-  .signal-row.drag-over-top::before { top: calc(var(--half-gap) * -1); }
-  .signal-row.drag-over-bottom::after { bottom: calc(var(--half-gap) * -1); }
 </style>
