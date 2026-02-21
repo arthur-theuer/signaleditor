@@ -49,7 +49,7 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 29 | Backspace removes last type-ahead character | ✅ | |
 | 30 | Escape clears signal value | ✅ | |
 | 31 | Prev/next signal previews on focus | ✅ | |
-| 32 | Previews hidden when field empty | ✅ | |
+| 32 | Previews show first/last enum values when field empty | ✅ | |
 | 33 | Name sub-field for signals requiring name | ✅ | |
 | 34 | Bahnhof sub-field for Einfahr-Vorsignal | ✅ | |
 | 35 | Bahnhof field yellow background | ✅ | |
@@ -124,7 +124,7 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 79 | Redo stack cleared on new edit | ✅ | |
 | 80 | Duplicate state detection | ✅ | |
 | 81 | Ctrl+Z / Ctrl+Y / Ctrl+Shift+Z | ✅ | |
-| 82 | Undo/redo button flash animation | ❌ | |
+| 82 | Undo/redo button flash animation | ✅ | |
 
 ## YAML
 
@@ -187,9 +187,9 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 |---|---------|--------|-------|
 | 118 | `.hl` hover overlay | ✅ | |
 | 119 | `.hl-wrap` focus-within overlay | ✅ | |
-| 120 | Focus-within separator borders on previews | ❌ | |
+| 120 | Focus-within separator borders on previews | ✅ | |
 | 121 | `.hl-primary` variant | ✅ | |
-| 122 | `.hl-flash` variant | ❌ | |
+| 122 | `.hl-flash` variant | ✅ | |
 | 123 | Click wrapper focuses input | ⚠️ | CSS-based, no explicit JS handler |
 
 ## File Operations
@@ -214,13 +214,10 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 ## Summary
 
 - **Total features**: 130
-- **Ported (✅)**: 124
+- **Ported (✅)**: 127
 - **Partial (⚠️)**: 2
-- **Missing (❌)**: 4
+- **Missing (❌)**: 1
 
 ### Remaining (cosmetic):
 
-- #82 Undo/redo flash animation
-- #120 Preview separator borders on focus
-- #123 Click wrapper explicit JS handler (CSS-based currently)
-- #130 Insert zone button labels
+- #130 Insert zone single-letter labels
