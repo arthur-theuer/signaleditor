@@ -31,9 +31,14 @@
   let indicatorY: number | null = $state(null); // px offset from listEl top
   let dragHandle: number | null = $state(null);
 
+  // 1x1 transparent image to suppress browser fly-back animation on cancel
+  const emptyImg = new Image();
+  emptyImg.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+
   function handleDragStart(e: DragEvent, idx: number) {
     e.dataTransfer!.effectAllowed = 'move';
     e.dataTransfer!.setData('text/plain', String(idx));
+    e.dataTransfer!.setDragImage(emptyImg, 0, 0);
     requestAnimationFrame(() => { dragIdx = idx; });
   }
 
