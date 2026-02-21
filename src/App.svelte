@@ -161,7 +161,7 @@
 </div>
 
 <style>
-  .main-content { display: flex; gap: 0; align-items: flex-start; }
+  .main-content { display: flex; gap: 0; align-items: stretch; }
   .signals-section { flex: 1; min-width: 0; }
   .signals-container {
     background: var(--color-bg);
@@ -179,5 +179,6 @@
     border: var(--card-border);
     border-radius: var(--container-radius);
     overflow: hidden;
+    min-height: 100%;
   }
 </style>

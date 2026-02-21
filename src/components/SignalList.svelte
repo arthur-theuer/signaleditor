@@ -25,6 +25,70 @@
   let listEl: HTMLDivElement;
   let scrollAnchor: HTMLDivElement;
 
+  // Drag-and-drop state
+  let dragIdx: number | null = $state(null);
+  let dragOverIdx: number | null = $state(null);
+  let dragOverHalf: 'top' | 'bottom' | null = $state(null);
+
+  function handleDragStart(e: DragEvent, idx: number) {
+    if (!(e.target as HTMLElement).classList.contains('signal-id')) return;
+    e.dataTransfer!.effectAllowed = 'move';
+    e.dataTransfer!.setData('text/plain', String(idx));
+    // Delay so the drag ghost image captures the row before it fades
+    requestAnimationFrame(() => { dragIdx = idx; });
+  }
+
+  function handleDragOver(e: DragEvent, idx: number) {
+    if (dragIdx === null || dragIdx === idx) {
+      dragOverIdx = null;
+      dragOverHalf = null;
+      return;
+    }
+    e.preventDefault();
+    e.dataTransfer!.dropEffect = 'move';
+    const row = getRowEl(idx);
+    if (!row) return;
+    const rect = row.getBoundingClientRect();
+    const midY = rect.top + rect.height / 2;
+    dragOverIdx = idx;
+    dragOverHalf = e.clientY < midY ? 'top' : 'bottom';
+  }
+
+  function handleDragLeave(e: DragEvent, idx: number) {
+    // Only clear if actually leaving this row (not entering a child)
+    const row = getRowEl(idx);
+    if (row && !row.contains(e.relatedTarget as Node)) {
+      if (dragOverIdx === idx) {
+        dragOverIdx = null;
+        dragOverHalf = null;
+      }
+    }
+  }
+
+  function handleDrop(e: DragEvent) {
+    e.preventDefault();
+    if (dragIdx === null || dragOverIdx === null || dragOverHalf === null) return;
+    let targetIdx = dragOverHalf === 'bottom' ? dragOverIdx + 1 : dragOverIdx;
+    if (targetIdx > dragIdx) targetIdx--; // adjust for removal
+    if (targetIdx === dragIdx) { resetDrag(); return; }
+    const [moved] = signale.splice(dragIdx, 1);
+    signale.splice(targetIdx, 0, moved);
+    signale = [...signale];
+    reindex();
+    onchange();
+    resetDrag();
+  }
+
+  function handleDragEnd() {
+    resetDrag();
+  }
+
+  function resetDrag() {
+    dragIdx = null;
+    dragOverIdx = null;
+    dragOverHalf = null;
+  }
+
   // Focusable field selector matching the original
   const FOCUSABLE_SELECTOR = [
     '.signal-input',
@@ -202,8 +266,25 @@
       onInsertKnoten={() => insertAt(idx, makeKnoten(idx))}
       onInsertQuelle={() => insertAt(idx, makeQuelle(idx))}
     />
-    <div class="signal-row" class:first={idx === 0} class:last={idx === signale.length - 1} data-row-index={idx}>
-      <div class="signal-id">{idx}</div>
+    <div
+      class="signal-row"
+      class:first={idx === 0}
+      class:last={idx === signale.length - 1}
+      class:dragging={dragIdx === idx}
+      class:drag-over-top={dragOverIdx === idx && dragOverHalf === 'top'}
+      class:drag-over-bottom={dragOverIdx === idx && dragOverHalf === 'bottom'}
+      data-row-index={idx}
+      ondragover={(e: DragEvent) => handleDragOver(e, idx)}
+      ondragleave={(e: DragEvent) => handleDragLeave(e, idx)}
+      ondrop={handleDrop}
+    >
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
+      <div
+        class="signal-id"
+        draggable="true"
+        ondragstart={(e: DragEvent) => handleDragStart(e, idx)}
+        ondragend={handleDragEnd}
+      >{idx}</div>
 
       <KmCell
         bind:eintrag={signale[idx]}
@@ -268,5 +349,11 @@
     background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--card-radius);
+    user-select: none;
+    cursor: grab;
   }
+  .signal-id:active { cursor: grabbing; }
+  .signal-row.dragging { opacity: 0.4; }
+  .signal-row.drag-over-top { box-shadow: inset 0 3px 0 0 var(--color-focus); }
+  .signal-row.drag-over-bottom { box-shadow: inset 0 -3px 0 0 var(--color-focus); }
 </style>
