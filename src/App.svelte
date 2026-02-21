@@ -19,7 +19,6 @@
   });
 
   let dirty = $state(false);
-  let metaSectionHeight = $state(0);
   let showKm = $state(false);
   let showYaml = $state(false);
   let showMeldungen = $state(false);
@@ -135,12 +134,10 @@
   onExportMeldungen={handleExportMeldungen}
 />
 
+<MetaFields bind:strecke={data.strecke} onchange={markDirty} />
+
 <div class="main-content">
   <div class="signals-section">
-    <div bind:clientHeight={metaSectionHeight}>
-      <MetaFields bind:strecke={data.strecke} onchange={markDirty} />
-    </div>
-
     <div class="signals-container">
       <div class="section-header">Signale</div>
       <div class="signals-list">
@@ -154,8 +151,7 @@
   </div>
 
   {#if showMeldungen}
-    <div class="meldungen-section visible">
-      <div class="meldungen-spacer" style="height: {metaSectionHeight}px;"></div>
+    <div class="meldungen-section">
       <div class="meldungen-panel">
         <div class="section-header">Meldungen</div>
         <MeldungenPanel signale={data.signale} />
@@ -173,7 +169,6 @@
     border-radius: var(--container-radius);
     overflow: hidden;
   }
-  .signals-list:empty + :global(.add-bar) { margin-top: var(--card-gap); }
   .meldungen-section {
     width: 280px;
     flex-shrink: 0;
