@@ -15,6 +15,7 @@
 
   import Codepanel from './components/Codepanel.svelte';
   import Meldungspanel from './components/Meldungspanel.svelte';
+  import Dateibrowser from './components/Dateibrowser.svelte';
 
   let data: Editordaten = $state(emptyVideodaten());
 
@@ -26,6 +27,7 @@
   let showMeldungen = $state(false);
   let currentFileName = $state<string | null>(null);
   let saving = $state(false);
+  let showDateien = $state(false);
 
   function newFile(typ: Dateityp) {
     if (dirty && !confirm('Ungespeicherte Änderungen verwerfen?')) return;
@@ -141,6 +143,18 @@
     }
   }
 
+  function handleCloudLoad(content: string, fileName: string, typ: 'videos' | 'strecken') {
+    if (dirty && !confirm('Ungespeicherte Änderungen verwerfen?')) return;
+    data = parseYAMLContent(content);
+    currentFileName = fileName;
+    dirty = false;
+    history.clear();
+    showDateien = false;
+    if (data.signale.some(s => s.km !== undefined)) {
+      showKm = true;
+    }
+  }
+
   function handleExportMeldungen() {
     const yamlContent = generateYAML(data);
     downloadMeldungenHTML(data, yamlContent);
@@ -213,10 +227,16 @@
   onLogin={handleLogin}
   onLogout={handleLogout}
   onSave={handleSave}
+  onToggleDateien={() => showDateien = !showDateien}
+  {showDateien}
   {saving}
   {dirty}
   {currentFileName}
 />
+
+{#if showDateien}
+  <Dateibrowser onload={handleCloudLoad} onclose={() => showDateien = false} />
+{/if}
 
 <Metafelder bind:data={data} onchange={markDirty} />
 

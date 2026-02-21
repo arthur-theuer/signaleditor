@@ -17,6 +17,8 @@
     onLogin,
     onLogout,
     onSave,
+    onToggleDateien,
+    showDateien,
     saving,
     dirty,
     currentFileName,
@@ -38,6 +40,8 @@
     onLogin: () => void;
     onLogout: () => void;
     onSave: () => void;
+    onToggleDateien: () => void;
+    showDateien: boolean;
     saving: boolean;
     dirty: boolean;
     currentFileName: string | null;
@@ -77,6 +81,12 @@
         Speichern
       {/if}
     </button>
+    <button
+      class="dateien-btn hl"
+      class:active={showDateien}
+      onclick={onToggleDateien}
+      title="Dateien"
+    >Dateien</button>
   {/if}
 
   <button
@@ -209,6 +219,11 @@
   .save-btn:disabled {
     opacity: 0.4;
     cursor: default;
+  }
+  .dateien-btn.active {
+    background: var(--color-focus);
+    color: white;
+    border-color: var(--color-focus-hover);
   }
   .file-indicator {
     display: flex;

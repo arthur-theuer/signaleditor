@@ -155,7 +155,6 @@
   }
   .meta-field-id {
     min-width: 0;
-    flex: 0 1 auto;
   }
   .id-preview {
     display: flex;
