@@ -27,7 +27,8 @@
 
   // Drag-and-drop state
   let dragIdx: number | null = $state(null);
-  let dropIndicatorIdx: number | null = $state(null); // row showing ::after indicator; drop inserts after this row
+  let dropTargetIdx: number | null = $state(null); // insertion index (drop before this row)
+  let indicatorY: number | null = $state(null); // px offset from listEl top
   let dragHandle: number | null = $state(null);
 
   function handleDragStart(e: DragEvent, idx: number) {
@@ -38,33 +39,40 @@
 
   function handleDragOver(e: DragEvent, idx: number) {
     if (dragIdx === null || dragIdx === idx) {
-      dropIndicatorIdx = null;
+      dropTargetIdx = null;
+      indicatorY = null;
       return;
     }
     e.preventDefault();
     e.dataTransfer!.dropEffect = 'move';
     const row = getRowEl(idx);
-    if (!row) return;
-    const rect = row.getBoundingClientRect();
-    const midY = rect.top + rect.height / 2;
-    // Top half of row N → indicator on row N-1 (insert before N)
-    // Bottom half of row N → indicator on row N (insert after N)
-    dropIndicatorIdx = e.clientY < midY ? idx - 1 : idx;
+    if (!row || !listEl) return;
+    const rowRect = row.getBoundingClientRect();
+    const listRect = listEl.getBoundingClientRect();
+    const midY = rowRect.top + rowRect.height / 2;
+    if (e.clientY < midY) {
+      // Insert before this row — line at top edge of row
+      dropTargetIdx = idx;
+      indicatorY = rowRect.top - listRect.top;
+    } else {
+      // Insert after this row — line at bottom edge of row
+      dropTargetIdx = idx + 1;
+      indicatorY = rowRect.bottom - listRect.top;
+    }
   }
 
   function handleDragLeave(e: DragEvent, idx: number) {
     const row = getRowEl(idx);
     if (row && !row.contains(e.relatedTarget as Node)) {
-      if (dropIndicatorIdx === idx || dropIndicatorIdx === idx - 1) {
-        dropIndicatorIdx = null;
-      }
+      dropTargetIdx = null;
+      indicatorY = null;
     }
   }
 
   function handleDrop(e: DragEvent) {
     e.preventDefault();
-    if (dragIdx === null || dropIndicatorIdx === null) return;
-    let targetIdx = dropIndicatorIdx + 1;
+    if (dragIdx === null || dropTargetIdx === null) return;
+    let targetIdx = dropTargetIdx;
     if (targetIdx > dragIdx) targetIdx--;
     if (targetIdx === dragIdx) { resetDrag(); return; }
     const [moved] = signale.splice(dragIdx, 1);
@@ -81,7 +89,8 @@
 
   function resetDrag() {
     dragIdx = null;
-    dropIndicatorIdx = null;
+    dropTargetIdx = null;
+    indicatorY = null;
     dragHandle = null;
   }
 
@@ -253,7 +262,7 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div bind:this={listEl} onkeydown={handleKeydown}>
+<div bind:this={listEl} onkeydown={handleKeydown} class="signal-list-inner">
   {#each signale as eintrag, idx (eintrag.id)}
     <InsertZone
       onInsertSignal={() => insertSignalAt(idx)}
@@ -266,7 +275,6 @@
       class="signal-row"
       class:dragging={dragIdx === idx}
       class:drag-ready={dragHandle === idx}
-      class:drop-indicator={dropIndicatorIdx === idx}
       data-row-index={idx}
       draggable={dragHandle === idx}
       ondragstart={(e: DragEvent) => handleDragStart(e, idx)}
@@ -313,6 +321,9 @@
     </div>
   {/each}
   <div bind:this={scrollAnchor} style="height: 0;"></div>
+  {#if indicatorY !== null}
+    <div class="drop-indicator" style="top: {indicatorY}px;"></div>
+  {/if}
 </div>
 <AddBar
   onAddSignal={addSignalWithAutofill}
@@ -347,18 +358,17 @@
     cursor: grab;
   }
   .signal-id:active { cursor: grabbing; }
-  .signal-row { position: relative; }
+  .signal-list-inner { position: relative; }
   .signal-row.dragging { opacity: 0.4; }
   .signal-row.drag-ready :global(.signal-actions) { visibility: hidden; }
-  .signal-row.drop-indicator::after {
-    content: '';
+  .drop-indicator {
     position: absolute;
     left: var(--card-gap);
     right: var(--card-gap);
-    bottom: calc(var(--half-gap) * -1);
     height: 0;
     box-shadow: 0 0 0 1px var(--color-focus);
     border-radius: 1px;
     z-index: 5;
+    pointer-events: none;
   }
 </style>
