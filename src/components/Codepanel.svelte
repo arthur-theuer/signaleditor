@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Editordaten } from '../lib/types';
   import { generateYAML } from '../lib/yaml';
+  import { dateiId } from '../lib/types';
 
   let { data, onexport }: { data: Editordaten; onexport?: () => void } = $props();
 
@@ -18,7 +19,7 @@
     const blob = new Blob([yamlText], { type: 'text/yaml' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `${data.strecke.id || 'strecke'}.yaml`;
+    a.download = `${dateiId(data) || 'signale'}.yaml`;
     a.click();
     URL.revokeObjectURL(a.href);
     onexport?.();

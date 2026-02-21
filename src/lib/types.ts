@@ -73,14 +73,68 @@ export function isImporteintrag(e: Eintrag): e is Importeintrag {
   return 'import' in e;
 }
 
-export type Strecke = {
-  id: string;
+export type Dateityp = 'video' | 'strecke';
+
+export type Videometa = {
+  streckennummer: string;
+  von: string;
+  nach: string;
   name: string;
-  linie: string;
-  streckenvideos: string[];
+  video: string;
 };
 
-export type Editordaten = {
-  strecke: Strecke;
+export type Streckenmeta = {
+  linie: string;
+  von: string;
+  nach: string;
+  via: string;
+  name: string;
+};
+
+export type Videodaten = {
+  typ: 'video';
+  meta: Videometa;
   signale: Eintrag[];
 };
+
+export type Streckendaten = {
+  typ: 'strecke';
+  meta: Streckenmeta;
+  signale: Eintrag[];
+};
+
+export type Editordaten = Videodaten | Streckendaten;
+
+export function isVideodaten(d: Editordaten): d is Videodaten {
+  return d.typ === 'video';
+}
+
+export function isStreckendaten(d: Editordaten): d is Streckendaten {
+  return d.typ === 'strecke';
+}
+
+/** Derive the file ID from metadata */
+export function dateiId(data: Editordaten): string {
+  if (isVideodaten(data)) {
+    const { streckennummer, von, nach } = data.meta;
+    return [streckennummer, von, nach].filter(Boolean).join('_');
+  }
+  const { linie, von, nach } = data.meta;
+  return [linie, von, nach].filter(Boolean).join('_');
+}
+
+export function emptyVideodaten(): Videodaten {
+  return {
+    typ: 'video',
+    meta: { streckennummer: '', von: '', nach: '', name: '', video: '' },
+    signale: [],
+  };
+}
+
+export function emptyStreckendaten(): Streckendaten {
+  return {
+    typ: 'strecke',
+    meta: { linie: '', von: '', nach: '', via: '', name: '' },
+    signale: [],
+  };
+}

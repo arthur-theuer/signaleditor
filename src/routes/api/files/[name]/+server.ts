@@ -3,19 +3,31 @@ import { list, put, del } from '@vercel/blob';
 import { verifyPin } from '$lib/server/auth';
 import type { RequestHandler } from './$types';
 
-/** Find the blob matching the given file name under signals/ */
-async function findBlob(name: string) {
-  const path = `signals/${name}`;
+type Dateityp = 'videos' | 'strecken';
+
+function getPrefix(url: URL): Dateityp | null {
+  const typ = url.searchParams.get('typ');
+  if (typ === 'videos' || typ === 'strecken') return typ;
+  return null;
+}
+
+async function findBlob(prefix: string, name: string) {
+  const path = `${prefix}/${name}`;
   const { blobs } = await list({ prefix: path });
   return blobs.find((b) => b.pathname === path) ?? null;
 }
 
-/** GET /api/files/:name — read file content */
-export const GET: RequestHandler = async ({ request, params }) => {
+/** GET /api/files/:name?typ=videos|strecken — read file content */
+export const GET: RequestHandler = async ({ request, params, url }) => {
   const denied = verifyPin(request);
   if (denied) return denied;
 
-  const blob = await findBlob(params.name);
+  const prefix = getPrefix(url);
+  if (!prefix) {
+    return json({ error: 'Missing or invalid typ parameter (videos|strecken)' }, { status: 400 });
+  }
+
+  const blob = await findBlob(prefix, params.name);
   if (!blob) {
     return json({ error: 'File not found' }, { status: 404 });
   }
@@ -23,40 +35,49 @@ export const GET: RequestHandler = async ({ request, params }) => {
   const response = await fetch(blob.url);
   const content = await response.text();
 
-  return json({ name: params.name, content });
+  return json({ name: params.name, typ: prefix, content });
 };
 
-/** PUT /api/files/:name — update file content */
-export const PUT: RequestHandler = async ({ request, params }) => {
+/** PUT /api/files/:name?typ=videos|strecken — update file content */
+export const PUT: RequestHandler = async ({ request, params, url }) => {
   const denied = verifyPin(request);
   if (denied) return denied;
+
+  const prefix = getPrefix(url);
+  if (!prefix) {
+    return json({ error: 'Missing or invalid typ parameter (videos|strecken)' }, { status: 400 });
+  }
 
   const { content } = await request.json();
   if (typeof content !== 'string') {
     return json({ error: 'Missing file content' }, { status: 400 });
   }
 
-  // Delete old blob if it exists (Vercel Blob is immutable, so overwrite = delete + put)
-  const existing = await findBlob(params.name);
+  const existing = await findBlob(prefix, params.name);
   if (existing) {
     await del(existing.url);
   }
 
-  const path = `signals/${params.name}`;
+  const path = `${prefix}/${params.name}`;
   const blob = await put(path, content, {
     access: 'public',
     contentType: 'text/yaml',
   });
 
-  return json({ name: params.name, url: blob.url });
+  return json({ name: params.name, typ: prefix, url: blob.url });
 };
 
-/** DELETE /api/files/:name — delete file */
-export const DELETE: RequestHandler = async ({ request, params }) => {
+/** DELETE /api/files/:name?typ=videos|strecken — delete file */
+export const DELETE: RequestHandler = async ({ request, params, url }) => {
   const denied = verifyPin(request);
   if (denied) return denied;
 
-  const blob = await findBlob(params.name);
+  const prefix = getPrefix(url);
+  if (!prefix) {
+    return json({ error: 'Missing or invalid typ parameter (videos|strecken)' }, { status: 400 });
+  }
+
+  const blob = await findBlob(prefix, params.name);
   if (!blob) {
     return json({ error: 'File not found' }, { status: 404 });
   }

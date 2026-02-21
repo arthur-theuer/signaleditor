@@ -3,15 +3,29 @@ import { list, put } from '@vercel/blob';
 import { verifyPin } from '$lib/server/auth';
 import type { RequestHandler } from './$types';
 
-/** GET /api/files — list all stored YAML files */
-export const GET: RequestHandler = async ({ request }) => {
+type Dateityp = 'videos' | 'strecken';
+
+function getPrefix(url: URL): Dateityp | null {
+  const typ = url.searchParams.get('typ');
+  if (typ === 'videos' || typ === 'strecken') return typ;
+  return null;
+}
+
+/** GET /api/files?typ=videos|strecken — list stored YAML files */
+export const GET: RequestHandler = async ({ request, url }) => {
   const denied = verifyPin(request);
   if (denied) return denied;
 
-  const { blobs } = await list({ prefix: 'signals/' });
+  const prefix = getPrefix(url);
+  if (!prefix) {
+    return json({ error: 'Missing or invalid typ parameter (videos|strecken)' }, { status: 400 });
+  }
+
+  const { blobs } = await list({ prefix: `${prefix}/` });
 
   const files = blobs.map((b) => ({
-    name: b.pathname.replace(/^signals\//, ''),
+    name: b.pathname.replace(new RegExp(`^${prefix}/`), ''),
+    typ: prefix,
     url: b.url,
     size: b.size,
     uploadedAt: b.uploadedAt,
@@ -20,10 +34,15 @@ export const GET: RequestHandler = async ({ request }) => {
   return json(files);
 };
 
-/** POST /api/files — create a new YAML file */
-export const POST: RequestHandler = async ({ request }) => {
+/** POST /api/files?typ=videos|strecken — create a new YAML file */
+export const POST: RequestHandler = async ({ request, url }) => {
   const denied = verifyPin(request);
   if (denied) return denied;
+
+  const prefix = getPrefix(url);
+  if (!prefix) {
+    return json({ error: 'Missing or invalid typ parameter (videos|strecken)' }, { status: 400 });
+  }
 
   const { name, content } = await request.json();
 
@@ -34,11 +53,9 @@ export const POST: RequestHandler = async ({ request }) => {
     return json({ error: 'Missing file content' }, { status: 400 });
   }
 
-  // Sanitize: only allow alphanumeric, dash, underscore, dot
   const safeName = name.replace(/[^a-zA-Z0-9._-]/g, '_');
-  const path = `signals/${safeName}`;
+  const path = `${prefix}/${safeName}`;
 
-  // Check if file already exists
   const { blobs } = await list({ prefix: path });
   const exists = blobs.some((b) => b.pathname === path);
   if (exists) {
@@ -50,5 +67,5 @@ export const POST: RequestHandler = async ({ request }) => {
     contentType: 'text/yaml',
   });
 
-  return json({ name: safeName, url: blob.url }, { status: 201 });
+  return json({ name: safeName, typ: prefix, url: blob.url }, { status: 201 });
 };

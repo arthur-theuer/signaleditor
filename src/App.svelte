@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { Editordaten } from './lib/types';
+  import type { Editordaten, Dateityp } from './lib/types';
+  import { emptyVideodaten, emptyStreckendaten, isImporteintrag } from './lib/types';
   import { parseYAMLContent, extractYAMLFromHTML } from './lib/yaml';
   import { History } from './lib/history.svelte';
-  import { isImporteintrag } from './lib/types';
   import { autoStitchImporte } from './lib/sources';
   import { generateYAML } from './lib/yaml';
   import { downloadMeldungenHTML } from './lib/reports';
@@ -13,10 +13,7 @@
   import Codepanel from './components/Codepanel.svelte';
   import Meldungspanel from './components/Meldungspanel.svelte';
 
-  let data: Editordaten = $state({
-    strecke: { id: '', name: '', linie: '', streckenvideos: [] },
-    signale: [],
-  });
+  let data: Editordaten = $state(emptyVideodaten());
 
   const history = new History();
 
@@ -25,12 +22,9 @@
   let showYaml = $state(false);
   let showMeldungen = $state(false);
 
-  function newFile() {
+  function newFile(typ: Dateityp) {
     if (dirty && !confirm('Ungespeicherte Änderungen verwerfen?')) return;
-    data = {
-      strecke: { id: '', name: '', linie: '', streckenvideos: [] },
-      signale: [],
-    };
+    data = typ === 'video' ? emptyVideodaten() : emptyStreckendaten();
     dirty = false;
     history.clear();
   }
@@ -155,7 +149,7 @@
   onExportMeldungen={handleExportMeldungen}
 />
 
-<Metafelder bind:strecke={data.strecke} onchange={markDirty} />
+<Metafelder bind:data={data} onchange={markDirty} />
 
 <div class="main-content">
   <div class="signals-container">

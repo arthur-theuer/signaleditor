@@ -22,7 +22,7 @@
     onToggleKm: () => void;
     onToggleYaml: () => void;
     onToggleMeldungen: () => void;
-    onNew: () => void;
+    onNew: (typ: 'video' | 'strecke') => void;
     onFileLoad: (event: Event) => void;
     onUndo: () => void;
     onRedo: () => void;
@@ -45,8 +45,9 @@
     bind:this={fileInput}
     onchange={onFileLoad}
   />
-  <button class="hl" onclick={onNew}>Neue Signaldatei</button>
-  <button class="hl" onclick={() => fileInput.click()}>Signaldatei laden</button>
+  <button class="hl" onclick={() => onNew('video')}>Neues Video</button>
+  <button class="hl" onclick={() => onNew('strecke')}>Neue Strecke</button>
+  <button class="hl" onclick={() => fileInput.click()}>Datei laden</button>
   <button class="primary-btn hl hl-primary" onclick={onExportMeldungen}>Meldungen exportieren</button>
 
   <div style="flex: 1;"></div>

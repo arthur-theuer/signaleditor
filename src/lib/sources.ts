@@ -1,4 +1,4 @@
-import type { Eintrag, Import, Strecke, Editordaten } from './types';
+import type { Eintrag, Import, Editordaten } from './types';
 import { isImporteintrag, isKnoteneintrag } from './types';
 import { parseYAMLContent, extractYAMLFromHTML } from './yaml';
 
@@ -6,7 +6,7 @@ const importCache: Record<string, Editordaten> = {};
 
 export type ResolveResult = {
   signale: Eintrag[];
-  strecke?: Strecke;
+  meta?: Editordaten['meta'];
   error: string | null;
 };
 
@@ -48,7 +48,7 @@ export async function resolveImport(imp: Import): Promise<ResolveResult> {
       signale = signale.slice(0, idx + 1);
     }
 
-    return { signale, strecke: parsed.strecke, error: null };
+    return { signale, meta: parsed.meta, error: null };
   } catch (e) {
     return { error: (e as Error).message, signale: [] };
   }

@@ -1,4 +1,5 @@
 import type { Eintrag, Editordaten } from './types';
+import { dateiId } from './types';
 import {
   isSignaleintrag,
   isNotizeintrag,
@@ -136,7 +137,7 @@ export async function generiereAlleMeldungenResolved(signale: Eintrag[]): Promis
 
 export async function downloadMeldungenHTML(data: Editordaten, yamlContent: string): Promise<void> {
   const meldungen = await generiereAlleMeldungenResolved(data.signale);
-  const streckenName = data.strecke.name || data.strecke.id || 'Strecke';
+  const streckenName = data.meta.name || dateiId(data) || 'Strecke';
   const hasKm = meldungen.some(m => m.km !== undefined);
 
   function esc(text: string): string {
@@ -205,7 +206,7 @@ ${yamlContent}
   const blob = new Blob([html], { type: 'text/html' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `${data.strecke.id || 'meldungen'}.html`;
+  a.download = `${dateiId(data) || 'meldungen'}.html`;
   a.click();
   URL.revokeObjectURL(a.href);
 }
