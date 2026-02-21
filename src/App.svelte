@@ -7,11 +7,11 @@
   import { generateYAML } from './lib/yaml';
   import { downloadMeldungenHTML } from './lib/reports';
   import Toolbar from './components/Toolbar.svelte';
-  import MetaFields from './components/MetaFields.svelte';
-  import SignalList from './components/SignalList.svelte';
+  import Metafelder from './components/Metafelder.svelte';
+  import Signalpanel from './components/Signalpanel.svelte';
 
-  import YamlPanel from './components/YamlPanel.svelte';
-  import MeldungenPanel from './components/MeldungenPanel.svelte';
+  import Codepanel from './components/Codepanel.svelte';
+  import Meldungspanel from './components/Meldungspanel.svelte';
 
   let data: Editordaten = $state({
     strecke: { id: '', name: '', linie: '', streckenvideos: [] },
@@ -155,13 +155,13 @@
   onExportMeldungen={handleExportMeldungen}
 />
 
-<MetaFields bind:strecke={data.strecke} onchange={markDirty} />
+<Metafelder bind:strecke={data.strecke} onchange={markDirty} />
 
 <div class="main-content">
   <div class="signals-container">
     <div class="section-header">Signale</div>
     <div class="signals-list">
-      <SignalList bind:signale={data.signale} {showKm} onchange={markDirty} />
+      <Signalpanel bind:signale={data.signale} {showKm} onchange={markDirty} />
     </div>
   </div>
 
@@ -169,14 +169,14 @@
     <div class="meldungen-section">
       <div class="meldungen-panel">
         <div class="section-header">Meldungen</div>
-        <MeldungenPanel signale={data.signale} />
+        <Meldungspanel signale={data.signale} />
       </div>
     </div>
   {/if}
 </div>
 
 {#if showYaml}
-  <YamlPanel {data} onexport={() => dirty = false} />
+  <Codepanel {data} onexport={() => dirty = false} />
 {/if}
 
 <style>

@@ -3,15 +3,15 @@
   import type { Eintrag, Signaleintrag, Notizeintrag, Knoteneintrag, Abzweigungseintrag, Quelleneintrag } from '../lib/types';
   import { isSignaleintrag, isNotizeintrag, isKnoteneintrag, isAbzweigungseintrag, isQuelleneintrag } from '../lib/types';
   import { autofillRow, isRowEmpty } from '../lib/signals';
-  import SignalRow from './SignalRow.svelte';
-  import NoteRow from './NoteRow.svelte';
-  import KnotenRow from './KnotenRow.svelte';
-  import AbzweigungRow from './AbzweigungRow.svelte';
-  import QuelleRow from './QuelleRow.svelte';
-  import KmCell from './KmCell.svelte';
-  import RowActions from './RowActions.svelte';
-  import InsertZone from './InsertZone.svelte';
-  import AddBar from './AddBar.svelte';
+  import Signalzeile from './Signalzeile.svelte';
+  import Notizzeile from './Notizzeile.svelte';
+  import Knotenzeile from './Knotenzeile.svelte';
+  import Abzweigungszeile from './Abzweigungszeile.svelte';
+  import Quellenzeile from './Quellenzeile.svelte';
+  import Kilometerzelle from './Kilometerzelle.svelte';
+  import Zeilenaktionen from './Zeilenaktionen.svelte';
+  import Zwischenaktionen from './Zwischenaktionen.svelte';
+  import Plusleiste from './Plusleiste.svelte';
 
   let {
     signale = $bindable(),
@@ -276,7 +276,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div bind:this={listEl} onkeydown={handleKeydown} class="signal-list-inner">
   {#each signale as eintrag, idx (eintrag.id)}
-    <InsertZone
+    <Zwischenaktionen
       onInsertSignal={() => insertSignalAt(idx)}
       onInsertNotiz={() => insertAt(idx, makeNotiz(idx))}
       onInsertAbzweigung={() => insertAt(idx, makeAbzweigung(idx))}
@@ -301,7 +301,7 @@
         onmouseup={() => dragHandle = null}
       >{idx}</div>
 
-      <KmCell
+      <Kilometerzelle
         bind:eintrag={signale[idx]}
         prevEintrag={idx > 0 ? signale[idx - 1] : undefined}
         {showKm}
@@ -309,23 +309,23 @@
       />
 
       {#if isSignaleintrag(eintrag)}
-        <SignalRow
+        <Signalzeile
           bind:eintrag={signale[idx] as Signaleintrag}
           {signale}
           rowIdx={idx}
           {onchange}
         />
       {:else if isNotizeintrag(eintrag)}
-        <NoteRow bind:eintrag={signale[idx] as Notizeintrag} {onchange} />
+        <Notizzeile bind:eintrag={signale[idx] as Notizeintrag} {onchange} />
       {:else if isKnoteneintrag(eintrag)}
-        <KnotenRow bind:eintrag={signale[idx] as Knoteneintrag} {onchange} />
+        <Knotenzeile bind:eintrag={signale[idx] as Knoteneintrag} {onchange} />
       {:else if isAbzweigungseintrag(eintrag)}
-        <AbzweigungRow bind:eintrag={signale[idx] as Abzweigungseintrag} {onchange} />
+        <Abzweigungszeile bind:eintrag={signale[idx] as Abzweigungseintrag} {onchange} />
       {:else if isQuelleneintrag(eintrag)}
-        <QuelleRow bind:eintrag={signale[idx] as Quelleneintrag} {onchange} />
+        <Quellenzeile bind:eintrag={signale[idx] as Quelleneintrag} {onchange} />
       {/if}
 
-      <RowActions
+      <Zeilenaktionen
         ondelete={() => deleteRow(idx)}
         onclear={() => clearRow(idx)}
       />
@@ -336,7 +336,7 @@
     <div class="drop-indicator" style="top: {indicatorY}px;"></div>
   {/if}
 </div>
-<AddBar
+<Plusleiste
   onAddSignal={addSignalWithAutofill}
   onAddNotiz={() => appendEntry(makeNotiz(signale.length))}
   onAddAbzweigung={() => appendEntry(makeAbzweigung(signale.length))}

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Signaleintrag, Eintrag } from '../lib/types';
   import { isWiederholungssignal, extractSignalBase } from '../lib/signals';
-  import SignalCell from './SignalCell.svelte';
+  import Signalzelle from './Signalzelle.svelte';
 
   let {
     eintrag = $bindable(),
@@ -46,7 +46,7 @@
 </script>
 
 <!-- signal_1 -->
-<SignalCell
+<Signalzelle
   bind:value={eintrag.signal_1}
   field="signal_1"
   {rowIdx}
@@ -60,7 +60,7 @@
 
 <!-- signal_1b (alt) -->
 {#if has1b}
-  <SignalCell
+  <Signalzelle
     bind:value={eintrag.signal_1b}
     field="signal_1b"
     {rowIdx}
@@ -71,7 +71,7 @@
 {/if}
 
 <!-- signal_2 -->
-<SignalCell
+<Signalzelle
   bind:value={eintrag.signal_2}
   field="signal_2"
   {rowIdx}
@@ -86,7 +86,7 @@
 
 <!-- signal_2b (alt) -->
 {#if has2b}
-  <SignalCell
+  <Signalzelle
     bind:value={eintrag.signal_2b}
     field="signal_2b"
     {rowIdx}
