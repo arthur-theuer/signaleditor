@@ -61,7 +61,16 @@
     class:unlocked={loggedIn}
     onclick={() => loggedIn ? onLogout() : onLogin()}
     title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
-  >{loggedIn ? '🔓' : '🔒'}</button>
+  >
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+      {#if loggedIn}
+        <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+      {:else}
+        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      {/if}
+    </svg>
+  </button>
 
   <div style="flex: 1;"></div>
 
@@ -142,13 +151,18 @@
     width: 44px;
     height: 44px;
     padding: 0;
-    font-size: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: var(--color-bg-raised);
+    border: var(--card-border);
+    border-radius: var(--card-radius);
+    color: var(--color-text-secondary);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   }
   .lock-btn.unlocked {
     background: var(--color-green-bg);
     border-color: var(--color-green);
+    color: var(--color-green);
   }
 </style>
