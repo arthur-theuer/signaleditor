@@ -18,7 +18,7 @@
   let isWdh = $derived(isWiederholungssignal(eintrag.signal_1));
   let isVs = $derived(isVorsignal(eintrag.signal_1));
   let signal2Disabled = $derived(isWdh || isVs);
-  let has1b = $derived(!signal2Disabled && eintrag.signal_1b !== undefined);
+  let has1b = $derived(!isWdh && eintrag.signal_1b !== undefined);
   let has2b = $derived(!signal2Disabled && eintrag.signal_2b !== undefined);
 
   function toggleAlt(mainNum: 1 | 2) {
