@@ -16,48 +16,47 @@
 
 <div class="insert-zone">
   <div class="insert-zone-target">
-    <button class="insert-signal hl" onclick={onInsertSignal}>+ Signal</button>
-    <button class="insert-note hl" onclick={onInsertNotiz}>+ Notiz</button>
-    <button class="insert-abzweigung hl" onclick={onInsertAbzweigung}>+ Abzw.</button>
-    <button class="insert-knoten hl" onclick={onInsertKnoten}>+ Knoten</button>
-    <button class="insert-quelle hl" onclick={onInsertQuelle}>+ Quelle</button>
+    <button class="insert-signal hl" onclick={onInsertSignal} tabindex={-1} title="Signal einfügen">S</button>
+    <button class="insert-note hl" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen">N</button>
+    <button class="insert-abzweigung hl" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen">A</button>
+    <button class="insert-knoten hl" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen">K</button>
+    <button class="insert-quelle hl" onclick={onInsertQuelle} tabindex={-1} title="Quelle einfügen">Q</button>
   </div>
 </div>
 
 <style>
   .insert-zone {
-    height: 0;
     position: relative;
-    z-index: 5;
-    margin: 0 var(--card-gap);
+    height: 0;
+    z-index: 4;
   }
   .insert-zone-target {
     position: absolute;
-    top: -12px;
-    left: 0;
-    right: 0;
-    height: 24px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: calc((var(--row-height) - var(--card-gap)) / 2);
     display: flex;
-    gap: 4px;
-    justify-content: center;
     align-items: center;
-    opacity: 0;
-
-    pointer-events: none;
+    justify-content: center;
+    gap: var(--card-gap);
   }
-  .insert-zone:hover .insert-zone-target {
+  .insert-zone-target button {
+    opacity: 0;
+    pointer-events: none;
+    width: calc((var(--row-height) - var(--card-gap)) / 2);
+    height: calc((var(--row-height) - var(--card-gap)) / 2);
+    font-size: 16px;
+    font-weight: 700;
+    border: var(--card-border);
+    border-radius: var(--card-radius);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  .insert-zone-target:hover button {
     opacity: 1;
     pointer-events: auto;
   }
-  .insert-zone-target button {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  .insert-signal { background: var(--color-bg-raised); color: var(--color-text-secondary); border: var(--card-border); }
+  .insert-signal { background: var(--color-bg-raised); color: var(--color-text-secondary); }
   .insert-note { background: var(--color-highlight); color: #f57f17; border-color: #f9a825; }
   .insert-abzweigung { background: #f3e5f5; color: #7b1fa2; border-color: #ba68c8; }
   .insert-knoten { background: #e0f2f1; color: #00695c; border-color: #4db6ac; }

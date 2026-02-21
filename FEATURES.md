@@ -207,17 +207,13 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 |---|---------|--------|-------|
 | 128 | newFile() starts with empty signal list | ✅ | Same as #124 |
 | 129 | Meldungen spacer syncs on resize | ✅ | N/A — layout restructured |
-| 130 | Insert zone single-letter labels (S, N, A, K, Q) | ❌ | Uses "+ Signal" etc. (cosmetic) |
+| 130 | Insert zone single-letter labels (S, N, A, K, Q) | ✅ | |
 
 ---
 
 ## Summary
 
 - **Total features**: 130
-- **Ported (✅)**: 127
+- **Ported (✅)**: 128
 - **Partial (⚠️)**: 2
-- **Missing (❌)**: 1
-
-### Remaining (cosmetic):
-
-- #130 Insert zone single-letter labels
+- **Missing (❌)**: 0
