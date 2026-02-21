@@ -1,5 +1,5 @@
-import type { Eintrag, Quelle, Strecke, Editordaten } from './types';
-import { isQuelleneintrag, isKnoteneintrag } from './types';
+import type { Eintrag, Import, Strecke, Editordaten } from './types';
+import { isImporteintrag, isKnoteneintrag } from './types';
 import { parseYAMLContent, extractYAMLFromHTML } from './yaml';
 
 const quelleCache: Record<string, Editordaten> = {};
@@ -10,7 +10,7 @@ export type ResolveResult = {
   error: string | null;
 };
 
-export async function resolveQuelle(quelle: Quelle): Promise<ResolveResult> {
+export async function resolveImport(quelle: Import): Promise<ResolveResult> {
   const datei = quelle.datei;
   if (!datei) return { error: 'Kein Dateipfad angegeben', signale: [] };
 
@@ -55,13 +55,13 @@ export async function resolveQuelle(quelle: Quelle): Promise<ResolveResult> {
 }
 
 /** Cache a manually loaded file (e.g., via FileReader) */
-export function cacheQuelle(datei: string, data: Editordaten): void {
+export function cacheImport(datei: string, data: Editordaten): void {
   quelleCache[datei] = data;
 }
 
-export async function autoStitchQuellen(signale: Eintrag[]): Promise<void> {
+export async function autoStitchImporte(signale: Eintrag[]): Promise<void> {
   const quelleIndices = signale
-    .map((s, i) => (isQuelleneintrag(s) ? i : -1))
+    .map((s, i) => (isImporteintrag(s) ? i : -1))
     .filter(i => i !== -1);
 
   for (let k = 0; k < quelleIndices.length - 1; k++) {
@@ -69,7 +69,7 @@ export async function autoStitchQuellen(signale: Eintrag[]): Promise<void> {
     const idxB = quelleIndices[k + 1];
     const eA = signale[idxA];
     const eB = signale[idxB];
-    if (!isQuelleneintrag(eA) || !isQuelleneintrag(eB)) continue;
+    if (!isImporteintrag(eA) || !isImporteintrag(eB)) continue;
 
     const qA = eA.quelle;
     const qB = eB.quelle;
@@ -77,8 +77,8 @@ export async function autoStitchQuellen(signale: Eintrag[]): Promise<void> {
     if (!qA.datei || !qB.datei) continue;
 
     const [resA, resB] = await Promise.all([
-      resolveQuelle({ datei: qA.datei }),
-      resolveQuelle({ datei: qB.datei }),
+      resolveImport({ datei: qA.datei }),
+      resolveImport({ datei: qB.datei }),
     ]);
 
     if (resA.error || resB.error) continue;
@@ -106,8 +106,8 @@ export async function autoStitchQuellen(signale: Eintrag[]): Promise<void> {
 export async function resolveSignaleForMeldungen(signale: Eintrag[]): Promise<Eintrag[]> {
   const flat: Eintrag[] = [];
   for (const sig of signale) {
-    if (isQuelleneintrag(sig)) {
-      const res = await resolveQuelle(sig.quelle);
+    if (isImporteintrag(sig)) {
+      const res = await resolveImport(sig.quelle);
       if (res.error) {
         flat.push(sig);
       } else {

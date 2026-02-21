@@ -4,13 +4,13 @@
     onAddNotiz,
     onAddAbzweigung,
     onAddKnoten,
-    onAddQuelle,
+    onAddImport,
   }: {
     onAddSignal: () => void;
     onAddNotiz: () => void;
     onAddAbzweigung: () => void;
     onAddKnoten: () => void;
-    onAddQuelle: () => void;
+    onAddImport: () => void;
   } = $props();
 </script>
 
@@ -19,7 +19,7 @@
   <button class="add-note hl" onclick={onAddNotiz}>+ Notiz</button>
   <button class="add-abzweigung hl" onclick={onAddAbzweigung}>+ Abzweigung</button>
   <button class="add-knoten hl" onclick={onAddKnoten}>+ Knoten</button>
-  <button class="add-quelle hl" onclick={onAddQuelle}>+ Quelle</button>
+  <button class="add-import hl" onclick={onAddImport}>+ Import</button>
 </div>
 
 <style>
@@ -60,7 +60,7 @@
     color: #00695c;
     border: 1px solid #4db6ac;
   }
-  .add-quelle {
+  .add-import {
     background: #e3f2fd;
     color: #1565c0;
     border: 1px solid #64b5f6;

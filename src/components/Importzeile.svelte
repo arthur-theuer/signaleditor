@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { Quelleneintrag, Eintrag } from '../lib/types';
+  import type { Importeintrag, Eintrag } from '../lib/types';
   import { isSignaleintrag, isAbzweigungseintrag, isNotizeintrag, isKnoteneintrag } from '../lib/types';
   import { KNOTEN } from '../lib/constants';
-  import { resolveQuelle, cacheQuelle } from '../lib/sources';
+  import { resolveImport, cacheImport } from '../lib/sources';
   import { parseYAMLContent, extractYAMLFromHTML } from '../lib/yaml';
 
 
@@ -10,7 +10,7 @@
     eintrag = $bindable(),
     onchange,
   }: {
-    eintrag: Quelleneintrag;
+    eintrag: Importeintrag;
     onchange: () => void;
   } = $props();
 
@@ -48,7 +48,7 @@
       resolveResult = null;
       return;
     }
-    resolveQuelle(eintrag.quelle).then(res => {
+    resolveImport(eintrag.quelle).then(res => {
       resolveResult = res;
     }).catch(err => {
       resolveResult = { signale: [], error: (err as Error).message };
@@ -69,7 +69,7 @@
         if (yaml) content = yaml;
       }
       const parsed = parseYAMLContent(content);
-      cacheQuelle(file.name, parsed);
+      cacheImport(file.name, parsed);
       eintrag.quelle.datei = file.name;
       onchange();
     };
@@ -83,12 +83,12 @@
   }
 </script>
 
-<div class="signal-cell quelle-cell" class:expanded>
-  <div class="quelle-inner">
-    <div class="quelle-top hl-wrap">
+<div class="signal-cell import-cell" class:expanded>
+  <div class="import-inner">
+    <div class="import-top hl-wrap">
       <input
         type="text"
-        class="quelle-datei"
+        class="import-datei"
         bind:value={eintrag.quelle.datei}
         oninput={onchange}
         placeholder="Datei (z.B. videos/652_rp_zh.yaml)"
@@ -96,7 +96,7 @@
         autocorrect="off"
         spellcheck="false"
       />
-      <button class="quelle-load-btn" onclick={() => fileInput.click()} title="Datei laden" tabindex={-1}>📁</button>
+      <button class="import-load-btn" onclick={() => fileInput.click()} title="Datei laden" tabindex={-1}>📁</button>
       <input
         type="file"
         accept=".yaml,.yml,.html"
@@ -105,32 +105,32 @@
         onchange={handleFileLoad}
       />
     </div>
-    <div class="quelle-info">
+    <div class="import-info">
       {#if resolveResult?.error}
-        <span class="quelle-error">{resolveResult.error}</span>
+        <span class="import-error">{resolveResult.error}</span>
       {:else}
-        <span class="quelle-count">{countText}</span>
+        <span class="import-count">{countText}</span>
       {/if}
       {#if stitchInfo}
-        <span class="quelle-stitch">{stitchInfo}</span>
+        <span class="import-stitch">{stitchInfo}</span>
       {/if}
       {#if resolveResult && !resolveResult.error && resolveResult.signale.length > 0}
-        <button class="quelle-expand-btn" onclick={() => expanded = !expanded} title="Signale anzeigen">
+        <button class="import-expand-btn" onclick={() => expanded = !expanded} title="Signale anzeigen">
           {expanded ? '▲' : '▼'}
         </button>
       {/if}
     </div>
     {#if expanded && resolveResult && !resolveResult.error}
-      <div class="quelle-resolved visible">
+      <div class="import-resolved visible">
         {#each resolveResult.signale as s}
           {#if isAbzweigungseintrag(s)}
-            <div class="quelle-resolved-row abz">{abzArrow(s)} {s.abzweigung.strecke} {s.abzweigung.von_nach} {s.abzweigung.richtung} {abzArrow(s)}</div>
+            <div class="import-resolved-row abz">{abzArrow(s)} {s.abzweigung.strecke} {s.abzweigung.von_nach} {s.abzweigung.richtung} {abzArrow(s)}</div>
           {:else if isNotizeintrag(s)}
-            <div class="quelle-resolved-row notiz">{s.notiz || 'Notiz'}</div>
+            <div class="import-resolved-row notiz">{s.notiz || 'Notiz'}</div>
           {:else if isKnoteneintrag(s)}
-            <div class="quelle-resolved-row knoten">{s.knoten}{KNOTEN[s.knoten] ? ` (${KNOTEN[s.knoten]})` : ''}</div>
+            <div class="import-resolved-row knoten">{s.knoten}{KNOTEN[s.knoten] ? ` (${KNOTEN[s.knoten]})` : ''}</div>
           {:else if isSignaleintrag(s)}
-            <div class="quelle-resolved-row">{[s.signal_1, s.signal_2].filter(Boolean).join(' | ') || '(leer)'}</div>
+            <div class="import-resolved-row">{[s.signal_1, s.signal_2].filter(Boolean).join(' | ') || '(leer)'}</div>
           {/if}
         {/each}
       </div>
@@ -139,15 +139,15 @@
 </div>
 
 <style>
-  .quelle-cell { background: #e3f2fd; }
-  .quelle-inner { display: flex; flex-direction: column; height: 100%; }
-  .quelle-top {
+  .import-cell { background: #e3f2fd; }
+  .import-inner { display: flex; flex-direction: column; height: 100%; }
+  .import-top {
     display: flex;
     align-items: center;
     flex: 1;
     border-radius: calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0 0;
   }
-  .quelle-datei {
+  .import-datei {
     flex: 1;
     padding: 0 12px;
     border: none;
@@ -156,9 +156,9 @@
     font-family: monospace;
     height: 100%;
   }
-  .quelle-datei:focus { outline: none; }
-  .quelle-datei::placeholder { color: var(--color-text-muted); }
-  .quelle-load-btn {
+  .import-datei:focus { outline: none; }
+  .import-datei::placeholder { color: var(--color-text-muted); }
+  .import-load-btn {
     background: none;
     border: none;
     cursor: pointer;
@@ -168,7 +168,7 @@
     display: flex;
     align-items: center;
   }
-  .quelle-info {
+  .import-info {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -179,10 +179,10 @@
     border-top: 1px solid var(--color-border);
     min-height: 24px;
   }
-  .quelle-count { flex-shrink: 0; }
-  .quelle-stitch { color: #1565c0; }
-  .quelle-error { color: var(--color-red); }
-  .quelle-expand-btn {
+  .import-count { flex-shrink: 0; }
+  .import-stitch { color: #1565c0; }
+  .import-error { color: var(--color-red); }
+  .import-expand-btn {
     margin-left: auto;
     background: none;
     border: none;
@@ -191,7 +191,7 @@
     color: var(--color-text-muted);
     padding: 2px 4px;
   }
-  .quelle-resolved {
+  .import-resolved {
     border-top: 1px solid var(--color-border);
     max-height: 200px;
     overflow-y: auto;
@@ -199,19 +199,19 @@
     font-family: monospace;
   }
   .expanded { height: auto; }
-  .quelle-resolved-row {
+  .import-resolved-row {
     padding: 2px 12px;
     border-bottom: 1px solid #eee;
   }
-  .quelle-resolved-row.abz {
+  .import-resolved-row.abz {
     color: #7b1fa2;
     font-style: italic;
   }
-  .quelle-resolved-row.notiz {
+  .import-resolved-row.notiz {
     color: #f57f17;
     font-style: italic;
   }
-  .quelle-resolved-row.knoten {
+  .import-resolved-row.knoten {
     color: #00695c;
     font-weight: 600;
   }

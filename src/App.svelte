@@ -2,8 +2,8 @@
   import type { Editordaten } from './lib/types';
   import { parseYAMLContent, extractYAMLFromHTML } from './lib/yaml';
   import { History } from './lib/history.svelte';
-  import { isQuelleneintrag } from './lib/types';
-  import { autoStitchQuellen } from './lib/sources';
+  import { isImporteintrag } from './lib/types';
+  import { autoStitchImporte } from './lib/sources';
   import { generateYAML } from './lib/yaml';
   import { downloadMeldungenHTML } from './lib/reports';
   import Toolbar from './components/Toolbar.svelte';
@@ -108,11 +108,11 @@
   // Auto-stitch quellen when datei values change
   $effect(() => {
     const quellenDateien = data.signale
-      .filter(isQuelleneintrag)
+      .filter(isImporteintrag)
       .map(s => s.quelle.datei)
       .join(',');
     if (quellenDateien) {
-      autoStitchQuellen(data.signale);
+      autoStitchImporte(data.signale);
     }
   });
 

@@ -5,7 +5,7 @@ export type Abzweigung = {
   richtung: string;
 };
 
-export type Quelle = {
+export type Import = {
   datei: string;
   von?: string;
   bis?: string;
@@ -39,10 +39,10 @@ export type Abzweigungseintrag = {
   abzweigung: Abzweigung;
 };
 
-export type Quelleneintrag = {
+export type Importeintrag = {
   id: number;
   km?: number;
-  quelle: Quelle;
+  quelle: Import;
 };
 
 export type Eintrag =
@@ -50,7 +50,7 @@ export type Eintrag =
   | Notizeintrag
   | Knoteneintrag
   | Abzweigungseintrag
-  | Quelleneintrag;
+  | Importeintrag;
 
 // Type guards
 export function isSignaleintrag(e: Eintrag): e is Signaleintrag {
@@ -69,7 +69,7 @@ export function isAbzweigungseintrag(e: Eintrag): e is Abzweigungseintrag {
   return 'abzweigung' in e;
 }
 
-export function isQuelleneintrag(e: Eintrag): e is Quelleneintrag {
+export function isImporteintrag(e: Eintrag): e is Importeintrag {
   return 'quelle' in e;
 }
 

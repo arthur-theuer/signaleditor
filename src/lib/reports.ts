@@ -4,7 +4,7 @@ import {
   isNotizeintrag,
   isKnoteneintrag,
   isAbzweigungseintrag,
-  isQuelleneintrag,
+  isImporteintrag,
 } from './types';
 import { KNOTEN, MELDUNG_FARBEN, BAHNHOF_FARBEN } from './constants';
 import { meldungAusSignaleintrag } from './signals';
@@ -86,7 +86,7 @@ export function generiereAlleMeldungenSync(signale: Eintrag[]): MeldungRow[] {
       continue;
     }
 
-    if (isQuelleneintrag(sig)) {
+    if (isImporteintrag(sig)) {
       meldungen.push({
         id: sig.id, km: sig.km, quelle: sig.quelle.datei || '(leer)',
         signalname: '', signal_1_display: '', signal_2_display: '',
@@ -159,7 +159,7 @@ export async function downloadMeldungenHTML(data: Editordaten, yamlContent: stri
       return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#7b1fa2;font-style:italic">${esc(m.abzweigung)}</td></tr>`;
     }
     if (m.quelle) {
-      return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#999;font-style:italic">Quelle: ${esc(m.quelle)}</td></tr>`;
+      return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#999;font-style:italic">Import: ${esc(m.quelle)}</td></tr>`;
     }
 
     const meldungCell = m.error

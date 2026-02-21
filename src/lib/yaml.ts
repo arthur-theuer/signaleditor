@@ -1,7 +1,7 @@
 import type {
   Editordaten,
   Eintrag,
-  Quelle,
+  Import,
   Abzweigung,
 } from './types';
 import {
@@ -9,7 +9,7 @@ import {
   isNotizeintrag,
   isKnoteneintrag,
   isAbzweigungseintrag,
-  isQuelleneintrag,
+  isImporteintrag,
 } from './types';
 
 export function generateYAML(data: Editordaten): string {
@@ -26,7 +26,7 @@ export function generateYAML(data: Editordaten): string {
       yaml += `    abzweigung: { strecke: "${abz.strecke}", ${dirKey}: "${abz.richtung}", seite: "${abz.seite}" }\n`;
     } else if (isKnoteneintrag(sig)) {
       yaml += `    knoten: ${sig.knoten}\n`;
-    } else if (isQuelleneintrag(sig)) {
+    } else if (isImporteintrag(sig)) {
       const q = sig.quelle;
       const parts = [`datei: ${q.datei}`];
       if (q.von) parts.push(`von: ${q.von}`);
@@ -96,7 +96,7 @@ export function parseYAMLContent(content: string): Editordaten {
           const inner = quelleMatch[1];
           const dateiMatch = inner.match(/datei:\s*([^,}]+)/);
           const datei = dateiMatch ? dateiMatch[1].trim().replace(/"/g, '') : '';
-          const quelle: Quelle = { datei };
+          const quelle: Import = { datei };
           const vonMatch = inner.match(/(?:^|,)\s*von:\s*([^,}]+)/);
           const bisMatch = inner.match(/(?:^|,)\s*bis:\s*([^,}]+)/);
           if (vonMatch) quelle.von = vonMatch[1].trim().replace(/"/g, '');

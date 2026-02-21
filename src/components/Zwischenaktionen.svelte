@@ -4,13 +4,13 @@
     onInsertNotiz,
     onInsertAbzweigung,
     onInsertKnoten,
-    onInsertQuelle,
+    onInsertImport,
   }: {
     onInsertSignal: () => void;
     onInsertNotiz: () => void;
     onInsertAbzweigung: () => void;
     onInsertKnoten: () => void;
-    onInsertQuelle: () => void;
+    onInsertImport: () => void;
   } = $props();
 </script>
 
@@ -20,7 +20,7 @@
     <button class="insert-note" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen">N</button>
     <button class="insert-abzweigung" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen">A</button>
     <button class="insert-knoten" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen">K</button>
-    <button class="insert-quelle" onclick={onInsertQuelle} tabindex={-1} title="Quelle einfügen">Q</button>
+    <button class="insert-import" onclick={onInsertImport} tabindex={-1} title="Import einfügen">I</button>
   </div>
 </div>
 
@@ -63,5 +63,5 @@
   .insert-note { background: var(--color-highlight); color: #f57f17; border-color: #f9a825; }
   .insert-abzweigung { background: #f3e5f5; color: #7b1fa2; border-color: #ba68c8; }
   .insert-knoten { background: #e0f2f1; color: #00695c; border-color: #4db6ac; }
-  .insert-quelle { background: #e3f2fd; color: #1565c0; border-color: #64b5f6; }
+  .insert-import { background: #e3f2fd; color: #1565c0; border-color: #64b5f6; }
 </style>

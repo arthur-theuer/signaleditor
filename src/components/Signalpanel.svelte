@@ -1,13 +1,13 @@
 <script lang="ts">
   import { tick } from 'svelte';
-  import type { Eintrag, Signaleintrag, Notizeintrag, Knoteneintrag, Abzweigungseintrag, Quelleneintrag } from '../lib/types';
-  import { isSignaleintrag, isNotizeintrag, isKnoteneintrag, isAbzweigungseintrag, isQuelleneintrag } from '../lib/types';
+  import type { Eintrag, Signaleintrag, Notizeintrag, Knoteneintrag, Abzweigungseintrag, Importeintrag } from '../lib/types';
+  import { isSignaleintrag, isNotizeintrag, isKnoteneintrag, isAbzweigungseintrag, isImporteintrag } from '../lib/types';
   import { autofillRow, isRowEmpty } from '../lib/signals';
   import Signalzeile from './Signalzeile.svelte';
   import Notizzeile from './Notizzeile.svelte';
   import Knotenzeile from './Knotenzeile.svelte';
   import Abzweigungszeile from './Abzweigungszeile.svelte';
-  import Quellenzeile from './Quellenzeile.svelte';
+  import Importzeile from './Importzeile.svelte';
   import Kilometerzelle from './Kilometerzelle.svelte';
   import Zeilenaktionen from './Zeilenaktionen.svelte';
   import Zwischenaktionen from './Zwischenaktionen.svelte';
@@ -107,7 +107,7 @@
     '.abzweigung-vonnach',
     '.abzweigung-richtung',
     '.knoten-input',
-    '.quelle-datei',
+    '.import-datei',
   ].join(', ');
 
   function getRowEl(idx: number): HTMLElement | null {
@@ -127,7 +127,7 @@
       if (kmInput) return kmInput;
     }
     return rowEl.querySelector<HTMLElement>(
-      '.signal-input, .note-input, .abzweigung-btn, .knoten-input, .quelle-datei'
+      '.signal-input, .note-input, .abzweigung-btn, .knoten-input, .import-datei'
     );
   }
 
@@ -254,7 +254,7 @@
   function makeKnoten(idx: number): Knoteneintrag {
     return { id: idx, knoten: '' };
   }
-  function makeQuelle(idx: number): Quelleneintrag {
+  function makeImport(idx: number): Importeintrag {
     return { id: idx, quelle: { datei: '' } };
   }
 
@@ -281,7 +281,7 @@
       onInsertNotiz={() => insertAt(idx, makeNotiz(idx))}
       onInsertAbzweigung={() => insertAt(idx, makeAbzweigung(idx))}
       onInsertKnoten={() => insertAt(idx, makeKnoten(idx))}
-      onInsertQuelle={() => insertAt(idx, makeQuelle(idx))}
+      onInsertImport={() => insertAt(idx, makeImport(idx))}
     />
     <div
       class="signal-row"
@@ -321,8 +321,8 @@
         <Knotenzeile bind:eintrag={signale[idx] as Knoteneintrag} {onchange} />
       {:else if isAbzweigungseintrag(eintrag)}
         <Abzweigungszeile bind:eintrag={signale[idx] as Abzweigungseintrag} {onchange} />
-      {:else if isQuelleneintrag(eintrag)}
-        <Quellenzeile bind:eintrag={signale[idx] as Quelleneintrag} {onchange} />
+      {:else if isImporteintrag(eintrag)}
+        <Importzeile bind:eintrag={signale[idx] as Importeintrag} {onchange} />
       {/if}
 
       <Zeilenaktionen
@@ -341,7 +341,7 @@
   onAddNotiz={() => appendEntry(makeNotiz(signale.length))}
   onAddAbzweigung={() => appendEntry(makeAbzweigung(signale.length))}
   onAddKnoten={() => appendEntry(makeKnoten(signale.length))}
-  onAddQuelle={() => appendEntry(makeQuelle(signale.length))}
+  onAddImport={() => appendEntry(makeImport(signale.length))}
 />
 
 <style>

@@ -82,7 +82,7 @@ function getFocusInfo(): FocusInfo {
   const rowIndex = parseInt(row.dataset.rowIndex!);
 
   const classes = ['.signal-input', '.name-input', '.bahnhof-input', '.km-input',
-    '.note-input', '.knoten-input', '.abzweigung-btn', '.quelle-datei'];
+    '.note-input', '.knoten-input', '.abzweigung-btn', '.import-datei'];
   let fieldSelector: string | undefined;
   for (const cls of classes) {
     if (el.matches(cls)) { fieldSelector = cls; break; }
