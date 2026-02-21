@@ -5,6 +5,7 @@
     showMeldungen,
     undoEnabled,
     redoEnabled,
+    loggedIn,
     onToggleKm,
     onToggleYaml,
     onToggleMeldungen,
@@ -13,12 +14,15 @@
     onUndo,
     onRedo,
     onExportMeldungen,
+    onLogin,
+    onLogout,
   }: {
     showKm: boolean;
     showYaml: boolean;
     showMeldungen: boolean;
     undoEnabled: boolean;
     redoEnabled: boolean;
+    loggedIn: boolean;
     onToggleKm: () => void;
     onToggleYaml: () => void;
     onToggleMeldungen: () => void;
@@ -27,6 +31,8 @@
     onUndo: () => void;
     onRedo: () => void;
     onExportMeldungen: () => void;
+    onLogin: () => void;
+    onLogout: () => void;
   } = $props();
 
   let fileInput: HTMLInputElement;
@@ -49,6 +55,13 @@
   <button class="hl" onclick={() => onNew('strecke')}>Neue Strecke</button>
   <button class="hl" onclick={() => fileInput.click()}>Datei laden</button>
   <button class="primary-btn hl hl-primary" onclick={onExportMeldungen}>Meldungen exportieren</button>
+
+  <button
+    class="lock-btn hl"
+    class:unlocked={loggedIn}
+    onclick={() => loggedIn ? onLogout() : onLogin()}
+    title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
+  >{loggedIn ? '🔓' : '🔒'}</button>
 
   <div style="flex: 1;"></div>
 
@@ -124,5 +137,18 @@
   .undo-redo-btn:disabled {
     opacity: 0.4;
     cursor: default;
+  }
+  .lock-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lock-btn.unlocked {
+    background: var(--color-green-bg);
+    border-color: var(--color-green);
   }
 </style>

@@ -6,6 +6,7 @@
   import { autoStitchImporte } from './lib/sources';
   import { generateYAML } from './lib/yaml';
   import { downloadMeldungenHTML } from './lib/reports';
+  import { isLoggedIn, login, logout } from './lib/auth.svelte';
   import Toolbar from './components/Toolbar.svelte';
   import Metafelder from './components/Metafelder.svelte';
   import Signalpanel from './components/Signalpanel.svelte';
@@ -82,6 +83,17 @@
     if (restored) { data = restored; }
   }
 
+  async function handleLogin() {
+    const pin = prompt('PIN eingeben:');
+    if (!pin) return;
+    const ok = await login(pin);
+    if (!ok) alert('Ungültiger PIN');
+  }
+
+  function handleLogout() {
+    logout();
+  }
+
   function handleExportMeldungen() {
     const yamlContent = generateYAML(data);
     downloadMeldungenHTML(data, yamlContent);
@@ -139,6 +151,7 @@
   {showMeldungen}
   undoEnabled={history.canUndo}
   redoEnabled={history.canRedo}
+  loggedIn={isLoggedIn()}
   onToggleKm={() => showKm = !showKm}
   onToggleYaml={() => showYaml = !showYaml}
   onToggleMeldungen={() => showMeldungen = !showMeldungen}
@@ -147,6 +160,8 @@
   onUndo={handleUndo}
   onRedo={handleRedo}
   onExportMeldungen={handleExportMeldungen}
+  onLogin={handleLogin}
+  onLogout={handleLogout}
 />
 
 <Metafelder bind:data={data} onchange={markDirty} />
