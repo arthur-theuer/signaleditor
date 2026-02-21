@@ -26,7 +26,7 @@
   .add-bar {
     display: flex;
     gap: var(--card-gap);
-    margin: var(--card-gap);
+    margin: var(--half-gap) var(--card-gap) var(--card-gap);
   }
   .add-bar button {
     flex: 1;

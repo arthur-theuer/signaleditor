@@ -11,7 +11,7 @@
 
 <div class="meldungen-list">
   {#each meldungen as m, idx}
-    <div class="meldung-row" class:first={idx === 0} class:last={idx === meldungen.length - 1}>
+    <div class="meldung-row">
       {#if m.note !== undefined}
         <div class="meldung-row-inner muted">
           <div class="meldung-text muted-text">NOTIZ</div>
@@ -61,22 +61,14 @@
 
 <style>
   .meldung-row {
-    height: calc(var(--row-height) + var(--row-gap) * 2);
+    height: calc(var(--row-height) + var(--card-gap));
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: var(--row-gap) var(--card-gap);
+    padding: var(--half-gap) var(--card-gap);
     font-family: monospace;
     font-size: var(--input-font-size);
     box-sizing: border-box;
-  }
-  .meldung-row.first {
-    height: calc(var(--row-height) + var(--card-gap) + var(--row-gap));
-    padding-top: var(--card-gap);
-  }
-  .meldung-row.last {
-    height: calc(var(--row-height) + var(--row-gap) + var(--card-gap));
-    padding-bottom: var(--card-gap);
   }
   .meldung-row-inner {
     background: var(--color-bg-raised);

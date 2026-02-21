@@ -3,7 +3,7 @@
   --unit: 40px;
   --row-height: calc(var(--unit) * 2);
   --card-gap: 4px;
-  --row-gap: 2px;
+  --half-gap: calc(var(--card-gap) / 2);
   --card-radius: 8px;
   --container-radius: calc(var(--card-radius) + var(--card-gap));
   --input-font-size: 14px;

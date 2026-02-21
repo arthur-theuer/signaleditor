@@ -268,8 +268,6 @@
     />
     <div
       class="signal-row"
-      class:first={idx === 0}
-      class:last={idx === signale.length - 1}
       class:dragging={dragIdx === idx}
       class:drag-over-top={dragOverIdx === idx && dragOverHalf === 'top'}
       class:drag-over-bottom={dragOverIdx === idx && dragOverHalf === 'bottom'}
@@ -330,12 +328,10 @@
   .signal-row {
     display: flex;
     gap: var(--card-gap);
-    padding: var(--row-gap) var(--card-gap);
+    padding: var(--half-gap) var(--card-gap);
     align-items: stretch;
-    min-height: calc(var(--row-height) + var(--row-gap) * 2);
+    min-height: calc(var(--row-height) + var(--card-gap));
   }
-  .signal-row.first { padding-top: var(--card-gap); min-height: calc(var(--row-height) + var(--card-gap) + var(--row-gap)); }
-  .signal-row.last { padding-bottom: var(--card-gap); min-height: calc(var(--row-height) + var(--row-gap) + var(--card-gap)); }
   .signal-id {
     display: flex;
     align-items: center;
