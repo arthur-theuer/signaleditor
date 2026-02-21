@@ -16,11 +16,11 @@
 
 <div class="insert-zone">
   <div class="insert-zone-target">
-    <button class="insert-signal hl" onclick={onInsertSignal} tabindex={-1} title="Signal einfügen">S</button>
-    <button class="insert-note hl" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen">N</button>
-    <button class="insert-abzweigung hl" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen">A</button>
-    <button class="insert-knoten hl" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen">K</button>
-    <button class="insert-quelle hl" onclick={onInsertQuelle} tabindex={-1} title="Quelle einfügen">Q</button>
+    <button class="insert-signal" onclick={onInsertSignal} tabindex={-1} title="Signal einfügen">S</button>
+    <button class="insert-note" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen">N</button>
+    <button class="insert-abzweigung" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen">A</button>
+    <button class="insert-knoten" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen">K</button>
+    <button class="insert-quelle" onclick={onInsertQuelle} tabindex={-1} title="Quelle einfügen">Q</button>
   </div>
 </div>
 
