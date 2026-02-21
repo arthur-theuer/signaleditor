@@ -60,6 +60,7 @@
 </div>
 
 <style>
+  .meldungen-list { padding-top: var(--half-gap); }
   .meldung-row {
     height: calc(var(--row-height) + var(--card-gap));
     display: flex;

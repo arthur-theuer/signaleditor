@@ -95,7 +95,6 @@ body {
 
 .section-header {
   padding: 12px;
-  margin-bottom: var(--half-gap);
   font-weight: 600;
   font-size: 14px;
   background: var(--color-bg-subtle);
