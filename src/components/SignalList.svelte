@@ -195,6 +195,8 @@
   }
 
   // Tab navigation handler — delegated at list level
+  // Explicitly manages all Tab presses to ensure correct field order,
+  // since native Tab can skip buttons inside component boundaries.
   function handleKeydown(e: KeyboardEvent) {
     if (e.key !== 'Tab') return;
 
@@ -207,28 +209,39 @@
     const currentFieldIdx = fields.indexOf(target);
     if (currentFieldIdx === -1) return;
 
-    if (!e.shiftKey && currentFieldIdx === fields.length - 1) {
-      // Tab on last field in row
-      e.preventDefault();
-      const isLastRow = rowIdx === signale.length - 1;
-      if (isLastRow) {
-        addSignalWithAutofill();
-      } else {
-        // Move to next row, autofill if empty
-        const nextIdx = rowIdx + 1;
-        const nextSig = signale[nextIdx];
-        if (nextSig && isSignaleintrag(nextSig) && isRowEmpty(nextSig)) {
-          autofillRow(nextSig, rowIdx, signale, showKm);
-          signale = [...signale]; // trigger reactivity
-          onchange();
-        }
-        focusRowField(nextIdx);
-      }
-    } else if (e.shiftKey && currentFieldIdx === 0) {
-      // Shift+Tab on first field in row
-      if (rowIdx > 0) {
+    if (!e.shiftKey) {
+      if (currentFieldIdx === fields.length - 1) {
+        // Tab on last field in row → next row or add new
         e.preventDefault();
-        focusRowField(rowIdx - 1, true);
+        const isLastRow = rowIdx === signale.length - 1;
+        if (isLastRow) {
+          addSignalWithAutofill();
+        } else {
+          const nextIdx = rowIdx + 1;
+          const nextSig = signale[nextIdx];
+          if (nextSig && isSignaleintrag(nextSig) && isRowEmpty(nextSig)) {
+            autofillRow(nextSig, rowIdx, signale, showKm);
+            signale = [...signale];
+            onchange();
+          }
+          focusRowField(nextIdx);
+        }
+      } else {
+        // Tab on middle field → next field in same row
+        e.preventDefault();
+        fields[currentFieldIdx + 1].focus();
+      }
+    } else {
+      if (currentFieldIdx === 0) {
+        // Shift+Tab on first field → previous row
+        if (rowIdx > 0) {
+          e.preventDefault();
+          focusRowField(rowIdx - 1, true);
+        }
+      } else {
+        // Shift+Tab on middle field → previous field in same row
+        e.preventDefault();
+        fields[currentFieldIdx - 1].focus();
       }
     }
   }
