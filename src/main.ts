@@ -12,7 +12,7 @@ document.addEventListener('click', (e) => {
   if (target.matches('input, select, button, textarea')) return;
   const wrapper = target.closest('.hl-wrap');
   if (!wrapper) return;
-  const input = wrapper.querySelector<HTMLElement>('input, select, textarea');
+  const input = wrapper.querySelector<HTMLElement>('input, select, textarea, button');
   if (input) input.focus();
 });
 

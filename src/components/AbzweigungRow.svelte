@@ -58,11 +58,12 @@
 <div class="signal-cell abzweigung-cell">
   <div class="abzweigung-inner">
     <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
-      <button class="abzweigung-btn" onclick={toggleSeite} onkeydown={handleArrowKeydown}>{arrowGlyph}</button>
+      <button class="abzweigung-btn abzweigung-arrow" onclick={toggleSeite} onkeydown={handleArrowKeydown}>{arrowGlyph}</button>
     </div>
     <div class="abzweigung-field abzweigung-strecke-field hl-wrap">
       <input
         type="text"
+        class="abzweigung-strecke"
         bind:value={eintrag.abzweigung.strecke}
         oninput={onchange}
         placeholder="Nummer"
@@ -72,7 +73,7 @@
       />
     </div>
     <div class="abzweigung-field abzweigung-vonnach-field hl-wrap">
-      <button class="abzweigung-btn" onclick={() => cycleVonNach(1)} onkeydown={handleVonNachKeydown}>
+      <button class="abzweigung-btn abzweigung-vonnach" onclick={() => cycleVonNach(1)} onkeydown={handleVonNachKeydown}>
         {#if eintrag.abzweigung.von_nach}
           {eintrag.abzweigung.von_nach}
         {:else}
@@ -83,6 +84,7 @@
     <div class="abzweigung-field abzweigung-richtung-field hl-wrap">
       <input
         type="text"
+        class="abzweigung-richtung"
         bind:value={eintrag.abzweigung.richtung}
         oninput={onchange}
         placeholder="Richtung"
@@ -92,7 +94,7 @@
       />
     </div>
     <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
-      <button class="abzweigung-btn" tabindex={-1} onclick={toggleSeite} onkeydown={handleArrowKeydown}>{arrowGlyph}</button>
+      <button class="abzweigung-btn abzweigung-arrow" tabindex={-1} onclick={toggleSeite} onkeydown={handleArrowKeydown}>{arrowGlyph}</button>
     </div>
   </div>
 </div>

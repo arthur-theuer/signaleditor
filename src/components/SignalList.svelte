@@ -101,8 +101,10 @@
     '.bahnhof-wrapper.visible .bahnhof-input',
     '.km-cell.visible .km-input',
     '.note-input',
-    '.abzweigung-btn',
-    '.abzweigung-field input',
+    '.abzweigung-arrow:not([tabindex="-1"])',
+    '.abzweigung-strecke',
+    '.abzweigung-vonnach',
+    '.abzweigung-richtung',
     '.knoten-input',
     '.quelle-datei',
   ].join(', ');
