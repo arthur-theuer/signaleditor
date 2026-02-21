@@ -138,17 +138,11 @@
 <MetaFields bind:strecke={data.strecke} onchange={markDirty} />
 
 <div class="main-content">
-  <div class="signals-section">
-    <div class="signals-container">
-      <div class="section-header">Signale</div>
-      <div class="signals-list">
-        <SignalList bind:signale={data.signale} {showKm} onchange={markDirty} />
-      </div>
+  <div class="signals-container">
+    <div class="section-header">Signale</div>
+    <div class="signals-list">
+      <SignalList bind:signale={data.signale} {showKm} onchange={markDirty} />
     </div>
-
-    {#if showYaml}
-      <YamlPanel {data} onexport={() => dirty = false} />
-    {/if}
   </div>
 
   {#if showMeldungen}
@@ -161,10 +155,15 @@
   {/if}
 </div>
 
+{#if showYaml}
+  <YamlPanel {data} onexport={() => dirty = false} />
+{/if}
+
 <style>
-  .main-content { display: flex; gap: 0; align-items: flex-start; }
-  .signals-section { flex: 1; min-width: 0; }
+  .main-content { display: flex; gap: 0; align-items: stretch; }
   .signals-container {
+    flex: 1;
+    min-width: 0;
     background: var(--color-bg);
     border: var(--card-border);
     border-radius: var(--container-radius);
@@ -180,5 +179,7 @@
     border: var(--card-border);
     border-radius: var(--container-radius);
     overflow: hidden;
+    height: 100%;
+    box-sizing: border-box;
   }
 </style>
