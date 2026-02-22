@@ -92,16 +92,16 @@
   }
 </script>
 
-<div class="header" class:logged-out={!loggedIn}>
+<div class="header">
   <h1>Signaleditor</h1>
 
   <!-- Group: History -->
   <div class="btn-group">
-    <button id="undoBtn" class="tb-btn icon-only hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
-      <Undo2 size={20} strokeWidth={2} />
+    <button id="undoBtn" class="tb-btn hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
+      <Undo2 size={20} strokeWidth={2} /><span>Rückgängig</span>
     </button>
-    <button id="redoBtn" class="tb-btn icon-only hl" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
-      <Redo2 size={20} strokeWidth={2} />
+    <button id="redoBtn" class="tb-btn hl" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
+      <Redo2 size={20} strokeWidth={2} /><span>Wiederholen</span>
     </button>
   </div>
 
@@ -132,15 +132,15 @@
   <!-- Group: Cloud -->
   <div class="btn-group">
     <button
-      class="tb-btn lock-btn icon-only hl"
+      class="tb-btn lock-btn hl"
       class:unlocked={loggedIn}
       onclick={handleLockClick}
       title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
     >
       {#if loggedIn}
-        <LockOpen size={20} strokeWidth={2} />
+        <LockOpen size={20} strokeWidth={2} /><span>Abmelden</span>
       {:else}
-        <Lock size={20} strokeWidth={2} />
+        <Lock size={20} strokeWidth={2} /><span>Anmelden</span>
       {/if}
     </button>
     {#if showPinInput}
@@ -228,9 +228,6 @@
     margin-right: calc(-1 * var(--page-gap));
     padding: var(--page-gap) var(--page-gap) var(--cell-padding) var(--page-gap);
   }
-  .header.logged-out {
-    background: var(--color-red-bg);
-  }
   .header::after {
     content: '';
     position: absolute;
@@ -240,9 +237,6 @@
     height: var(--space-lg);
     background: linear-gradient(var(--color-bg), transparent);
     pointer-events: none;
-  }
-  .header.logged-out::after {
-    background: linear-gradient(var(--color-red-bg), transparent);
   }
   .header h1 { margin-right: var(--space-md); }
 
