@@ -100,7 +100,7 @@ export function parseYAMLContent(content: string): Editordaten {
     ? {
         typ: 'strecke',
         meta: {
-          strecke: meta['strecke'] || meta['streckennummer'] || '',
+          strecke: meta['strecke'] || '',
           von: meta['von'] || '',
           nach: meta['nach'] || '',
           via: meta['via'] || '',

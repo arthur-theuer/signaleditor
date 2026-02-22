@@ -102,46 +102,37 @@
 
     /* Blue (focus, primary actions) */
     --color-focus: #42a5f5;
-    --color-focus-bg: rgba(66,165,245,0.12);
+    --color-focus-bg: #1e3048;
     --color-focus-ring: #90caf9;
 
     /* Green */
     --color-green: #66bb6a;
-    --color-green-bg: rgba(102,187,106,0.12);
+    --color-green-bg: #1e3a20;
 
     /* Red */
     --color-red: #ef5350;
-    --color-red-bg: rgba(239,83,80,0.12);
+    --color-red-bg: #3a1e1e;
 
     /* Orange */
     --color-clear: #ffa726;
 
     /* Highlight (note/bahnhof) */
-    --color-highlight: rgba(255,249,196,0.1);
+    --color-highlight: #4a4420;
     --color-highlight-text: #fdd835;
 
     /* Row type: Abzweigung (purple) */
-    --color-abzweigung: rgba(243,229,245,0.1);
+    --color-abzweigung: #3d2842;
     --color-abzweigung-text: #ce93d8;
 
     /* Row type: Knoten (teal) */
-    --color-knoten: rgba(224,242,241,0.1);
+    --color-knoten: #1e3b38;
     --color-knoten-text: #4db6ac;
 
     /* Row type: Import (blue) */
-    --color-import: rgba(227,242,253,0.1);
+    --color-import: #1e3048;
     --color-import-text: #64b5f6;
 
-    /* Code panel */
-    --color-code-bg: #1e1e1e;
-    --color-code-text: #d4d4d4;
-    --color-code-border: #555;
-    --color-code-btn-bg: #333;
-    --color-code-btn-text: #aaa;
-    --color-code-btn-border: #555;
-    --color-code-btn-hover-bg: #444;
-    --color-code-btn-hover-text: #ddd;
-    --color-code-btn-hover-border: #777;
+
   }
 }
 

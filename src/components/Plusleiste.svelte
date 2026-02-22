@@ -43,7 +43,7 @@
   .add-signal {
     background: var(--color-bg-raised);
     color: var(--color-text-secondary);
-    border: var(--card-border);
+    border: 1px solid var(--color-text-muted);
   }
   .add-note {
     background: var(--color-highlight);

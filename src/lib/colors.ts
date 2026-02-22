@@ -10,10 +10,9 @@ function parseHex(hex: string): [number, number, number] | null {
 export function colorToLightBg(color: string): string {
   const rgb = parseHex(color);
   if (rgb) {
-    const blend = (c: number) => Math.round(c * 0.15 + 255 * 0.85);
-    return `rgb(${blend(rgb[0])}, ${blend(rgb[1])}, ${blend(rgb[2])})`;
+    return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.1)`;
   }
-  return '#f5f5f5';
+  return 'transparent';
 }
 
 export function averageColors(colors: string[]): string {

@@ -56,7 +56,7 @@
     pointer-events: auto;
   }
   .insert-zone-target button:focus { outline: none; }
-  .insert-signal { background: var(--color-bg-raised); color: var(--color-text-secondary); }
+  .insert-signal { background: var(--color-bg-raised); color: var(--color-text-secondary); border-color: var(--color-text-muted); }
   .insert-note { background: var(--color-highlight); color: var(--color-highlight-text); border-color: var(--color-highlight-text); }
   .insert-abzweigung { background: var(--color-abzweigung); color: var(--color-abzweigung-text); border-color: var(--color-abzweigung-text); }
   .insert-knoten { background: var(--color-knoten); color: var(--color-knoten-text); border-color: var(--color-knoten-text); }
