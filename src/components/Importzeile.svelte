@@ -188,9 +188,6 @@
     background: var(--color-bg-subtle);
     border-color: var(--color-border);
   }
-  .import-info-cell:not(.empty) {
-    border-left: 2px solid var(--color-import-text);
-  }
   .import-info {
     display: flex;
     flex-direction: column;
