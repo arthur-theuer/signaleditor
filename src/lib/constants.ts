@@ -75,6 +75,6 @@ export const MELDUNG_FARBEN: Record<string, string> = {
   standard: '#424242',
 };
 
-export const BAHNHOF_FARBEN = ['#2e7d32', '#e65100'] as const;
+export const BAHNHOF_FARBEN = ['#2e7d32', '#f9a825'] as const;
 
 export { STATIONEN } from './stationen';

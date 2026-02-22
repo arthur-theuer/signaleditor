@@ -79,7 +79,7 @@
   --color-meldung-wiederholung: #1565c0;
   --color-meldung-standard: var(--color-text);
   --color-meldung-bahnhof-a: #2e7d32;
-  --color-meldung-bahnhof-b: #e65100;
+  --color-meldung-bahnhof-b: #f9a825;
 
   /* Code panel */
   --color-code-bg: var(--color-bg-subtle);
@@ -145,7 +145,7 @@
     --color-meldung-ausfahrt: #e57373;
     --color-meldung-wiederholung: #90caf9;
     --color-meldung-bahnhof-a: #81c784;
-    --color-meldung-bahnhof-b: #ffb74d;
+    --color-meldung-bahnhof-b: #fdd835;
   }
 }
 
