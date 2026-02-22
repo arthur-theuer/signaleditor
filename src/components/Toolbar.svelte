@@ -68,7 +68,13 @@
   <button class="hl" onclick={() => onNew('video')}>Neues Video</button>
   <button class="hl" onclick={() => onNew('strecke')}>Neue Strecke</button>
   <button class="hl" onclick={() => fileInput.click()}>Datei laden</button>
-  <button class="primary-btn hl hl-primary" onclick={onExportMeldungen}>Meldungen exportieren</button>
+  <button class="icon-btn hl" onclick={onExportMeldungen} title="Meldungen exportieren">
+    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 15V3" />
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <path d="m7 10 5 5 5-5" />
+    </svg>
+  </button>
 
   {#if loggedIn}
     <button
@@ -77,7 +83,7 @@
       disabled={saving || !dirty}
       title="Speichern (Ctrl+S)"
     >
-      <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
         <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
         <path d="M7 3v4a1 1 0 0 0 1 1h7" />
@@ -97,7 +103,7 @@
     onclick={() => loggedIn ? onLogout() : onLogin()}
     title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
   >
-    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="16" r="1" />
       <rect x="3" y="10" width="18" height="12" rx="2" />
       {#if loggedIn}
@@ -169,11 +175,6 @@
     height: 44px;
     padding: 0 16px;
   }
-  .header :global(.primary-btn) {
-    background: var(--color-focus);
-    color: white;
-    border-color: var(--color-focus-hover);
-  }
   .toggle-btn {
     display: flex;
     align-items: center;
@@ -202,7 +203,9 @@
     opacity: 0.4;
     cursor: default;
   }
-  .lock-btn {
+  .header button.icon-btn,
+  .header button.lock-btn,
+  .header button.save-btn {
     width: 44px;
     height: 44px;
     padding: 0;
@@ -221,17 +224,7 @@
     color: var(--color-green);
   }
   .save-btn {
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-bg-raised);
-    border: var(--card-border);
-    border-radius: var(--card-radius);
     color: var(--color-focus);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   }
   .save-btn:disabled {
     opacity: 0.4;
