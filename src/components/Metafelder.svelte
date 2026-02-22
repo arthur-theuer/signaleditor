@@ -51,7 +51,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="meta-section" onkeydown={handleKeydown}>
   <div class="section-header">
-    {isStrecke ? 'Strecke' : 'Route'}
+    {isStrecke ? 'Streckendaten' : 'Routendaten'}
     {#if id}
       <span class="header-id">{id}</span>
     {/if}
