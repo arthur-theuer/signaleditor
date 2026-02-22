@@ -193,20 +193,12 @@
     height: 44px;
     padding: 0 16px;
   }
-  .toggle-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 500;
+  .header .toggle-btn {
     color: var(--color-red);
-    cursor: pointer;
-    padding: 0 16px;
-    height: 44px;
     border: 1px solid var(--color-red-border);
     background: var(--color-red-bg);
   }
-  .toggle-btn.active {
+  .header .toggle-btn.active {
     color: var(--color-green);
     background: var(--color-green-bg);
     border-color: var(--color-green);
