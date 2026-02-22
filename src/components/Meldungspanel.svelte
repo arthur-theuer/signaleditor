@@ -99,7 +99,7 @@
   .muted-text { color: #999; font-style: italic; }
   .meldung-error { color: var(--color-red); font-style: italic; }
   .close-bar {
-    padding: var(--half-gap) var(--card-gap);
+    margin: var(--half-gap) var(--card-gap);
   }
   .close-btn {
     width: 100%;
