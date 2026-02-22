@@ -369,6 +369,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    height: var(--unit);
     gap: var(--space-sm);
     font-size: var(--input-font-size);
     font-family: monospace;
