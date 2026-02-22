@@ -349,7 +349,6 @@
       />
     </div>
   {/each}
-  <div bind:this={scrollAnchor} style="height: 0;"></div>
   {#if indicatorY !== null}
     <div class="drop-indicator" style="top: {indicatorY}px;"></div>
   {/if}
@@ -361,6 +360,7 @@
   onAddKnoten={() => appendEntry(makeKnoten(signale.length))}
   onAddImport={() => appendEntry(makeImport(signale.length))}
 />
+<div bind:this={scrollAnchor} style="height: 0;"></div>
 
 <style>
   .signal-row {
