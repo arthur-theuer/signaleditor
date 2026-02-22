@@ -77,11 +77,11 @@
       disabled={saving || !dirty}
       title="Speichern (Ctrl+S)"
     >
-      {#if saving}
-        Speichern...
-      {:else}
-        Speichern
-      {/if}
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+        <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
+        <path d="M7 3v4a1 1 0 0 0 1 1h7" />
+      </svg>
     </button>
     <button
       class="dateien-btn hl"
@@ -220,9 +220,17 @@
     color: var(--color-green);
   }
   .save-btn {
-    background: var(--color-focus);
-    color: white;
-    border-color: var(--color-focus-hover);
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-raised);
+    border: var(--card-border);
+    border-radius: var(--card-radius);
+    color: var(--color-focus);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   }
   .save-btn:disabled {
     opacity: 0.4;
