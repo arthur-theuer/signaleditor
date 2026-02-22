@@ -282,26 +282,24 @@
   .tb-btn span {
     display: none;
     position: absolute;
-    left: 100%;
-    top: 0;
-    height: 100%;
+    top: calc(100% + var(--card-gap));
+    left: 50%;
+    transform: translateX(-50%);
+    height: calc(var(--unit) / 2);
     align-items: center;
-    padding: 0 var(--cell-padding) 0 var(--space-sm);
-    background: var(--color-bg-raised);
+    justify-content: center;
+    padding: 0 var(--cell-padding);
+    background: inherit;
+    color: inherit;
     border: var(--card-border);
-    border-left: none;
-    border-radius: 0 var(--container-radius) var(--container-radius) 0;
+    border-color: inherit;
+    border-radius: var(--container-radius);
+    font-size: var(--preview-font-size);
     z-index: 1;
     pointer-events: none;
   }
   .tb-btn:hover span {
     display: flex;
-  }
-  .tb-btn:hover {
-    border-radius: var(--container-radius) 0 0 var(--container-radius);
-  }
-  .tb-btn.icon-only:hover {
-    border-radius: var(--container-radius);
   }
   .tb-btn:disabled {
     opacity: 0.4;
@@ -314,16 +312,8 @@
     border-color: var(--color-red);
     background: var(--color-red-bg);
   }
-  .toggle-btn span {
-    background: var(--color-red-bg);
-    border-color: var(--color-red);
-  }
   .toggle-btn.active {
     color: var(--color-green);
-    background: var(--color-green-bg);
-    border-color: var(--color-green);
-  }
-  .toggle-btn.active span {
     background: var(--color-green-bg);
     border-color: var(--color-green);
   }
@@ -372,11 +362,7 @@
     color: var(--color-bg-raised);
     border-color: var(--color-focus);
   }
-  .dateien-btn.active span {
-    background: var(--color-focus);
-    color: var(--color-bg-raised);
-    border-color: var(--color-focus);
-  }
+
 
   /* File status indicator */
   .file-indicator {
