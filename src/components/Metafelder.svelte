@@ -40,7 +40,7 @@
   function handleKeydown(e: KeyboardEvent) {
     if (e.key !== 'Tab' || e.shiftKey) return;
     const target = e.target as HTMLElement;
-    const lastId = isStrecke ? 'meta-video' : 'meta-name';
+    const lastId = 'meta-name';
     if (target.id === lastId) {
       e.preventDefault();
       ontabout();
@@ -98,15 +98,6 @@
         <input id="meta-name" type="text" bind:value={data.meta.name} oninput={autoArrow} placeholder="z.B. Olten → Aarau" />
       </span>
     </div>
-    {#if isStrecke && streckeMeta}
-      <div class="meta-field">
-        <label for="meta-video">Video</label>
-        <span class="hl-wrap">
-          <input id="meta-video" type="text" bind:value={streckeMeta.video} oninput={onchange} placeholder="URL" />
-        </span>
-      </div>
-    {/if}
-
   </div>
 </div>
 

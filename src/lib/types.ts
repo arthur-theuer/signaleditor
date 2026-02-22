@@ -81,7 +81,6 @@ export type Streckenmeta = {
   nach: string;
   via: string;
   name: string;
-  video: string;
 };
 
 export type Routenmeta = {
@@ -129,7 +128,7 @@ export function dateiId(data: Editordaten): string {
 export function emptyStreckendaten(): Streckendaten {
   return {
     typ: 'strecke',
-    meta: { strecke: '', von: '', nach: '', via: '', name: '', video: '' },
+    meta: { strecke: '', von: '', nach: '', via: '', name: '' },
     signale: [],
   };
 }

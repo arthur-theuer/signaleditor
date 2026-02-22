@@ -26,7 +26,6 @@ export function generateYAML(data: Editordaten): string {
     yaml += `nach: ${m.nach}\n`;
     yaml += `via: ${m.via}\n`;
     yaml += `name: ${m.name}\n`;
-    yaml += `video: ${m.video}\n`;
   } else {
     const m = data.meta;
     yaml += `linie: ${m.linie}\n`;
@@ -105,7 +104,6 @@ export function parseYAMLContent(content: string): Editordaten {
           nach: meta['nach'] || '',
           via: meta['via'] || '',
           name: meta['name'] || '',
-          video: meta['video'] || '',
         },
         signale: [],
       }
