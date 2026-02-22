@@ -57,8 +57,9 @@
   }
 
   function handleClickOutside(e: MouseEvent) {
-    const panel = (e.target as HTMLElement).closest('.dateibrowser');
-    if (!panel) onclose();
+    const target = e.target as HTMLElement;
+    if (target.closest('.dateibrowser') || target.closest('.dateien-btn')) return;
+    onclose();
   }
 </script>
 
