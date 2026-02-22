@@ -166,7 +166,7 @@
     padding: var(--page-gap) var(--page-gap) 12px var(--page-gap);
   }
   .header.logged-out {
-    background: var(--color-red-border);
+    background: var(--color-red-bg);
   }
   .header::after {
     content: '';
@@ -179,7 +179,7 @@
     pointer-events: none;
   }
   .header.logged-out::after {
-    background: linear-gradient(var(--color-red-border), transparent);
+    background: linear-gradient(var(--color-red-bg), transparent);
   }
   .header h1 { margin-right: 16px; }
   .header button {
