@@ -35,8 +35,8 @@ export const GET: RequestHandler = async ({ request, params, url }) => {
     return json({ error: 'File not found' }, { status: 404 });
   }
 
-  const result = await get(blob.url);
-  if (result.statusCode !== 200) {
+  const result = await get(blob.url, { access: 'public' });
+  if (!result || result.statusCode !== 200) {
     return json({ error: 'Failed to read file' }, { status: 500 });
   }
   const content = await new Response(result.stream).text();
