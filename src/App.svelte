@@ -305,14 +305,14 @@
     </div>
   {/if}
 </div>
-<div bind:this={scrollAnchor} style="height: 0;"></div>
+<div bind:this={scrollAnchor} style="height: 0; margin-top: var(--page-gap);"></div>
 
 {#if showYaml}
   <Codepanel {data} onexport={() => dirty = false} />
 {/if}
 
 <style>
-  .main-content { display: flex; gap: 0; align-items: stretch; margin-bottom: var(--page-gap); }
+  .main-content { display: flex; gap: 0; align-items: stretch; }
   .signals-container {
     flex: 1;
     min-width: 0;
