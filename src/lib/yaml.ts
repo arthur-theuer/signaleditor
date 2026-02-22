@@ -23,16 +23,16 @@ export function generateYAML(data: Editordaten): string {
     const m = data.meta;
     yaml += `streckennummer: ${m.streckennummer}\n`;
     yaml += `von: ${m.von}\n`;
-    yaml += `nach: ${m.nach}\n`;
     yaml += `via: ${m.via}\n`;
+    yaml += `nach: ${m.nach}\n`;
     yaml += `name: ${m.name}\n`;
     yaml += `video: ${m.video}\n`;
   } else {
     const m = data.meta;
     yaml += `linie: ${m.linie}\n`;
     yaml += `von: ${m.von}\n`;
-    yaml += `nach: ${m.nach}\n`;
     yaml += `via: ${m.via}\n`;
+    yaml += `nach: ${m.nach}\n`;
     yaml += `name: ${m.name}\n`;
   }
 
