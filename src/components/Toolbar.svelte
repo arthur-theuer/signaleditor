@@ -227,7 +227,6 @@
     border: var(--card-border);
     border-radius: var(--container-radius);
     color: var(--color-text-secondary);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   }
   .lock-btn.unlocked {
     background: var(--color-green-bg);

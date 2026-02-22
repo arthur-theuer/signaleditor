@@ -111,7 +111,6 @@
     background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--container-radius);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
     z-index: 100;
     display: flex;
     flex-direction: column;

@@ -50,7 +50,6 @@
     border: var(--card-border);
     border-radius: var(--card-radius);
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
   .insert-zone-target:hover button {
     opacity: 1;
