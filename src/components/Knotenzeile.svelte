@@ -20,7 +20,7 @@
         type="text"
         class="knoten-input"
         bind:value={eintrag.knoten}
-        oninput={onchange}
+        oninput={(e) => { eintrag.knoten = eintrag.knoten.toUpperCase(); onchange(); }}
         placeholder="Code"
         autocomplete="off"
         autocorrect="off"
