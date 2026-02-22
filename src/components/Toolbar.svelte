@@ -40,7 +40,7 @@
     onUndo: () => void;
     onRedo: () => void;
     onExportMeldungen: () => void;
-    onLogin: () => void;
+    onLogin: (pin: string) => Promise<boolean>;
     onLogout: () => void;
     onSave: () => void;
     onToggleDateien: () => void;
@@ -52,6 +52,42 @@
   } = $props();
 
   let fileInput: HTMLInputElement;
+  let showPinInput = $state(false);
+  let pinValue = $state('');
+  let pinError = $state(false);
+  let pinInputEl = $state<HTMLInputElement>();
+
+  function handleLockClick() {
+    if (loggedIn) {
+      onLogout();
+    } else {
+      showPinInput = true;
+      pinError = false;
+      pinValue = '';
+      // Focus after DOM update
+      setTimeout(() => pinInputEl?.focus(), 0);
+    }
+  }
+
+  async function submitPin() {
+    if (!pinValue) return;
+    const ok = await onLogin(pinValue);
+    if (ok) {
+      showPinInput = false;
+      pinValue = '';
+      pinError = false;
+    } else {
+      pinError = true;
+      pinValue = '';
+      pinInputEl?.focus();
+    }
+  }
+
+  function cancelPin() {
+    showPinInput = false;
+    pinValue = '';
+    pinError = false;
+  }
 </script>
 
 <div class="header" class:logged-out={!loggedIn}>
@@ -97,18 +133,32 @@
     >Dateien</button>
   {/if}
 
-  <button
-    class="lock-btn hl"
-    class:unlocked={loggedIn}
-    onclick={() => loggedIn ? onLogout() : onLogin()}
-    title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
-  >
-    {#if loggedIn}
-      <LockOpen size={20} strokeWidth={2} />
-    {:else}
-      <Lock size={20} strokeWidth={2} />
+  <div class="lock-area">
+    <button
+      class="lock-btn hl"
+      class:unlocked={loggedIn}
+      onclick={handleLockClick}
+      title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
+    >
+      {#if loggedIn}
+        <LockOpen size={20} strokeWidth={2} />
+      {:else}
+        <Lock size={20} strokeWidth={2} />
+      {/if}
+    </button>
+    {#if showPinInput}
+      <input
+        bind:this={pinInputEl}
+        bind:value={pinValue}
+        class="pin-input"
+        class:error={pinError}
+        type="password"
+        placeholder="PIN"
+        onkeydown={(e) => { if (e.key === 'Enter') submitPin(); if (e.key === 'Escape') cancelPin(); }}
+        onblur={cancelPin}
+      />
     {/if}
-  </button>
+  </div>
 
   {#if loggedIn && currentFileName}
     <span class="file-indicator">
@@ -175,7 +225,7 @@
   }
   .header .toggle-btn {
     color: var(--color-red);
-    border: 1px solid var(--color-red-border);
+    border: 1px solid var(--color-red);
     background: var(--color-red-bg);
   }
   .header .toggle-btn.active {
@@ -202,10 +252,37 @@
     border-radius: var(--container-radius);
     color: var(--color-text-secondary);
   }
+  .lock-area {
+    display: flex;
+    align-items: center;
+    gap: var(--card-gap);
+  }
   .lock-btn.unlocked {
     background: var(--color-green-bg);
     border-color: var(--color-green);
     color: var(--color-green);
+  }
+  .pin-input {
+    width: 100px;
+    height: var(--unit);
+    padding: 0 var(--cell-padding);
+    border: var(--card-border);
+    border-radius: var(--container-radius);
+    background: var(--color-bg-raised);
+    font-size: var(--input-font-size);
+    font-family: monospace;
+    color: var(--color-text);
+    outline: none;
+  }
+  .pin-input:focus {
+    border-color: var(--color-focus);
+  }
+  .pin-input.error {
+    border-color: var(--color-red);
+    color: var(--color-red);
+  }
+  .pin-input.error::placeholder {
+    color: var(--color-red);
   }
   .download-btn {
     color: var(--color-focus);
@@ -220,7 +297,7 @@
   .dateien-btn.active {
     background: var(--color-focus);
     color: var(--color-bg-raised);
-    border-color: var(--color-focus-hover);
+    border-color: var(--color-focus);
   }
   .file-indicator {
     display: flex;

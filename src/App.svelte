@@ -119,11 +119,8 @@
     if (restored) { data = restored; }
   }
 
-  async function handleLogin() {
-    const pin = prompt('PIN eingeben:');
-    if (!pin) return;
-    const ok = await login(pin);
-    if (!ok) alert('Ungültiger PIN');
+  async function handleLogin(pin: string): Promise<boolean> {
+    return await login(pin);
   }
 
   function handleLogout() {

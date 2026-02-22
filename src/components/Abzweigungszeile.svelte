@@ -21,7 +21,7 @@
   }
 
   function cycleVonNach(direction: 1 | -1 = 1) {
-    const idx = VON_NACH_ENUM.indexOf(eintrag.abzweigung.von_nach);
+    const idx = VON_NACH_ENUM.indexOf(eintrag.abzweigung.von_nach as 'von' | 'nach');
     eintrag.abzweigung.von_nach = VON_NACH_ENUM[(idx + direction + VON_NACH_ENUM.length) % VON_NACH_ENUM.length];
     onchange();
   }

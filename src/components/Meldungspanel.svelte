@@ -90,7 +90,7 @@
     background: var(--color-bg);
   }
   .meldung-row-inner.error {
-    border-color: var(--color-red-border);
+    border-color: var(--color-red);
     background: var(--color-red-bg);
   }
   .meldung-text { font-weight: var(--weight-medium); }
@@ -111,6 +111,6 @@
     justify-content: center;
     background: var(--color-red-bg);
     color: var(--color-red);
-    border: 1px solid var(--color-red-border);
+    border: 1px solid var(--color-red);
   }
 </style>

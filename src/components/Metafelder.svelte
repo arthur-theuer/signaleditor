@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Editordaten } from '../lib/types';
+  import type { Editordaten, Videometa, Streckenmeta } from '../lib/types';
   import { isVideodaten, dateiId } from '../lib/types';
   import { STATIONEN } from '../lib/constants';
 
@@ -15,6 +15,8 @@
 
   let id = $derived(dateiId(data));
   let isVideo = $derived(isVideodaten(data));
+  let videoMeta = $derived(isVideo ? data.meta as Videometa : null);
+  let streckeMeta = $derived(!isVideo ? data.meta as Streckenmeta : null);
 
   function autoArrow(e: Event) {
     const input = e.target as HTMLInputElement;
@@ -55,18 +57,18 @@
     {/if}
   </div>
   <div class="meta-grid">
-    {#if isVideo}
+    {#if isVideo && videoMeta}
       <div class="meta-field">
         <label for="meta-streckennummer">Strecke</label>
         <span class="hl-wrap">
-          <input id="meta-streckennummer" type="text" bind:value={data.meta.streckennummer} oninput={onchange} placeholder="z.B. 500, 112b" />
+          <input id="meta-streckennummer" type="text" bind:value={videoMeta.streckennummer} oninput={onchange} placeholder="z.B. 500, 112b" />
         </span>
       </div>
-    {:else}
+    {:else if streckeMeta}
       <div class="meta-field">
         <label for="meta-linie">Linie</label>
         <span class="hl-wrap">
-          <input id="meta-linie" type="text" bind:value={data.meta.linie} oninput={onchange} placeholder="z.B. s9" />
+          <input id="meta-linie" type="text" bind:value={streckeMeta.linie} oninput={onchange} placeholder="z.B. s9" />
         </span>
       </div>
     {/if}
@@ -96,11 +98,11 @@
         <input id="meta-name" type="text" bind:value={data.meta.name} oninput={autoArrow} placeholder="z.B. Olten → Aarau" />
       </span>
     </div>
-    {#if isVideo}
+    {#if isVideo && videoMeta}
       <div class="meta-field">
         <label for="meta-video">Video</label>
         <span class="hl-wrap">
-          <input id="meta-video" type="text" bind:value={data.meta.video} oninput={onchange} placeholder="URL" />
+          <input id="meta-video" type="text" bind:value={videoMeta.video} oninput={onchange} placeholder="URL" />
         </span>
       </div>
     {/if}
