@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { list, put, del } from '@vercel/blob';
+import { list, put, del, get } from '@vercel/blob';
 import { verifyPin } from '$lib/server/auth';
 import type { RequestHandler } from './$types';
 
@@ -35,8 +35,11 @@ export const GET: RequestHandler = async ({ request, params, url }) => {
     return json({ error: 'File not found' }, { status: 404 });
   }
 
-  const response = await fetch(blob.url);
-  const content = await response.text();
+  const result = await get(blob.url);
+  if (result.statusCode !== 200) {
+    return json({ error: 'Failed to read file' }, { status: 500 });
+  }
+  const content = await new Response(result.stream).text();
 
   return json({ name: params.name, typ: prefix, content });
 };
