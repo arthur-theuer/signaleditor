@@ -75,6 +75,9 @@ body {
   background: var(--color-bg);
   padding: 0 var(--page-gap);
 }
+body.logged-out {
+  background: var(--color-red-bg);
+}
 
 /* Base signal-cell: shared by all row type components */
 .signal-cell {
