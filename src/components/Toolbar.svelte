@@ -92,7 +92,7 @@
   }
 </script>
 
-<div class="header">
+<div class="header" class:logged-out={!loggedIn}>
   <h1>Signaleditor</h1>
 
   <!-- Group: History -->
@@ -228,6 +228,9 @@
     margin-right: calc(-1 * var(--page-gap));
     padding: var(--page-gap) var(--page-gap) var(--cell-padding) var(--page-gap);
   }
+  .header.logged-out {
+    background: var(--color-red-bg);
+  }
   .header::after {
     content: '';
     position: absolute;
@@ -237,6 +240,9 @@
     height: var(--space-lg);
     background: linear-gradient(var(--color-bg), transparent);
     pointer-events: none;
+  }
+  .header.logged-out::after {
+    background: linear-gradient(var(--color-red-bg), transparent);
   }
   .header h1 { margin-right: var(--space-md); }
 
