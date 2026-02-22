@@ -176,13 +176,12 @@
   </div>
 
   {#if loggedIn && currentFileName}
-    <span class="file-indicator">
-      <span class="status-dot" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
-        <span class="status-label">
-          {#if saveStatus === 'saving'}Speichern{:else if saveStatus === 'saved'}Gespeichert{:else if saveStatus === 'dirty'}Ungespeichert{/if}
-        </span>
-      </span>
+    <span class="file-indicator" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
+      <span class="status-dot"></span>
       {currentFileName}
+      <span class="status-label">
+        {#if saveStatus === 'saving'}Speichern{:else if saveStatus === 'saved'}Gespeichert{:else if saveStatus === 'dirty'}Ungespeichert{/if}
+      </span>
     </span>
   {/if}
 
@@ -367,6 +366,7 @@
 
   /* File status indicator */
   .file-indicator {
+    position: relative;
     display: flex;
     align-items: center;
     gap: var(--space-sm);
@@ -376,19 +376,18 @@
     padding: 0 var(--space-md);
   }
   .status-dot {
-    position: relative;
     width: var(--space-md);
     height: var(--space-md);
     border-radius: 50%;
     flex-shrink: 0;
   }
-  .status-dot.dirty { background: var(--color-red); }
-  .status-dot.saving { background: var(--color-clear); }
-  .status-dot.saved { background: var(--color-green); }
+  .file-indicator.dirty .status-dot { background: var(--color-red); }
+  .file-indicator.saving .status-dot { background: var(--color-clear); }
+  .file-indicator.saved .status-dot { background: var(--color-green); }
   .status-label {
     display: none;
     position: absolute;
-    top: calc(100% + (var(--unit) - var(--space-md)) / 2 + var(--card-gap));
+    top: calc(100% + var(--card-gap));
     left: 50%;
     transform: translateX(-50%);
     height: calc(var(--unit) / 2);
@@ -402,18 +401,18 @@
     pointer-events: none;
     z-index: 1;
   }
-  .status-dot:hover .status-label { display: flex; }
-  .status-dot.dirty .status-label {
+  .file-indicator:hover .status-label { display: flex; }
+  .file-indicator.dirty .status-label {
     background: var(--color-red-bg);
     color: var(--color-red);
     border: 1px solid var(--color-red);
   }
-  .status-dot.saving .status-label {
+  .file-indicator.saving .status-label {
     background: var(--color-bg-raised);
     color: var(--color-clear);
     border: 1px solid var(--color-clear);
   }
-  .status-dot.saved .status-label {
+  .file-indicator.saved .status-label {
     background: var(--color-green-bg);
     color: var(--color-green);
     border: 1px solid var(--color-green);
