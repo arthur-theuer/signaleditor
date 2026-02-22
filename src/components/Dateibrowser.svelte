@@ -149,13 +149,12 @@
     font-weight: 600;
     cursor: pointer;
     border: none;
-    background: var(--color-bg-subtle);
+    background: var(--color-bg-raised);
     color: var(--color-text-secondary);
     border-radius: 0;
   }
-  .tab-btn.active {
-    background: var(--color-focus-bg);
-    color: var(--color-focus);
+  .tab-btn.active::after {
+    opacity: 1;
   }
   .file-list {
     flex: 1;
@@ -170,7 +169,7 @@
   }
   .file-card {
     flex: 1;
-    min-height: calc(var(--row-height) + var(--card-gap));
+    height: var(--unit);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -193,8 +192,8 @@
     margin-left: 16px;
   }
   .delete-btn {
-    width: calc(var(--row-height) + var(--card-gap));
-    min-height: calc(var(--row-height) + var(--card-gap));
+    width: var(--unit);
+    height: var(--unit);
     display: flex;
     align-items: center;
     justify-content: center;
