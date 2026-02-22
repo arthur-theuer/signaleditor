@@ -27,7 +27,7 @@
         spellcheck="false"
       />
     </div>
-    <div class="knoten-preview" class:has-value={!!preview}>{preview}</div>
+    <div class="knoten-preview" class:has-value={!!preview}>{preview || 'z.B. Olten'}</div>
   </div>
 </div>
 
