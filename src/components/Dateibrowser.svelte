@@ -153,11 +153,15 @@
     color: var(--color-text-secondary);
     border-radius: 0;
   }
+  .tab-btn::after {
+    inset: 0;
+    border-radius: 0;
+  }
   .tab-btn.active::after {
     opacity: 1;
   }
   .file-list {
-    flex: 1;
+    height: 360px;
     overflow-y: auto;
     padding: var(--half-gap) 0;
   }

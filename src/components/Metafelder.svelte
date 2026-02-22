@@ -152,6 +152,10 @@
     border-radius: 0 0 var(--card-radius) var(--card-radius);
   }
   .meta-field input:focus { outline: none; }
+  .code-input::placeholder {
+    text-transform: none;
+  }
+
   .code-input {
     width: var(--row-height);
     flex: none !important;
