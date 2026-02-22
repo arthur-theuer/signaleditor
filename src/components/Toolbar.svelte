@@ -1,7 +1,7 @@
 <script lang="ts">
   import {
     Undo2, Redo2, Upload, Download, Save, Lock, LockOpen,
-    Route, Waypoints, FolderOpen, Ruler, FileCodeCorner, Megaphone,
+    Route, Waypoints, FolderOpen, RulerDimensionLine, Code, Megaphone,
   } from 'lucide-svelte';
 
   let {
@@ -97,11 +97,11 @@
 
   <!-- Group: History -->
   <div class="btn-group">
-    <button id="undoBtn" class="tb-btn hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
-      <Undo2 size={20} strokeWidth={2} /><span>Rückgängig</span>
+    <button id="undoBtn" class="tb-btn icon-only hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
+      <Undo2 size={20} strokeWidth={2} />
     </button>
-    <button id="redoBtn" class="tb-btn hl" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
-      <Redo2 size={20} strokeWidth={2} /><span>Wiederholen</span>
+    <button id="redoBtn" class="tb-btn icon-only hl" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
+      <Redo2 size={20} strokeWidth={2} />
     </button>
   </div>
 
@@ -132,7 +132,7 @@
   <!-- Group: Cloud -->
   <div class="btn-group">
     <button
-      class="tb-btn lock-btn hl"
+      class="tb-btn lock-btn icon-only hl"
       class:unlocked={loggedIn}
       onclick={handleLockClick}
       title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
@@ -193,10 +193,10 @@
   <!-- Group: View toggles -->
   <div class="btn-group">
     <button class="tb-btn toggle-btn hl" class:active={showKm} onclick={onToggleKm} title="Kilometer">
-      <Ruler size={20} strokeWidth={2} /><span>Kilometer</span>
+      <RulerDimensionLine size={20} strokeWidth={2} /><span>Kilometer</span>
     </button>
     <button class="tb-btn toggle-btn hl" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
-      <FileCodeCorner size={20} strokeWidth={2} /><span>Signaldatei</span>
+      <Code size={20} strokeWidth={2} /><span>Signaldatei</span>
     </button>
     <button class="tb-btn toggle-btn hl" class:active={showMeldungen} onclick={onToggleMeldungen} title="Meldungen">
       <Megaphone size={20} strokeWidth={2} /><span>Meldungen</span>
@@ -260,15 +260,15 @@
   }
   .spacer { flex: 1; }
 
-  /* Base toolbar button: icon-only, expands on hover to show label */
+  /* Base toolbar button: fixed-size icon box, label appears as overlay */
   .tb-btn {
+    position: relative;
     width: var(--unit);
     height: var(--unit);
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0;
     background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--container-radius);
@@ -277,18 +277,31 @@
     font-size: var(--input-font-size);
     font-weight: var(--weight-medium);
     white-space: nowrap;
-    overflow: hidden;
+    flex-shrink: 0;
   }
   .tb-btn span {
     display: none;
-  }
-  .tb-btn:hover {
-    width: auto;
-    padding: 0 var(--cell-padding);
-    gap: var(--space-sm);
+    position: absolute;
+    left: 100%;
+    top: 0;
+    height: 100%;
+    align-items: center;
+    padding: 0 var(--cell-padding) 0 var(--space-sm);
+    background: var(--color-bg-raised);
+    border: var(--card-border);
+    border-left: none;
+    border-radius: 0 var(--container-radius) var(--container-radius) 0;
+    z-index: 1;
+    pointer-events: none;
   }
   .tb-btn:hover span {
-    display: inline;
+    display: flex;
+  }
+  .tb-btn:hover {
+    border-radius: var(--container-radius) 0 0 var(--container-radius);
+  }
+  .tb-btn.icon-only:hover {
+    border-radius: var(--container-radius);
   }
   .tb-btn:disabled {
     opacity: 0.4;
@@ -301,8 +314,16 @@
     border-color: var(--color-red);
     background: var(--color-red-bg);
   }
+  .toggle-btn span {
+    background: var(--color-red-bg);
+    border-color: var(--color-red);
+  }
   .toggle-btn.active {
     color: var(--color-green);
+    background: var(--color-green-bg);
+    border-color: var(--color-green);
+  }
+  .toggle-btn.active span {
     background: var(--color-green-bg);
     border-color: var(--color-green);
   }
@@ -313,6 +334,7 @@
     border-color: var(--color-green);
     color: var(--color-green);
   }
+
 
   /* PIN input */
   .pin-input {
@@ -346,6 +368,11 @@
 
   /* Dateien active */
   .dateien-btn.active {
+    background: var(--color-focus);
+    color: var(--color-bg-raised);
+    border-color: var(--color-focus);
+  }
+  .dateien-btn.active span {
     background: var(--color-focus);
     color: var(--color-bg-raised);
     border-color: var(--color-focus);
