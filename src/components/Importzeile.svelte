@@ -1,11 +1,10 @@
 <script lang="ts">
   import { FolderClosed, FolderOpen } from 'lucide-svelte';
   import type { Importeintrag, Eintrag } from '../lib/types';
-  import { isSignaleintrag, isAbzweigungseintrag } from '../lib/types';
+  import { isSignaleintrag, isAbzweigungseintrag, isKnoteneintrag } from '../lib/types';
   import { STATIONEN } from '../lib/constants';
   import { resolveImport, cacheImport } from '../lib/sources';
   import { parseYAMLContent } from '../lib/yaml';
-  import { loadFile } from '../lib/api';
   import Dateibrowser from './Dateibrowser.svelte';
 
   let {
@@ -23,14 +22,6 @@
   type ResolveState = { signale: Eintrag[]; error: string | null };
   let resolveResult = $state<ResolveState | null>(null);
 
-  let vonInfo = $derived(
-    eintrag.import.von ? `${eintrag.import.von} (${STATIONEN[eintrag.import.von] || '?'})` : ''
-  );
-  let bisInfo = $derived(
-    eintrag.import.bis ? `${eintrag.import.bis} (${STATIONEN[eintrag.import.bis] || '?'})` : ''
-  );
-  let stitchInfo = $derived([vonInfo, bisInfo].filter(Boolean).join(' → '));
-
   let signalCount = $derived(
     resolveResult?.signale.filter(s => isSignaleintrag(s)).length ?? 0
   );
@@ -41,9 +32,36 @@
     resolveResult
       ? resolveResult.error
         ? ''
-        : `${signalCount} Signale${abzCount ? `, ${abzCount} Abzw.` : ''}`
+        : `${signalCount} Signale${abzCount ? `, ${abzCount} Abzweigungen` : ''}`
       : ''
   );
+
+  // Derive stitch info: von → bis, using first Knoten as start if no explicit von
+  let firstKnoten = $derived(() => {
+    if (!resolveResult || resolveResult.error) return null;
+    const first = resolveResult.signale[0];
+    if (first && isKnoteneintrag(first)) return first.knoten;
+    return null;
+  });
+
+  function knotenLabel(code: string): string {
+    const name = STATIONEN[code];
+    return name ? `${code} (${name})` : code;
+  }
+
+  let vonLabel = $derived(() => {
+    if (eintrag.import.von) return knotenLabel(eintrag.import.von);
+    const fk = firstKnoten();
+    if (fk) return knotenLabel(fk);
+    return '';
+  });
+  let bisLabel = $derived(
+    eintrag.import.bis ? knotenLabel(eintrag.import.bis) : ''
+  );
+  let stitchInfo = $derived(() => {
+    const von = vonLabel();
+    return [von, bisLabel].filter(Boolean).join(' → ');
+  });
 
   // Exclude own file from usedFiles passed to picker
   let otherUsedFiles = $derived(() => {
@@ -77,30 +95,34 @@
 
 <div class="signal-cell import-cell">
   <div class="import-inner">
-    <div class="import-main">
-      {#if eintrag.import.datei}
-        <span class="import-filename">{eintrag.import.datei}</span>
-      {:else}
-        <span class="import-placeholder">Datei auswählen</span>
-      {/if}
+    <div class="import-left">
+      <button class="import-folder-btn hl" onclick={() => showPicker = true} title="Datei auswählen" tabindex={-1}>
+        {#if eintrag.import.datei}
+          <FolderOpen size={20} strokeWidth={2} />
+        {:else}
+          <FolderClosed size={20} strokeWidth={2} />
+        {/if}
+      </button>
+      <div class="import-name">
+        {#if eintrag.import.datei}
+          <span class="import-filename">{eintrag.import.datei}</span>
+        {:else}
+          <span class="import-placeholder">Datei auswählen</span>
+        {/if}
+      </div>
     </div>
-    <div class="import-info">
+    <div class="import-right">
       {#if resolveResult?.error}
         <span class="import-error">{resolveResult.error}</span>
       {:else if eintrag.import.datei}
-        <span class="import-count">{countText}</span>
-        {#if stitchInfo}
-          <span class="import-stitch">{stitchInfo}</span>
+        {#if countText}
+          <span class="import-count">{countText}</span>
+        {/if}
+        {#if stitchInfo()}
+          <span class="import-stitch">{stitchInfo()}</span>
         {/if}
       {/if}
     </div>
-    <button class="import-folder-btn hl" onclick={() => showPicker = true} title="Datei auswählen" tabindex={-1}>
-      {#if eintrag.import.datei}
-        <FolderOpen size={20} strokeWidth={2} />
-      {:else}
-        <FolderClosed size={20} strokeWidth={2} />
-      {/if}
-    </button>
   </div>
 </div>
 
@@ -117,17 +139,35 @@
 <style>
   .import-cell { background: var(--color-import); }
   .import-inner {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: 1fr 1fr;
+    display: flex;
     height: 100%;
   }
-  .import-main {
+  .import-left {
     display: flex;
     align-items: center;
-    padding: 0 12px;
-    grid-column: 1;
-    grid-row: 1;
+    flex: 1;
+    min-width: 0;
+  }
+  .import-folder-btn {
+    width: var(--row-height);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: calc(var(--card-radius) - 1px) 0 0 calc(var(--card-radius) - 1px);
+    cursor: pointer;
+    color: var(--color-import-text);
+    height: 100%;
+  }
+  .import-name {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 12px 0 0;
+    overflow: hidden;
   }
   .import-filename {
     font-size: var(--input-font-size);
@@ -142,38 +182,39 @@
     font-size: var(--input-font-size);
     color: var(--color-text-muted);
   }
-  .import-info {
+  .import-right {
+    flex: 1;
+    min-width: 0;
     display: flex;
-    align-items: center;
-    gap: 8px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
     padding: 0 12px;
-    font-size: var(--preview-font-size);
-    font-family: monospace;
-    color: var(--color-text-muted);
-    border-top: 1px solid var(--color-border);
-    grid-column: 1;
-    grid-row: 2;
+    border-left: 1px solid var(--color-border);
     overflow: hidden;
-    white-space: nowrap;
   }
   .import-count {
-    flex-shrink: 0;
+    font-size: var(--preview-font-size);
+    font-family: monospace;
     color: var(--color-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  .import-stitch { color: var(--color-focus); }
-  .import-error { color: var(--color-red); }
-  .import-folder-btn {
-    grid-column: 2;
-    grid-row: 1 / -1;
-    width: var(--row-height);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    border-left: 1px solid var(--color-border);
-    border-radius: 0 calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0;
-    cursor: pointer;
-    color: var(--color-focus);
+  .import-stitch {
+    font-size: var(--preview-font-size);
+    font-family: monospace;
+    color: var(--color-import-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .import-error {
+    font-size: var(--preview-font-size);
+    font-family: monospace;
+    color: var(--color-red);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 </style>

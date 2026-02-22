@@ -180,11 +180,15 @@
   .station-preview.has-value {
     color: var(--color-text-secondary);
   }
+  .section-header {
+    display: flex;
+    align-items: center;
+  }
   .header-id {
     font-weight: 400;
     color: var(--color-text-muted);
     font-size: 12px;
-    margin-left: 8px;
+    margin-left: auto;
     font-family: monospace;
   }
 </style>
