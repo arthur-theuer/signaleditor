@@ -242,6 +242,9 @@
     background: linear-gradient(var(--color-red-bg), transparent);
   }
   .header h1 { margin-right: var(--space-md); }
+  @media (max-width: 700px) {
+    .header h1 { display: none; }
+  }
 
   /* Groups and separators */
   .btn-group {
