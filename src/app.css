@@ -73,7 +73,7 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--color-bg);
-  padding: 0 var(--page-gap);
+  padding: 0 var(--page-gap) var(--page-gap) var(--page-gap);
 }
 
 /* Base signal-cell: shared by all row type components */

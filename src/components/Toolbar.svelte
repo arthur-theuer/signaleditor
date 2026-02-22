@@ -161,7 +161,9 @@
     top: 0;
     z-index: 10;
     background: var(--color-bg);
-    padding: var(--page-gap) 0 12px 0;
+    margin-left: calc(-1 * var(--page-gap));
+    margin-right: calc(-1 * var(--page-gap));
+    padding: var(--page-gap) var(--page-gap) 12px var(--page-gap);
   }
   .header.logged-out {
     background: var(--color-red-bg);
