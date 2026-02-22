@@ -211,6 +211,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     pointer-events: none;
+    text-transform: uppercase;
   }
   .signal-input-wrapper:focus-within .signal-preview { opacity: 0.5; }
   .signal-input-wrapper:focus-within .signal-preview.prev { border-bottom: 1px solid var(--color-border); }
@@ -229,8 +230,9 @@
     display: flex;
     align-items: center;
   }
+  .signal-input { text-transform: uppercase; }
   .signal-input:focus { outline: none; }
-  .signal-input::placeholder { color: var(--color-text-muted); }
+  .signal-input::placeholder { color: var(--color-text-muted); text-transform: none; }
 
   .name-wrapper {
     display: none;
@@ -280,8 +282,9 @@
     box-sizing: border-box;
     border-radius: inherit;
   }
+  .bahnhof-input { text-transform: uppercase; }
   .bahnhof-input:focus { outline: none; }
-  .bahnhof-input::placeholder { color: var(--color-text-muted); }
+  .bahnhof-input::placeholder { color: var(--color-text-muted); text-transform: none; }
 
   .alt-toggle-btn {
     position: absolute;

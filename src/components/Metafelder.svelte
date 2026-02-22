@@ -193,5 +193,6 @@
     font-size: var(--preview-font-size);
     margin-left: auto;
     font-family: monospace;
+    text-transform: uppercase;
   }
 </style>
