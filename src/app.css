@@ -48,6 +48,23 @@
 
   /* Highlight (note/bahnhof) */
   --color-highlight: #fff9c4;
+  --color-highlight-text: #f57f17;
+  --color-highlight-border: #f9a825;
+
+  /* Row type: Abzweigung (purple) */
+  --color-abzweigung: #f3e5f5;
+  --color-abzweigung-text: #7b1fa2;
+  --color-abzweigung-border: #ba68c8;
+
+  /* Row type: Knoten (teal) */
+  --color-knoten: #e0f2f1;
+  --color-knoten-text: #00695c;
+  --color-knoten-border: #4db6ac;
+
+  /* Row type: Import (blue) */
+  --color-import: #e3f2fd;
+  --color-import-text: #1565c0;
+  --color-import-border: #64b5f6;
 }
 
 /* Highlight overlay system */

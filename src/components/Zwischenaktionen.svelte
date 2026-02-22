@@ -57,8 +57,8 @@
   }
   .insert-zone-target button:focus { outline: none; }
   .insert-signal { background: var(--color-bg-raised); color: var(--color-text-secondary); }
-  .insert-note { background: var(--color-highlight); color: #f57f17; border-color: #f9a825; }
-  .insert-abzweigung { background: #f3e5f5; color: #7b1fa2; border-color: #ba68c8; }
-  .insert-knoten { background: #e0f2f1; color: #00695c; border-color: #4db6ac; }
-  .insert-import { background: #e3f2fd; color: #1565c0; border-color: #64b5f6; }
+  .insert-note { background: var(--color-highlight); color: var(--color-highlight-text); border-color: var(--color-highlight-border); }
+  .insert-abzweigung { background: var(--color-abzweigung); color: var(--color-abzweigung-text); border-color: var(--color-abzweigung-border); }
+  .insert-knoten { background: var(--color-knoten); color: var(--color-knoten-text); border-color: var(--color-knoten-border); }
+  .insert-import { background: var(--color-import); color: var(--color-import-text); border-color: var(--color-import-border); }
 </style>

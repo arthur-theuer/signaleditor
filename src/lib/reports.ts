@@ -31,7 +31,7 @@ export type MeldungRow = {
   import?: string;
 };
 
-export function generiereAlleMeldungenSync(signale: Eintrag[]): MeldungRow[] {
+export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
   const meldungen: MeldungRow[] = [];
   let bahnhofFarbschalter = true;
   let imBahnhof = true;
@@ -126,13 +126,9 @@ export function generiereAlleMeldungenSync(signale: Eintrag[]): MeldungRow[] {
   return meldungen;
 }
 
-export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
-  return generiereAlleMeldungenSync(signale);
-}
-
 export async function generiereAlleMeldungenResolved(signale: Eintrag[]): Promise<MeldungRow[]> {
   const resolved = await resolveSignaleForMeldungen(signale);
-  return generiereAlleMeldungenSync(resolved);
+  return generiereAlleMeldungen(resolved);
 }
 
 export async function downloadMeldungenHTML(data: Editordaten, yamlContent: string): Promise<void> {

@@ -100,7 +100,7 @@
 </div>
 
 <style>
-  .abzweigung-cell { background: #f3e5f5; }
+  .abzweigung-cell { background: var(--color-abzweigung); }
   .abzweigung-inner { display: flex; height: 100%; }
   .abzweigung-field {
     display: flex;

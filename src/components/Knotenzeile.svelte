@@ -11,8 +11,6 @@
   } = $props();
 
   let preview = $derived(STATIONEN[eintrag.knoten.toUpperCase()] || '');
-
-
 </script>
 
 <div class="signal-cell knoten-cell">
@@ -34,7 +32,7 @@
 </div>
 
 <style>
-  .knoten-cell { background: #e0f2f1; }
+  .knoten-cell { background: var(--color-knoten); }
   .knoten-inner { display: flex; height: 100%; }
   .knoten-input-wrapper {
     width: var(--row-height);

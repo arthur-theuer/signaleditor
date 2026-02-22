@@ -9,7 +9,7 @@
   import { downloadMeldungenHTML } from './lib/reports';
   import { isLoggedIn, login, logout } from './lib/auth.svelte';
   import { dateiId, isVideodaten } from './lib/types';
-  import { saveFile, createFile } from './lib/api';
+  import { saveFile, createFile, type StoragePrefix } from './lib/api';
   import Toolbar from './components/Toolbar.svelte';
   import Metafelder from './components/Metafelder.svelte';
   import Signalpanel from './components/Signalpanel.svelte';
@@ -140,7 +140,7 @@
     }
 
     const fileName = `${id}.yaml`;
-    const typ = isVideodaten(data) ? 'videos' : 'strecken';
+    const typ: StoragePrefix = isVideodaten(data) ? 'videos' : 'strecken';
     const content = generateYAML(data);
 
     saving = true;
@@ -148,10 +148,10 @@
     cancelAutoSave();
     try {
       if (currentFileName) {
-        await saveFile(typ as 'videos' | 'strecken', currentFileName, content);
+        await saveFile(typ, currentFileName, content);
       } else {
         try {
-          await createFile(typ as 'videos' | 'strecken', fileName, content);
+          await createFile(typ, fileName, content);
         } catch (e: any) {
           if (e.message?.includes('already exists')) {
             if (!confirm(`Datei "${fileName}" existiert bereits. Überschreiben?`)) {
@@ -159,7 +159,7 @@
               saveStatus = 'dirty';
               return;
             }
-            await saveFile(typ as 'videos' | 'strecken', fileName, content);
+            await saveFile(typ, fileName, content);
           } else {
             throw e;
           }
@@ -176,7 +176,7 @@
     }
   }
 
-  function handleCloudLoad(content: string, fileName: string, typ: 'videos' | 'strecken') {
+  function handleCloudLoad(content: string, fileName: string, typ: StoragePrefix) {
     if (dirty && !confirm('Ungespeicherte Änderungen verwerfen?')) return;
     cancelAutoSave();
     data = parseYAMLContent(content);

@@ -1,15 +1,8 @@
 import { json } from '@sveltejs/kit';
 import { list, put } from '@vercel/blob';
 import { verifyPin } from '$lib/server/auth';
+import { getPrefix } from '$lib/server/files';
 import type { RequestHandler } from './$types';
-
-type Dateityp = 'videos' | 'strecken';
-
-function getPrefix(url: URL): Dateityp | null {
-  const typ = url.searchParams.get('typ');
-  if (typ === 'videos' || typ === 'strecken') return typ;
-  return null;
-}
 
 /** GET /api/files?typ=videos|strecken — list stored YAML files */
 export const GET: RequestHandler = async ({ request, url }) => {

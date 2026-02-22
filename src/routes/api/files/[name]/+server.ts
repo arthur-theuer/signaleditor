@@ -1,23 +1,13 @@
 import { json } from '@sveltejs/kit';
 import { list, put, del, get } from '@vercel/blob';
 import { verifyPin } from '$lib/server/auth';
+import { getPrefix } from '$lib/server/files';
 import type { RequestHandler } from './$types';
-
-type Dateityp = 'videos' | 'strecken';
-
-function getPrefix(url: URL): Dateityp | null {
-  const typ = url.searchParams.get('typ');
-  if (typ === 'videos' || typ === 'strecken') return typ;
-  return null;
-}
 
 async function findBlob(prefix: string, name: string) {
   const path = `${prefix}/${name}`;
   const { blobs } = await list({ prefix: path });
-  // Exact match first, then fall back to prefix match (handles legacy random suffixes)
-  return blobs.find((b) => b.pathname === path)
-    ?? blobs.find((b) => b.pathname.startsWith(path))
-    ?? null;
+  return blobs.find((b) => b.pathname === path) ?? null;
 }
 
 /** GET /api/files/:name?typ=videos|strecken — read file content */

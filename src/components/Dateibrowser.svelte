@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Trash2, Check } from 'lucide-svelte';
-  import { listFiles, loadFile, deleteFile, type FileInfo } from '../lib/api';
+  import { listFiles, loadFile, deleteFile, type FileInfo, type StoragePrefix } from '../lib/api';
 
   let {
     onload,
@@ -9,14 +9,14 @@
     lockedTab,
     usedFiles = new Set<string>(),
   }: {
-    onload: (content: string, fileName: string, typ: 'videos' | 'strecken') => void;
+    onload: (content: string, fileName: string, typ: StoragePrefix) => void;
     onclose: () => void;
     mode?: 'manage' | 'select';
-    lockedTab?: 'videos' | 'strecken';
+    lockedTab?: StoragePrefix;
     usedFiles?: Set<string>;
   } = $props();
 
-  let activeTab: 'videos' | 'strecken' = $state(lockedTab ?? 'videos');
+  let activeTab: StoragePrefix = $state(lockedTab ?? 'videos');
   let files: FileInfo[] = $state([]);
   let loading = $state(false);
   let error: string | null = $state(null);

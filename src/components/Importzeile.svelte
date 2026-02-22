@@ -115,7 +115,7 @@
 {/if}
 
 <style>
-  .import-cell { background: #e3f2fd; }
+  .import-cell { background: var(--color-import); }
   .import-inner {
     display: grid;
     grid-template-columns: 1fr auto;

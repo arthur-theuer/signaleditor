@@ -47,22 +47,22 @@
   }
   .add-note {
     background: var(--color-highlight);
-    color: #f57f17;
-    border: 1px solid #f9a825;
+    color: var(--color-highlight-text);
+    border: 1px solid var(--color-highlight-border);
   }
   .add-abzweigung {
-    background: #f3e5f5;
-    color: #7b1fa2;
-    border: 1px solid #ba68c8;
+    background: var(--color-abzweigung);
+    color: var(--color-abzweigung-text);
+    border: 1px solid var(--color-abzweigung-border);
   }
   .add-knoten {
-    background: #e0f2f1;
-    color: #00695c;
-    border: 1px solid #4db6ac;
+    background: var(--color-knoten);
+    color: var(--color-knoten-text);
+    border: 1px solid var(--color-knoten-border);
   }
   .add-import {
-    background: #e3f2fd;
-    color: #1565c0;
-    border: 1px solid #64b5f6;
+    background: var(--color-import);
+    color: var(--color-import-text);
+    border: 1px solid var(--color-import-border);
   }
 </style>

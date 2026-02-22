@@ -86,15 +86,15 @@
     text-align: center;
   }
   .meldung-row-inner.muted {
-    border-color: #ddd;
-    background: #f5f5f5;
+    border-color: var(--color-border);
+    background: var(--color-bg);
   }
   .meldung-row-inner.error {
     border-color: var(--color-red-border);
     background: var(--color-red-bg);
   }
   .meldung-text { font-weight: 500; }
-  .muted-text { color: #999; font-style: italic; }
+  .muted-text { color: var(--color-text-muted); font-style: italic; }
   .meldung-error { color: var(--color-red); font-style: italic; }
   .close-bar {
     margin: var(--half-gap) var(--card-gap);

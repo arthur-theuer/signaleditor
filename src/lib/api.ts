@@ -1,8 +1,8 @@
-type Dateityp = 'videos' | 'strecken';
+export type StoragePrefix = 'videos' | 'strecken';
 
 export type FileInfo = {
   name: string;
-  typ: Dateityp;
+  typ: StoragePrefix;
   url: string;
   size: number;
   uploadedAt: string;
@@ -16,7 +16,13 @@ function headers(): HeadersInit {
 }
 
 async function handleResponse(res: Response): Promise<any> {
-  const body = await res.json();
+  let body: any;
+  try {
+    body = await res.json();
+  } catch {
+    if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+    throw new Error('Invalid JSON response');
+  }
   if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
   return body;
 }
@@ -42,18 +48,18 @@ export function isLoggedIn(): boolean {
   return pin !== null;
 }
 
-export async function listFiles(typ: Dateityp): Promise<FileInfo[]> {
+export async function listFiles(typ: StoragePrefix): Promise<FileInfo[]> {
   const res = await fetch(`/api/files?typ=${typ}`, { headers: headers() });
   return handleResponse(res);
 }
 
-export async function loadFile(typ: Dateityp, name: string): Promise<string> {
+export async function loadFile(typ: StoragePrefix, name: string): Promise<string> {
   const res = await fetch(`/api/files/${encodeURIComponent(name)}?typ=${typ}`, { headers: headers() });
   const body = await handleResponse(res);
   return body.content;
 }
 
-export async function saveFile(typ: Dateityp, name: string, content: string): Promise<void> {
+export async function saveFile(typ: StoragePrefix, name: string, content: string): Promise<void> {
   const res = await fetch(`/api/files/${encodeURIComponent(name)}?typ=${typ}`, {
     method: 'PUT',
     headers: headers(),
@@ -62,7 +68,7 @@ export async function saveFile(typ: Dateityp, name: string, content: string): Pr
   await handleResponse(res);
 }
 
-export async function createFile(typ: Dateityp, name: string, content: string): Promise<void> {
+export async function createFile(typ: StoragePrefix, name: string, content: string): Promise<void> {
   const res = await fetch(`/api/files?typ=${typ}`, {
     method: 'POST',
     headers: headers(),
@@ -71,7 +77,7 @@ export async function createFile(typ: Dateityp, name: string, content: string): 
   await handleResponse(res);
 }
 
-export async function deleteFile(typ: Dateityp, name: string): Promise<void> {
+export async function deleteFile(typ: StoragePrefix, name: string): Promise<void> {
   const res = await fetch(`/api/files/${encodeURIComponent(name)}?typ=${typ}`, {
     method: 'DELETE',
     headers: headers(),
