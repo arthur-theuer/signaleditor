@@ -294,8 +294,6 @@
     border-radius: 0;
     background: none;
     color: inherit;
-    font-size: var(--input-font-size);
-    font-weight: var(--weight-semibold);
     cursor: pointer;
     display: flex;
     align-items: center;
