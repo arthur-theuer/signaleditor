@@ -77,7 +77,7 @@
     background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--card-radius);
-    height: 100%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
