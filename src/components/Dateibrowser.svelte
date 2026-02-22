@@ -1,15 +1,22 @@
 <script lang="ts">
+  import { Trash2, Check } from 'lucide-svelte';
   import { listFiles, loadFile, deleteFile, type FileInfo } from '../lib/api';
 
   let {
     onload,
     onclose,
+    mode = 'manage',
+    lockedTab,
+    usedFiles = new Set<string>(),
   }: {
     onload: (content: string, fileName: string, typ: 'videos' | 'strecken') => void;
     onclose: () => void;
+    mode?: 'manage' | 'select';
+    lockedTab?: 'videos' | 'strecken';
+    usedFiles?: Set<string>;
   } = $props();
 
-  let activeTab: 'videos' | 'strecken' = $state('videos');
+  let activeTab: 'videos' | 'strecken' = $state(lockedTab ?? 'videos');
   let files: FileInfo[] = $state([]);
   let loading = $state(false);
   let error: string | null = $state(null);
@@ -61,6 +68,10 @@
     }
   }
 
+  function isFileUsed(file: FileInfo): boolean {
+    return usedFiles.has(file.name);
+  }
+
   function formatDate(dateStr: string): string {
     const d = new Date(dateStr);
     return d.toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit', year: 'numeric' })
@@ -76,11 +87,15 @@
       <button
         class="tab-btn hl"
         class:active={activeTab === 'videos'}
+        class:disabled={lockedTab !== undefined && lockedTab !== 'videos'}
+        disabled={lockedTab !== undefined && lockedTab !== 'videos'}
         onclick={() => activeTab = 'videos'}
       >Videos</button>
       <button
         class="tab-btn hl"
         class:active={activeTab === 'strecken'}
+        class:disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
+        disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
         onclick={() => activeTab = 'strecken'}
       >Strecken</button>
     </div>
@@ -94,20 +109,26 @@
         <div class="status">Keine Dateien</div>
       {:else}
         {#each files as file}
+          {@const used = mode === 'select' && isFileUsed(file)}
           <div class="file-row">
-            <button class="file-card hl" onclick={() => handleLoad(file)}>
+            <button
+              class="file-card hl"
+              class:used
+              disabled={used}
+              onclick={() => handleLoad(file)}
+            >
               <span class="file-name">{file.name}</span>
               <span class="file-date">{formatDate(file.uploadedAt)}</span>
             </button>
-            <button class="delete-btn hl" onclick={() => handleDelete(file)} title="Löschen">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10 11v6" />
-                <path d="M14 11v6" />
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                <path d="M3 6h18" />
-                <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-              </svg>
-            </button>
+            {#if mode === 'manage'}
+              <button class="delete-btn hl" onclick={() => handleDelete(file)} title="Löschen">
+                <Trash2 size={16} strokeWidth={2.5} />
+              </button>
+            {:else if used}
+              <div class="used-indicator">
+                <Check size={16} strokeWidth={2.5} />
+              </div>
+            {/if}
           </div>
         {/each}
       {/if}
@@ -165,6 +186,11 @@
   .tab-btn.active::after {
     opacity: 1;
   }
+  .tab-btn.disabled {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+  }
   .file-list {
     height: 360px;
     overflow-y: auto;
@@ -191,6 +217,11 @@
     font-size: 14px;
     text-align: left;
   }
+  .file-card.used {
+    opacity: 0.4;
+    cursor: default;
+    pointer-events: none;
+  }
   .file-name {
     font-weight: 500;
     font-family: monospace;
@@ -212,6 +243,18 @@
     border-radius: var(--card-radius);
     cursor: pointer;
     color: var(--color-red);
+    flex-shrink: 0;
+  }
+  .used-indicator {
+    width: var(--unit);
+    height: var(--unit);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-green-bg);
+    border: 1px solid var(--color-green);
+    border-radius: var(--card-radius);
+    color: var(--color-green);
     flex-shrink: 0;
   }
   .status {

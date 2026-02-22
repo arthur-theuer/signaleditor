@@ -48,7 +48,12 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="meta-section" onkeydown={handleKeydown}>
-  <div class="section-header">{isVideo ? 'Video' : 'Strecke'}</div>
+  <div class="section-header">
+    {isVideo ? 'Video' : 'Strecke'}
+    {#if id}
+      <span class="header-id">{id}</span>
+    {/if}
+  </div>
   <div class="meta-grid">
     {#if isVideo}
       <div class="meta-field">
@@ -99,11 +104,7 @@
         </span>
       </div>
     {/if}
-    <div class="meta-field meta-field-id">
-      <!-- svelte-ignore a11y_label_has_associated_control -->
-      <label>ID</label>
-      <span class="id-preview">{id || '–'}</span>
-    </div>
+
   </div>
 </div>
 
@@ -179,17 +180,11 @@
   .station-preview.has-value {
     color: var(--color-text-secondary);
   }
-  .meta-field-id {
-    min-width: 0;
-  }
-  .id-preview {
-    display: flex;
-    align-items: center;
-    padding: 0 12px;
-    height: var(--unit);
-    font-size: var(--input-font-size);
-    font-family: monospace;
+  .header-id {
+    font-weight: 400;
     color: var(--color-text-muted);
-    white-space: nowrap;
+    font-size: 12px;
+    margin-left: 8px;
+    font-family: monospace;
   }
 </style>

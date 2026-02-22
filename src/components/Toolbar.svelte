@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { Undo2, Redo2, Upload, Download, Save, Lock, LockOpen } from 'lucide-svelte';
+
   let {
     showKm,
     showYaml,
@@ -56,16 +58,10 @@
   <h1>Signaleditor</h1>
 
   <button id="undoBtn" class="undo-redo-btn hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M9 14 4 9l5-5" />
-      <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" />
-    </svg>
+    <Undo2 size={20} strokeWidth={2} />
   </button>
   <button id="redoBtn" class="undo-redo-btn hl" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="m15 14 5-5-5-5" />
-      <path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13" />
-    </svg>
+    <Redo2 size={20} strokeWidth={2} />
   </button>
 
   <input
@@ -78,18 +74,10 @@
   <button class="hl" onclick={() => onNew('video')}>Neues Video</button>
   <button class="hl" onclick={() => onNew('strecke')}>Neue Strecke</button>
   <button class="icon-btn hl" onclick={() => fileInput.click()} title="Datei laden">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 3v12" />
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <path d="m17 8-5-5-5 5" />
-    </svg>
+    <Upload size={20} strokeWidth={2} />
   </button>
   <button class="icon-btn download-btn hl" onclick={onExportMeldungen} title="Meldungen exportieren">
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 15V3" />
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <path d="m7 10 5 5 5-5" />
-    </svg>
+    <Download size={20} strokeWidth={2} />
   </button>
 
   {#if loggedIn}
@@ -99,11 +87,7 @@
       disabled={saving || !dirty}
       title="Speichern (Ctrl+S)"
     >
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
-        <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
-        <path d="M7 3v4a1 1 0 0 0 1 1h7" />
-      </svg>
+      <Save size={20} strokeWidth={2} />
     </button>
     <button
       class="dateien-btn hl"
@@ -119,15 +103,11 @@
     onclick={() => loggedIn ? onLogout() : onLogin()}
     title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
   >
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="16" r="1" />
-      <rect x="3" y="10" width="18" height="12" rx="2" />
-      {#if loggedIn}
-        <path d="M7 10V7a5 5 0 0 1 9.33-2.5" />
-      {:else}
-        <path d="M7 10V7a5 5 0 0 1 10 0v3" />
-      {/if}
-    </svg>
+    {#if loggedIn}
+      <LockOpen size={20} strokeWidth={2} />
+    {:else}
+      <Lock size={20} strokeWidth={2} />
+    {/if}
   </button>
 
   {#if loggedIn && currentFileName}

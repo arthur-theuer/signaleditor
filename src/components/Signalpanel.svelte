@@ -23,6 +23,10 @@
     onchange: () => void;
   } = $props();
 
+  let usedImportFiles = $derived(
+    new Set(signale.filter(isImporteintrag).map(s => s.import.datei).filter(Boolean))
+  );
+
   let listEl: HTMLDivElement;
   let scrollAnchor: HTMLDivElement;
 
@@ -107,7 +111,7 @@
     '.abzweigung-vonnach',
     '.abzweigung-richtung',
     '.knoten-input',
-    '.import-datei',
+    '.import-folder-btn',
   ].join(', ');
 
   function getRowEl(idx: number): HTMLElement | null {
@@ -127,7 +131,7 @@
       if (kmInput) return kmInput;
     }
     return rowEl.querySelector<HTMLElement>(
-      '.signal-input, .note-input, .abzweigung-btn, .knoten-input, .import-datei'
+      '.signal-input, .note-input, .abzweigung-btn, .knoten-input, .import-folder-btn'
     );
   }
 
@@ -322,7 +326,7 @@
       {:else if isAbzweigungseintrag(eintrag)}
         <Abzweigungszeile bind:eintrag={signale[idx] as Abzweigungseintrag} {onchange} />
       {:else if isImporteintrag(eintrag)}
-        <Importzeile bind:eintrag={signale[idx] as Importeintrag} {onchange} />
+        <Importzeile bind:eintrag={signale[idx] as Importeintrag} usedFiles={usedImportFiles} {onchange} />
       {/if}
 
       <Zeilenaktionen
