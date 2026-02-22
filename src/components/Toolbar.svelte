@@ -1,7 +1,7 @@
 <script lang="ts">
   import {
     Undo2, Redo2, Upload, Download, Save, Lock, LockOpen,
-    Route, Waypoints, FolderOpen, RulerDimensionLine, Code, Megaphone,
+    Milestone, Route, FolderOpen, RulerDimensionLine, Code, Megaphone,
   } from 'lucide-svelte';
 
   let {
@@ -117,10 +117,10 @@
       onchange={onFileLoad}
     />
     <button class="tb-btn hl" onclick={() => onNew('video')} title="Neues Video">
-      <Route size={20} strokeWidth={2} /><span>Video</span>
+      <Milestone size={20} strokeWidth={2} /><span>Video</span>
     </button>
     <button class="tb-btn hl" onclick={() => onNew('strecke')} title="Neue Strecke">
-      <Waypoints size={20} strokeWidth={2} /><span>Strecke</span>
+      <Route size={20} strokeWidth={2} /><span>Strecke</span>
     </button>
     <button class="tb-btn hl" onclick={() => fileInput.click()} title="Datei laden">
       <Upload size={20} strokeWidth={2} /><span>Laden</span>
