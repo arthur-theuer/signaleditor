@@ -72,7 +72,7 @@ export const MELDUNG_FARBEN: Record<string, string> = {
   spurwechsel: '#800080',
   ausfahrt: '#FF0000',
   wiederholung: '#0000FF',
-  standard: '#000000',
+  standard: 'currentColor',
 };
 
 export const BAHNHOF_FARBEN = ['#008000', '#FFA500'] as const;

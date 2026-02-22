@@ -37,14 +37,14 @@
 <style>
   .yaml-output {
     position: relative;
-    background: #1e1e1e;
-    border: 1px solid #555;
+    background: var(--color-code-bg);
+    border: 1px solid var(--color-code-border);
     border-radius: var(--container-radius);
     margin-top: var(--page-gap);
     margin-bottom: var(--page-gap);
   }
   pre {
-    color: #d4d4d4;
+    color: var(--color-code-text);
     padding: var(--space-xl);
     font-family: monospace;
     font-size: var(--preview-font-size);
@@ -62,17 +62,17 @@
   }
   .yaml-btn {
     padding: var(--space-md) var(--cell-padding);
-    background: #333;
-    color: #aaa;
-    border: 1px solid #555;
+    background: var(--color-code-btn-bg);
+    color: var(--color-code-btn-text);
+    border: 1px solid var(--color-code-btn-border);
     border-radius: var(--card-radius);
     cursor: pointer;
     font-size: var(--input-font-size);
     font-weight: var(--weight-medium);
   }
   .yaml-btn:hover {
-    background: #444;
-    color: #ddd;
-    border-color: #777;
+    background: var(--color-code-btn-hover-bg);
+    color: var(--color-code-btn-hover-text);
+    border-color: var(--color-code-btn-hover-border);
   }
 </style>
