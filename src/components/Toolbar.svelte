@@ -177,13 +177,11 @@
 
   {#if loggedIn && currentFileName}
     <span class="file-indicator">
-      {#if saveStatus === 'saving'}
-        <span class="save-status saving">Speichern...</span>
-      {:else if saveStatus === 'saved'}
-        <span class="save-status saved">Gespeichert</span>
-      {:else if saveStatus === 'dirty'}
-        <span class="dirty-dot"></span>
-      {/if}
+      <span class="status-dot" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
+        <span class="status-label">
+          {#if saveStatus === 'saving'}Speichern{:else if saveStatus === 'saved'}Gespeichert{:else if saveStatus === 'dirty'}Ungespeichert{/if}
+        </span>
+      </span>
       {currentFileName}
     </span>
   {/if}
@@ -377,18 +375,47 @@
     color: var(--color-text-secondary);
     padding: 0 var(--space-md);
   }
-  .dirty-dot {
+  .status-dot {
+    position: relative;
     width: var(--space-md);
     height: var(--space-md);
     border-radius: 50%;
-    background: var(--color-clear);
     flex-shrink: 0;
   }
-  .save-status {
+  .status-dot.dirty { background: var(--color-red); }
+  .status-dot.saving { background: var(--color-clear); }
+  .status-dot.saved { background: var(--color-green); }
+  .status-label {
+    display: none;
+    position: absolute;
+    top: calc(100% + var(--card-gap));
+    left: 50%;
+    transform: translateX(-50%);
+    height: calc(var(--unit) / 2);
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--cell-padding);
+    border-radius: var(--container-radius);
     font-size: var(--preview-font-size);
-    font-weight: var(--weight-semibold);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     white-space: nowrap;
+    pointer-events: none;
+    z-index: 1;
   }
-  .save-status.saving { color: var(--color-clear); }
-  .save-status.saved { color: var(--color-green); }
+  .status-dot:hover .status-label { display: flex; }
+  .status-dot.dirty .status-label {
+    background: var(--color-red-bg);
+    color: var(--color-red);
+    border: 1px solid var(--color-red);
+  }
+  .status-dot.saving .status-label {
+    background: var(--color-bg-raised);
+    color: var(--color-clear);
+    border: 1px solid var(--color-clear);
+  }
+  .status-dot.saved .status-label {
+    background: var(--color-green-bg);
+    color: var(--color-green);
+    border: 1px solid var(--color-green);
+  }
 </style>
