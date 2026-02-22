@@ -241,7 +241,8 @@
 
   // Toggle red page background when not logged in
   $effect(() => {
-    document.body.classList.toggle('logged-out', !isLoggedIn());
+    if (typeof document === 'undefined') return;
+    document.body.style.background = isLoggedIn() ? '' : 'var(--color-red-bg)';
   });
 
   // Keyboard shortcuts
