@@ -105,32 +105,32 @@
     --color-focus-bg: rgba(144,202,249,0.08);
     --color-focus-ring: #bbdefb;
 
-    /* Green — Green 200 / 900 */
-    --color-green: #a5d6a7;
-    --color-green-bg: #1b5e20;
+    /* Green */
+    --color-green: #81c784;
+    --color-green-bg: #1a2e1c;
 
-    /* Red — Red 200 / 900 */
-    --color-red: #ef9a9a;
-    --color-red-bg: #b71c1c;
+    /* Red */
+    --color-red: #e57373;
+    --color-red-bg: #2e1a1a;
 
-    /* Orange — Orange 200 */
-    --color-clear: #ffcc80;
+    /* Orange */
+    --color-clear: #ffb74d;
 
-    /* Highlight (note/bahnhof) — Yellow 900 bg / Yellow 100 text */
-    --color-highlight: #f57f17;
-    --color-highlight-text: #fff9c4;
+    /* Highlight (note/bahnhof) */
+    --color-highlight: #2e2a1a;
+    --color-highlight-text: #ffd54f;
 
-    /* Row type: Abzweigung — Purple 900 bg / Purple 100 text */
-    --color-abzweigung: #4a148c;
-    --color-abzweigung-text: #e1bee7;
+    /* Row type: Abzweigung (purple) */
+    --color-abzweigung: #2a1a2e;
+    --color-abzweigung-text: #ce93d8;
 
-    /* Row type: Knoten — Teal 900 bg / Teal 100 text */
-    --color-knoten: #004d40;
-    --color-knoten-text: #b2dfdb;
+    /* Row type: Knoten (teal) */
+    --color-knoten: #1a2e2a;
+    --color-knoten-text: #80cbc4;
 
-    /* Row type: Import — Blue 900 bg / Blue 100 text */
-    --color-import: #0d47a1;
-    --color-import-text: #bbdefb;
+    /* Row type: Import (blue) */
+    --color-import: #1a222e;
+    --color-import-text: #90caf9;
 
 
   }
