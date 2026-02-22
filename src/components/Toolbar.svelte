@@ -209,18 +209,11 @@
     background: var(--color-green-bg);
     border-color: var(--color-green);
   }
-  .undo-redo-btn {
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
   .undo-redo-btn:disabled {
     opacity: 0.4;
     cursor: default;
   }
+  .header button.undo-redo-btn,
   .header button.icon-btn,
   .header button.lock-btn,
   .header button.save-btn {
