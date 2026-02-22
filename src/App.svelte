@@ -241,7 +241,6 @@
 
   // Toggle red page background when not logged in
   $effect(() => {
-    if (typeof document === 'undefined') return;
     document.body.style.background = isLoggedIn() ? '' : 'var(--color-red-bg)';
   });
 
