@@ -292,6 +292,9 @@
     z-index: 1;
     pointer-events: none;
   }
+  .tb-btn:hover {
+    z-index: 2;
+  }
   .tb-btn:hover span {
     display: flex;
   }
