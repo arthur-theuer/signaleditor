@@ -29,12 +29,16 @@
   let currentFileName = $state<string | null>(null);
   let saving = $state(false);
   let showDateien = $state(false);
+  let saveStatus = $state<'saved' | 'saving' | 'dirty' | 'idle'>('idle');
+  let autoSaveTimer: ReturnType<typeof setTimeout> | null = null;
 
   function newFile(typ: Dateityp) {
     if (dirty && !confirm('Ungespeicherte Änderungen verwerfen?')) return;
+    cancelAutoSave();
     data = typ === 'video' ? emptyVideodaten() : emptyStreckendaten();
     dirty = false;
     currentFileName = null;
+    saveStatus = 'idle';
     history.clear();
   }
 
@@ -48,9 +52,11 @@
         return;
       }
     }
+    cancelAutoSave();
     data = parseYAMLContent(content);
     dirty = false;
     currentFileName = null;
+    saveStatus = 'idle';
     history.clear();
     if (data.signale.some(s => s.km !== undefined)) {
       showKm = true;
@@ -71,6 +77,27 @@
 
   function markDirty() {
     dirty = true;
+    scheduleAutoSave();
+  }
+
+  function scheduleAutoSave() {
+    if (autoSaveTimer) clearTimeout(autoSaveTimer);
+    if (!isLoggedIn() || !currentFileName) {
+      saveStatus = dirty ? 'dirty' : 'idle';
+      return;
+    }
+    saveStatus = 'dirty';
+    autoSaveTimer = setTimeout(() => {
+      autoSaveTimer = null;
+      handleSave();
+    }, 3000);
+  }
+
+  function cancelAutoSave() {
+    if (autoSaveTimer) {
+      clearTimeout(autoSaveTimer);
+      autoSaveTimer = null;
+    }
   }
 
   // Save undo state when any input receives focus (captures "before edit" state)
@@ -117,6 +144,8 @@
     const content = generateYAML(data);
 
     saving = true;
+    saveStatus = 'saving';
+    cancelAutoSave();
     try {
       if (currentFileName) {
         await saveFile(typ as 'videos' | 'strecken', currentFileName, content);
@@ -127,6 +156,7 @@
           if (e.message?.includes('already exists')) {
             if (!confirm(`Datei "${fileName}" existiert bereits. Überschreiben?`)) {
               saving = false;
+              saveStatus = 'dirty';
               return;
             }
             await saveFile(typ as 'videos' | 'strecken', fileName, content);
@@ -137,7 +167,9 @@
       }
       currentFileName = fileName;
       dirty = false;
+      saveStatus = 'saved';
     } catch (e: any) {
+      saveStatus = 'dirty';
       alert(`Speichern fehlgeschlagen: ${e.message}`);
     } finally {
       saving = false;
@@ -146,9 +178,11 @@
 
   function handleCloudLoad(content: string, fileName: string, typ: 'videos' | 'strecken') {
     if (dirty && !confirm('Ungespeicherte Änderungen verwerfen?')) return;
+    cancelAutoSave();
     data = parseYAMLContent(content);
     currentFileName = fileName;
     dirty = false;
+    saveStatus = 'saved';
     history.clear();
     showDateien = false;
     if (data.signale.some(s => s.km !== undefined)) {
@@ -247,6 +281,7 @@
   {saving}
   {dirty}
   {currentFileName}
+  {saveStatus}
 />
 
 {#if showDateien}

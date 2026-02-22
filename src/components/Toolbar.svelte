@@ -22,6 +22,7 @@
     saving,
     dirty,
     currentFileName,
+    saveStatus,
   }: {
     showKm: boolean;
     showYaml: boolean;
@@ -45,6 +46,7 @@
     saving: boolean;
     dirty: boolean;
     currentFileName: string | null;
+    saveStatus: 'saved' | 'saving' | 'dirty' | 'idle';
   } = $props();
 
   let fileInput: HTMLInputElement;
@@ -107,7 +109,13 @@
 
   {#if loggedIn && currentFileName}
     <span class="file-indicator">
-      {#if dirty}<span class="dirty-dot"></span>{/if}
+      {#if saveStatus === 'saving'}
+        <span class="save-status saving">Speichern...</span>
+      {:else if saveStatus === 'saved'}
+        <span class="save-status saved">Gespeichert</span>
+      {:else if saveStatus === 'dirty'}
+        <span class="dirty-dot"></span>
+      {/if}
       {currentFileName}
     </span>
   {/if}
@@ -240,5 +248,16 @@
     border-radius: 50%;
     background: var(--color-clear);
     flex-shrink: 0;
+  }
+  .save-status {
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .save-status.saving {
+    color: var(--color-clear);
+  }
+  .save-status.saved {
+    color: var(--color-green);
   }
 </style>
