@@ -47,7 +47,7 @@
     color: #d4d4d4;
     padding: 16px;
     font-family: monospace;
-    font-size: 12px;
+    font-size: var(--preview-font-size);
     white-space: pre-wrap;
     max-height: 400px;
     overflow-y: auto;
@@ -61,14 +61,14 @@
     gap: var(--card-gap);
   }
   .yaml-btn {
-    padding: 8px 12px;
+    padding: 8px var(--cell-padding);
     background: #333;
     color: #aaa;
     border: 1px solid #555;
     border-radius: var(--card-radius);
     cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
+    font-size: var(--input-font-size);
+    font-weight: var(--weight-medium);
   }
   .yaml-btn:hover {
     background: #444;

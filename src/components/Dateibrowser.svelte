@@ -165,8 +165,8 @@
   .tab-btn {
     flex: 1;
     padding: 14px;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: var(--input-font-size);
+    font-weight: var(--weight-semibold);
     cursor: pointer;
     background: var(--color-bg-raised);
     color: var(--color-text-secondary);
@@ -214,7 +214,7 @@
     border: var(--card-border);
     border-radius: var(--card-radius);
     cursor: pointer;
-    font-size: 14px;
+    font-size: var(--input-font-size);
     text-align: left;
   }
   .file-card.used {
@@ -223,12 +223,12 @@
     pointer-events: none;
   }
   .file-name {
-    font-weight: 500;
+    font-weight: var(--weight-medium);
     font-family: monospace;
   }
   .file-date {
     color: var(--color-text-secondary);
-    font-size: 12px;
+    font-size: var(--preview-font-size);
     white-space: nowrap;
     margin-left: 16px;
   }
@@ -261,7 +261,7 @@
     padding: 24px;
     text-align: center;
     color: var(--color-text-secondary);
-    font-size: 14px;
+    font-size: var(--input-font-size);
   }
   .status.error {
     color: var(--color-red);

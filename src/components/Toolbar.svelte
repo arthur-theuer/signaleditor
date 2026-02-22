@@ -168,9 +168,9 @@
     border: 1px solid var(--color-border);
     border-radius: var(--container-radius);
     cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
-    height: 44px;
+    font-size: var(--input-font-size);
+    font-weight: var(--weight-medium);
+    height: var(--unit);
     padding: 0 16px;
   }
   .header .toggle-btn {
@@ -191,8 +191,8 @@
   .header button.icon-btn,
   .header button.lock-btn,
   .header button.save-btn {
-    width: 44px;
-    height: 44px;
+    width: var(--unit);
+    height: var(--unit);
     padding: 0;
     display: flex;
     align-items: center;
@@ -226,7 +226,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: var(--input-font-size);
     font-family: monospace;
     color: var(--color-text-secondary);
     padding: 0 8px;
@@ -239,8 +239,8 @@
     flex-shrink: 0;
   }
   .save-status {
-    font-size: 11px;
-    font-weight: 600;
+    font-size: var(--preview-font-size);
+    font-weight: var(--weight-semibold);
     white-space: nowrap;
   }
   .save-status.saving {

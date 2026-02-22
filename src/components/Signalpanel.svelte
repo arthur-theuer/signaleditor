@@ -362,8 +362,8 @@
     justify-content: center;
     width: var(--unit);
     flex-shrink: 0;
-    font-size: 13px;
-    font-weight: 700;
+    font-size: var(--input-font-size);
+    font-weight: var(--weight-bold);
     color: var(--color-text-secondary);
     font-family: monospace;
     background: var(--color-bg-raised);

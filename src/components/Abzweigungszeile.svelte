@@ -118,10 +118,10 @@
     height: 100%;
     outline: none;
     color: var(--color-text);
-    font-weight: normal;
+    font-weight: var(--weight-normal);
   }
   .abzweigung-field input {
-    padding: 0 12px;
+    padding: 0 var(--cell-padding);
     min-width: 0;
     width: 100%;
     text-align: center;

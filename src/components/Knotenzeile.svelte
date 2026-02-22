@@ -60,7 +60,7 @@
     min-width: 0;
     display: flex;
     align-items: center;
-    padding: 0 12px;
+    padding: 0 var(--cell-padding);
     height: 100%;
     border-left: 1px solid var(--color-border);
     font-size: var(--input-font-size);

@@ -38,7 +38,7 @@
   .note-spacer { flex: var(--preview-flex); }
   .note-input {
     flex: var(--input-flex);
-    padding: 0 12px;
+    padding: 0 var(--cell-padding);
     border: none;
     background: transparent;
     font-size: var(--input-font-size);

@@ -82,7 +82,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 0 12px;
+    padding: 0 var(--cell-padding);
     text-align: center;
   }
   .meldung-row-inner.muted {
@@ -93,7 +93,7 @@
     border-color: var(--color-red-border);
     background: var(--color-red-bg);
   }
-  .meldung-text { font-weight: 500; }
+  .meldung-text { font-weight: var(--weight-medium); }
   .muted-text { color: var(--color-text-muted); font-style: italic; }
   .meldung-error { color: var(--color-red); font-style: italic; }
   .close-bar {
@@ -101,11 +101,11 @@
   }
   .close-btn {
     width: 100%;
-    padding: 12px;
+    padding: var(--cell-padding);
     border-radius: var(--card-radius);
     cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
+    font-weight: var(--weight-semibold);
+    font-size: var(--input-font-size);
     display: flex;
     align-items: center;
     justify-content: center;

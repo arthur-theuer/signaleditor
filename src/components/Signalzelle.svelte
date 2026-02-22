@@ -205,7 +205,7 @@
     font-family: monospace;
     color: var(--color-text-muted);
     opacity: 0;
-    padding: 0 12px;
+    padding: 0 var(--cell-padding);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -219,7 +219,7 @@
 
   .signal-input {
     flex: var(--input-flex);
-    padding: 0 12px;
+    padding: 0 var(--cell-padding);
     border: none;
     background: transparent;
     font-size: var(--input-font-size);
@@ -245,7 +245,7 @@
   .name-spacer { flex: var(--preview-flex); pointer-events: none; }
   .name-input {
     flex: var(--input-flex);
-    padding: 0 12px;
+    padding: 0 var(--cell-padding);
     border: none;
     background: transparent;
     font-size: var(--input-font-size);
@@ -270,7 +270,7 @@
   .bahnhof-wrapper.visible { display: flex; }
   .bahnhof-input {
     width: 100%;
-    padding: 0 12px;
+    padding: 0 var(--cell-padding);
     border: none;
     background: var(--color-highlight);
     font-size: var(--input-font-size);
@@ -294,7 +294,7 @@
     background: none;
     color: inherit;
     font-size: var(--input-font-size);
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
     cursor: pointer;
     display: flex;
     align-items: center;

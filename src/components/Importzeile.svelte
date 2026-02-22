@@ -166,13 +166,13 @@
     min-width: 0;
     display: flex;
     align-items: center;
-    padding: 0 12px 0 0;
+    padding: 0 var(--cell-padding) 0 0;
     overflow: hidden;
   }
   .import-filename {
     font-size: var(--input-font-size);
     font-family: monospace;
-    font-weight: 500;
+    font-weight: var(--weight-medium);
     color: var(--color-text);
     overflow: hidden;
     white-space: nowrap;
@@ -189,7 +189,7 @@
     flex-direction: column;
     justify-content: center;
     gap: 2px;
-    padding: 0 12px;
+    padding: 0 var(--cell-padding);
     border-left: 1px solid var(--color-border);
     overflow: hidden;
   }

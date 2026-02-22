@@ -130,10 +130,10 @@
     border-radius: var(--card-radius);
   }
   .meta-field label {
-    font-size: 11px;
-    font-weight: 600;
+    font-size: var(--preview-font-size);
+    font-weight: var(--weight-semibold);
     color: var(--color-text-secondary);
-    padding: 8px 12px 4px;
+    padding: 8px var(--cell-padding) 4px;
     background: var(--color-bg-subtle);
     border-bottom: 1px solid var(--color-border);
     border-radius: var(--card-radius) var(--card-radius) 0 0;
@@ -144,7 +144,7 @@
   }
   .meta-field input {
     flex: 1;
-    padding: 0 12px;
+    padding: 0 var(--cell-padding);
     border: none;
     font-size: var(--input-font-size);
     font-family: monospace;
@@ -168,7 +168,7 @@
     min-width: 0;
     display: flex;
     align-items: center;
-    padding: 0 12px;
+    padding: 0 var(--cell-padding);
     border-left: 1px solid var(--color-border);
     font-size: var(--input-font-size);
     font-family: monospace;
@@ -185,9 +185,9 @@
     align-items: center;
   }
   .header-id {
-    font-weight: 400;
+    font-weight: var(--weight-normal);
     color: var(--color-text-muted);
-    font-size: 12px;
+    font-size: var(--preview-font-size);
     margin-left: auto;
     font-family: monospace;
   }
