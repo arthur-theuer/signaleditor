@@ -307,7 +307,7 @@
     <div class="meldungen-section">
       <div class="meldungen-panel">
         <div class="section-header">Meldungen</div>
-        <Meldungspanel signale={data.signale} />
+        <Meldungspanel signale={data.signale} onclose={() => showMeldungen = false} />
       </div>
     </div>
   {/if}

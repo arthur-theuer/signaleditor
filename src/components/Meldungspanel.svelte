@@ -4,7 +4,7 @@
   import { generiereAlleMeldungen } from '../lib/reports';
   import { colorToLightBg, averageColors } from '../lib/colors';
 
-  let { signale }: { signale: Eintrag[] } = $props();
+  let { signale, onclose }: { signale: Eintrag[]; onclose: () => void } = $props();
 
   let meldungen: MeldungRow[] = $derived(generiereAlleMeldungen(signale));
 </script>
@@ -59,6 +59,10 @@
   {/each}
 </div>
 
+<div class="close-bar">
+  <button class="close-btn hl" onclick={onclose}>Schließen</button>
+</div>
+
 <style>
   .meldungen-list { padding: var(--half-gap) 0; }
   .meldung-row {
@@ -94,4 +98,21 @@
   .meldung-text { font-weight: 500; }
   .muted-text { color: #999; font-style: italic; }
   .meldung-error { color: var(--color-red); font-style: italic; }
+  .close-bar {
+    padding: var(--half-gap) var(--card-gap);
+  }
+  .close-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--card-radius);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-red-bg);
+    color: var(--color-red);
+    border: 1px solid var(--color-red-border);
+  }
 </style>
