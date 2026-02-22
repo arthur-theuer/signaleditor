@@ -35,7 +35,7 @@ export const GET: RequestHandler = async ({ request, params, url }) => {
     return json({ error: 'File not found' }, { status: 404 });
   }
 
-  const result = await get(blob.url, { access: 'public' });
+  const result = await get(blob.url, { access: 'private' });
   if (!result || result.statusCode !== 200) {
     return json({ error: 'Failed to read file' }, { status: 500 });
   }
@@ -66,7 +66,7 @@ export const PUT: RequestHandler = async ({ request, params, url }) => {
 
   const path = `${prefix}/${params.name}`;
   const blob = await put(path, content, {
-    access: 'public',
+    access: 'private',
     contentType: 'text/yaml',
     addRandomSuffix: false,
   });

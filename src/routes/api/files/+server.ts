@@ -65,7 +65,7 @@ export const POST: RequestHandler = async ({ request, url }) => {
   }
 
   const blob = await put(path, content, {
-    access: 'public',
+    access: 'private',
     contentType: 'text/yaml',
     addRandomSuffix: false,
   });
