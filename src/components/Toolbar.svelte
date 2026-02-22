@@ -184,7 +184,7 @@
     background: var(--color-bg-subtle);
     color: var(--color-text);
     border: 1px solid var(--color-border);
-    border-radius: var(--container-radius);
+    border-radius: var(--card-radius);
     cursor: pointer;
     font-size: 13px;
     font-weight: 500;
