@@ -2,6 +2,11 @@
   import '../app.css';
   import { onMount } from 'svelte';
   import type { Snippet } from 'svelte';
+  import { inject } from '@vercel/analytics';
+  import { injectSpeedInsights } from '@vercel/speed-insights';
+
+  inject();
+  injectSpeedInsights();
 
   let { children }: { children: Snippet } = $props();
 
