@@ -239,11 +239,6 @@
     setTimeout(() => btn.classList.remove('hl-flash'), 100);
   }
 
-  // Toggle red page background when not logged in
-  $effect(() => {
-    document.body.style.background = isLoggedIn() ? '' : 'var(--color-red-bg)';
-  });
-
   // Keyboard shortcuts
   $effect(() => {
     const handler = (e: KeyboardEvent) => {
