@@ -123,12 +123,9 @@
     {#if resolveResult?.error}
       <span class="import-error">{resolveResult.error}</span>
     {:else if hasFile && resolved}
-      {#if countParts()}
-        <span class="import-count">{countParts()}</span>
-      {/if}
-      {#if stitchText()}
-        <span class="import-stitch">{stitchText()}</span>
-      {/if}
+      <span class="import-stitch">{stitchText() || '—'}</span>
+      <span class="import-divider"></span>
+      <span class="import-count">{countParts() || '—'}</span>
     {/if}
   </div>
 </div>
@@ -192,33 +189,24 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 2px;
-    padding: 0 var(--cell-padding);
     height: 100%;
     overflow: hidden;
   }
-  .import-count {
+  .import-divider {
+    border-top: 1px solid var(--color-border);
+  }
+  .import-count, .import-stitch, .import-error {
     font-size: var(--input-font-size);
     font-family: monospace;
-    color: var(--color-text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding: 0 var(--cell-padding);
+    display: flex;
+    align-items: center;
+    flex: 1;
   }
-  .import-stitch {
-    font-size: var(--input-font-size);
-    font-family: monospace;
-    color: var(--color-import-text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .import-error {
-    font-size: var(--input-font-size);
-    font-family: monospace;
-    color: var(--color-red);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .import-count { color: var(--color-text-secondary); }
+  .import-stitch { color: var(--color-import-text); }
+  .import-error { color: var(--color-red); }
 </style>
