@@ -17,10 +17,12 @@
     signale = $bindable(),
     showKm,
     onchange,
+    scrollAnchor,
   }: {
     signale: Eintrag[];
     showKm: boolean;
     onchange: () => void;
+    scrollAnchor: HTMLDivElement;
   } = $props();
 
   let usedImportFiles = $derived(
@@ -28,7 +30,6 @@
   );
 
   let listEl: HTMLDivElement;
-  let scrollAnchor: HTMLDivElement;
 
   // Drag-and-drop state
   let dragIdx: number | null = $state(null);
@@ -360,7 +361,7 @@
   onAddKnoten={() => appendEntry(makeKnoten(signale.length))}
   onAddImport={() => appendEntry(makeImport(signale.length))}
 />
-<div bind:this={scrollAnchor} style="height: 0;"></div>
+
 
 <style>
   .signal-row {

@@ -40,7 +40,6 @@
     background: var(--color-code-bg);
     border: 1px solid var(--color-code-border);
     border-radius: var(--container-radius);
-    margin-top: var(--page-gap);
     margin-bottom: var(--page-gap);
   }
   pre {

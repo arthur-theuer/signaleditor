@@ -174,7 +174,7 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   color-scheme: light dark;
-  padding: 0 var(--page-gap) var(--page-gap) var(--page-gap);
+  padding: 0 var(--page-gap);
 }
 input, select, textarea, button {
   color: inherit;
