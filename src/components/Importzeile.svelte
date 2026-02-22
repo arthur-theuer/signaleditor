@@ -93,36 +93,36 @@
   }
 </script>
 
-<div class="signal-cell import-cell">
+<div class="signal-cell import-cell import-file-cell">
   <div class="import-inner">
-    <div class="import-left">
-      <button class="import-folder-btn hl" onclick={() => showPicker = true} title="Datei auswählen" tabindex={-1}>
-        {#if eintrag.import.datei}
-          <FolderOpen size={20} strokeWidth={2} />
-        {:else}
-          <FolderClosed size={20} strokeWidth={2} />
-        {/if}
-      </button>
-      <div class="import-name">
-        {#if eintrag.import.datei}
-          <span class="import-filename">{eintrag.import.datei}</span>
-        {:else}
-          <span class="import-placeholder">Datei auswählen</span>
-        {/if}
-      </div>
-    </div>
-    <div class="import-right">
-      {#if resolveResult?.error}
-        <span class="import-error">{resolveResult.error}</span>
-      {:else if eintrag.import.datei}
-        {#if countText}
-          <span class="import-count">{countText}</span>
-        {/if}
-        {#if stitchInfo()}
-          <span class="import-stitch">{stitchInfo()}</span>
-        {/if}
+    <div class="import-name">
+      {#if eintrag.import.datei}
+        <span class="import-filename">{eintrag.import.datei}</span>
+      {:else}
+        <span class="import-placeholder">Datei auswählen</span>
       {/if}
     </div>
+    <button class="import-folder-btn hl" onclick={() => showPicker = true} title="Datei auswählen" tabindex={-1}>
+      {#if eintrag.import.datei}
+        <FolderOpen size={20} strokeWidth={2} />
+      {:else}
+        <FolderClosed size={20} strokeWidth={2} />
+      {/if}
+    </button>
+  </div>
+</div>
+<div class="signal-cell import-cell import-info-cell">
+  <div class="import-info">
+    {#if resolveResult?.error}
+      <span class="import-error">{resolveResult.error}</span>
+    {:else if eintrag.import.datei}
+      {#if countText}
+        <span class="import-count">{countText}</span>
+      {/if}
+      {#if stitchInfo()}
+        <span class="import-stitch">{stitchInfo()}</span>
+      {/if}
+    {/if}
   </div>
 </div>
 
@@ -138,36 +138,14 @@
 
 <style>
   .import-cell { background: var(--color-import); }
-  .import-inner {
-    display: flex;
-    height: 100%;
-  }
-  .import-left {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    min-width: 0;
-  }
-  .import-folder-btn {
-    width: var(--row-height);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    border-radius: calc(var(--card-radius) - 1px) 0 0 calc(var(--card-radius) - 1px);
-    cursor: pointer;
-    color: var(--color-import-text);
-    height: 100%;
-  }
+  .import-inner { display: flex; height: 100%; }
   .import-name {
     flex: 1;
     min-width: 0;
     display: flex;
     align-items: center;
-    padding: 0 var(--cell-padding) 0 0;
-    overflow: hidden;
+    padding: 0 var(--cell-padding);
+    height: 100%;
   }
   .import-filename {
     font-size: var(--input-font-size);
@@ -182,15 +160,27 @@
     font-size: var(--input-font-size);
     color: var(--color-text-muted);
   }
-  .import-right {
-    flex: 1;
-    min-width: 0;
+  .import-folder-btn {
+    width: var(--row-height);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-left: 1px solid var(--color-border);
+    border-radius: 0 calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0;
+    cursor: pointer;
+    color: var(--color-import-text);
+    height: 100%;
+  }
+  .import-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 2px;
     padding: 0 var(--cell-padding);
-    border-left: 1px solid var(--color-border);
+    height: 100%;
     overflow: hidden;
   }
   .import-count {

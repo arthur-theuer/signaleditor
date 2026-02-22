@@ -305,12 +305,14 @@
         onmouseup={() => dragHandle = null}
       >{idx}</div>
 
-      <Kilometerzelle
-        bind:eintrag={signale[idx]}
-        prevEintrag={idx > 0 ? signale[idx - 1] : undefined}
-        {showKm}
-        {onchange}
-      />
+      {#if !isImporteintrag(eintrag)}
+        <Kilometerzelle
+          bind:eintrag={signale[idx]}
+          prevEintrag={idx > 0 ? signale[idx - 1] : undefined}
+          {showKm}
+          {onchange}
+        />
+      {/if}
 
       {#if isSignaleintrag(eintrag)}
         <Signalzeile

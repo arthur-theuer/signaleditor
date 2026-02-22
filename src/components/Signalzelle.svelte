@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
   import type { Eintrag } from '../lib/types';
 
@@ -155,7 +156,7 @@
         onclick={onToggleAlt}
         title="Alternativsignal"
         tabindex={-1}
-      >±</button>
+      ><Diff size={16} strokeWidth={2.5} /></button>
     {/if}
   </div>
   {#if needsBahnhof}
