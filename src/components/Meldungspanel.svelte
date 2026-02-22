@@ -2,7 +2,7 @@
   import type { Eintrag } from '../lib/types';
   import type { MeldungRow } from '../lib/reports';
   import { generiereAlleMeldungen } from '../lib/reports';
-  import { colorToLightBg, averageColors } from '../lib/colors';
+
 
   let { signale, onclose }: { signale: Eintrag[]; onclose: () => void } = $props();
 
@@ -36,21 +36,18 @@
         </div>
       {:else if m.segments.length === 1}
         {@const seg = m.segments[0]}
-        {@const bgColor = colorToLightBg(seg.farbe)}
-        <div class="meldung-row-inner" style="border-color: {seg.farbe}; background: {bgColor};">
+        <div class="meldung-row-inner meldung-colored {seg.klasse}">
           <div class="meldung-text">
-            <span style="color: {seg.farbe}; {seg.fett ? 'font-weight: bold;' : ''}">{seg.meldung}</span>
+            <span class:fett={seg.fett}>{seg.meldung}</span>
           </div>
         </div>
       {:else}
-        {@const colors = m.segments.map(s => s.farbe)}
-        {@const bgColors = colors.map(c => colorToLightBg(c))}
-        {@const avgColor = averageColors(colors)}
-        <div class="meldung-row-inner" style="background: linear-gradient(to bottom, {bgColors.join(', ')}); border-color: {avgColor};">
+        {@const primaryClass = m.segments[0].klasse}
+        <div class="meldung-row-inner meldung-colored {primaryClass}">
           <div class="meldung-text">
             {#each m.segments as seg, si}
               {#if si > 0}<br />{/if}
-              <span style="color: {seg.farbe}; {seg.fett ? 'font-weight: bold;' : ''}">{seg.meldung}</span>
+              <span class={seg.klasse} class:fett={seg.fett}>{seg.meldung}</span>
             {/each}
           </div>
         </div>
@@ -96,6 +93,19 @@
   .meldung-text { font-weight: var(--weight-medium); }
   .muted-text { color: var(--color-text-muted); font-style: italic; }
   .meldung-error { color: var(--color-red); font-style: italic; }
+  .fett { font-weight: var(--weight-bold); }
+
+  /* Signal type colors (dynamic classes, need :global) */
+  :global(.meldung-block),
+  :global(.meldung-spurwechsel) { color: var(--color-meldung-block); }
+  :global(.meldung-ausfahrt) { color: var(--color-meldung-ausfahrt); }
+  :global(.meldung-wiederholung) { color: var(--color-meldung-wiederholung); }
+  :global(.meldung-standard) { color: var(--color-meldung-standard); }
+  :global(.meldung-bahnhof-a) { color: var(--color-meldung-bahnhof-a); }
+  :global(.meldung-bahnhof-b) { color: var(--color-meldung-bahnhof-b); }
+
+  /* Colored row border inherits from the color class */
+  .meldung-colored { border-color: currentColor; }
   .close-bar {
     margin: var(--half-gap) var(--card-gap);
   }

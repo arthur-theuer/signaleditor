@@ -14,6 +14,7 @@ import { resolveSignaleForMeldungen } from './sources';
 export type ColoredSegment = {
   meldung: string;
   farbe: string;
+  klasse: string;
   fett: boolean;
 };
 
@@ -36,21 +37,25 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
   let bahnhofFarbschalter = true;
   let imBahnhof = true;
   let bahnhofFarbe: string = BAHNHOF_FARBEN[1];
+  let bahnhofKlasse: string = 'meldung-bahnhof-b';
 
-  function colorForSignaltyp(signaltyp: string | null): { farbe: string; fett: boolean } {
+  function colorForSignaltyp(signaltyp: string | null): { farbe: string; klasse: string; fett: boolean } {
     if (signaltyp === 'einfahrt') {
       imBahnhof = true;
+      bahnhofKlasse = bahnhofFarbschalter ? 'meldung-bahnhof-a' : 'meldung-bahnhof-b';
       bahnhofFarbe = bahnhofFarbschalter ? BAHNHOF_FARBEN[0] : BAHNHOF_FARBEN[1];
       bahnhofFarbschalter = !bahnhofFarbschalter;
-      return { farbe: bahnhofFarbe, fett: true };
+      return { farbe: bahnhofFarbe, klasse: bahnhofKlasse, fett: true };
     } else if (imBahnhof && signaltyp === 'ausfahrt') {
       const f = bahnhofFarbe;
       imBahnhof = false;
-      return { farbe: f, fett: false };
+      return { farbe: f, klasse: bahnhofKlasse, fett: false };
     } else if (imBahnhof) {
-      return { farbe: bahnhofFarbe, fett: false };
+      return { farbe: bahnhofFarbe, klasse: bahnhofKlasse, fett: false };
     } else {
-      return { farbe: MELDUNG_FARBEN[signaltyp ?? ''] || MELDUNG_FARBEN.standard, fett: false };
+      const typ = signaltyp ?? 'standard';
+      const klasse = `meldung-${MELDUNG_FARBEN[typ] ? typ : 'standard'}`;
+      return { farbe: MELDUNG_FARBEN[typ] || MELDUNG_FARBEN.standard, klasse, fett: false };
     }
   }
 
@@ -112,8 +117,8 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
     }
 
     const coloredSegments = result.segments.map(seg => {
-      const { farbe, fett } = colorForSignaltyp(seg.signaltyp);
-      return { meldung: seg.meldung, farbe, fett };
+      const { farbe, klasse, fett } = colorForSignaltyp(seg.signaltyp);
+      return { meldung: seg.meldung, farbe, klasse, fett };
     });
 
     meldungen.push({

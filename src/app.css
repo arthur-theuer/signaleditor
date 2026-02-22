@@ -73,6 +73,14 @@
   --color-import: #e3f2fd;
   --color-import-text: #1565c0;
 
+  /* Meldung signal type colors */
+  --color-meldung-block: #7b1fa2;
+  --color-meldung-ausfahrt: #c62828;
+  --color-meldung-wiederholung: #1565c0;
+  --color-meldung-standard: var(--color-text);
+  --color-meldung-bahnhof-a: #2e7d32;
+  --color-meldung-bahnhof-b: #e65100;
+
   /* Code panel */
   --color-code-bg: var(--color-bg-subtle);
   --color-code-text: var(--color-text);
@@ -132,7 +140,12 @@
     --color-import: #1a222e;
     --color-import-text: #90caf9;
 
-
+    /* Meldung signal type colors */
+    --color-meldung-block: #ce93d8;
+    --color-meldung-ausfahrt: #e57373;
+    --color-meldung-wiederholung: #90caf9;
+    --color-meldung-bahnhof-a: #81c784;
+    --color-meldung-bahnhof-b: #ffb74d;
   }
 }
 

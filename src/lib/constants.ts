@@ -68,13 +68,13 @@ export const MELDUNGEN: Record<string, string> = {
 };
 
 export const MELDUNG_FARBEN: Record<string, string> = {
-  block: '#800080',
-  spurwechsel: '#800080',
-  ausfahrt: '#FF0000',
-  wiederholung: '#0000FF',
-  standard: 'currentColor',
+  block: '#7b1fa2',
+  spurwechsel: '#7b1fa2',
+  ausfahrt: '#c62828',
+  wiederholung: '#1565c0',
+  standard: '#424242',
 };
 
-export const BAHNHOF_FARBEN = ['#008000', '#FFA500'] as const;
+export const BAHNHOF_FARBEN = ['#2e7d32', '#e65100'] as const;
 
 export { STATIONEN } from './stationen';
