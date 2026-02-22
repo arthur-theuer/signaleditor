@@ -164,7 +164,7 @@
   }
   .tab-btn {
     flex: 1;
-    padding: 14px;
+    padding: var(--cell-padding);
     font-size: var(--input-font-size);
     font-weight: var(--weight-semibold);
     cursor: pointer;
@@ -209,7 +209,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 var(--space-xl);
     background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--card-radius);
@@ -230,7 +230,7 @@
     color: var(--color-text-secondary);
     font-size: var(--preview-font-size);
     white-space: nowrap;
-    margin-left: 16px;
+    margin-left: var(--space-xl);
   }
   .delete-btn {
     width: var(--unit);
@@ -258,7 +258,7 @@
     flex-shrink: 0;
   }
   .status {
-    padding: 24px;
+    padding: var(--space-2xl);
     text-align: center;
     color: var(--color-text-secondary);
     font-size: var(--input-font-size);

@@ -12,7 +12,17 @@
   --weight-medium: 500;
   --weight-semibold: 600;
   --weight-bold: 700;
-  --cell-padding: 12px;
+
+  /* Spacing scale */
+  --space-xs: 4px;
+  --space-sm: 6px;
+  --space-md: 8px;
+  --space-lg: 12px;
+  --space-xl: 16px;
+  --space-2xl: 24px;
+
+  /* Semantic spacing aliases */
+  --cell-padding: var(--space-lg);
   --page-gap: 20px;
   --preview-flex: 2;
   --input-flex: 3;

@@ -38,7 +38,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: var(--space-sm);
   }
   .add-signal {
     background: var(--color-bg-raised);

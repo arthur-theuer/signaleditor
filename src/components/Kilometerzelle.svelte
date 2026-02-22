@@ -99,7 +99,7 @@
     font-family: monospace;
     color: var(--color-text-muted);
     opacity: 0;
-    padding: 0 8px;
+    padding: 0 var(--space-md);
     text-align: center;
     pointer-events: none;
   }
@@ -110,7 +110,7 @@
   .km-cell-inner:focus-within .km-preview.next { border-bottom: 1px solid var(--color-border); }
   .km-input {
     flex: var(--input-flex);
-    padding: 0 8px;
+    padding: 0 var(--space-md);
     border: none;
     background: transparent;
     font-size: var(--input-font-size);

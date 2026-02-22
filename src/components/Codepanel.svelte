@@ -45,7 +45,7 @@
   }
   pre {
     color: #d4d4d4;
-    padding: 16px;
+    padding: var(--space-xl);
     font-family: monospace;
     font-size: var(--preview-font-size);
     white-space: pre-wrap;
@@ -61,7 +61,7 @@
     gap: var(--card-gap);
   }
   .yaml-btn {
-    padding: 8px var(--cell-padding);
+    padding: var(--space-md) var(--cell-padding);
     background: #333;
     color: #aaa;
     border: 1px solid #555;
