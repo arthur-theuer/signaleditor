@@ -100,9 +100,9 @@
     --color-text-secondary: #bdbdbd;
     --color-text-muted: #757575;
 
-    /* Blue (focus, primary actions) — Blue 200 / 900 */
+    /* Blue (focus, primary actions) — Blue 200 */
     --color-focus: #90caf9;
-    --color-focus-bg: #1a237e;
+    --color-focus-bg: rgba(144,202,249,0.08);
     --color-focus-ring: #bbdefb;
 
     /* Green — Green 200 / 900 */
