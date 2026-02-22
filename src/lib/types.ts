@@ -117,11 +117,13 @@ export function isStreckendaten(d: Editordaten): d is Streckendaten {
 /** Derive the file ID from metadata */
 export function dateiId(data: Editordaten): string {
   if (isVideodaten(data)) {
-    const { streckennummer, von, nach } = data.meta;
-    return [streckennummer, von, nach].filter(Boolean).join('_');
+    const { streckennummer, von, nach, via } = data.meta;
+    const base = [streckennummer, von, nach].filter(Boolean).join('_');
+    return via ? `${base}_${via}` : base;
   }
-  const { linie, von, nach } = data.meta;
-  return [linie, von, nach].filter(Boolean).join('_');
+  const { linie, von, nach, via } = data.meta;
+  const base = [linie, von, nach].filter(Boolean).join('_');
+  return via ? `${base}_${via}` : base;
 }
 
 export function emptyVideodaten(): Videodaten {

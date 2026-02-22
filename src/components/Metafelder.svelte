@@ -60,21 +60,21 @@
     <div class="meta-field">
       <label for="meta-von">Von</label>
       <span class="hl-wrap">
-        <input id="meta-von" type="text" bind:value={data.meta.von} oninput={onchange} placeholder="z.B. OL" class="code-input" />
+        <input id="meta-von" type="text" bind:value={data.meta.von} oninput={onchange} placeholder="Code" class="code-input" />
         <span class="station-preview">{stationPreview(data.meta.von)}</span>
-      </span>
-    </div>
-    <div class="meta-field">
-      <label for="meta-via">Via</label>
-      <span class="hl-wrap">
-        <input id="meta-via" type="text" bind:value={data.meta.via} oninput={onchange} placeholder="z.B. OL, LB" />
       </span>
     </div>
     <div class="meta-field">
       <label for="meta-nach">Nach</label>
       <span class="hl-wrap">
-        <input id="meta-nach" type="text" bind:value={data.meta.nach} oninput={onchange} placeholder="z.B. AA" class="code-input" />
+        <input id="meta-nach" type="text" bind:value={data.meta.nach} oninput={onchange} placeholder="Code" class="code-input" />
         <span class="station-preview">{stationPreview(data.meta.nach)}</span>
+      </span>
+    </div>
+    <div class="meta-field">
+      <label for="meta-via">Via</label>
+      <span class="hl-wrap">
+        <input id="meta-via" type="text" bind:value={data.meta.via} oninput={onchange} placeholder="z.B. VL, NBS" />
       </span>
     </div>
     <div class="meta-field">
