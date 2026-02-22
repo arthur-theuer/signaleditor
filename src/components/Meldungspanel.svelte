@@ -57,10 +57,9 @@
       {/if}
     </div>
   {/each}
-</div>
-
-<div class="close-bar">
-  <button class="close-btn hl" onclick={onclose}>Schließen</button>
+  <div class="close-bar">
+    <button class="close-btn hl" onclick={onclose}>Schließen</button>
+  </div>
 </div>
 
 <style>
