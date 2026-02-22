@@ -275,10 +275,12 @@
     outline: none;
   }
   .pin-input:focus {
-    border-color: var(--color-focus);
+    border: 2px solid var(--color-focus);
+    padding: 0 calc(var(--cell-padding) - 1px);
   }
   .pin-input.error {
-    border-color: var(--color-red);
+    border: 2px solid var(--color-red);
+    padding: 0 calc(var(--cell-padding) - 1px);
     color: var(--color-red);
   }
   .pin-input.error::placeholder {
