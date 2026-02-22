@@ -14,7 +14,10 @@ function getPrefix(url: URL): Dateityp | null {
 async function findBlob(prefix: string, name: string) {
   const path = `${prefix}/${name}`;
   const { blobs } = await list({ prefix: path });
-  return blobs.find((b) => b.pathname === path) ?? null;
+  // Exact match first, then fall back to prefix match (handles legacy random suffixes)
+  return blobs.find((b) => b.pathname === path)
+    ?? blobs.find((b) => b.pathname.startsWith(path))
+    ?? null;
 }
 
 /** GET /api/files/:name?typ=videos|strecken — read file content */
@@ -62,6 +65,7 @@ export const PUT: RequestHandler = async ({ request, params, url }) => {
   const blob = await put(path, content, {
     access: 'public',
     contentType: 'text/yaml',
+    addRandomSuffix: false,
   });
 
   return json({ name: params.name, typ: prefix, url: blob.url });

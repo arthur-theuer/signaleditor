@@ -23,13 +23,15 @@ export const GET: RequestHandler = async ({ request, url }) => {
 
   const { blobs } = await list({ prefix: `${prefix}/` });
 
-  const files = blobs.map((b) => ({
-    name: b.pathname.replace(new RegExp(`^${prefix}/`), ''),
-    typ: prefix,
-    url: b.url,
-    size: b.size,
-    uploadedAt: b.uploadedAt,
-  }));
+  const files = blobs
+    .map((b) => ({
+      name: b.pathname.replace(new RegExp(`^${prefix}/`), ''),
+      typ: prefix,
+      url: b.url,
+      size: b.size,
+      uploadedAt: b.uploadedAt,
+    }))
+    .filter((f) => f.name.length > 0);
 
   return json(files);
 };
@@ -57,7 +59,7 @@ export const POST: RequestHandler = async ({ request, url }) => {
   const path = `${prefix}/${safeName}`;
 
   const { blobs } = await list({ prefix: path });
-  const exists = blobs.some((b) => b.pathname === path);
+  const exists = blobs.some((b) => b.pathname === path || b.pathname.startsWith(path));
   if (exists) {
     return json({ error: 'File already exists' }, { status: 409 });
   }
@@ -65,6 +67,7 @@ export const POST: RequestHandler = async ({ request, url }) => {
   const blob = await put(path, content, {
     access: 'public',
     contentType: 'text/yaml',
+    addRandomSuffix: false,
   });
 
   return json({ name: safeName, typ: prefix, url: blob.url }, { status: 201 });
