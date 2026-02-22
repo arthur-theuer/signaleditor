@@ -388,7 +388,7 @@
   .status-label {
     display: none;
     position: absolute;
-    top: calc(100% + var(--card-gap));
+    top: calc(100% + (var(--unit) - var(--space-md)) / 2 + var(--card-gap));
     left: 50%;
     transform: translateX(-50%);
     height: calc(var(--unit) / 2);
