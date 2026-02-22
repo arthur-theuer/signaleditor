@@ -65,14 +65,13 @@
 <style>
   .meldungen-list { padding: var(--half-gap) 0; }
   .meldung-row {
-    height: calc(var(--row-height) + var(--card-gap));
+    min-height: calc(var(--row-height) + var(--card-gap));
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: var(--half-gap) var(--card-gap);
     font-family: monospace;
     font-size: var(--input-font-size);
-    box-sizing: border-box;
   }
   .meldung-row-inner {
     background: var(--color-bg-raised);
