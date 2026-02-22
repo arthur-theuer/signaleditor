@@ -1,6 +1,6 @@
-import { login as apiLogin, logout as apiLogout } from './api';
+import { login as apiLogin, logout as apiLogout, isLoggedIn as apiIsLoggedIn } from './api';
 
-let loggedIn = $state(false);
+let loggedIn = $state(apiIsLoggedIn());
 
 export function isLoggedIn(): boolean {
   return loggedIn;

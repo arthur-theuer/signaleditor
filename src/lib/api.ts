@@ -8,7 +8,8 @@ export type FileInfo = {
   uploadedAt: string;
 };
 
-let pin: string | null = null;
+const PIN_KEY = 'editor_pin';
+let pin: string | null = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem(PIN_KEY) : null;
 
 function headers(): HeadersInit {
   if (!pin) throw new Error('Not authenticated');
@@ -35,6 +36,7 @@ export async function login(value: string): Promise<boolean> {
   });
   if (res.ok) {
     pin = value;
+    sessionStorage.setItem(PIN_KEY, value);
     return true;
   }
   return false;
@@ -42,6 +44,7 @@ export async function login(value: string): Promise<boolean> {
 
 export function logout(): void {
   pin = null;
+  sessionStorage.removeItem(PIN_KEY);
 }
 
 export function isLoggedIn(): boolean {
