@@ -46,7 +46,7 @@
     width: calc((var(--row-height) - var(--card-gap)) / 2);
     height: calc((var(--row-height) - var(--card-gap)) / 2);
     font-size: var(--input-font-size);
-    font-weight: var(--weight-bold);
+    font-weight: var(--weight-semibold);
     border: var(--card-border);
     border-radius: var(--card-radius);
     cursor: pointer;
