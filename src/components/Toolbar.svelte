@@ -184,7 +184,7 @@
     background: var(--color-bg-subtle);
     color: var(--color-text);
     border: 1px solid var(--color-border);
-    border-radius: var(--card-radius);
+    border-radius: var(--container-radius);
     cursor: pointer;
     font-size: 13px;
     font-weight: 500;
@@ -225,7 +225,7 @@
     justify-content: center;
     background: var(--color-bg-raised);
     border: var(--card-border);
-    border-radius: var(--card-radius);
+    border-radius: var(--container-radius);
     color: var(--color-text-secondary);
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   }
