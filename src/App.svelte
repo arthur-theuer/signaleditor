@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Editordaten, Dateityp, Knoteneintrag } from './lib/types';
-  import { emptyVideodaten, emptyStreckendaten, isImporteintrag } from './lib/types';
+  import { emptyStreckendaten, emptyRoutendaten, isImporteintrag } from './lib/types';
   import { tick } from 'svelte';
   import { parseYAMLContent, extractYAMLFromHTML } from './lib/yaml';
   import { History } from './lib/history.svelte';
@@ -8,7 +8,7 @@
   import { generateYAML } from './lib/yaml';
   import { downloadMeldungenHTML } from './lib/reports';
   import { isLoggedIn, login, logout } from './lib/auth.svelte';
-  import { dateiId, isVideodaten } from './lib/types';
+  import { dateiId, isStreckendaten } from './lib/types';
   import { saveFile, createFile, type StoragePrefix } from './lib/api';
   import Toolbar from './components/Toolbar.svelte';
   import Metafelder from './components/Metafelder.svelte';
@@ -18,7 +18,7 @@
   import Meldungspanel from './components/Meldungspanel.svelte';
   import Dateibrowser from './components/Dateibrowser.svelte';
 
-  let data: Editordaten = $state(emptyVideodaten());
+  let data: Editordaten = $state(emptyStreckendaten());
 
   const history = new History();
 
@@ -35,7 +35,7 @@
   function newFile(typ: Dateityp) {
     if (dirty && !confirm('Ungespeicherte Änderungen verwerfen?')) return;
     cancelAutoSave();
-    data = typ === 'video' ? emptyVideodaten() : emptyStreckendaten();
+    data = typ === 'strecke' ? emptyStreckendaten() : emptyRoutendaten();
     dirty = false;
     currentFileName = null;
     saveStatus = 'idle';
@@ -137,7 +137,7 @@
     }
 
     const fileName = `${id}.yaml`;
-    const typ: StoragePrefix = isVideodaten(data) ? 'videos' : 'strecken';
+    const typ: StoragePrefix = isStreckendaten(data) ? 'strecken' : 'routen';
     const content = generateYAML(data);
 
     saving = true;

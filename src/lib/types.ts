@@ -73,10 +73,10 @@ export function isImporteintrag(e: Eintrag): e is Importeintrag {
   return 'import' in e;
 }
 
-export type Dateityp = 'video' | 'strecke';
+export type Dateityp = 'strecke' | 'route';
 
-export type Videometa = {
-  streckennummer: string;
+export type Streckenmeta = {
+  strecke: string;
   von: string;
   nach: string;
   via: string;
@@ -84,18 +84,12 @@ export type Videometa = {
   video: string;
 };
 
-export type Streckenmeta = {
+export type Routenmeta = {
   linie: string;
   von: string;
   nach: string;
   via: string;
   name: string;
-};
-
-export type Videodaten = {
-  typ: 'video';
-  meta: Videometa;
-  signale: Eintrag[];
 };
 
 export type Streckendaten = {
@@ -104,21 +98,27 @@ export type Streckendaten = {
   signale: Eintrag[];
 };
 
-export type Editordaten = Videodaten | Streckendaten;
+export type Routendaten = {
+  typ: 'route';
+  meta: Routenmeta;
+  signale: Eintrag[];
+};
 
-export function isVideodaten(d: Editordaten): d is Videodaten {
-  return d.typ === 'video';
-}
+export type Editordaten = Streckendaten | Routendaten;
 
 export function isStreckendaten(d: Editordaten): d is Streckendaten {
   return d.typ === 'strecke';
 }
 
+export function isRoutendaten(d: Editordaten): d is Routendaten {
+  return d.typ === 'route';
+}
+
 /** Derive the file ID from metadata */
 export function dateiId(data: Editordaten): string {
-  if (isVideodaten(data)) {
-    const { streckennummer, von, nach, via } = data.meta;
-    const base = [streckennummer, von, nach].filter(Boolean).join('_');
+  if (isStreckendaten(data)) {
+    const { strecke, von, nach, via } = data.meta;
+    const base = [strecke, von, nach].filter(Boolean).join('_');
     return via ? `${base}_${via}` : base;
   }
   const { linie, von, nach, via } = data.meta;
@@ -126,17 +126,17 @@ export function dateiId(data: Editordaten): string {
   return via ? `${base}_${via}` : base;
 }
 
-export function emptyVideodaten(): Videodaten {
+export function emptyStreckendaten(): Streckendaten {
   return {
-    typ: 'video',
-    meta: { streckennummer: '', von: '', nach: '', via: '', name: '', video: '' },
+    typ: 'strecke',
+    meta: { strecke: '', von: '', nach: '', via: '', name: '', video: '' },
     signale: [],
   };
 }
 
-export function emptyStreckendaten(): Streckendaten {
+export function emptyRoutendaten(): Routendaten {
   return {
-    typ: 'strecke',
+    typ: 'route',
     meta: { linie: '', von: '', nach: '', via: '', name: '' },
     signale: [],
   };

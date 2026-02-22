@@ -143,7 +143,7 @@
 {#if showPicker}
   <Dateibrowser
     mode="select"
-    lockedTab="videos"
+    lockedTab="strecken"
     usedFiles={otherUsedFiles()}
     onload={handleFileSelect}
     onclose={() => showPicker = false}

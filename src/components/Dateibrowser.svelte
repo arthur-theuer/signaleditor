@@ -16,7 +16,7 @@
     usedFiles?: Set<string>;
   } = $props();
 
-  let activeTab: StoragePrefix = $state(lockedTab ?? 'videos');
+  let activeTab: StoragePrefix = $state(lockedTab ?? 'strecken');
   let files: FileInfo[] = $state([]);
   let loading = $state(false);
   let error: string | null = $state(null);
@@ -86,18 +86,18 @@
     <div class="tab-header">
       <button
         class="tab-btn hl"
-        class:active={activeTab === 'videos'}
-        class:disabled={lockedTab !== undefined && lockedTab !== 'videos'}
-        disabled={lockedTab !== undefined && lockedTab !== 'videos'}
-        onclick={() => activeTab = 'videos'}
-      >Videos</button>
-      <button
-        class="tab-btn hl"
         class:active={activeTab === 'strecken'}
         class:disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
         disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
         onclick={() => activeTab = 'strecken'}
       >Strecken</button>
+      <button
+        class="tab-btn hl"
+        class:active={activeTab === 'routen'}
+        class:disabled={lockedTab !== undefined && lockedTab !== 'routen'}
+        disabled={lockedTab !== undefined && lockedTab !== 'routen'}
+        onclick={() => activeTab = 'routen'}
+      >Routen</button>
     </div>
 
     <div class="file-list">

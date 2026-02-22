@@ -11,17 +11,17 @@ import {
   isKnoteneintrag,
   isAbzweigungseintrag,
   isImporteintrag,
-  isVideodaten,
-  emptyVideodaten,
+  isStreckendaten,
   emptyStreckendaten,
+  emptyRoutendaten,
 } from './types';
 
 export function generateYAML(data: Editordaten): string {
   let yaml = `typ: ${data.typ}\n`;
 
-  if (isVideodaten(data)) {
+  if (isStreckendaten(data)) {
     const m = data.meta;
-    yaml += `streckennummer: ${m.streckennummer}\n`;
+    yaml += `strecke: ${m.strecke}\n`;
     yaml += `von: ${m.von}\n`;
     yaml += `nach: ${m.nach}\n`;
     yaml += `via: ${m.via}\n`;
@@ -74,7 +74,7 @@ export function parseYAMLContent(content: string): Editordaten {
   const lines = content.split('\n');
 
   // Detect type from first non-empty, non-comment line
-  let typ: Dateityp = 'video';
+  let typ: Dateityp = 'strecke';
   const meta: Record<string, string> = {};
   let signaleStartIdx = 0;
 
@@ -86,7 +86,7 @@ export function parseYAMLContent(content: string): Editordaten {
     const match = trimmed.match(/^(\w+):\s*(.*)$/);
     if (match) {
       const [, key, value] = match;
-      if (key === 'typ') typ = value === 'strecke' ? 'strecke' : 'video';
+      if (key === 'typ') typ = value === 'route' ? 'route' : 'strecke';
       else meta[key] = value;
     }
   }
@@ -96,11 +96,11 @@ export function parseYAMLContent(content: string): Editordaten {
     return parseLegacyYAML(content);
   }
 
-  const result: Editordaten = typ === 'video'
+  const result: Editordaten = typ === 'strecke'
     ? {
-        typ: 'video',
+        typ: 'strecke',
         meta: {
-          streckennummer: meta['streckennummer'] || '',
+          strecke: meta['strecke'] || meta['streckennummer'] || '',
           von: meta['von'] || '',
           nach: meta['nach'] || '',
           via: meta['via'] || '',
@@ -110,7 +110,7 @@ export function parseYAMLContent(content: string): Editordaten {
         signale: [],
       }
     : {
-        typ: 'strecke',
+        typ: 'route',
         meta: {
           linie: meta['linie'] || '',
           von: meta['von'] || '',
@@ -186,7 +186,7 @@ function parseSignalField(trimmed: string, currentSignal: Record<string, any>): 
 /** Parse legacy YAML format with 'strecke:' section header */
 function parseLegacyYAML(content: string): Editordaten {
   const lines = content.split('\n');
-  const result = emptyStreckendaten();
+  const result = emptyRoutendaten();
 
   let currentSignal: Record<string, any> | null = null;
   let inStrecke = false;

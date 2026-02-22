@@ -1,4 +1,4 @@
-export type StoragePrefix = 'videos' | 'strecken';
+export type StoragePrefix = 'strecken' | 'routen';
 
 export type FileInfo = {
   name: string;

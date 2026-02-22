@@ -10,14 +10,14 @@ async function findBlob(prefix: string, name: string) {
   return blobs.find((b) => b.pathname === path) ?? null;
 }
 
-/** GET /api/files/:name?typ=videos|strecken — read file content */
+/** GET /api/files/:name?typ=strecken|routen — read file content */
 export const GET: RequestHandler = async ({ request, params, url }) => {
   const denied = verifyPin(request);
   if (denied) return denied;
 
   const prefix = getPrefix(url);
   if (!prefix) {
-    return json({ error: 'Missing or invalid typ parameter (videos|strecken)' }, { status: 400 });
+    return json({ error: 'Missing or invalid typ parameter (strecken|routen)' }, { status: 400 });
   }
 
   const blob = await findBlob(prefix, params.name);
@@ -34,14 +34,14 @@ export const GET: RequestHandler = async ({ request, params, url }) => {
   return json({ name: params.name, typ: prefix, content });
 };
 
-/** PUT /api/files/:name?typ=videos|strecken — update file content */
+/** PUT /api/files/:name?typ=strecken|routen — update file content */
 export const PUT: RequestHandler = async ({ request, params, url }) => {
   const denied = verifyPin(request);
   if (denied) return denied;
 
   const prefix = getPrefix(url);
   if (!prefix) {
-    return json({ error: 'Missing or invalid typ parameter (videos|strecken)' }, { status: 400 });
+    return json({ error: 'Missing or invalid typ parameter (strecken|routen)' }, { status: 400 });
   }
 
   const { content } = await request.json();
@@ -64,14 +64,14 @@ export const PUT: RequestHandler = async ({ request, params, url }) => {
   return json({ name: params.name, typ: prefix, url: blob.url });
 };
 
-/** DELETE /api/files/:name?typ=videos|strecken — delete file */
+/** DELETE /api/files/:name?typ=strecken|routen — delete file */
 export const DELETE: RequestHandler = async ({ request, params, url }) => {
   const denied = verifyPin(request);
   if (denied) return denied;
 
   const prefix = getPrefix(url);
   if (!prefix) {
-    return json({ error: 'Missing or invalid typ parameter (videos|strecken)' }, { status: 400 });
+    return json({ error: 'Missing or invalid typ parameter (strecken|routen)' }, { status: 400 });
   }
 
   const blob = await findBlob(prefix, params.name);

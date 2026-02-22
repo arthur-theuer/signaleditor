@@ -4,14 +4,14 @@ import { verifyPin } from '$lib/server/auth';
 import { getPrefix } from '$lib/server/files';
 import type { RequestHandler } from './$types';
 
-/** GET /api/files?typ=videos|strecken — list stored YAML files */
+/** GET /api/files?typ=strecken|routen — list stored YAML files */
 export const GET: RequestHandler = async ({ request, url }) => {
   const denied = verifyPin(request);
   if (denied) return denied;
 
   const prefix = getPrefix(url);
   if (!prefix) {
-    return json({ error: 'Missing or invalid typ parameter (videos|strecken)' }, { status: 400 });
+    return json({ error: 'Missing or invalid typ parameter (strecken|routen)' }, { status: 400 });
   }
 
   const { blobs } = await list({ prefix: `${prefix}/` });
@@ -29,14 +29,14 @@ export const GET: RequestHandler = async ({ request, url }) => {
   return json(files);
 };
 
-/** POST /api/files?typ=videos|strecken — create a new YAML file */
+/** POST /api/files?typ=strecken|routen — create a new YAML file */
 export const POST: RequestHandler = async ({ request, url }) => {
   const denied = verifyPin(request);
   if (denied) return denied;
 
   const prefix = getPrefix(url);
   if (!prefix) {
-    return json({ error: 'Missing or invalid typ parameter (videos|strecken)' }, { status: 400 });
+    return json({ error: 'Missing or invalid typ parameter (strecken|routen)' }, { status: 400 });
   }
 
   const { name, content } = await request.json();

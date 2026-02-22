@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Editordaten, Videometa, Streckenmeta } from '../lib/types';
-  import { isVideodaten, dateiId } from '../lib/types';
+  import type { Editordaten, Streckenmeta, Routenmeta } from '../lib/types';
+  import { isStreckendaten, dateiId } from '../lib/types';
   import { STATIONEN } from '../lib/constants';
 
   let {
@@ -14,9 +14,9 @@
   } = $props();
 
   let id = $derived(dateiId(data));
-  let isVideo = $derived(isVideodaten(data));
-  let videoMeta = $derived(isVideo ? data.meta as Videometa : null);
-  let streckeMeta = $derived(!isVideo ? data.meta as Streckenmeta : null);
+  let isStrecke = $derived(isStreckendaten(data));
+  let streckeMeta = $derived(isStrecke ? data.meta as Streckenmeta : null);
+  let routenMeta = $derived(!isStrecke ? data.meta as Routenmeta : null);
 
   function autoArrow(e: Event) {
     const input = e.target as HTMLInputElement;
@@ -40,7 +40,7 @@
   function handleKeydown(e: KeyboardEvent) {
     if (e.key !== 'Tab' || e.shiftKey) return;
     const target = e.target as HTMLElement;
-    const lastId = isVideo ? 'meta-video' : 'meta-name';
+    const lastId = isStrecke ? 'meta-video' : 'meta-name';
     if (target.id === lastId) {
       e.preventDefault();
       ontabout();
@@ -51,24 +51,24 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="meta-section" onkeydown={handleKeydown}>
   <div class="section-header">
-    {isVideo ? 'Video' : 'Strecke'}
+    {isStrecke ? 'Strecke' : 'Route'}
     {#if id}
       <span class="header-id">{id}</span>
     {/if}
   </div>
   <div class="meta-grid">
-    {#if isVideo && videoMeta}
+    {#if isStrecke && streckeMeta}
       <div class="meta-field">
-        <label for="meta-streckennummer">Strecke</label>
+        <label for="meta-strecke">Strecke</label>
         <span class="hl-wrap">
-          <input id="meta-streckennummer" type="text" bind:value={videoMeta.streckennummer} oninput={onchange} placeholder="z.B. 500, 112b" />
+          <input id="meta-strecke" type="text" bind:value={streckeMeta.strecke} oninput={onchange} placeholder="z.B. 500, 112b" />
         </span>
       </div>
-    {:else if streckeMeta}
+    {:else if routenMeta}
       <div class="meta-field">
         <label for="meta-linie">Linie</label>
         <span class="hl-wrap">
-          <input id="meta-linie" type="text" bind:value={streckeMeta.linie} oninput={onchange} placeholder="z.B. s9" />
+          <input id="meta-linie" type="text" bind:value={routenMeta.linie} oninput={onchange} placeholder="z.B. s9" />
         </span>
       </div>
     {/if}
@@ -98,11 +98,11 @@
         <input id="meta-name" type="text" bind:value={data.meta.name} oninput={autoArrow} placeholder="z.B. Olten → Aarau" />
       </span>
     </div>
-    {#if isVideo && videoMeta}
+    {#if isStrecke && streckeMeta}
       <div class="meta-field">
         <label for="meta-video">Video</label>
         <span class="hl-wrap">
-          <input id="meta-video" type="text" bind:value={videoMeta.video} oninput={onchange} placeholder="URL" />
+          <input id="meta-video" type="text" bind:value={streckeMeta.video} oninput={onchange} placeholder="URL" />
         </span>
       </div>
     {/if}

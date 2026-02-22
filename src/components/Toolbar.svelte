@@ -38,7 +38,7 @@
     onToggleKm: () => void;
     onToggleYaml: () => void;
     onToggleMeldungen: () => void;
-    onNew: (typ: 'video' | 'strecke') => void;
+    onNew: (typ: 'strecke' | 'route') => void;
     onFileLoad: (event: Event) => void;
     onUndo: () => void;
     onRedo: () => void;
@@ -116,11 +116,11 @@
       bind:this={fileInput}
       onchange={onFileLoad}
     />
-    <button class="tb-btn hl" onclick={() => onNew('video')} title="Neues Video">
-      <Milestone size={20} strokeWidth={2} /><span>Video</span>
-    </button>
     <button class="tb-btn hl" onclick={() => onNew('strecke')} title="Neue Strecke">
-      <Route size={20} strokeWidth={2} /><span>Strecke</span>
+      <Milestone size={20} strokeWidth={2} /><span>Strecke</span>
+    </button>
+    <button class="tb-btn hl" onclick={() => onNew('route')} title="Neue Route">
+      <Route size={20} strokeWidth={2} /><span>Route</span>
     </button>
     <button class="tb-btn hl" onclick={() => fileInput.click()} title="Datei laden">
       <Upload size={20} strokeWidth={2} /><span>Laden</span>
