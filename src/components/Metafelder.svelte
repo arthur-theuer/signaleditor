@@ -68,14 +68,14 @@
     <div class="meta-field">
       <label for="meta-von">Von</label>
       <span class="hl-wrap">
-        <input id="meta-von" type="text" bind:value={data.meta.von} oninput={onchange} placeholder="code" class="code-input" />
+        <input id="meta-von" type="text" bind:value={data.meta.von} oninput={onchange} placeholder="Code" class="code-input" />
         <span class="station-preview">{stationPreview(data.meta.von, 'OL')}</span>
       </span>
     </div>
     <div class="meta-field">
       <label for="meta-nach">Nach</label>
       <span class="hl-wrap">
-        <input id="meta-nach" type="text" bind:value={data.meta.nach} oninput={onchange} placeholder="code" class="code-input" />
+        <input id="meta-nach" type="text" bind:value={data.meta.nach} oninput={onchange} placeholder="Code" class="code-input" />
         <span class="station-preview">{stationPreview(data.meta.nach, 'AA')}</span>
       </span>
     </div>
