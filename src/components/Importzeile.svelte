@@ -41,11 +41,18 @@
     return parts.join(', ');
   });
 
-  // Stitch info with explicit missing markers
+  // Derive start/end knoten from resolved signals
   let firstKnoten = $derived(() => {
     if (!resolved) return null;
     const first = resolveResult!.signale[0];
     if (first && isKnoteneintrag(first)) return first.knoten;
+    return null;
+  });
+  let lastKnoten = $derived(() => {
+    if (!resolved) return null;
+    const entries = resolveResult!.signale;
+    const last = entries[entries.length - 1];
+    if (last && isKnoteneintrag(last)) return last.knoten;
     return null;
   });
 
@@ -60,12 +67,15 @@
     if (fk) return knotenLabel(fk);
     return '';
   });
-  let bisLabel = $derived(
-    eintrag.import.bis ? knotenLabel(eintrag.import.bis) : ''
-  );
+  let bisLabel = $derived(() => {
+    if (eintrag.import.bis) return knotenLabel(eintrag.import.bis);
+    const lk = lastKnoten();
+    if (lk) return knotenLabel(lk);
+    return '';
+  });
   let stitchText = $derived(() => {
     const von = vonLabel();
-    const bis = bisLabel;
+    const bis = bisLabel();
     if (von && bis) return `${von} → ${bis}`;
     if (von) return `${von} → ?`;
     if (bis) return `? → ${bis}`;
@@ -182,8 +192,8 @@
     height: 100%;
   }
   .import-info-cell.empty {
-    background: var(--color-bg-subtle);
-    border-color: var(--color-border);
+    background: var(--color-bg);
+    pointer-events: none;
   }
   .import-info {
     display: flex;
