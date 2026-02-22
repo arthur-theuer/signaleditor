@@ -219,7 +219,7 @@
   }
   .dateien-btn.active {
     background: var(--color-focus);
-    color: white;
+    color: var(--color-bg-raised);
     border-color: var(--color-focus-hover);
   }
   .file-indicator {
