@@ -136,11 +136,10 @@
     background: var(--color-bg);
     border: var(--card-border);
     border-radius: var(--container-radius);
-    overflow: hidden;
   }
   .tab-header {
     display: flex;
-    border-bottom: var(--card-border);
+    margin: -1px -1px 0 -1px;
   }
   .tab-btn {
     flex: 1;
@@ -148,15 +147,17 @@
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    border: none;
     background: var(--color-bg-raised);
     color: var(--color-text-secondary);
+    border: var(--card-border);
   }
   .tab-btn:first-child {
     border-radius: var(--container-radius) 0 0 0;
+    border-right: none;
   }
   .tab-btn:last-child {
     border-radius: 0 var(--container-radius) 0 0;
+    border-left: none;
   }
   .tab-btn:hover::after {
     opacity: 0;
@@ -167,6 +168,7 @@
   .file-list {
     height: 360px;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: var(--half-gap) 0;
   }
   .file-row {

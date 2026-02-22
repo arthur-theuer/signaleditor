@@ -64,17 +64,66 @@ Data is stored as YAML files. The app supports local file import/export and clou
 - `src/routes/api/files/+server.ts` — GET (list files), POST (create file)
 - `src/routes/api/files/[name]/+server.ts` — GET (read), PUT (update), DELETE (delete)
 
-## UI Conventions
+## Design System
 
-- All toolbar icon buttons use 44x44px hit targets with 20px SVG icons inside
-- Toolbar icons use Lucide-style inline SVGs with `viewBox="0 0 24 24"`, `stroke-width="2"`, `stroke-linecap="round"`, `stroke-linejoin="round"`
-- Row action icons (Zeilenaktionen) use `stroke-width="2.5"`
-- CSS uses custom properties defined in `:root` (e.g. `--color-focus`, `--color-red-bg`, `--card-radius`)
-- All buttons use `border-radius: var(--container-radius)` (12px) matching panel outer radius
-- No drop shadows anywhere in the project
-- Component styles are scoped via Svelte `<style>` blocks; global styles live in `app.css`
-- The highlight system (`.hl`, `.hl-wrap`) provides blue hover/focus overlays via `::after` pseudo-elements — used on all interactive elements
-- Page background turns red (`--color-red-bg`) when user is not logged in
+### Layout Tokens
+
+| Token | Value | Usage |
+|---|---|---|
+| `--unit` | 40px | Base size for buttons, inputs, single-height elements |
+| `--row-height` | 80px (2 × unit) | Signal row height (input + preview stacked) |
+| `--card-gap` | 4px | Gap between cards/cells in a row |
+| `--half-gap` | 2px | Half of card-gap, used for vertical padding |
+| `--card-radius` | 8px | Border radius for individual cards/cells |
+| `--container-radius` | 12px (card-radius + card-gap) | Border radius for outer containers/panels |
+| `--page-gap` | 20px | Page-level horizontal/bottom padding |
+
+### Color Hierarchy
+
+| Token | Hex | Usage |
+|---|---|---|
+| `--color-text` | #333 | Primary text, input values |
+| `--color-text-secondary` | #666 | Resolved/real secondary info (e.g. station name from valid code) |
+| `--color-text-muted` | #999 | Placeholders, example hints, empty-state text |
+
+Rule: placeholder/example text uses `--color-text-muted`. When a value resolves to real data, switch to `--color-text-secondary`.
+
+### Highlight Overlay System (`.hl` / `.hl-wrap`)
+
+The blue focus/hover overlay used on all interactive elements. Defined globally in `app.css`.
+
+**How it works:**
+- `.hl` or `.hl-wrap` class on the element sets `position: relative`
+- `::after` pseudo-element with `inset: -1px` extends 1px outside the element
+- `border: 2px solid var(--color-focus)` + `background: var(--color-focus-bg)`
+- `border-radius: inherit` — inherits from the element itself
+- `opacity: 0` by default, `1` on hover (`.hl`) or focus-within (`.hl-wrap`)
+
+**Contract — every `.hl` / `.hl-wrap` element MUST have:**
+1. Its own `border` (typically `var(--card-border)`) — the `::after` at `inset: -1px` is sized to cover a 1px border
+2. Its own `border-radius` — `inherit` only works if the element defines one
+3. No ancestor with `overflow: hidden` that would clip the `::after` at `inset: -1px`, OR the element must be inset enough from the clipping ancestor that the -1px extension is not clipped
+
+**Variants:**
+- `.hl` — shows on hover
+- `.hl-wrap` — shows on focus-within (for input wrappers), suppresses child `outline`
+- `.hl.hl-primary` — darker border (`--color-focus-ring`), used for primary actions
+- `.hl.hl-flash` — always visible (forced `opacity: 1`)
+- To show only on active/selected (not hover): override `.element:hover::after { opacity: 0 }` and `.element.active::after { opacity: 1 }`
+
+### Icons
+
+- Toolbar: 20px Lucide-style inline SVGs, `viewBox="0 0 24 24"`, `stroke-width="2"`, `stroke-linecap="round"`, `stroke-linejoin="round"`, 44x44px hit target
+- Row actions (Zeilenaktionen): `stroke-width="2.5"`
+- Delete buttons: 16px icon, `stroke-width="2.5"`, `color: var(--color-red)`
+
+### General Rules
+
+- No drop shadows anywhere
+- All standalone buttons use `border-radius: var(--container-radius)`
+- Cards/cells inside containers use `border-radius: var(--card-radius)`
+- Component styles are scoped via Svelte `<style>` blocks; global styles in `app.css`
+- Toolbar background uses `--color-red-bg` when not logged in
 
 ## Git Workflow
 
