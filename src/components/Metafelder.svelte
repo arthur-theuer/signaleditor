@@ -69,14 +69,14 @@
       <label for="meta-von">Von</label>
       <span class="hl-wrap">
         <input id="meta-von" type="text" bind:value={data.meta.von} oninput={onchange} placeholder="Code" class="code-input" />
-        <span class="station-preview">{stationPreview(data.meta.von, 'OL')}</span>
+        <span class="station-preview" class:has-value={data.meta.von && STATIONEN[data.meta.von.toUpperCase()]}>{stationPreview(data.meta.von, 'OL')}</span>
       </span>
     </div>
     <div class="meta-field">
       <label for="meta-nach">Nach</label>
       <span class="hl-wrap">
         <input id="meta-nach" type="text" bind:value={data.meta.nach} oninput={onchange} placeholder="Code" class="code-input" />
-        <span class="station-preview">{stationPreview(data.meta.nach, 'AA')}</span>
+        <span class="station-preview" class:has-value={data.meta.nach && STATIONEN[data.meta.nach.toUpperCase()]}>{stationPreview(data.meta.nach, 'AA')}</span>
       </span>
     </div>
     <div class="meta-field">
@@ -175,6 +175,9 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+  .station-preview.has-value {
+    color: var(--color-text-secondary);
   }
   .meta-field-id {
     min-width: 0;

@@ -74,12 +74,12 @@
   <div class="dateibrowser">
     <div class="tab-header">
       <button
-        class="tab-btn"
+        class="tab-btn hl"
         class:active={activeTab === 'videos'}
         onclick={() => activeTab = 'videos'}
       >Videos</button>
       <button
-        class="tab-btn"
+        class="tab-btn hl"
         class:active={activeTab === 'strecken'}
         onclick={() => activeTab = 'strecken'}
       >Strecken</button>
@@ -151,19 +151,14 @@
     border: none;
     background: var(--color-bg-raised);
     color: var(--color-text-secondary);
-    border-radius: 0;
   }
-  .tab-btn {
-    position: relative;
+  .tab-btn:first-child {
+    border-radius: var(--container-radius) 0 0 0;
   }
-  .tab-btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 2px solid var(--color-focus);
-    background: var(--color-focus-bg);
-    border-radius: 0;
-    pointer-events: none;
+  .tab-btn:last-child {
+    border-radius: 0 var(--container-radius) 0 0;
+  }
+  .tab-btn:hover::after {
     opacity: 0;
   }
   .tab-btn.active::after {

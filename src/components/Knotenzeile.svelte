@@ -29,7 +29,7 @@
         spellcheck="false"
       />
     </div>
-    <div class="knoten-preview">{preview}</div>
+    <div class="knoten-preview" class:has-value={!!preview}>{preview}</div>
   </div>
 </div>
 
@@ -69,6 +69,9 @@
     font-family: monospace;
     color: var(--color-text-muted);
     pointer-events: none;
+  }
+  .knoten-preview.has-value {
+    color: var(--color-text-secondary);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
