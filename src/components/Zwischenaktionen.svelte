@@ -16,11 +16,11 @@
 
 <div class="insert-zone">
   <div class="insert-zone-target">
-    <button class="insert-signal" onclick={onInsertSignal} tabindex={-1} title="Signal einfügen">S</button>
-    <button class="insert-note" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen">N</button>
-    <button class="insert-abzweigung" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen">A</button>
-    <button class="insert-knoten" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen">K</button>
-    <button class="insert-import" onclick={onInsertImport} tabindex={-1} title="Import einfügen">I</button>
+    <button class="insert-signal hl" onclick={onInsertSignal} tabindex={-1} title="Signal einfügen">S</button>
+    <button class="insert-note hl" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen">N</button>
+    <button class="insert-abzweigung hl" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen">A</button>
+    <button class="insert-knoten hl" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen">K</button>
+    <button class="insert-import hl" onclick={onInsertImport} tabindex={-1} title="Import einfügen">I</button>
   </div>
 </div>
 
@@ -55,8 +55,6 @@
     opacity: 1;
     pointer-events: auto;
   }
-  .insert-zone-target button:hover { filter: brightness(0.95); }
-  .insert-zone-target button:active { filter: brightness(0.9); }
   .insert-zone-target button:focus { outline: none; }
   .insert-signal { background: var(--color-bg-raised); color: var(--color-text-secondary); }
   .insert-note { background: var(--color-highlight); color: #f57f17; border-color: #f9a825; }
