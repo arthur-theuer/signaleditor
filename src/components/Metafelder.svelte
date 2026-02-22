@@ -57,7 +57,7 @@
   <div class="meta-grid">
     {#if isVideo}
       <div class="meta-field">
-        <label for="meta-streckennummer">Streckennummer</label>
+        <label for="meta-streckennummer">Strecke</label>
         <span class="hl-wrap">
           <input id="meta-streckennummer" type="text" bind:value={data.meta.streckennummer} oninput={onchange} placeholder="z.B. 500, 112b" />
         </span>
@@ -132,6 +132,7 @@
   .meta-field label {
     font-size: var(--preview-font-size);
     font-weight: var(--weight-semibold);
+    text-transform: uppercase;
     color: var(--color-text-secondary);
     padding: 8px var(--cell-padding) 4px;
     background: var(--color-bg-subtle);
