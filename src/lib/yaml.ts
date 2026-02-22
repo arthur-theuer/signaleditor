@@ -24,6 +24,7 @@ export function generateYAML(data: Editordaten): string {
     yaml += `streckennummer: ${m.streckennummer}\n`;
     yaml += `von: ${m.von}\n`;
     yaml += `nach: ${m.nach}\n`;
+    yaml += `via: ${m.via}\n`;
     yaml += `name: ${m.name}\n`;
     yaml += `video: ${m.video}\n`;
   } else {
@@ -102,6 +103,7 @@ export function parseYAMLContent(content: string): Editordaten {
           streckennummer: meta['streckennummer'] || '',
           von: meta['von'] || '',
           nach: meta['nach'] || '',
+          via: meta['via'] || '',
           name: meta['name'] || '',
           video: meta['video'] || '',
         },

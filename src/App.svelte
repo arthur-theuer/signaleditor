@@ -1,6 +1,7 @@
 <script lang="ts">
-  import type { Editordaten, Dateityp } from './lib/types';
+  import type { Editordaten, Dateityp, Knoteneintrag } from './lib/types';
   import { emptyVideodaten, emptyStreckendaten, isImporteintrag } from './lib/types';
+  import { tick } from 'svelte';
   import { parseYAMLContent, extractYAMLFromHTML } from './lib/yaml';
   import { History } from './lib/history.svelte';
   import { autoStitchImporte } from './lib/sources';
@@ -155,6 +156,20 @@
     }
   }
 
+  async function handleMetaTabOut() {
+    const knoten: Knoteneintrag = { id: data.signale.length, knoten: '' };
+    data.signale = [...data.signale, knoten];
+    markDirty();
+    await tick();
+    // Focus the first input in the last row
+    const rows = document.querySelectorAll('.signal-row, .knoten-row, .notiz-row, .abzweigung-row, .import-row');
+    const lastRow = rows[rows.length - 1];
+    if (lastRow) {
+      const input = lastRow.querySelector<HTMLElement>('input, select, textarea');
+      if (input) input.focus();
+    }
+  }
+
   function handleExportMeldungen() {
     const yamlContent = generateYAML(data);
     downloadMeldungenHTML(data, yamlContent);
@@ -238,7 +253,7 @@
   <Dateibrowser onload={handleCloudLoad} onclose={() => showDateien = false} />
 {/if}
 
-<Metafelder bind:data={data} onchange={markDirty} />
+<Metafelder bind:data={data} onchange={markDirty} ontabout={handleMetaTabOut} />
 
 <div class="main-content">
   <div class="signals-container">

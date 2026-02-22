@@ -6,9 +6,11 @@
   let {
     data = $bindable(),
     onchange,
+    ontabout,
   }: {
     data: Editordaten;
     onchange: () => void;
+    ontabout: () => void;
   } = $props();
 
   let id = $derived(dateiId(data));
@@ -24,9 +26,20 @@
   function stationPreview(code: string): string {
     return STATIONEN[code.toUpperCase()] || '';
   }
+
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key !== 'Tab' || e.shiftKey) return;
+    const target = e.target as HTMLElement;
+    const lastId = isVideo ? 'meta-video' : 'meta-name';
+    if (target.id === lastId) {
+      e.preventDefault();
+      ontabout();
+    }
+  }
 </script>
 
-<div class="meta-section">
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div class="meta-section" onkeydown={handleKeydown}>
   <div class="section-header">{isVideo ? 'Video' : 'Strecke'}</div>
   <div class="meta-grid">
     {#if isVideo}
@@ -52,20 +65,18 @@
       </span>
     </div>
     <div class="meta-field">
+      <label for="meta-via">Via</label>
+      <span class="hl-wrap">
+        <input id="meta-via" type="text" bind:value={data.meta.via} oninput={onchange} placeholder="z.B. OL, LB" />
+      </span>
+    </div>
+    <div class="meta-field">
       <label for="meta-nach">Nach</label>
       <span class="hl-wrap">
         <input id="meta-nach" type="text" bind:value={data.meta.nach} oninput={onchange} placeholder="z.B. AA" class="code-input" />
         <span class="station-preview">{stationPreview(data.meta.nach)}</span>
       </span>
     </div>
-    {#if !isVideo}
-      <div class="meta-field">
-        <label for="meta-via">Via</label>
-        <span class="hl-wrap">
-          <input id="meta-via" type="text" bind:value={data.meta.via} oninput={onchange} placeholder="z.B. OL, LB" />
-        </span>
-      </div>
-    {/if}
     <div class="meta-field">
       <label for="meta-name">Name</label>
       <span class="hl-wrap">

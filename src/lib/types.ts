@@ -79,6 +79,7 @@ export type Videometa = {
   streckennummer: string;
   von: string;
   nach: string;
+  via: string;
   name: string;
   video: string;
 };
@@ -126,7 +127,7 @@ export function dateiId(data: Editordaten): string {
 export function emptyVideodaten(): Videodaten {
   return {
     typ: 'video',
-    meta: { streckennummer: '', von: '', nach: '', name: '', video: '' },
+    meta: { streckennummer: '', von: '', nach: '', via: '', name: '', video: '' },
     signale: [],
   };
 }

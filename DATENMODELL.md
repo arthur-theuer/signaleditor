@@ -34,6 +34,7 @@ type Videometa = {
   streckennummer: string;  // z.B. "500", "112b" — Ziffern + Kleinbuchstaben a-z
   von: string;             // Stationscode, z.B. "OL"
   nach: string;            // Stationscode, z.B. "AA"
+  via: string;             // z.B. "OL, LB" — Zwischenstationen, vom Benutzer eingetragen
   name: string;            // Anzeigename, z.B. "Olten → Aarau" — autogeneriert, überschreibbar
   video: string;           // URL zum externen Video
 };
