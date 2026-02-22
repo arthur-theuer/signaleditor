@@ -77,7 +77,7 @@
       disabled={saving || !dirty}
       title="Speichern (Ctrl+S)"
     >
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
         <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
         <path d="M7 3v4a1 1 0 0 0 1 1h7" />
@@ -97,12 +97,13 @@
     onclick={() => loggedIn ? onLogout() : onLogin()}
     title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
   >
-    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="16" r="1" />
+      <rect x="3" y="10" width="18" height="12" rx="2" />
       {#if loggedIn}
-        <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+        <path d="M7 10V7a5 5 0 0 1 9.33-2.5" />
       {:else}
-        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        <path d="M7 10V7a5 5 0 0 1 10 0v3" />
       {/if}
     </svg>
   </button>
