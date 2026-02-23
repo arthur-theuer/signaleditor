@@ -320,6 +320,7 @@
     border: var(--card-border);
     border-radius: var(--container-radius);
     overflow: hidden;
+    container-type: inline-size;
   }
   .signals-list { padding: var(--half-gap) 0; }
   .meldungen-section {

@@ -67,7 +67,7 @@
     color: var(--color-import-text);
     border: 1px solid var(--color-import-text);
   }
-  @media (max-width: 600px) {
+  @container (max-width: 500px) {
     .add-bar button span { display: none; }
   }
 </style>
