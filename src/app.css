@@ -275,6 +275,8 @@ input, select, textarea, button {
 .signal-cell.disabled .signal-preview { display: none; }
 
 .section-header {
+  display: flex;
+  align-items: center;
   padding: var(--spacing-cell);
   font-weight: var(--font-weight-semibold);
   font-size: var(--text-input);
