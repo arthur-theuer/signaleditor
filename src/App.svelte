@@ -191,14 +191,17 @@
   }
 
   async function handleMetaTabOut() {
-    const knoten: Knoteneintrag = { id: data.signale.length, knoten: '' };
-    data.signale = [...data.signale, knoten];
-    markDirty();
+    if (data.signale.length === 0) {
+      data.signale = [...data.signale, { id: 0, knoten: '' } as Knoteneintrag];
+      markDirty();
+    }
     await tick();
-    // Focus the knoten input we just appended (last one in the DOM)
-    const inputs = document.querySelectorAll<HTMLElement>('.knoten-input');
-    const last = inputs[inputs.length - 1];
-    if (last) last.focus();
+    const firstRow = document.querySelector<HTMLElement>('[data-row-index="0"]');
+    if (!firstRow) return;
+    const target = firstRow.querySelector<HTMLElement>(
+      showKm ? '.km-input' : '.signal-input, .note-input, .abzweigung-btn, .knoten-input, .import-folder-btn'
+    );
+    if (target) target.focus();
   }
 
   function handleExportMeldungen() {
