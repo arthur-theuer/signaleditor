@@ -129,65 +129,63 @@
 
   <div class="separator"></div>
 
-  <div class="spacer"></div>
-
-  <!-- Group: Cloud -->
-  <div class="btn-group">
-    <button
-      class="tb-btn lock-btn hl"
-      class:unlocked={loggedIn}
-      onclick={handleLockClick}
-      title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
-    >
-      {#if loggedIn}
-        <LockOpen size={20} strokeWidth={2} /><span>Abmelden</span>
-      {:else}
-        <Lock size={20} strokeWidth={2} /><span>Anmelden</span>
+  <div class="cloud-center">
+    <!-- Group: Cloud -->
+    <div class="btn-group">
+      <button
+        class="tb-btn lock-btn hl"
+        class:unlocked={loggedIn}
+        onclick={handleLockClick}
+        title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
+      >
+        {#if loggedIn}
+          <LockOpen size={20} strokeWidth={2} /><span>Abmelden</span>
+        {:else}
+          <Lock size={20} strokeWidth={2} /><span>Anmelden</span>
+        {/if}
+      </button>
+      {#if showPinInput}
+        <input
+          bind:this={pinInputEl}
+          bind:value={pinValue}
+          class="pin-input"
+          class:error={pinError}
+          type="password"
+          placeholder="PIN"
+          onkeydown={(e) => { if (e.key === 'Enter') submitPin(); if (e.key === 'Escape') cancelPin(); }}
+          onblur={cancelPin}
+        />
       {/if}
-    </button>
-    {#if showPinInput}
-      <input
-        bind:this={pinInputEl}
-        bind:value={pinValue}
-        class="pin-input"
-        class:error={pinError}
-        type="password"
-        placeholder="PIN"
-        onkeydown={(e) => { if (e.key === 'Enter') submitPin(); if (e.key === 'Escape') cancelPin(); }}
-        onblur={cancelPin}
-      />
-    {/if}
-    {#if loggedIn}
-      <button
-        class="tb-btn save-btn hl"
-        onclick={onSave}
-        disabled={saving || !dirty}
-        title="Speichern (Ctrl+S)"
-      >
-        <Save size={20} strokeWidth={2} /><span>Speichern</span>
-      </button>
-      <button
-        class="tb-btn dateien-btn hl"
-        class:active={showDateien}
-        onclick={onToggleDateien}
-        title="Dateien"
-      >
-        <FolderOpen size={20} strokeWidth={2} /><span>Dateien</span>
-      </button>
+      {#if loggedIn}
+        <button
+          class="tb-btn save-btn hl"
+          onclick={onSave}
+          disabled={saving || !dirty}
+          title="Speichern (Ctrl+S)"
+        >
+          <Save size={20} strokeWidth={2} /><span>Speichern</span>
+        </button>
+        <button
+          class="tb-btn dateien-btn hl"
+          class:active={showDateien}
+          onclick={onToggleDateien}
+          title="Dateien"
+        >
+          <FolderOpen size={20} strokeWidth={2} /><span>Dateien</span>
+        </button>
+      {/if}
+    </div>
+
+    {#if loggedIn && currentFileName}
+      <span class="file-indicator" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
+        <span class="status-dot"></span>
+        {currentFileName}
+        <span class="status-label">
+          {#if saveStatus === 'saving'}Speichern{:else if saveStatus === 'saved'}Gespeichert{:else if saveStatus === 'dirty'}Ungespeichert{/if}
+        </span>
+      </span>
     {/if}
   </div>
-
-  {#if loggedIn && currentFileName}
-    <span class="file-indicator" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
-      <span class="status-dot"></span>
-      {currentFileName}
-      <span class="status-label">
-        {#if saveStatus === 'saving'}Speichern{:else if saveStatus === 'saved'}Gespeichert{:else if saveStatus === 'dirty'}Ungespeichert{/if}
-      </span>
-    </span>
-  {/if}
-
-  <div class="spacer"></div>
 
   <div class="separator"></div>
 
@@ -262,7 +260,13 @@
     background: var(--color-border);
     margin: 0 var(--space-xs);
   }
-  .spacer { flex: 1; margin: 0 calc(-1 * var(--space-md)); }
+  .cloud-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+  }
 
   /* Base toolbar button: fixed-size icon box, label appears as overlay */
   .tb-btn {
