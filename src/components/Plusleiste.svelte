@@ -116,8 +116,11 @@
     height: 0;
   }
   .measure-btn {
-    flex: 1;
+    flex: 1 0 auto;
+    /* Match real button: padding + icon (16px) + gap (--space-sm) + border (1px each side) */
     padding: 0 var(--cell-padding);
+    padding-left: calc(var(--cell-padding) + 16px + var(--space-sm));
+    border: 1px solid transparent;
     font-weight: var(--weight-semibold);
     font-size: var(--input-font-size);
     white-space: nowrap;
