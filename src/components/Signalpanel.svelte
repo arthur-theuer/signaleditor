@@ -37,7 +37,8 @@
     if (!truncatedRows[fieldType]) truncatedRows[fieldType] = new Set();
     const set = truncatedRows[fieldType];
     if (isTruncated) set.add(rowIdx); else set.delete(rowIdx);
-    compactFields = { ...compactFields, [fieldType]: set.size > 0 };
+    const val = set.size > 0;
+    if (compactFields[fieldType] !== val) compactFields = { ...compactFields, [fieldType]: val };
   }
 
   // Per-field-type tier tracking: each row reports a tier (0=full, 1=medium, 2=compact),
@@ -51,7 +52,7 @@
     map.set(rowIdx, tier);
     let max = 0;
     for (const t of map.values()) { if (t > max) max = t; }
-    fieldTiers = { ...fieldTiers, [fieldType]: max };
+    if (fieldTiers[fieldType] !== max) fieldTiers = { ...fieldTiers, [fieldType]: max };
   }
 
   let listEl: HTMLDivElement;

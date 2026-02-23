@@ -63,41 +63,45 @@
   // Stitch truncation detection: three tiers (0=full, 1=medium, 2=compact)
   let stitchFullEl = $state<HTMLElement | null>(null);
   let stitchMediumEl = $state<HTMLElement | null>(null);
+  let lastStitchTier = -1;
 
   $effect(() => {
     const fullEl = stitchFullEl;
     const medEl = stitchMediumEl;
-    if (!fullEl || !medEl) { onstitchtruncate?.(0); return; }
+    if (!fullEl || !medEl) { if (lastStitchTier !== 0) { lastStitchTier = 0; onstitchtruncate?.(0); } return; }
 
     function check() {
-      if (fullEl!.scrollWidth <= fullEl!.clientWidth) { onstitchtruncate?.(0); return; }
-      if (medEl!.scrollWidth <= medEl!.clientWidth) { onstitchtruncate?.(1); return; }
-      onstitchtruncate?.(2);
+      let tier = 2;
+      if (fullEl!.scrollWidth <= fullEl!.clientWidth) tier = 0;
+      else if (medEl!.scrollWidth <= medEl!.clientWidth) tier = 1;
+      if (tier !== lastStitchTier) { lastStitchTier = tier; onstitchtruncate?.(tier); }
     }
 
     const ro = new ResizeObserver(check);
     ro.observe(fullEl);
     check();
 
-    return () => { ro.disconnect(); onstitchtruncate?.(0); };
+    return () => { ro.disconnect(); if (lastStitchTier !== 0) { lastStitchTier = 0; onstitchtruncate?.(0); } };
   });
 
   // Count truncation detection: report to parent so all import rows switch together
   let countEl = $state<HTMLElement | null>(null);
+  let lastTruncated: boolean | null = null;
 
   $effect(() => {
     const el = countEl;
-    if (!el) { ontruncate?.(false); return; }
+    if (!el) { if (lastTruncated !== false) { lastTruncated = false; ontruncate?.(false); } return; }
 
     function check() {
-      ontruncate?.(el!.scrollWidth > el!.clientWidth);
+      const t = el!.scrollWidth > el!.clientWidth;
+      if (t !== lastTruncated) { lastTruncated = t; ontruncate?.(t); }
     }
 
     const ro = new ResizeObserver(check);
     ro.observe(el);
     check();
 
-    return () => { ro.disconnect(); ontruncate?.(false); };
+    return () => { ro.disconnect(); if (lastTruncated !== false) { lastTruncated = false; ontruncate?.(false); } };
   });
 
   // Derive start/end knoten from resolved signals
