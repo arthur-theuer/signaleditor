@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { DiamondPlus, SquarePen, Share2, Crosshair, Import } from 'lucide-svelte';
+
   let {
     onInsertSignal,
     onInsertNotiz,
@@ -16,11 +18,11 @@
 
 <div class="insert-zone">
   <div class="insert-zone-target">
-    <button class="insert-signal hl" onclick={onInsertSignal} tabindex={-1} title="Signal einfügen">S</button>
-    <button class="insert-note hl" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen">N</button>
-    <button class="insert-abzweigung hl" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen">A</button>
-    <button class="insert-knoten hl" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen">K</button>
-    <button class="insert-import hl" onclick={onInsertImport} tabindex={-1} title="Import einfügen">I</button>
+    <button class="insert-signal hl" onclick={onInsertSignal} tabindex={-1} title="Signal einfügen"><DiamondPlus size={16} strokeWidth={2.5} /></button>
+    <button class="insert-note hl" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen"><SquarePen size={16} strokeWidth={2.5} /></button>
+    <button class="insert-abzweigung hl" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen"><Share2 size={16} strokeWidth={2.5} /></button>
+    <button class="insert-knoten hl" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen"><Crosshair size={16} strokeWidth={2.5} /></button>
+    <button class="insert-import hl" onclick={onInsertImport} tabindex={-1} title="Import einfügen"><Import size={16} strokeWidth={2.5} /></button>
   </div>
 </div>
 
@@ -45,8 +47,9 @@
     pointer-events: none;
     width: calc((var(--row-height) - var(--card-gap)) / 2);
     height: calc((var(--row-height) - var(--card-gap)) / 2);
-    font-size: var(--input-font-size);
-    font-weight: var(--weight-semibold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: var(--card-border);
     border-radius: var(--card-radius);
     cursor: pointer;

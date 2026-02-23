@@ -34,7 +34,8 @@
     flex: 1;
     min-width: 0;
     overflow: hidden;
-    padding: var(--cell-padding);
+    height: calc(var(--row-height) / 2 - var(--card-gap) / 2);
+    padding: 0 var(--cell-padding);
     border-radius: var(--card-radius);
     cursor: pointer;
     font-weight: var(--weight-semibold);
