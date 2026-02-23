@@ -14,9 +14,33 @@
     onAddKnoten: () => void;
     onAddImport: () => void;
   } = $props();
+
+  // Measure natural button widths once on mount to compute the hide-text threshold
+  let barEl = $state<HTMLElement | null>(null);
+  let hideText = $state(false);
+
+  $effect(() => {
+    const el = barEl;
+    if (!el) return;
+
+    // On first render, measure the natural width needed with text visible
+    const btns = Array.from(el.children) as HTMLElement[];
+    const naturalWidth = btns.reduce((sum, b) => sum + b.scrollWidth, 0)
+      + (btns.length - 1) * 4; // --card-gap
+
+    function check() {
+      hideText = el!.clientWidth < naturalWidth;
+    }
+
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    check();
+
+    return () => ro.disconnect();
+  });
 </script>
 
-<div class="add-bar">
+<div class="add-bar" class:hide-text={hideText} bind:this={barEl}>
   <button class="add-signal hl" onclick={onAddSignal}><DiamondPlus size={16} strokeWidth={2.5} /><span>Signal</span></button>
   <button class="add-note hl" onclick={onAddNotiz}><SquarePen size={16} strokeWidth={2.5} /><span>Notiz</span></button>
   <button class="add-abzweigung hl" onclick={onAddAbzweigung}><Share2 size={16} strokeWidth={2.5} /><span>Abzweigung</span></button>
@@ -73,7 +97,5 @@
     color: var(--color-import-text);
     border: 1px solid var(--color-import-text);
   }
-  @container (max-width: 650px) {
-    .add-bar button span { display: none; }
-  }
+  .hide-text button span { display: none; }
 </style>

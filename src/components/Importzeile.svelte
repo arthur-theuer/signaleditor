@@ -39,13 +39,13 @@
   let abzCount = $derived(resolveResult?.signale.filter(isAbzweigungseintrag).length ?? 0);
   let knotenCount = $derived(resolveResult?.signale.filter(isKnoteneintrag).length ?? 0);
 
-  function buildCount(labels: [string, string, string, string]): string {
+  function buildCount(labels: [string, string, string, string], sep = ' '): string {
     if (!resolved) return '';
     const parts: string[] = [];
-    if (signalCount) parts.push(`${signalCount} ${labels[0]}`);
-    if (notizCount) parts.push(`${notizCount} ${labels[1]}`);
-    if (abzCount) parts.push(`${abzCount} ${labels[2]}`);
-    if (knotenCount) parts.push(`${knotenCount} ${labels[3]}`);
+    if (signalCount) parts.push(`${signalCount}${sep}${labels[0]}`);
+    if (notizCount) parts.push(`${notizCount}${sep}${labels[1]}`);
+    if (abzCount) parts.push(`${abzCount}${sep}${labels[2]}`);
+    if (knotenCount) parts.push(`${knotenCount}${sep}${labels[3]}`);
     return parts.join(', ');
   }
 
@@ -56,7 +56,7 @@
     'Knoten',
   ]));
   let countMedium = $derived(() => buildCount(['Sig.', 'Not.', 'Abzw.', 'Kn.']));
-  let countShort = $derived(() => buildCount(['S', 'N', 'A', 'K']));
+  let countShort = $derived(() => buildCount(['S', 'N', 'A', 'K'], ''));
 
   // Stitch truncation detection: three tiers (0=full, 1=medium, 2=compact)
   let stitchFullEl = $state<HTMLElement | null>(null);
