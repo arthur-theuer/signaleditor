@@ -12,10 +12,10 @@
 
 <div class="signal-actions">
   <button class="clear hl" onclick={onclear} title="Leeren" tabindex={-1}>
-    <Eraser size={16} strokeWidth={2.5} />
+    <Eraser size={16} strokeWidth={1.5} />
   </button>
   <button class="delete hl" onclick={ondelete} title="Löschen" tabindex={-1}>
-    <Trash2 size={16} strokeWidth={2.5} />
+    <Trash2 size={16} strokeWidth={1.5} />
   </button>
 </div>
 

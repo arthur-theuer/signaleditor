@@ -122,11 +122,11 @@
             </button>
             {#if mode === 'manage'}
               <button class="delete-btn hl" onclick={() => handleDelete(file)} title="Löschen">
-                <Trash2 size={16} strokeWidth={2.5} />
+                <Trash2 size={16} strokeWidth={1.5} />
               </button>
             {:else if used}
               <div class="used-indicator">
-                <Check size={16} strokeWidth={2.5} />
+                <Check size={16} strokeWidth={1.5} />
               </div>
             {/if}
           </div>

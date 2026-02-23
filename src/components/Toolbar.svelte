@@ -98,10 +98,10 @@
   <!-- Group: History -->
   <div class="flex items-center gap-card">
     <button id="undoBtn" class="tb-btn hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
-      <Undo2 size={20} strokeWidth={2} /><span class="tooltip">Rückgängig</span>
+      <Undo2 size={20} strokeWidth={1.2} /><span class="tooltip">Rückgängig</span>
     </button>
     <button id="redoBtn" class="tb-btn hl" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
-      <Redo2 size={20} strokeWidth={2} /><span class="tooltip">Wiederholen</span>
+      <Redo2 size={20} strokeWidth={1.2} /><span class="tooltip">Wiederholen</span>
     </button>
   </div>
 
@@ -117,13 +117,13 @@
       onchange={onFileLoad}
     />
     <button class="tb-btn hl" onclick={() => onNew('strecke')} title="Neue Strecke">
-      <Milestone size={20} strokeWidth={2} /><span class="tooltip">Strecke</span>
+      <Milestone size={20} strokeWidth={1.2} /><span class="tooltip">Strecke</span>
     </button>
     <button class="tb-btn hl" onclick={() => onNew('route')} title="Neue Route">
-      <Route size={20} strokeWidth={2} /><span class="tooltip">Route</span>
+      <Route size={20} strokeWidth={1.2} /><span class="tooltip">Route</span>
     </button>
     <button class="tb-btn hl" onclick={() => fileInput.click()} title="Datei laden">
-      <Upload size={20} strokeWidth={2} /><span class="tooltip">Laden</span>
+      <Upload size={20} strokeWidth={1.2} /><span class="tooltip">Laden</span>
     </button>
   </div>
 
@@ -139,9 +139,9 @@
         title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
       >
         {#if loggedIn}
-          <LockOpen size={20} strokeWidth={2} /><span class="tooltip">Abmelden</span>
+          <LockOpen size={20} strokeWidth={1.2} /><span class="tooltip">Abmelden</span>
         {:else}
-          <Lock size={20} strokeWidth={2} /><span class="tooltip">Anmelden</span>
+          <Lock size={20} strokeWidth={1.2} /><span class="tooltip">Anmelden</span>
         {/if}
       </button>
       {#if showPinInput}
@@ -163,7 +163,7 @@
           disabled={saving || !dirty}
           title="Speichern (Ctrl+S)"
         >
-          <Save size={20} strokeWidth={2} /><span class="tooltip">Speichern</span>
+          <Save size={20} strokeWidth={1.2} /><span class="tooltip">Speichern</span>
         </button>
         <button
           class="tb-btn dateien-btn hl"
@@ -172,9 +172,9 @@
           title="Dateien"
         >
           {#if currentFileName}
-            <FolderOpen size={20} strokeWidth={2} /><span class="tooltip">Dateien</span>
+            <FolderOpen size={20} strokeWidth={1.2} /><span class="tooltip">Dateien</span>
           {:else}
-            <FolderClosed size={20} strokeWidth={2} /><span class="tooltip">Dateien</span>
+            <FolderClosed size={20} strokeWidth={1.2} /><span class="tooltip">Dateien</span>
           {/if}
         </button>
       {/if}
@@ -196,10 +196,10 @@
   <!-- Group: View toggles (hidden at sm) -->
   <div class="hidden sm:flex items-center gap-card">
     <button class="tb-btn toggle-btn hl" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
-      <Code size={20} strokeWidth={2} /><span class="tooltip">Signaldatei</span>
+      <Code size={20} strokeWidth={1.2} /><span class="tooltip">Signaldatei</span>
     </button>
     <button class="tb-btn toggle-btn hl" class:active={showMeldungen} disabled={!meldungenAllowed} onclick={onToggleMeldungen} title="Meldungen">
-      <Megaphone size={20} strokeWidth={2} /><span class="tooltip">Meldungen</span>
+      <Megaphone size={20} strokeWidth={1.2} /><span class="tooltip">Meldungen</span>
     </button>
   </div>
 
@@ -208,7 +208,7 @@
   <!-- Group: Export -->
   <div class="flex items-center gap-card">
     <button class="tb-btn download-btn hl" onclick={onExportMeldungen} title="Meldungen exportieren">
-      <Download size={20} strokeWidth={2} /><span class="tooltip">Export</span>
+      <Download size={20} strokeWidth={1.2} /><span class="tooltip">Export</span>
     </button>
   </div>
 </div>

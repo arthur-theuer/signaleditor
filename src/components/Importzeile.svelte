@@ -187,7 +187,7 @@
       {/if}
     </div>
     <button class="import-folder-btn hl" onclick={() => showPicker = true} title="Datei auswählen">
-      <CloudDownload size={20} strokeWidth={2} />
+      <CloudDownload size={20} strokeWidth={1.2} />
     </button>
   </div>
 </div>

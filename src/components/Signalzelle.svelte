@@ -156,7 +156,7 @@
         onclick={onToggleAlt}
         title="Alternativsignal"
         tabindex={-1}
-      ><Diff size={16} strokeWidth={2.5} /></button>
+      ><Diff size={16} strokeWidth={1.5} /></button>
     {/if}
   </div>
   {#if needsBahnhof}

@@ -45,7 +45,7 @@
   {/each}
   <div class="mx-card my-half-card">
     <button class="close-btn hl flex w-full items-center justify-center gap-card px-cell" onclick={onclose} title="Meldungen schließen">
-      <X size={16} strokeWidth={2.5} />
+      <X size={16} strokeWidth={1.5} />
       Schließen
     </button>
   </div>
