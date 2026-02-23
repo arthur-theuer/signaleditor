@@ -106,7 +106,7 @@
     </button>
   </div>
 
-  <div class="separator md:mx-card"></div>
+  <div class="separator mx-card"></div>
 
   <!-- Group: New -->
   <div class="flex items-center gap-card">
@@ -118,7 +118,7 @@
     </button>
   </div>
 
-  <div class="separator md:mx-card"></div>
+  <div class="separator mx-card"></div>
 
   <!-- Group: Local I/O -->
   <div class="flex items-center gap-card">
@@ -137,7 +137,7 @@
     </button>
   </div>
 
-  <div class="separator md:mx-card hidden sm:block"></div>
+  <div class="separator mx-card hidden sm:block"></div>
 
   <!-- Group: View toggles (hidden at sm) -->
   <div class="hidden sm:flex items-center gap-card">
@@ -151,7 +151,7 @@
 
   <!-- Group: Cloud -->
   {#if loggedIn}
-    <div class="separator md:mx-card"></div>
+    <div class="separator mx-card"></div>
 
     <div class="flex items-center gap-card">
       <button
