@@ -19,7 +19,7 @@
   // Primary field (Strecke or Linie) — derived to avoid template duplication
   let primaryLabel = $derived(isStrecke ? 'Strecke' : 'Linie');
   let primaryId = $derived(isStrecke ? 'meta-strecke' : 'meta-linie');
-  let primaryPlaceholder = $derived(isStrecke ? 'z.B. 500, 112b' : 'z.B. s9');
+  let primaryPlaceholder = $derived(isStrecke ? 'z.B. 500, 112b' : 'z.B. S9, IR15');
   let primaryValue = $derived(isStrecke ? streckeMeta?.strecke ?? '' : routenMeta?.linie ?? '');
 
   function handlePrimaryInput(e: Event) {

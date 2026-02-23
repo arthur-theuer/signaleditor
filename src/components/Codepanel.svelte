@@ -17,47 +17,39 @@
 
   function downloadYaml() {
     const blob = new Blob([yamlText], { type: 'text/yaml' });
+    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
+    a.href = url;
     a.download = `${dateiId(data) || 'signale'}.yaml`;
     a.click();
-    URL.revokeObjectURL(a.href);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
     onexport?.();
   }
 </script>
 
-<div class="yaml-output">
+<div class="yaml-output relative mb-page">
   <pre>{yamlText}</pre>
-  <div class="yaml-actions">
+  <div class="absolute top-card right-card flex gap-card">
     <button class="yaml-btn" onclick={copyYaml} tabindex={-1}>{copyLabel}</button>
     <button class="yaml-btn" onclick={downloadYaml} tabindex={-1}>Herunterladen</button>
   </div>
 </div>
 
 <style>
+  /* Appearance only — layout handled by Tailwind classes */
   .yaml-output {
-    position: relative;
     background: var(--color-code-bg);
     border: 1px solid var(--color-code-border);
     border-radius: var(--radius-container);
-    margin-bottom: var(--spacing-page);
   }
   pre {
     color: var(--color-code-text);
     padding: var(--spacing-xl);
-    font-family: monospace;
     font-size: var(--text-preview);
     white-space: pre-wrap;
-    max-height: 400px;
+    max-height: calc(5 * var(--spacing-row));
     overflow-y: auto;
     margin: 0;
-  }
-  .yaml-actions {
-    position: absolute;
-    top: var(--spacing-card);
-    right: var(--spacing-card);
-    display: flex;
-    gap: var(--spacing-card);
   }
   .yaml-btn {
     padding: var(--spacing-md) var(--spacing-cell);
