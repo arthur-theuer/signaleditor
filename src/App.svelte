@@ -10,6 +10,7 @@
   import { isLoggedIn, login, logout } from './lib/auth.svelte';
   import { dateiId, isStreckendaten } from './lib/types';
   import { saveFile, createFile, type StoragePrefix } from './lib/api';
+  import { RulerDimensionLine } from 'lucide-svelte';
   import Toolbar from './components/Toolbar.svelte';
   import Datenpanel from './components/Datenpanel.svelte';
   import Signalpanel from './components/Signalpanel.svelte';
@@ -272,14 +273,12 @@
 </script>
 
 <Toolbar
-  {showKm}
   {showYaml}
   {showMeldungen}
   {meldungenAllowed}
   undoEnabled={history.canUndo}
   redoEnabled={history.canRedo}
   loggedIn={isLoggedIn()}
-  onToggleKm={() => showKm = !showKm}
   onToggleYaml={() => showYaml = !showYaml}
   onToggleMeldungen={() => wantMeldungen = !wantMeldungen}
   onNew={newFile}
@@ -308,7 +307,18 @@
 
 <div class="main-content px-page">
   <div class="signals-container">
-    <div class="section-header">Signale</div>
+    <div class="section-header">
+      Signale
+      <button
+        class="km-toggle"
+        class:active={showKm}
+        onclick={() => showKm = !showKm}
+        title="Kilometer ein-/ausblenden"
+      >
+        <RulerDimensionLine size={14} strokeWidth={2} />
+        <span>Km</span>
+      </button>
+    </div>
     <div class="signals-list">
       <Signalpanel bind:signale={data.signale} {showKm} onchange={markDirty} {scrollAnchor} />
     </div>
@@ -345,6 +355,31 @@
     container-type: inline-size;
   }
   .signals-list { padding: var(--spacing-half-card) 0; }
+
+  .km-toggle {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    padding: 0 var(--spacing-md);
+    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    border: var(--card-border);
+    border-radius: var(--radius-card);
+    background: var(--color-bg-raised);
+    color: var(--color-text-muted);
+    font-size: var(--text-preview);
+    cursor: pointer;
+  }
+  .km-toggle:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-muted);
+  }
+  .km-toggle.active {
+    background: var(--color-green-bg);
+    color: var(--color-green);
+    border-color: var(--color-green);
+  }
   .meldungen-section {
     width: 280px;
     flex-shrink: 0;

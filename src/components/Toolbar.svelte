@@ -1,19 +1,17 @@
 <script lang="ts">
   import {
     Undo2, Redo2, Upload, Download, Save, Lock, LockOpen,
-    Milestone, Route, FolderOpen, FolderClosed, RulerDimensionLine, Code, Megaphone,
+    Milestone, Route, FolderOpen, FolderClosed, Code, Megaphone,
   } from 'lucide-svelte';
   import { tick } from 'svelte';
 
   let {
-    showKm,
     showYaml,
     showMeldungen,
     meldungenAllowed,
     undoEnabled,
     redoEnabled,
     loggedIn,
-    onToggleKm,
     onToggleYaml,
     onToggleMeldungen,
     onNew,
@@ -31,14 +29,12 @@
     currentFileName,
     saveStatus,
   }: {
-    showKm: boolean;
     showYaml: boolean;
     showMeldungen: boolean;
     meldungenAllowed: boolean;
     undoEnabled: boolean;
     redoEnabled: boolean;
     loggedIn: boolean;
-    onToggleKm: () => void;
     onToggleYaml: () => void;
     onToggleMeldungen: () => void;
     onNew: (typ: 'strecke' | 'route') => void;
@@ -199,9 +195,6 @@
 
   <!-- Group: View toggles -->
   <div class="flex items-center gap-card">
-    <button class="tb-btn toggle-btn hl" class:active={showKm} onclick={onToggleKm} title="Kilometer">
-      <RulerDimensionLine size={20} strokeWidth={2} /><span class="tooltip">Kilometer</span>
-    </button>
     <button class="tb-btn toggle-btn hl" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
       <Code size={20} strokeWidth={2} /><span class="tooltip">Signaldatei</span>
     </button>
