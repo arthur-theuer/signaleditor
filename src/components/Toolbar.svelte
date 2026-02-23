@@ -256,8 +256,14 @@
     z-index: 2;
   }
   .tb-btn:disabled {
-    opacity: 0.4;
     cursor: default;
+    color: color-mix(in srgb, currentColor 40%, transparent);
+    background: color-mix(in srgb, var(--color-bg-raised) 40%, transparent);
+    border-color: color-mix(in srgb, var(--color-border) 40%, transparent);
+  }
+  .toggle-btn:disabled {
+    background: color-mix(in srgb, var(--color-red-bg) 40%, transparent);
+    border-color: color-mix(in srgb, var(--color-red) 40%, transparent);
   }
 
   /* Toggle buttons (view panels) */
