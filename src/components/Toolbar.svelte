@@ -4,6 +4,7 @@
     Milestone, Route, FolderOpen, FolderClosed, Code, Megaphone,
   } from 'lucide-svelte';
   import { tick } from 'svelte';
+  import Hinweis from './ui/Hinweis.svelte';
 
   let {
     showYaml,
@@ -98,10 +99,10 @@
   <!-- Group: History -->
   <div class="flex items-center gap-card">
     <button id="undoBtn" class="tb-btn hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
-      <Undo2 size={20} strokeWidth={1.2} /><span class="tooltip">Rückgängig</span>
+      <Undo2 size={20} strokeWidth={1.2} /><Hinweis text="Rückgängig" />
     </button>
     <button id="redoBtn" class="tb-btn hl" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
-      <Redo2 size={20} strokeWidth={1.2} /><span class="tooltip">Wiederholen</span>
+      <Redo2 size={20} strokeWidth={1.2} /><Hinweis text="Wiederholen" />
     </button>
   </div>
 
@@ -117,13 +118,13 @@
       onchange={onFileLoad}
     />
     <button class="tb-btn hl" onclick={() => onNew('strecke')} title="Neue Strecke">
-      <Milestone size={20} strokeWidth={1.2} /><span class="tooltip">Strecke</span>
+      <Milestone size={20} strokeWidth={1.2} /><Hinweis text="Strecke" />
     </button>
     <button class="tb-btn hl" onclick={() => onNew('route')} title="Neue Route">
-      <Route size={20} strokeWidth={1.2} /><span class="tooltip">Route</span>
+      <Route size={20} strokeWidth={1.2} /><Hinweis text="Route" />
     </button>
     <button class="tb-btn hl" onclick={() => fileInput.click()} title="Datei laden">
-      <Upload size={20} strokeWidth={1.2} /><span class="tooltip">Laden</span>
+      <Upload size={20} strokeWidth={1.2} /><Hinweis text="Laden" />
     </button>
   </div>
 
@@ -139,9 +140,9 @@
         title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
       >
         {#if loggedIn}
-          <LockOpen size={20} strokeWidth={1.2} /><span class="tooltip">Abmelden</span>
+          <LockOpen size={20} strokeWidth={1.2} /><Hinweis text="Abmelden" />
         {:else}
-          <Lock size={20} strokeWidth={1.2} /><span class="tooltip">Anmelden</span>
+          <Lock size={20} strokeWidth={1.2} /><Hinweis text="Anmelden" />
         {/if}
       </button>
       {#if showPinInput}
@@ -163,7 +164,7 @@
           disabled={saving || !dirty}
           title="Speichern (Ctrl+S)"
         >
-          <Save size={20} strokeWidth={1.2} /><span class="tooltip">Speichern</span>
+          <Save size={20} strokeWidth={1.2} /><Hinweis text="Speichern" />
         </button>
         <button
           class="tb-btn dateien-btn hl"
@@ -172,9 +173,9 @@
           title="Dateien"
         >
           {#if currentFileName}
-            <FolderOpen size={20} strokeWidth={1.2} /><span class="tooltip">Dateien</span>
+            <FolderOpen size={20} strokeWidth={1.2} /><Hinweis text="Dateien" />
           {:else}
-            <FolderClosed size={20} strokeWidth={1.2} /><span class="tooltip">Dateien</span>
+            <FolderClosed size={20} strokeWidth={1.2} /><Hinweis text="Dateien" />
           {/if}
         </button>
       {/if}
@@ -184,7 +185,7 @@
       <span class="file-indicator" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
         <span class="status-dot"></span>
         {currentFileName}
-        <span class="tooltip status-label">
+        <span class="status-label">
           {#if saveStatus === 'saving'}Speichern{:else if saveStatus === 'saved'}Gespeichert{:else if saveStatus === 'dirty'}Ungespeichert{/if}
         </span>
       </span>
@@ -196,10 +197,10 @@
   <!-- Group: View toggles (hidden at sm) -->
   <div class="hidden sm:flex items-center gap-card">
     <button class="tb-btn toggle-btn hl" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
-      <Code size={20} strokeWidth={1.2} /><span class="tooltip">Signaldatei</span>
+      <Code size={20} strokeWidth={1.2} /><Hinweis text="Signaldatei" />
     </button>
     <button class="tb-btn toggle-btn hl" class:active={showMeldungen} disabled={!meldungenAllowed} onclick={onToggleMeldungen} title="Meldungen">
-      <Megaphone size={20} strokeWidth={1.2} /><span class="tooltip">Meldungen</span>
+      <Megaphone size={20} strokeWidth={1.2} /><Hinweis text="Meldungen" />
     </button>
   </div>
 
@@ -208,7 +209,7 @@
   <!-- Group: Export -->
   <div class="flex items-center gap-card">
     <button class="tb-btn download-btn hl" onclick={onExportMeldungen} title="Meldungen exportieren">
-      <Download size={20} strokeWidth={1.2} /><span class="tooltip">Export</span>
+      <Download size={20} strokeWidth={1.2} /><Hinweis text="Export" />
     </button>
   </div>
 </div>
@@ -251,36 +252,8 @@
     white-space: nowrap;
     flex-shrink: 0;
   }
-  /* Shared tooltip: hidden by default, shown on parent hover */
-  .tooltip {
-    display: none;
-    position: absolute;
-    top: calc(100% + var(--spacing-card));
-    left: 50%;
-    transform: translateX(-50%);
-    height: calc(var(--spacing-unit) / 2);
-    align-items: center;
-    justify-content: center;
-    padding: 0 var(--spacing-cell);
-    border-radius: var(--radius-container);
-    font-size: var(--text-preview);
-    font-family: var(--font-sans);
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .tb-btn span {
-    background: inherit;
-    color: inherit;
-    border: var(--card-border);
-    border-color: inherit;
-  }
   .tb-btn:hover {
     z-index: 2;
-  }
-  .tb-btn:hover span {
-    display: flex;
   }
   .tb-btn:disabled {
     opacity: 0.4;
@@ -366,6 +339,24 @@
   .file-indicator.dirty .status-dot { background: var(--color-red); }
   .file-indicator.saving .status-dot { background: var(--color-clear); }
   .file-indicator.saved .status-dot { background: var(--color-green); }
+  .status-label {
+    display: none;
+    position: absolute;
+    top: calc(100% + var(--spacing-card));
+    left: 50%;
+    transform: translateX(-50%);
+    height: calc(var(--spacing-unit) / 2);
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--spacing-cell);
+    border-radius: var(--radius-container);
+    font-size: var(--text-preview);
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1;
+  }
   .file-indicator:hover .status-label { display: flex; }
   .file-indicator.dirty .status-label {
     background: var(--color-red-bg);

@@ -240,6 +240,7 @@
   z-index: 3;
 }
 .hl:hover::after { opacity: 1; }
+.hl:hover .hinweis { display: flex; }
 .hl-wrap:focus-within::after { opacity: 1; }
 .hl.hl-primary::after { border-color: var(--color-focus-ring); background: var(--color-focus-bg); }
 .hl.hl-flash::after { opacity: 1; }

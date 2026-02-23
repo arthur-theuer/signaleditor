@@ -61,8 +61,11 @@ Tracking cleanup/modernization progress per component.
 
 ### Tooltips
 
-- Shared pattern: hidden by default, shown on hover, positioned below parent with `top: calc(100% + var(--spacing-card))`.
-- Extract to a shared `.tooltip` class when used in multiple places within a component.
+- Use `<Hinweis text="..." />` from `ui/Hinweis.svelte` for button tooltips.
+- Shown on hover via global `.hl:hover .hinweis { display: flex; }` rule.
+- Consistent appearance: `bg-raised`, `card-border`, `text-preview` size, pill shape (`radius-container`).
+- Parent must have `.hl` class (provides `position: relative` and hover trigger).
+- Status labels (e.g. save state indicator) are separate — they use colored backgrounds intentionally.
 
 ### Body and page padding
 
@@ -91,6 +94,7 @@ Tracking cleanup/modernization progress per component.
 | Zeilenaktionen | ✅ | ✅ | — | ✅ | Uses IconBtn |
 | Zwischenaktionen | — | — | — | — | |
 | ui/Symbolknopf | ✅ | ✅ | — | ✅ | Shared button component |
+| ui/Hinweis | ✅ | ✅ | — | ✅ | Tooltip pill, shown on .hl:hover |
 | debug/Breakpoints | ✅ | — | ✅ | ✅ | Debug-only, removable |
 
 ## Meldungspanel Audit
