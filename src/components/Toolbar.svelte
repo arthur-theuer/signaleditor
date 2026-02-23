@@ -231,8 +231,14 @@
     background: var(--color-bg);
     background-image: linear-gradient(var(--color-focus-bg), var(--color-focus-bg));
     border-bottom: 1px solid var(--color-border);
-    padding-left: var(--inset-card);
-    padding-right: var(--inset-card);
+    padding-left: var(--spacing-cell);
+    padding-right: var(--spacing-cell);
+  }
+  @media (min-width: 640px) {
+    .header {
+      padding-left: var(--inset-card);
+      padding-right: var(--inset-card);
+    }
   }
   .header.logged-out {
     background-image: linear-gradient(color-mix(in srgb, var(--color-red) 8%, transparent), color-mix(in srgb, var(--color-red) 8%, transparent));
