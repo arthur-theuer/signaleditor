@@ -52,8 +52,7 @@ Tracking cleanup/modernization progress per component.
 
 ### Buttons and icons
 
-- **Icon sizes**: two tiers — `size={16}` for in-content buttons, `size={20}` for toolbar buttons.
-- **Stroke width**: all icons render at 1px absolute (`strokeWidth={1.5}` for size=16, `strokeWidth={1.2}` for size=20).
+- **Icon sizes**: `size={16}` everywhere, `strokeWidth={1.5}` (1px absolute).
 - **Hover stroke**: `.hl:hover svg` increases stroke-width to 2.25 (~1.5px absolute) globally.
 - **IconBtn component**: use for standard icon buttons (icon-only or icon+label) with `color`, `active`, `wide` props. Handles sizing, borders, hl, and color variants.
 - **Colored borders**: toggle/action buttons with semantic meaning (Km toggle, Schließen) use colored borders via IconBtn `color` prop. Neutral buttons use `card-border`.

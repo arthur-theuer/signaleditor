@@ -99,14 +99,14 @@
   <!-- Group: History -->
   <div class="flex items-center gap-card">
     <button id="undoBtn" class="tb-btn hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
-      <Undo2 size={20} strokeWidth={1.2} /><Hinweis text="Rückgängig" />
+      <Undo2 size={16} strokeWidth={1.5} /><Hinweis text="Rückgängig" />
     </button>
     <button id="redoBtn" class="tb-btn hl" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
-      <Redo2 size={20} strokeWidth={1.2} /><Hinweis text="Wiederholen" />
+      <Redo2 size={16} strokeWidth={1.5} /><Hinweis text="Wiederholen" />
     </button>
   </div>
 
-  <div class="separator h-unit mx-card"></div>
+  <div class="separator mx-card"></div>
 
   <!-- Group: File -->
   <div class="flex items-center gap-card">
@@ -118,17 +118,17 @@
       onchange={onFileLoad}
     />
     <button class="tb-btn hl" onclick={() => onNew('strecke')} title="Neue Strecke">
-      <Milestone size={20} strokeWidth={1.2} /><Hinweis text="Strecke" />
+      <Milestone size={16} strokeWidth={1.5} /><Hinweis text="Strecke" />
     </button>
     <button class="tb-btn hl" onclick={() => onNew('route')} title="Neue Route">
-      <Route size={20} strokeWidth={1.2} /><Hinweis text="Route" />
+      <Route size={16} strokeWidth={1.5} /><Hinweis text="Route" />
     </button>
     <button class="tb-btn hl" onclick={() => fileInput.click()} title="Datei laden">
-      <Upload size={20} strokeWidth={1.2} /><Hinweis text="Laden" />
+      <Upload size={16} strokeWidth={1.5} /><Hinweis text="Laden" />
     </button>
   </div>
 
-  <div class="separator h-unit mx-card"></div>
+  <div class="separator mx-card"></div>
 
   <div class="flex-1 flex items-center justify-center gap-md">
     <!-- Group: Cloud -->
@@ -140,16 +140,16 @@
         title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
       >
         {#if loggedIn}
-          <LockOpen size={20} strokeWidth={1.2} /><Hinweis text="Abmelden" />
+          <LockOpen size={16} strokeWidth={1.5} /><Hinweis text="Abmelden" />
         {:else}
-          <Lock size={20} strokeWidth={1.2} /><Hinweis text="Anmelden" />
+          <Lock size={16} strokeWidth={1.5} /><Hinweis text="Anmelden" />
         {/if}
       </button>
       {#if showPinInput}
         <input
           bind:this={pinInputEl}
           bind:value={pinValue}
-          class="pin-input h-unit px-cell"
+          class="pin-input px-cell"
           class:error={pinError}
           type="password"
           placeholder="PIN"
@@ -164,7 +164,7 @@
           disabled={saving || !dirty}
           title="Speichern (Ctrl+S)"
         >
-          <Save size={20} strokeWidth={1.2} /><Hinweis text="Speichern" />
+          <Save size={16} strokeWidth={1.5} /><Hinweis text="Speichern" />
         </button>
         <button
           class="tb-btn dateien-btn hl"
@@ -173,16 +173,16 @@
           title="Dateien"
         >
           {#if currentFileName}
-            <FolderOpen size={20} strokeWidth={1.2} /><Hinweis text="Dateien" />
+            <FolderOpen size={16} strokeWidth={1.5} /><Hinweis text="Dateien" />
           {:else}
-            <FolderClosed size={20} strokeWidth={1.2} /><Hinweis text="Dateien" />
+            <FolderClosed size={16} strokeWidth={1.5} /><Hinweis text="Dateien" />
           {/if}
         </button>
       {/if}
     </div>
 
     {#if loggedIn && currentFileName}
-      <span class="file-indicator relative flex items-center h-unit gap-sm px-md" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
+      <span class="file-indicator relative flex items-center gap-sm px-md" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
         <span class="status-dot shrink-0"></span>
         {currentFileName}
         <span class="status-label">
@@ -192,24 +192,24 @@
     {/if}
   </div>
 
-  <div class="separator h-unit mx-card"></div>
+  <div class="separator mx-card"></div>
 
   <!-- Group: View toggles (hidden at sm) -->
   <div class="hidden sm:flex items-center gap-card">
     <button class="tb-btn toggle-btn hl" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
-      <Code size={20} strokeWidth={1.2} /><Hinweis text="Signaldatei" />
+      <Code size={16} strokeWidth={1.5} /><Hinweis text="Signaldatei" />
     </button>
     <button class="tb-btn toggle-btn hl" class:active={showMeldungen} disabled={!meldungenAllowed} onclick={onToggleMeldungen} title="Meldungen">
-      <Megaphone size={20} strokeWidth={1.2} /><Hinweis text="Meldungen" />
+      <Megaphone size={16} strokeWidth={1.5} /><Hinweis text="Meldungen" />
     </button>
   </div>
 
-  <div class="separator h-unit mx-card hidden sm:block"></div>
+  <div class="separator mx-card hidden sm:block"></div>
 
   <!-- Group: Export -->
   <div class="flex items-center gap-card">
     <button class="tb-btn download-btn hl" onclick={onExportMeldungen} title="Meldungen exportieren">
-      <Download size={20} strokeWidth={1.2} /><Hinweis text="Export" />
+      <Download size={16} strokeWidth={1.5} /><Hinweis text="Export" />
     </button>
   </div>
 </div>
@@ -228,14 +228,15 @@
   /* Separator */
   .separator {
     width: 1px;
+    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     background: var(--color-border);
   }
 
   /* Base toolbar button: fixed-size icon box, label appears as overlay */
   .tb-btn {
     position: relative;
-    width: var(--spacing-unit);
-    height: var(--spacing-unit);
+    width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     padding: 0;
     display: flex;
     align-items: center;
@@ -282,6 +283,7 @@
   /* PIN input */
   .pin-input {
     width: 100px;
+    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     border: var(--card-border);
     border-radius: var(--radius-container);
     background: var(--color-bg-raised);
@@ -317,6 +319,7 @@
 
   /* File status indicator */
   .file-indicator {
+    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     font-size: var(--text-input);
     font-family: var(--font-mono);
     color: var(--color-text-secondary);
