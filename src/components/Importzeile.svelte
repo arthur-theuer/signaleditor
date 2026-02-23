@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CloudDownload, DiamondPlus, SquarePen, Share2, Crosshair } from 'lucide-svelte';
+  import { CloudDownload } from 'lucide-svelte';
   import type { Importeintrag, Eintrag } from '../lib/types';
   import { isSignaleintrag, isNotizeintrag, isAbzweigungseintrag, isKnoteneintrag } from '../lib/types';
   import { STATIONEN } from '../lib/constants';
@@ -39,26 +39,24 @@
   let abzCount = $derived(resolveResult?.signale.filter(isAbzweigungseintrag).length ?? 0);
   let knotenCount = $derived(resolveResult?.signale.filter(isKnoteneintrag).length ?? 0);
 
-  let countText = $derived(() => {
+  function buildCount(labels: [string, string, string, string]): string {
     if (!resolved) return '';
     const parts: string[] = [];
-    if (signalCount) parts.push(`${signalCount} Signale`);
-    if (notizCount) parts.push(`${notizCount} Notizen`);
-    if (abzCount) parts.push(`${abzCount} Abzweigungen`);
-    if (knotenCount) parts.push(`${knotenCount} Knoten`);
+    if (signalCount) parts.push(`${signalCount} ${labels[0]}`);
+    if (notizCount) parts.push(`${notizCount} ${labels[1]}`);
+    if (abzCount) parts.push(`${abzCount} ${labels[2]}`);
+    if (knotenCount) parts.push(`${knotenCount} ${labels[3]}`);
     return parts.join(', ');
-  });
+  }
 
-  type CountItem = { count: number; icon: typeof DiamondPlus };
-  let countItems = $derived(() => {
-    if (!resolved) return [] as CountItem[];
-    const items: CountItem[] = [];
-    if (signalCount) items.push({ count: signalCount, icon: DiamondPlus });
-    if (notizCount) items.push({ count: notizCount, icon: SquarePen });
-    if (abzCount) items.push({ count: abzCount, icon: Share2 });
-    if (knotenCount) items.push({ count: knotenCount, icon: Crosshair });
-    return items;
-  });
+  let countFull = $derived(() => buildCount([
+    signalCount === 1 ? 'Signal' : 'Signale',
+    notizCount === 1 ? 'Notiz' : 'Notizen',
+    abzCount === 1 ? 'Abzweigung' : 'Abzweigungen',
+    'Knoten',
+  ]));
+  let countMedium = $derived(() => buildCount(['Sig.', 'Not.', 'Abzw.', 'Kn.']));
+  let countShort = $derived(() => buildCount(['S', 'N', 'A', 'K']));
 
   // Stitch truncation detection: three tiers (0=full, 1=medium, 2=compact)
   let stitchFullEl = $state<HTMLElement | null>(null);
@@ -84,25 +82,25 @@
     return () => { ro.disconnect(); if (lastStitchTier !== 0) { lastStitchTier = 0; onstitchtruncate?.(0); } };
   });
 
-  // Count truncation detection: three tiers (0=text, 1=icons+commas, 2=icons only)
-  let countTextEl = $state<HTMLElement | null>(null);
-  let countIconsEl = $state<HTMLElement | null>(null);
+  // Count truncation detection: three tiers (0=full, 1=abbreviated, 2=letters)
+  let countFullEl = $state<HTMLElement | null>(null);
+  let countMediumEl = $state<HTMLElement | null>(null);
   let lastCountTier = -1;
 
   $effect(() => {
-    const textEl = countTextEl;
-    const iconsEl = countIconsEl;
-    if (!textEl || !iconsEl) { if (lastCountTier !== 0) { lastCountTier = 0; oncounttruncate?.(0); } return; }
+    const fullEl = countFullEl;
+    const medEl = countMediumEl;
+    if (!fullEl || !medEl) { if (lastCountTier !== 0) { lastCountTier = 0; oncounttruncate?.(0); } return; }
 
     function check() {
       let tier = 2;
-      if (textEl!.scrollWidth <= textEl!.clientWidth) tier = 0;
-      else if (iconsEl!.scrollWidth <= iconsEl!.clientWidth) tier = 1;
+      if (fullEl!.scrollWidth <= fullEl!.clientWidth) tier = 0;
+      else if (medEl!.scrollWidth <= medEl!.clientWidth) tier = 1;
       if (tier !== lastCountTier) { lastCountTier = tier; oncounttruncate?.(tier); }
     }
 
     const ro = new ResizeObserver(check);
-    ro.observe(textEl);
+    ro.observe(fullEl);
     check();
 
     return () => { ro.disconnect(); if (lastCountTier !== 0) { lastCountTier = 0; oncounttruncate?.(0); } };
@@ -212,28 +210,17 @@
       </span>
       <span class="import-divider"></span>
       <!-- Hidden measurement spans for count truncation detection -->
-      <span class="import-count count-measure" bind:this={countTextEl}>{countText() || '—'}</span>
-      <span class="import-count count-measure count-icons" bind:this={countIconsEl}>
-        {#each countItems() as item}
-          <span class="count-icon-item">
-            {item.count}
-            <item.icon size={14} strokeWidth={2.5} />
-          </span>
-        {/each}
+      <span class="import-count count-measure" bind:this={countFullEl}>{countFull() || '—'}</span>
+      <span class="import-count count-measure" bind:this={countMediumEl}>{countMedium() || '—'}</span>
+      <span class="import-count">
+        {#if countTier === 0}
+          {countFull() || '—'}
+        {:else if countTier === 1}
+          {countMedium() || '—'}
+        {:else}
+          {countShort() || '—'}
+        {/if}
       </span>
-      {#if countTier === 0}
-        <span class="import-count">{countText() || '—'}</span>
-      {:else}
-        <span class="import-count count-icons" class:no-commas={countTier >= 2}>
-          {#each countItems() as item}
-            <span class="count-icon-item">
-              {item.count}
-              <item.icon size={14} strokeWidth={2.5} />
-            </span>
-          {/each}
-          {#if !countItems().length}—{/if}
-        </span>
-      {/if}
     {/if}
   </div>
 </div>
@@ -322,21 +309,6 @@
     right: 0;
     pointer-events: none;
     clip-path: inset(50%);
-  }
-  .count-icons {
-    gap: 2px;
-  }
-  .count-icon-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
-  }
-  .count-icon-item + .count-icon-item::before {
-    content: ',';
-    margin-right: 2px;
-  }
-  .no-commas .count-icon-item + .count-icon-item::before {
-    content: none;
   }
   .import-stitch { color: var(--color-import-text); }
   .import-error { color: var(--color-red); }
