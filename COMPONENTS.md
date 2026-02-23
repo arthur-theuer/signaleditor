@@ -90,8 +90,8 @@ Tracking cleanup/modernization progress per component.
 | Dateibrowser | — | — | — | — | |
 | Zeilenaktionen | ✅ | ✅ | — | ✅ | Uses IconBtn |
 | Zwischenaktionen | — | — | — | — | |
-| IconBtn | ✅ | ✅ | — | ✅ | Shared button component |
-| BreakpointDebug | ✅ | — | ✅ | ✅ | Debug-only, removable |
+| ui/Symbolknopf | ✅ | ✅ | — | ✅ | Shared button component |
+| debug/Breakpoints | ✅ | — | ✅ | ✅ | Debug-only, removable |
 
 ## Meldungspanel Audit
 

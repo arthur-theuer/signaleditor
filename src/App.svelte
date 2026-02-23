@@ -19,7 +19,7 @@
   import Codepanel from './components/Codepanel.svelte';
   import Meldungspanel from './components/Meldungspanel.svelte';
   import Dateibrowser from './components/Dateibrowser.svelte';
-  import BreakpointDebug from './components/BreakpointDebug.svelte'; // Remove this line to hide debug overlay
+  import Breakpoints from './components/debug/Breakpoints.svelte';
 
   let data: Editordaten = $state(emptyStreckendaten());
 
@@ -344,7 +344,7 @@
   </div>
 {/if}
 
-<BreakpointDebug /> <!-- Remove this line to hide debug overlay -->
+<Breakpoints /> <!-- Remove this line to hide debug overlay -->
 
 <style>
   .main-content { display: flex; gap: 0; align-items: stretch; }
