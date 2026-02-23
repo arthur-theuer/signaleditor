@@ -25,7 +25,9 @@
   let dirty = $state(false);
   let showKm = $state(false);
   let showYaml = $state(false);
-  let showMeldungen = $state(false);
+  let wantMeldungen = $state(false);
+  let meldungenAllowed = $state(true);
+  let showMeldungen = $derived(wantMeldungen && meldungenAllowed);
   let currentFileName = $state<string | null>(null);
   let saving = $state(false);
   let showDateien = $state(false);
@@ -219,12 +221,12 @@
     return () => window.removeEventListener('beforeunload', handler);
   });
 
-  // Close meldungen panel when viewport is too narrow
+  // Disable meldungen panel when viewport is too narrow
   $effect(() => {
     const bp = getComputedStyle(document.documentElement).getPropertyValue('--bp-meldungen-hide').trim() || '768px';
     const mq = window.matchMedia(`(max-width: ${bp})`);
     function handle(e: MediaQueryListEvent | MediaQueryList) {
-      if (e.matches) showMeldungen = false;
+      meldungenAllowed = !e.matches;
     }
     handle(mq);
     mq.addEventListener('change', handle);
@@ -272,12 +274,13 @@
   {showKm}
   {showYaml}
   {showMeldungen}
+  {meldungenAllowed}
   undoEnabled={history.canUndo}
   redoEnabled={history.canRedo}
   loggedIn={isLoggedIn()}
   onToggleKm={() => showKm = !showKm}
   onToggleYaml={() => showYaml = !showYaml}
-  onToggleMeldungen={() => showMeldungen = !showMeldungen}
+  onToggleMeldungen={() => wantMeldungen = !wantMeldungen}
   onNew={newFile}
   onFileLoad={handleFileLoad}
   onUndo={handleUndo}
@@ -312,7 +315,7 @@
     <div class="meldungen-section">
       <div class="meldungen-panel">
         <div class="section-header">Meldungen</div>
-        <Meldungspanel signale={data.signale} onclose={() => showMeldungen = false} />
+        <Meldungspanel signale={data.signale} onclose={() => wantMeldungen = false} />
       </div>
     </div>
   {/if}
