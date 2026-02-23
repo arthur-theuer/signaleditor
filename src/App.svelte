@@ -11,7 +11,7 @@
   import { dateiId, isStreckendaten } from './lib/types';
   import { saveFile, createFile, type StoragePrefix } from './lib/api';
   import Toolbar from './components/Toolbar.svelte';
-  import Metafelder from './components/Metafelder.svelte';
+  import Datenpanel from './components/Datenpanel.svelte';
   import Signalpanel from './components/Signalpanel.svelte';
 
   import Codepanel from './components/Codepanel.svelte';
@@ -191,7 +191,7 @@
     }
   }
 
-  async function handleMetaTabOut() {
+  async function handleDatenTabOut() {
     if (data.signale.length === 0) {
       data.signale = [...data.signale, { id: 0, knoten: '' } as Knoteneintrag];
       markDirty();
@@ -302,7 +302,7 @@
   <Dateibrowser onload={handleCloudLoad} onclose={() => showDateien = false} />
 {/if}
 
-<Metafelder bind:data={data} onchange={markDirty} ontabout={handleMetaTabOut} />
+<Datenpanel bind:data={data} onchange={markDirty} ontabout={handleDatenTabOut} />
 
 <div class="main-content">
   <div class="signals-container">

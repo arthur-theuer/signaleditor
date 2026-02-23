@@ -49,7 +49,7 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="meta-section mb-page" onkeydown={handleKeydown}>
+<div class="daten-section mb-page" onkeydown={handleKeydown}>
   <div class="section-header flex items-center">
     {isStrecke ? 'Streckendaten' : 'Routendaten'}
     {#if id}
@@ -58,41 +58,41 @@
   </div>
   <div class="flex flex-col sm:flex-row sm:flex-wrap gap-card p-card">
     {#if isStrecke && streckeMeta}
-      <div class="meta-field flex flex-col flex-1 min-w-0 sm:order-0 sm:flex-none sm:basis-[calc(50%-var(--spacing-card)/2)] lg:flex-1">
+      <div class="daten-field flex flex-col flex-1 min-w-0 sm:order-0 sm:flex-none sm:basis-[calc(50%-var(--spacing-card)/2)] lg:flex-1">
         <label for="meta-strecke">Strecke</label>
         <span class="hl-wrap">
           <input id="meta-strecke" type="text" bind:value={streckeMeta.strecke} oninput={onchange} placeholder="z.B. 500, 112b" />
         </span>
       </div>
     {:else if routenMeta}
-      <div class="meta-field flex flex-col flex-1 min-w-0 sm:order-0 sm:flex-none sm:basis-[calc(50%-var(--spacing-card)/2)] lg:flex-1">
+      <div class="daten-field flex flex-col flex-1 min-w-0 sm:order-0 sm:flex-none sm:basis-[calc(50%-var(--spacing-card)/2)] lg:flex-1">
         <label for="meta-linie">Linie</label>
         <span class="hl-wrap">
           <input id="meta-linie" type="text" bind:value={routenMeta.linie} oninput={onchange} placeholder="z.B. s9" />
         </span>
       </div>
     {/if}
-    <div class="meta-field flex flex-col flex-1 min-w-0 sm:order-1 lg:order-none">
+    <div class="daten-field flex flex-col flex-1 min-w-0 sm:order-1 lg:order-none">
       <label for="meta-von">Von</label>
       <span class="hl-wrap">
         <input id="meta-von" type="text" bind:value={data.meta.von} oninput={onchange} placeholder="Code" class="code-input" />
         <span class="station-preview" class:has-value={data.meta.von && STATIONEN[data.meta.von.toUpperCase()]}>{stationPreview(data.meta.von, 'OL')}</span>
       </span>
     </div>
-    <div class="meta-field flex flex-col flex-1 min-w-0 sm:order-1 lg:order-none">
+    <div class="daten-field flex flex-col flex-1 min-w-0 sm:order-1 lg:order-none">
       <label for="meta-nach">Nach</label>
       <span class="hl-wrap">
         <input id="meta-nach" type="text" bind:value={data.meta.nach} oninput={onchange} placeholder="Code" class="code-input" />
         <span class="station-preview" class:has-value={data.meta.nach && STATIONEN[data.meta.nach.toUpperCase()]}>{stationPreview(data.meta.nach, 'AA')}</span>
       </span>
     </div>
-    <div class="meta-field flex flex-col flex-1 min-w-0 sm:order-1 lg:order-none">
+    <div class="daten-field flex flex-col flex-1 min-w-0 sm:order-1 lg:order-none">
       <label for="meta-via">Via</label>
       <span class="hl-wrap">
         <input id="meta-via" type="text" bind:value={data.meta.via} oninput={onchange} placeholder="z.B. VL, NBS" />
       </span>
     </div>
-    <div class="meta-field flex flex-col flex-1 min-w-0 sm:order-0 sm:flex-none sm:basis-[calc(50%-var(--spacing-card)/2)] lg:flex-1">
+    <div class="daten-field flex flex-col flex-1 min-w-0 sm:order-0 sm:flex-none sm:basis-[calc(50%-var(--spacing-card)/2)] lg:flex-1">
       <label for="meta-name">Name</label>
       <span class="hl-wrap">
         <input id="meta-name" type="text" bind:value={data.meta.name} oninput={autoArrow} placeholder="z.B. Olten → Aarau" />
@@ -103,18 +103,18 @@
 
 <style>
   /* Appearance only — layout is handled by Tailwind classes */
-  .meta-section {
+  .daten-section {
     background: var(--color-bg);
     border: var(--card-border);
     border-radius: var(--radius-container);
     overflow: hidden;
   }
-  .meta-field {
+  .daten-field {
     background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--radius-card);
   }
-  .meta-field label {
+  .daten-field label {
     font-size: var(--text-preview);
     font-weight: var(--font-weight-semibold);
     text-transform: uppercase;
@@ -124,11 +124,11 @@
     border-bottom: 1px solid var(--color-border);
     border-radius: var(--radius-card) var(--radius-card) 0 0;
   }
-  .meta-field :global(.hl-wrap) {
+  .daten-field :global(.hl-wrap) {
     display: flex;
     border-radius: 0 0 var(--radius-card) var(--radius-card);
   }
-  .meta-field input {
+  .daten-field input {
     flex: 1;
     min-width: 0;
     padding: 0 var(--spacing-cell);
@@ -139,7 +139,7 @@
     line-height: var(--spacing-unit);
     border-radius: 0 0 var(--radius-card) var(--radius-card);
   }
-  .meta-field input:focus { outline: none; }
+  .daten-field input:focus { outline: none; }
   .code-input::placeholder {
     text-transform: none;
   }
