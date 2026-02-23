@@ -36,7 +36,7 @@
    * --bp-toolbar-title:    1400  Hide toolbar h1
    * --bp-meta-reorder:      900  Reorder meta fields to two rows
    * --bp-meldungen-hide:    768  Hide Meldungen panel toggle
-   * --bp-plusleiste-btn:     140  Hide Plusleiste button text (per-button container query)
+   * --bp-plusleiste-btn:     150  Hide Plusleiste button text (per-button container query)
    */
   --bp-meldungen-hide: 768px;
 
