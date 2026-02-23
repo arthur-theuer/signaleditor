@@ -58,41 +58,41 @@
   </div>
   <div class="meta-grid">
     {#if isStrecke && streckeMeta}
-      <div class="meta-field">
+      <div class="meta-field meta-primary">
         <label for="meta-strecke">Strecke</label>
         <span class="hl-wrap">
           <input id="meta-strecke" type="text" bind:value={streckeMeta.strecke} oninput={onchange} placeholder="z.B. 500, 112b" />
         </span>
       </div>
     {:else if routenMeta}
-      <div class="meta-field">
+      <div class="meta-field meta-primary">
         <label for="meta-linie">Linie</label>
         <span class="hl-wrap">
           <input id="meta-linie" type="text" bind:value={routenMeta.linie} oninput={onchange} placeholder="z.B. s9" />
         </span>
       </div>
     {/if}
-    <div class="meta-field">
+    <div class="meta-field meta-secondary">
       <label for="meta-von">Von</label>
       <span class="hl-wrap">
         <input id="meta-von" type="text" bind:value={data.meta.von} oninput={onchange} placeholder="Code" class="code-input" />
         <span class="station-preview" class:has-value={data.meta.von && STATIONEN[data.meta.von.toUpperCase()]}>{stationPreview(data.meta.von, 'OL')}</span>
       </span>
     </div>
-    <div class="meta-field">
+    <div class="meta-field meta-secondary">
       <label for="meta-nach">Nach</label>
       <span class="hl-wrap">
         <input id="meta-nach" type="text" bind:value={data.meta.nach} oninput={onchange} placeholder="Code" class="code-input" />
         <span class="station-preview" class:has-value={data.meta.nach && STATIONEN[data.meta.nach.toUpperCase()]}>{stationPreview(data.meta.nach, 'AA')}</span>
       </span>
     </div>
-    <div class="meta-field">
+    <div class="meta-field meta-secondary">
       <label for="meta-via">Via</label>
       <span class="hl-wrap">
         <input id="meta-via" type="text" bind:value={data.meta.via} oninput={onchange} placeholder="z.B. VL, NBS" />
       </span>
     </div>
-    <div class="meta-field">
+    <div class="meta-field meta-primary">
       <label for="meta-name">Name</label>
       <span class="hl-wrap">
         <input id="meta-name" type="text" bind:value={data.meta.name} oninput={autoArrow} placeholder="z.B. Olten → Aarau" />
@@ -123,6 +123,15 @@
     background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--card-radius);
+  }
+  @media (max-width: 900px) {
+    .meta-primary {
+      order: 0;
+      flex: 0 1 calc(50% - var(--card-gap) / 2);
+    }
+    .meta-secondary {
+      order: 1;
+    }
   }
   .meta-field label {
     font-size: var(--preview-font-size);
