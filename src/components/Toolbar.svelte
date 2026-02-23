@@ -94,7 +94,7 @@
 </script>
 
 <div class="header flex gap-card lg:gap-md items-center flex-wrap sticky top-0 z-10 py-cell mb-page" class:logged-out={!loggedIn}>
-  <h1 class="hidden xl:block mr-card lg:mr-md">Signaleditor</h1>
+  <h1 class="hidden xl:block mr-md">Signaleditor</h1>
 
   <!-- Group: History -->
   <div class="flex items-center gap-card">
@@ -224,8 +224,8 @@
   .header {
     background: var(--color-focus-bg);
     border-bottom: 1px solid var(--color-border);
-    padding-left: calc(var(--spacing-page) + var(--spacing-card));
-    padding-right: calc(var(--spacing-page) + var(--spacing-card));
+    padding-left: calc(var(--spacing-page) + var(--spacing-card) + 1px);
+    padding-right: calc(var(--spacing-page) + var(--spacing-card) + 1px);
   }
   .header.logged-out {
     background: var(--color-red-bg);
