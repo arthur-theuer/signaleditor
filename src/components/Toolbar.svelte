@@ -3,6 +3,7 @@
     Undo2, Redo2, Upload, Download, Save, Lock, LockOpen,
     Milestone, Route, FolderOpen, FolderClosed, RulerDimensionLine, Code, Megaphone,
   } from 'lucide-svelte';
+  import { tick } from 'svelte';
 
   let {
     showKm,
@@ -62,14 +63,15 @@
   let pinError = $state(false);
   let pinInputEl = $state<HTMLInputElement>();
 
-  function handleLockClick() {
+  async function handleLockClick() {
     if (loggedIn) {
       onLogout();
     } else {
       showPinInput = true;
       pinError = false;
       pinValue = '';
-      setTimeout(() => pinInputEl?.focus(), 0);
+      await tick();
+      pinInputEl?.focus();
     }
   }
 
@@ -94,23 +96,23 @@
   }
 </script>
 
-<div class="header" class:logged-out={!loggedIn}>
-  <h1>Signaleditor</h1>
+<div class="header flex gap-md items-center flex-wrap sticky top-0 z-10 px-page py-cell mb-page" class:logged-out={!loggedIn}>
+  <h1 class="hidden xl:block mr-md">Signaleditor</h1>
 
   <!-- Group: History -->
-  <div class="btn-group">
+  <div class="flex items-center gap-card">
     <button id="undoBtn" class="tb-btn hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
-      <Undo2 size={20} strokeWidth={2} /><span>Rückgängig</span>
+      <Undo2 size={20} strokeWidth={2} /><span class="tooltip">Rückgängig</span>
     </button>
     <button id="redoBtn" class="tb-btn hl" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
-      <Redo2 size={20} strokeWidth={2} /><span>Wiederholen</span>
+      <Redo2 size={20} strokeWidth={2} /><span class="tooltip">Wiederholen</span>
     </button>
   </div>
 
   <div class="separator"></div>
 
   <!-- Group: File -->
-  <div class="btn-group">
+  <div class="flex items-center gap-card">
     <input
       type="file"
       accept=".yaml,.yml,.html"
@@ -119,21 +121,21 @@
       onchange={onFileLoad}
     />
     <button class="tb-btn hl" onclick={() => onNew('strecke')} title="Neue Strecke">
-      <Milestone size={20} strokeWidth={2} /><span>Strecke</span>
+      <Milestone size={20} strokeWidth={2} /><span class="tooltip">Strecke</span>
     </button>
     <button class="tb-btn hl" onclick={() => onNew('route')} title="Neue Route">
-      <Route size={20} strokeWidth={2} /><span>Route</span>
+      <Route size={20} strokeWidth={2} /><span class="tooltip">Route</span>
     </button>
     <button class="tb-btn hl" onclick={() => fileInput.click()} title="Datei laden">
-      <Upload size={20} strokeWidth={2} /><span>Laden</span>
+      <Upload size={20} strokeWidth={2} /><span class="tooltip">Laden</span>
     </button>
   </div>
 
   <div class="separator"></div>
 
-  <div class="cloud-center">
+  <div class="flex-1 flex items-center justify-center gap-md">
     <!-- Group: Cloud -->
-    <div class="btn-group">
+    <div class="flex items-center gap-card">
       <button
         class="tb-btn lock-btn hl"
         class:unlocked={loggedIn}
@@ -141,9 +143,9 @@
         title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
       >
         {#if loggedIn}
-          <LockOpen size={20} strokeWidth={2} /><span>Abmelden</span>
+          <LockOpen size={20} strokeWidth={2} /><span class="tooltip">Abmelden</span>
         {:else}
-          <Lock size={20} strokeWidth={2} /><span>Anmelden</span>
+          <Lock size={20} strokeWidth={2} /><span class="tooltip">Anmelden</span>
         {/if}
       </button>
       {#if showPinInput}
@@ -165,7 +167,7 @@
           disabled={saving || !dirty}
           title="Speichern (Ctrl+S)"
         >
-          <Save size={20} strokeWidth={2} /><span>Speichern</span>
+          <Save size={20} strokeWidth={2} /><span class="tooltip">Speichern</span>
         </button>
         <button
           class="tb-btn dateien-btn hl"
@@ -174,9 +176,9 @@
           title="Dateien"
         >
           {#if currentFileName}
-            <FolderOpen size={20} strokeWidth={2} /><span>Dateien</span>
+            <FolderOpen size={20} strokeWidth={2} /><span class="tooltip">Dateien</span>
           {:else}
-            <FolderClosed size={20} strokeWidth={2} /><span>Dateien</span>
+            <FolderClosed size={20} strokeWidth={2} /><span class="tooltip">Dateien</span>
           {/if}
         </button>
       {/if}
@@ -186,7 +188,7 @@
       <span class="file-indicator" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
         <span class="status-dot"></span>
         {currentFileName}
-        <span class="status-label">
+        <span class="tooltip status-label">
           {#if saveStatus === 'saving'}Speichern{:else if saveStatus === 'saved'}Gespeichert{:else if saveStatus === 'dirty'}Ungespeichert{/if}
         </span>
       </span>
@@ -196,73 +198,45 @@
   <div class="separator"></div>
 
   <!-- Group: View toggles -->
-  <div class="btn-group">
+  <div class="flex items-center gap-card">
     <button class="tb-btn toggle-btn hl" class:active={showKm} onclick={onToggleKm} title="Kilometer">
-      <RulerDimensionLine size={20} strokeWidth={2} /><span>Kilometer</span>
+      <RulerDimensionLine size={20} strokeWidth={2} /><span class="tooltip">Kilometer</span>
     </button>
     <button class="tb-btn toggle-btn hl" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
-      <Code size={20} strokeWidth={2} /><span>Signaldatei</span>
+      <Code size={20} strokeWidth={2} /><span class="tooltip">Signaldatei</span>
     </button>
     <button class="tb-btn toggle-btn hl" class:active={showMeldungen} disabled={!meldungenAllowed} onclick={onToggleMeldungen} title="Meldungen">
-      <Megaphone size={20} strokeWidth={2} /><span>Meldungen</span>
+      <Megaphone size={20} strokeWidth={2} /><span class="tooltip">Meldungen</span>
     </button>
   </div>
 
   <div class="separator"></div>
 
   <!-- Group: Export -->
-  <div class="btn-group">
+  <div class="flex items-center gap-card">
     <button class="tb-btn download-btn hl" onclick={onExportMeldungen} title="Meldungen exportieren">
-      <Download size={20} strokeWidth={2} /><span>Export</span>
+      <Download size={20} strokeWidth={2} /><span class="tooltip">Export</span>
     </button>
   </div>
 </div>
 
 <style>
   .header {
-    display: flex;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-page);
-    align-items: center;
-    flex-wrap: wrap;
-    position: sticky;
-    top: 0;
-    z-index: 10;
     background: var(--color-bg);
-    margin-left: calc(-1 * var(--spacing-page));
-    margin-right: calc(-1 * var(--spacing-page));
-    padding: var(--spacing-cell) var(--spacing-page);
+    border-bottom: 1px solid var(--color-border);
   }
   .header.logged-out {
     background: var(--color-red-bg);
   }
-  .header {
-    border-bottom: 1px solid var(--color-border);
-  }
-  .header h1 { margin-right: var(--spacing-md); font-size: 1.5rem; font-weight: var(--font-weight-bold); }
-  @media (max-width: 1280px) { /* below xl */
-    .header h1 { display: none; }
-  }
+  .header h1 { font-size: 1.5rem; font-weight: var(--font-weight-bold); }
 
 
-  /* Groups and separators */
-  .btn-group {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-card);
-  }
+  /* Separator */
   .separator {
     width: 1px;
     height: var(--spacing-unit);
     background: var(--color-border);
     margin: 0 var(--spacing-xs);
-  }
-  .cloud-center {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-md);
   }
 
   /* Base toolbar button: fixed-size icon box, label appears as overlay */
@@ -284,7 +258,8 @@
     white-space: nowrap;
     flex-shrink: 0;
   }
-  .tb-btn span {
+  /* Shared tooltip: hidden by default, shown on parent hover */
+  .tooltip {
     display: none;
     position: absolute;
     top: calc(100% + var(--spacing-card));
@@ -294,14 +269,19 @@
     align-items: center;
     justify-content: center;
     padding: 0 var(--spacing-cell);
+    border-radius: var(--radius-container);
+    font-size: var(--text-preview);
+    font-family: var(--font-sans);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .tb-btn span {
     background: inherit;
     color: inherit;
     border: var(--card-border);
     border-color: inherit;
-    border-radius: var(--radius-container);
-    font-size: var(--text-preview);
-    z-index: 1;
-    pointer-events: none;
   }
   .tb-btn:hover {
     z-index: 2;
@@ -393,23 +373,6 @@
   .file-indicator.dirty .status-dot { background: var(--color-red); }
   .file-indicator.saving .status-dot { background: var(--color-clear); }
   .file-indicator.saved .status-dot { background: var(--color-green); }
-  .status-label {
-    display: none;
-    position: absolute;
-    top: calc(100% + var(--spacing-card));
-    left: 50%;
-    transform: translateX(-50%);
-    height: calc(var(--spacing-unit) / 2);
-    align-items: center;
-    justify-content: center;
-    padding: 0 var(--spacing-cell);
-    border-radius: var(--radius-container);
-    font-size: var(--text-preview);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 1;
-  }
   .file-indicator:hover .status-label { display: flex; }
   .file-indicator.dirty .status-label {
     background: var(--color-red-bg);

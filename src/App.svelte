@@ -302,9 +302,11 @@
   <Dateibrowser onload={handleCloudLoad} onclose={() => showDateien = false} />
 {/if}
 
-<Datenpanel bind:data={data} ontabout={handleDatenTabOut} />
+<div class="px-page">
+  <Datenpanel bind:data={data} ontabout={handleDatenTabOut} />
+</div>
 
-<div class="main-content">
+<div class="main-content px-page">
   <div class="signals-container">
     <div class="section-header">Signale</div>
     <div class="signals-list">
@@ -321,10 +323,12 @@
     </div>
   {/if}
 </div>
-<div bind:this={scrollAnchor} style="height: 0; margin-top: var(--spacing-page);"></div>
+<div bind:this={scrollAnchor} class="h-0 mt-page"></div>
 
 {#if showYaml}
-  <Codepanel {data} onexport={() => dirty = false} />
+  <div class="px-page">
+    <Codepanel {data} onexport={() => dirty = false} />
+  </div>
 {/if}
 
 <BreakpointDebug /> <!-- Remove this line to hide debug overlay -->

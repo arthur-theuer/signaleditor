@@ -250,7 +250,7 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   color-scheme: light dark;
-  padding: 0 var(--spacing-page);
+  padding: 0;
 }
 input, select, textarea, button {
   color: inherit;
