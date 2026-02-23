@@ -217,9 +217,7 @@
     .has-file { cursor: pointer; }
     .has-file .import-name { justify-content: center; }
     .has-file .import-filename {
-      text-decoration: underline;
-      text-decoration-color: var(--color-border);
-      text-underline-offset: 3px;
+      color: var(--color-focus);
     }
     .import-file-cell:not(.has-file) .import-name { display: none; }
     .import-file-cell:not(.has-file) .import-folder-btn {
@@ -231,11 +229,10 @@
     .file-noext { display: inline; }
   }
 
-  /* Medium: 200–299px — name without extension + smaller button */
+  /* Medium: 200–299px — name without extension + button */
   @container (min-width: 200px) and (max-width: 299px) {
     .file-full { display: none; }
     .file-noext { display: inline; }
-    .import-folder-btn { width: var(--spacing-unit); }
   }
 
   /* Wide: >= 300px — full filename + full button (default) */
