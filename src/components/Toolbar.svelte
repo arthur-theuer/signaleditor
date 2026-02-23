@@ -229,7 +229,7 @@
     background: var(--color-bg);
     margin-left: calc(-1 * var(--page-gap));
     margin-right: calc(-1 * var(--page-gap));
-    padding: var(--page-gap) var(--page-gap) var(--cell-padding) var(--page-gap);
+    padding: var(--cell-padding) var(--page-gap);
   }
   .header.logged-out {
     background: var(--color-red-bg);
