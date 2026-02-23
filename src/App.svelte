@@ -316,7 +316,7 @@
         onclick={() => showKm = !showKm}
         title="Kilometer ein-/ausblenden"
       >
-        <RulerDimensionLine size={16} strokeWidth={2} />
+        <RulerDimensionLine size={16} strokeWidth={2.5} />
       </button>
     </div>
     <div class="signals-list">
