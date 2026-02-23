@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { FolderClosed, FolderOpen } from 'lucide-svelte';
+  import { CloudDownload, Cloud } from 'lucide-svelte';
   import type { Importeintrag, Eintrag } from '../lib/types';
   import { isSignaleintrag, isNotizeintrag, isAbzweigungseintrag, isKnoteneintrag } from '../lib/types';
   import { STATIONEN } from '../lib/constants';
@@ -121,9 +121,9 @@
     </div>
     <button class="import-folder-btn hl" onclick={() => showPicker = true} title="Datei auswählen">
       {#if hasFile}
-        <FolderOpen size={20} strokeWidth={2} />
+        <CloudDownload size={20} strokeWidth={2} />
       {:else}
-        <FolderClosed size={20} strokeWidth={2} />
+        <Cloud size={20} strokeWidth={2} />
       {/if}
     </button>
   </div>

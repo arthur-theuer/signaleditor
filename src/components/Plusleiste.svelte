@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { DiamondPlus, SquarePen, Share2, Crosshair, Import } from 'lucide-svelte';
+
   let {
     onAddSignal,
     onAddNotiz,
@@ -15,11 +17,11 @@
 </script>
 
 <div class="add-bar">
-  <button class="add-signal hl" onclick={onAddSignal}>+ Signal</button>
-  <button class="add-note hl" onclick={onAddNotiz}>+ Notiz</button>
-  <button class="add-abzweigung hl" onclick={onAddAbzweigung}>+ Abzweigung</button>
-  <button class="add-knoten hl" onclick={onAddKnoten}>+ Knoten</button>
-  <button class="add-import hl" onclick={onAddImport}>+ Import</button>
+  <button class="add-signal hl" onclick={onAddSignal}><DiamondPlus size={16} strokeWidth={2} /><span>Signal</span></button>
+  <button class="add-note hl" onclick={onAddNotiz}><SquarePen size={16} strokeWidth={2} /><span>Notiz</span></button>
+  <button class="add-abzweigung hl" onclick={onAddAbzweigung}><Share2 size={16} strokeWidth={2} /><span>Abzweigung</span></button>
+  <button class="add-knoten hl" onclick={onAddKnoten}><Crosshair size={16} strokeWidth={2} /><span>Knoten</span></button>
+  <button class="add-import hl" onclick={onAddImport}><Import size={16} strokeWidth={2} /><span>Import</span></button>
 </div>
 
 <style>
@@ -64,5 +66,8 @@
     background: var(--color-import);
     color: var(--color-import-text);
     border: 1px solid var(--color-import-text);
+  }
+  @media (max-width: 600px) {
+    .add-bar button span { display: none; }
   }
 </style>
