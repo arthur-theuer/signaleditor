@@ -382,6 +382,8 @@
   onAddAbzweigung={() => appendEntry(makeAbzweigung(signale.length))}
   onAddKnoten={() => appendEntry(makeKnoten(signale.length))}
   onAddImport={() => appendEntry(makeImport(signale.length))}
+  compact={fieldTiers['plusleiste'] ?? 0}
+  ontruncate={(t) => reportTier('plusleiste', 0, t)}
 />
 
 
