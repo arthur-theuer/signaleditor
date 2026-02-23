@@ -32,6 +32,8 @@
   }
   .add-bar button {
     flex: 1;
+    min-width: 0;
+    overflow: hidden;
     padding: var(--cell-padding);
     border-radius: var(--card-radius);
     cursor: pointer;
