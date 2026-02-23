@@ -118,9 +118,15 @@
   }
 </script>
 
-<div class="signal-cell import-cell import-file-cell" class:has-file={hasFile}>
-  <!-- Wide/medium: name + button side by side -->
-  <div class="import-inner file-wide">
+<div
+  class="signal-cell import-cell import-file-cell"
+  class:has-file={hasFile}
+  role={hasFile ? 'button' : undefined}
+  tabindex={hasFile ? 0 : undefined}
+  onclick={hasFile ? () => showPicker = true : undefined}
+  onkeydown={hasFile ? (e) => { if (e.key === 'Enter') showPicker = true; } : undefined}
+>
+  <div class="import-inner">
     <div class="import-name">
       {#if hasFile}
         <span class="import-filename file-full">{eintrag.import.datei}</span>
@@ -129,18 +135,10 @@
         <span class="import-placeholder">Datei auswählen</span>
       {/if}
     </div>
-    <button class="import-folder-btn hl" onclick={() => showPicker = true} title="Datei auswählen">
-      <CloudDownload size={20} strokeWidth={1.2} />
+    <button class="import-folder-btn hl" onclick={(e) => { e.stopPropagation(); showPicker = true; }} title="Datei auswählen">
+      <CloudDownload size={16} strokeWidth={1.5} />
     </button>
   </div>
-  <!-- Narrow, no file: full-width button -->
-  <button class="import-folder-btn file-narrow-btn hl" onclick={() => showPicker = true} title="Datei auswählen">
-    <CloudDownload size={20} strokeWidth={1.2} />
-  </button>
-  <!-- Narrow, has file: full-width clickable filename -->
-  <button class="import-name-btn file-narrow-name" onclick={() => showPicker = true} title="Datei ändern">
-    <span class="import-filename">{fileBaseName}</span>
-  </button>
 </div>
 <div class="signal-cell import-cell import-info-cell" class:empty={!hasFile}>
   <div class="import-info">
@@ -170,7 +168,7 @@
 
 <style>
   .import-cell { background: var(--color-import); }
-  .import-file-cell { container-type: inline-size; }
+  .import-file-cell { container-type: inline-size; outline: none; }
   .import-inner { display: flex; height: 100%; }
   .import-name {
     flex: 1;
@@ -210,51 +208,37 @@
     color: var(--color-import-text);
     height: 100%;
   }
-
-  /* Narrow-only elements: hidden by default */
-  .file-narrow-btn, .file-narrow-name { display: none; }
   .file-noext { display: none; }
 
-  /* Narrow-only full-width button (no file selected) */
-  .file-narrow-btn {
-    width: 100%;
-    height: 100%;
-    border-left: none;
-    border-radius: calc(var(--radius-card) - 1px);
-  }
-
-  /* Narrow-only full-width clickable filename */
-  .import-name-btn {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 var(--spacing-cell);
-  }
-  .import-name-btn .import-filename {
-    text-decoration: underline;
-    text-decoration-color: var(--color-border);
-    text-underline-offset: 3px;
-  }
-
-  /* Narrow: < 200px — show full-width button or filename */
+  /* Narrow: < 200px */
   @container (max-width: 199px) {
-    .file-wide { display: none; }
-    .import-file-cell:not(.has-file) .file-narrow-btn { display: flex; }
-    .import-file-cell.has-file .file-narrow-name { display: flex; }
-  }
-
-  /* Medium: 200–299px — show name without extension + button */
-  @container (min-width: 200px) and (max-width: 299px) {
+    /* No file: hide name, button fills cell */
+    .has-file .import-folder-btn { display: none; }
+    .has-file { cursor: pointer; }
+    .has-file .import-name { justify-content: center; }
+    .has-file .import-filename {
+      text-decoration: underline;
+      text-decoration-color: var(--color-border);
+      text-underline-offset: 3px;
+    }
+    .import-file-cell:not(.has-file) .import-name { display: none; }
+    .import-file-cell:not(.has-file) .import-folder-btn {
+      width: 100%;
+      border-left: none;
+      border-radius: calc(var(--radius-card) - 1px);
+    }
     .file-full { display: none; }
     .file-noext { display: inline; }
   }
 
-  /* Wide: >= 300px — show full filename + button (default) */
+  /* Medium: 200–299px — name without extension + smaller button */
+  @container (min-width: 200px) and (max-width: 299px) {
+    .file-full { display: none; }
+    .file-noext { display: inline; }
+    .import-folder-btn { width: var(--spacing-unit); }
+  }
+
+  /* Wide: >= 300px — full filename + full button (default) */
   .import-info-cell.empty {
     background: var(--color-bg);
     pointer-events: none;

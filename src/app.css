@@ -252,6 +252,9 @@
 .hl.hl-flash::after { opacity: 1; }
 .hl-wrap > input, .hl-wrap > select { outline: none; }
 
+/* Lucide icons: thicken stroke on hover (1px → 2px effective at 16px/24 viewBox) */
+button:hover svg { stroke-width: 3 !important; }
+
 /* Meldung signal-type colors (applied dynamically via class={seg.klasse}) */
 .meldung-block,
 .meldung-spurwechsel { color: var(--color-meldung-block); }
