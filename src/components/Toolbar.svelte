@@ -234,18 +234,8 @@
   .header.logged-out {
     background: var(--color-red-bg);
   }
-  .header::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 100%;
-    height: var(--space-lg);
-    background: linear-gradient(var(--color-bg), transparent);
-    pointer-events: none;
-  }
-  .header.logged-out::after {
-    background: linear-gradient(var(--color-red-bg), transparent);
+  .header {
+    border-bottom: 1px solid var(--color-border);
   }
   .header h1 { margin-right: var(--space-md); }
   @media (max-width: 1400px) {
