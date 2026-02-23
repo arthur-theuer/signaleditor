@@ -366,7 +366,7 @@
     height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     padding: 0;
     background: var(--color-bg-raised);
-    border: var(--card-border);
+    border: 1px solid var(--color-red);
     border-radius: var(--radius-card);
     color: var(--color-red);
     cursor: pointer;
@@ -374,6 +374,7 @@
   }
   .km-toggle.active {
     color: var(--color-green);
+    border-color: var(--color-green);
   }
   .meldungen-section {
     width: 220px;

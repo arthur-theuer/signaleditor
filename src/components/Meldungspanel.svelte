@@ -45,7 +45,7 @@
   {/each}
   <div class="mx-card my-half-card">
     <button class="close-btn hl flex w-full items-center justify-center gap-card px-cell" onclick={onclose} title="Meldungen schließen">
-      <X size={16} strokeWidth={2.5} />
+      <X size={16} strokeWidth={3} />
       Schließen
     </button>
   </div>
@@ -84,7 +84,7 @@
     font-weight: var(--font-weight-semibold);
     font-size: var(--text-input);
     background: var(--color-bg-raised);
-    border: var(--card-border);
+    border: 1px solid var(--color-red);
     color: var(--color-red);
     box-sizing: border-box;
   }
