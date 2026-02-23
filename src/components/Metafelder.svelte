@@ -111,11 +111,13 @@
   }
   .meta-grid {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--card-gap);
     padding: var(--card-gap);
   }
   .meta-field {
     flex: 1;
+    min-width: 150px;
     display: flex;
     flex-direction: column;
     background: var(--color-bg-raised);
