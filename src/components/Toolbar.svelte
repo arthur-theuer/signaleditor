@@ -262,7 +262,7 @@
     background: var(--color-border);
     margin: 0 var(--space-xs);
   }
-  .spacer { flex: 1; }
+  .spacer { flex: 1; margin: 0 calc(-1 * var(--space-md)); }
 
   /* Base toolbar button: fixed-size icon box, label appears as overlay */
   .tb-btn {
