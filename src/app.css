@@ -33,12 +33,12 @@
    * so these serve as the single source of truth — referenced by name
    * in @media/@container rules and JS matchMedia calls.
    *
-   * --bp-toolbar-title:    1400  Hide toolbar h1
-   * --bp-meta-reorder:      900  Reorder meta fields to two rows
-   * --bp-meldungen-hide:    768  Hide Meldungen panel toggle
-   * --bp-plusleiste-btn:     100  Hide Plusleiste button text (per-button container query)
+   * --bp-toolbar-title:   1400  Hide toolbar h1
+   * --bp-meta-reorder:     900  Reorder meta fields to two rows
+   * --bp-meldungen-hide:   700  Disable Meldungen panel toggle
+   * --bp-plusleiste-btn:    100  Hide Plusleiste button text (per-button container query)
    */
-  --bp-meldungen-hide: 768px;
+  --bp-meldungen-hide: 700px;
 
   /* Surfaces */
   --color-bg: #f5f5f5;
