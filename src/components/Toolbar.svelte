@@ -130,70 +130,6 @@
 
   <div class="separator mx-card"></div>
 
-  <div class="flex-1 flex items-center justify-center gap-md">
-    <!-- Group: Cloud -->
-    <div class="flex items-center gap-card">
-      <button
-        class="tb-btn lock-btn hl"
-        class:unlocked={loggedIn}
-        onclick={handleLockClick}
-        title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
-      >
-        {#if loggedIn}
-          <LockOpen size={16} strokeWidth={1.5} /><Hinweis text="Abmelden" />
-        {:else}
-          <Lock size={16} strokeWidth={1.5} /><Hinweis text="Anmelden" />
-        {/if}
-      </button>
-      {#if showPinInput}
-        <input
-          bind:this={pinInputEl}
-          bind:value={pinValue}
-          class="pin-input px-cell"
-          class:error={pinError}
-          type="password"
-          placeholder="PIN"
-          onkeydown={(e) => { if (e.key === 'Enter') submitPin(); if (e.key === 'Escape') cancelPin(); }}
-          onblur={cancelPin}
-        />
-      {/if}
-      {#if loggedIn}
-        <button
-          class="tb-btn save-btn hl"
-          onclick={onSave}
-          disabled={saving || !dirty}
-          title="Speichern (Ctrl+S)"
-        >
-          <Save size={16} strokeWidth={1.5} /><Hinweis text="Speichern" />
-        </button>
-        <button
-          class="tb-btn dateien-btn hl"
-          class:active={showDateien}
-          onclick={onToggleDateien}
-          title="Dateien"
-        >
-          {#if currentFileName}
-            <FolderOpen size={16} strokeWidth={1.5} /><Hinweis text="Dateien" />
-          {:else}
-            <FolderClosed size={16} strokeWidth={1.5} /><Hinweis text="Dateien" />
-          {/if}
-        </button>
-      {/if}
-    </div>
-
-    {#if loggedIn && currentFileName}
-      <span class="file-indicator relative flex items-center gap-sm px-md" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
-        <span class="status-dot shrink-0"></span>
-        {currentFileName}
-        <span class="status-label">
-          {#if saveStatus === 'saving'}Speichern{:else if saveStatus === 'saved'}Gespeichert{:else if saveStatus === 'dirty'}Ungespeichert{/if}
-        </span>
-      </span>
-    {/if}
-  </div>
-
-  <div class="separator mx-card"></div>
-
   <!-- Group: View toggles (hidden at sm) -->
   <div class="hidden sm:flex items-center gap-card">
     <button class="tb-btn toggle-btn hl" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
@@ -212,11 +148,79 @@
       <Download size={16} strokeWidth={1.5} /><Hinweis text="Export" />
     </button>
   </div>
+
+  <!-- Group: Cloud (centered) -->
+  {#if loggedIn}
+    <div class="flex items-center gap-card">
+      <button
+        class="tb-btn save-btn hl"
+        onclick={onSave}
+        disabled={saving || !dirty}
+        title="Speichern (Ctrl+S)"
+      >
+        <Save size={16} strokeWidth={1.5} /><Hinweis text="Speichern" />
+      </button>
+      <button
+        class="tb-btn dateien-btn hl"
+        class:active={showDateien}
+        onclick={onToggleDateien}
+        title="Dateien"
+      >
+        {#if currentFileName}
+          <FolderOpen size={16} strokeWidth={1.5} /><Hinweis text="Dateien" />
+        {:else}
+          <FolderClosed size={16} strokeWidth={1.5} /><Hinweis text="Dateien" />
+        {/if}
+      </button>
+    </div>
+
+    {#if currentFileName}
+      <span class="file-indicator relative flex items-center gap-sm px-md" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
+        <span class="status-dot shrink-0"></span>
+        {currentFileName}
+        <span class="status-label">
+          {#if saveStatus === 'saving'}Speichern{:else if saveStatus === 'saved'}Gespeichert{:else if saveStatus === 'dirty'}Ungespeichert{/if}
+        </span>
+      </span>
+    {/if}
+  {/if}
+
+  <div class="flex-1"></div>
+
+  <!-- Lock (right-aligned) -->
+  <div class="relative">
+    <button
+      class="tb-btn lock-btn hl"
+      class:unlocked={loggedIn}
+      onclick={handleLockClick}
+      title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
+    >
+      {#if loggedIn}
+        <LockOpen size={16} strokeWidth={1.5} /><Hinweis text="Abmelden" />
+      {:else}
+        <Lock size={16} strokeWidth={1.5} /><Hinweis text="Anmelden" />
+      {/if}
+    </button>
+    {#if showPinInput}
+      <div class="pin-popover">
+        <input
+          bind:this={pinInputEl}
+          bind:value={pinValue}
+          class="pin-input px-cell"
+          class:error={pinError}
+          type="password"
+          placeholder="PIN"
+          onkeydown={(e) => { if (e.key === 'Enter') submitPin(); if (e.key === 'Escape') cancelPin(); }}
+          onblur={cancelPin}
+        />
+      </div>
+    {/if}
+  </div>
 </div>
 
 <style>
   .header {
-    background: var(--color-bg);
+    background: var(--color-focus-bg);
     border-bottom: 1px solid var(--color-border);
   }
   .header.logged-out {
@@ -280,13 +284,26 @@
   }
 
 
+  /* PIN popover */
+  .pin-popover {
+    position: absolute;
+    top: calc(100% + var(--spacing-card));
+    right: 0;
+    z-index: 10;
+    background: var(--color-bg-raised);
+    border: var(--card-border);
+    border-radius: var(--radius-container);
+    padding: var(--spacing-card);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
   /* PIN input */
   .pin-input {
-    width: 100px;
+    width: 120px;
     height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     border: var(--card-border);
     border-radius: var(--radius-container);
-    background: var(--color-bg-raised);
+    background: var(--color-bg);
     font-size: var(--text-input);
     font-family: var(--font-mono);
     color: var(--color-text);
