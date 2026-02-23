@@ -21,7 +21,7 @@
     font-weight: var(--font-weight-medium);
     white-space: nowrap;
     pointer-events: none;
-    z-index: 1;
+    z-index: 4;
     background: var(--color-bg-raised);
     color: var(--color-text);
     border: var(--card-border);
