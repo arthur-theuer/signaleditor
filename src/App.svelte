@@ -303,11 +303,11 @@
   <Dateibrowser onload={handleCloudLoad} onclose={() => showDateien = false} />
 {/if}
 
-<div class="px-page">
+<div class="px-cell sm:px-page">
   <Datenpanel bind:data={data} ontabout={handleDatenTabOut} />
 </div>
 
-<div class="main-content px-page">
+<div class="main-content px-cell sm:px-page">
   <div class="signals-container">
     <div class="section-header signale-header">
       Signale
@@ -339,7 +339,7 @@
 <div bind:this={scrollAnchor} class="h-0 mt-page"></div>
 
 {#if showYaml}
-  <div class="px-page">
+  <div class="px-cell sm:px-page">
     <Codepanel {data} onexport={() => dirty = false} />
   </div>
 {/if}

@@ -90,9 +90,9 @@
   .symbolknopf.clear { color: var(--color-clear); }
   .symbolknopf.green { color: var(--color-green); }
 
-  /* Colored border when explicitly requested */
-  .symbolknopf.bordered.red { border-color: var(--color-red); }
-  .symbolknopf.bordered.green { border-color: var(--color-green); }
+  /* Colored border + background when explicitly requested */
+  .symbolknopf.bordered.red { border-color: var(--color-red); background: var(--color-red-bg); }
+  .symbolknopf.bordered.green { border-color: var(--color-green); background: var(--color-green-bg); }
 
   /* Active state for toggles */
   .symbolknopf.bordered.active {
