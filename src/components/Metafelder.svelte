@@ -124,7 +124,7 @@
     border: var(--card-border);
     border-radius: var(--card-radius);
   }
-  @media (max-width: 900px) {
+  @media (max-width: 900px) { /* --bp-meta-reorder */
     .meta-primary {
       order: 0;
       flex: 0 1 calc(50% - var(--card-gap) / 2);

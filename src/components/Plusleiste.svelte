@@ -7,44 +7,16 @@
     onAddAbzweigung,
     onAddKnoten,
     onAddImport,
-    compact = 0,
-    ontruncate,
   }: {
     onAddSignal: () => void;
     onAddNotiz: () => void;
     onAddAbzweigung: () => void;
     onAddKnoten: () => void;
     onAddImport: () => void;
-    compact?: number;
-    ontruncate?: (tier: number) => void;
   } = $props();
-
-  let barEl = $state<HTMLElement | null>(null);
-  let lastTier = -1;
-
-  $effect(() => {
-    const el = barEl;
-    if (!el) return;
-
-    // Measure natural width once on mount (text is visible at this point)
-    const btns = Array.from(el.children) as HTMLElement[];
-    const naturalWidth = btns.reduce((sum, b) => sum + b.scrollWidth, 0)
-      + (btns.length - 1) * 4; // --card-gap
-
-    function check() {
-      const tier = el!.clientWidth < naturalWidth ? 1 : 0;
-      if (tier !== lastTier) { lastTier = tier; ontruncate?.(tier); }
-    }
-
-    const ro = new ResizeObserver(check);
-    ro.observe(el);
-    check();
-
-    return () => { ro.disconnect(); if (lastTier !== 0) { lastTier = 0; ontruncate?.(0); } };
-  });
 </script>
 
-<div class="add-bar" class:hide-text={compact >= 1} bind:this={barEl}>
+<div class="add-bar">
   <button class="add-signal hl" onclick={onAddSignal}><DiamondPlus size={16} strokeWidth={2.5} /><span>Signal</span></button>
   <button class="add-note hl" onclick={onAddNotiz}><SquarePen size={16} strokeWidth={2.5} /><span>Notiz</span></button>
   <button class="add-abzweigung hl" onclick={onAddAbzweigung}><Share2 size={16} strokeWidth={2.5} /><span>Abzweigung</span></button>
@@ -101,5 +73,7 @@
     color: var(--color-import-text);
     border: 1px solid var(--color-import-text);
   }
-  .hide-text button span { display: none; }
+  @container (max-width: 500px) { /* --bp-plusleiste-icons */
+    .add-bar button span { display: none; }
+  }
 </style>

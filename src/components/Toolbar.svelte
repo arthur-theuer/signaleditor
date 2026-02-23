@@ -238,10 +238,10 @@
     border-bottom: 1px solid var(--color-border);
   }
   .header h1 { margin-right: var(--space-md); }
-  @media (max-width: 1400px) {
+  @media (max-width: 1400px) { /* --bp-toolbar-title */
     .header h1 { display: none; }
   }
-  @media (max-width: 768px) {
+  @media (max-width: 768px) { /* --bp-meldungen-hide */
     .meldungen-btn { display: none; }
   }
 

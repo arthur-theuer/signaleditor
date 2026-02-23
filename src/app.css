@@ -27,6 +27,19 @@
   --preview-flex: 2;
   --input-flex: 3;
 
+  /*
+   * Responsive breakpoints (px)
+   * CSS custom properties can't be used in @media/@container thresholds,
+   * so these serve as the single source of truth — referenced by name
+   * in @media/@container rules and JS matchMedia calls.
+   *
+   * --bp-toolbar-title:    1400  Hide toolbar h1
+   * --bp-meta-reorder:      900  Reorder meta fields to two rows
+   * --bp-meldungen-hide:    768  Hide Meldungen panel toggle
+   * --bp-plusleiste-icons:   500  Hide Plusleiste button text (container query)
+   */
+  --bp-meldungen-hide: 768px;
+
   /* Surfaces */
   --color-bg: #f5f5f5;
   --color-bg-raised: white;

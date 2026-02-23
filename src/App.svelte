@@ -221,7 +221,8 @@
 
   // Close meldungen panel when viewport is too narrow
   $effect(() => {
-    const mq = window.matchMedia('(max-width: 768px)');
+    const bp = getComputedStyle(document.documentElement).getPropertyValue('--bp-meldungen-hide').trim() || '768px';
+    const mq = window.matchMedia(`(max-width: ${bp})`);
     function handle(e: MediaQueryListEvent | MediaQueryList) {
       if (e.matches) showMeldungen = false;
     }
