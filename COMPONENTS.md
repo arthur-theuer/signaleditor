@@ -79,7 +79,7 @@ Tracking cleanup/modernization progress per component.
 |---|---|---|---|---|---|
 | Datenpanel | ✅ | ✅ | ✅ 3-tier | ✅ | Deduplicated, tokens, autoArrow |
 | Codepanel | ✅ | ✅ | — | ✅ | Blob revoke fix, calc max-height |
-| Toolbar | 🔧 | — | Partial | 🔍 In progress | Body padding refactor |
+| Toolbar | ✅ | ✅ | Partial | ✅ | Hinweis tooltips, disabled gray, font-mono, .tb-btn kept as combined class |
 | Signalpanel | — | — | — | — | |
 | Signalzeile | — | — | — | — | |
 | Signalzelle | — | — | — | — | |

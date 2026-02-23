@@ -106,7 +106,7 @@
     </button>
   </div>
 
-  <div class="separator"></div>
+  <div class="separator h-unit mx-card"></div>
 
   <!-- Group: File -->
   <div class="flex items-center gap-card">
@@ -128,7 +128,7 @@
     </button>
   </div>
 
-  <div class="separator"></div>
+  <div class="separator h-unit mx-card"></div>
 
   <div class="flex-1 flex items-center justify-center gap-md">
     <!-- Group: Cloud -->
@@ -149,7 +149,7 @@
         <input
           bind:this={pinInputEl}
           bind:value={pinValue}
-          class="pin-input"
+          class="pin-input h-unit px-cell"
           class:error={pinError}
           type="password"
           placeholder="PIN"
@@ -182,8 +182,8 @@
     </div>
 
     {#if loggedIn && currentFileName}
-      <span class="file-indicator" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
-        <span class="status-dot"></span>
+      <span class="file-indicator relative flex items-center h-unit gap-sm px-md" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
+        <span class="status-dot shrink-0"></span>
         {currentFileName}
         <span class="status-label">
           {#if saveStatus === 'saving'}Speichern{:else if saveStatus === 'saved'}Gespeichert{:else if saveStatus === 'dirty'}Ungespeichert{/if}
@@ -192,7 +192,7 @@
     {/if}
   </div>
 
-  <div class="separator"></div>
+  <div class="separator h-unit mx-card"></div>
 
   <!-- Group: View toggles (hidden at sm) -->
   <div class="hidden sm:flex items-center gap-card">
@@ -204,7 +204,7 @@
     </button>
   </div>
 
-  <div class="separator hidden sm:block"></div>
+  <div class="separator h-unit mx-card hidden sm:block"></div>
 
   <!-- Group: Export -->
   <div class="flex items-center gap-card">
@@ -228,9 +228,7 @@
   /* Separator */
   .separator {
     width: 1px;
-    height: var(--spacing-unit);
     background: var(--color-border);
-    margin: 0 var(--spacing-xs);
   }
 
   /* Base toolbar button: fixed-size icon box, label appears as overlay */
@@ -261,12 +259,6 @@
     background: var(--color-bg);
     border-color: var(--color-border);
   }
-  .toggle-btn:disabled {
-    color: var(--color-text-muted);
-    background: var(--color-bg);
-    border-color: var(--color-border);
-  }
-
   /* Toggle buttons (view panels) */
   .toggle-btn {
     color: var(--color-red);
@@ -290,13 +282,11 @@
   /* PIN input */
   .pin-input {
     width: 100px;
-    height: var(--spacing-unit);
-    padding: 0 var(--spacing-cell);
     border: var(--card-border);
     border-radius: var(--radius-container);
     background: var(--color-bg-raised);
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     color: var(--color-text);
     outline: none;
   }
@@ -327,21 +317,14 @@
 
   /* File status indicator */
   .file-indicator {
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: var(--spacing-unit);
-    gap: var(--spacing-sm);
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     color: var(--color-text-secondary);
-    padding: 0 var(--spacing-md);
   }
   .status-dot {
     width: var(--spacing-md);
     height: var(--spacing-md);
     border-radius: 50%;
-    flex-shrink: 0;
   }
   .file-indicator.dirty .status-dot { background: var(--color-red); }
   .file-indicator.saving .status-dot { background: var(--color-clear); }
