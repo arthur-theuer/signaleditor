@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Eraser, Trash2 } from 'lucide-svelte';
-  import IconBtn from './IconBtn.svelte';
+  import Symbolknopf from './ui/Symbolknopf.svelte';
 
   let {
     ondelete,
@@ -12,12 +12,12 @@
 </script>
 
 <div class="signal-actions grid gap-card shrink-0">
-  <IconBtn onclick={onclear} title="Leeren" color="clear" tabindex={-1}>
+  <Symbolknopf onclick={onclear} title="Leeren" color="clear" tabindex={-1}>
     <Eraser size={16} strokeWidth={1.5} />
-  </IconBtn>
-  <IconBtn onclick={ondelete} title="Löschen" color="red" tabindex={-1}>
+  </Symbolknopf>
+  <Symbolknopf onclick={ondelete} title="Löschen" color="red" tabindex={-1}>
     <Trash2 size={16} strokeWidth={1.5} />
-  </IconBtn>
+  </Symbolknopf>
 </div>
 
 <style>

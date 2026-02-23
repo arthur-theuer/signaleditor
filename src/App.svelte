@@ -15,7 +15,7 @@
   import Datenpanel from './components/Datenpanel.svelte';
   import Signalpanel from './components/Signalpanel.svelte';
 
-  import IconBtn from './components/IconBtn.svelte';
+  import Symbolknopf from './components/ui/Symbolknopf.svelte';
   import Codepanel from './components/Codepanel.svelte';
   import Meldungspanel from './components/Meldungspanel.svelte';
   import Dateibrowser from './components/Dateibrowser.svelte';
@@ -311,15 +311,16 @@
   <div class="signals-container">
     <div class="section-header signale-header">
       Signale
-      <IconBtn
+      <Symbolknopf
         class="km-toggle"
         color="red"
+        bordered
         active={showKm}
         onclick={() => showKm = !showKm}
         title="Kilometer ein-/ausblenden"
       >
         <RulerDimensionLine size={16} strokeWidth={1.5} />
-      </IconBtn>
+      </Symbolknopf>
     </div>
     <div class="signals-list">
       <Signalpanel bind:signale={data.signale} {showKm} onchange={markDirty} {scrollAnchor} />
@@ -359,7 +360,7 @@
   .signale-header { padding-right: var(--spacing-card); }
   .signals-list { padding: var(--spacing-half-card) 0; }
 
-  .km-toggle {
+  .signale-header :global(.km-toggle) {
     margin-left: auto;
   }
   .meldungen-section {

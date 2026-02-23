@@ -6,6 +6,7 @@
     title,
     label,
     color = 'default',
+    bordered = false,
     active = false,
     disabled = false,
     wide = false,
@@ -18,6 +19,7 @@
     title?: string;
     label?: string;
     color?: 'default' | 'red' | 'green' | 'clear';
+    bordered?: boolean;
     active?: boolean;
     disabled?: boolean;
     wide?: boolean;
@@ -29,7 +31,8 @@
 </script>
 
 <button
-  class="icon-btn hl {color} {extraClass}"
+  class="symbolknopf hl {color} {extraClass}"
+  class:bordered
   class:active
   class:wide
   class:has-label={!!label}
@@ -40,11 +43,11 @@
   {id}
 >
   {@render children()}
-  {#if label}<span class="icon-btn-label">{label}</span>{/if}
+  {#if label}<span class="symbolknopf-label">{label}</span>{/if}
 </button>
 
 <style>
-  .icon-btn {
+  .symbolknopf {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -59,45 +62,45 @@
   }
 
   /* Square sizing for icon-only buttons */
-  .icon-btn:not(.has-label):not(.wide) {
+  .symbolknopf:not(.has-label):not(.wide) {
     width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
   }
 
   /* Buttons with labels get height but flexible width */
-  .icon-btn.has-label {
+  .symbolknopf.has-label {
     height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     padding: 0 var(--spacing-cell);
   }
 
   /* Full-width variant */
-  .icon-btn.wide {
+  .symbolknopf.wide {
     width: 100%;
     height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     padding: 0 var(--spacing-cell);
   }
 
-  .icon-btn-label {
+  .symbolknopf-label {
     font-size: var(--text-input);
     font-weight: var(--font-weight-semibold);
   }
 
-  /* Color variants */
-  .icon-btn.red { color: var(--color-red); }
-  .icon-btn.clear { color: var(--color-clear); }
-  .icon-btn.green { color: var(--color-green); }
+  /* Color variants (icon color only) */
+  .symbolknopf.red { color: var(--color-red); }
+  .symbolknopf.clear { color: var(--color-clear); }
+  .symbolknopf.green { color: var(--color-green); }
 
-  /* Colored border for toggle/action buttons */
-  .icon-btn.red { border-color: var(--color-red); }
-  .icon-btn.green { border-color: var(--color-green); }
+  /* Colored border when explicitly requested */
+  .symbolknopf.bordered.red { border-color: var(--color-red); }
+  .symbolknopf.bordered.green { border-color: var(--color-green); }
 
   /* Active state for toggles */
-  .icon-btn.red.active {
+  .symbolknopf.bordered.active {
     color: var(--color-green);
     border-color: var(--color-green);
   }
 
-  .icon-btn:disabled {
+  .symbolknopf:disabled {
     opacity: 0.4;
     cursor: default;
   }

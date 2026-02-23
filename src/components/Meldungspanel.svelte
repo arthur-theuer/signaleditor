@@ -1,6 +1,6 @@
 <script lang="ts">
   import { X } from 'lucide-svelte';
-  import IconBtn from './IconBtn.svelte';
+  import Symbolknopf from './ui/Symbolknopf.svelte';
   import type { Eintrag } from '../lib/types';
   import type { MeldungRow } from '../lib/reports';
   import { generiereAlleMeldungen } from '../lib/reports';
@@ -45,9 +45,9 @@
     </div>
   {/each}
   <div class="mx-card my-half-card">
-    <IconBtn onclick={onclose} title="Meldungen schließen" color="red" wide label="Schließen">
+    <Symbolknopf onclick={onclose} title="Meldungen schließen" color="red" bordered wide label="Schließen">
       <X size={16} strokeWidth={1.5} />
-    </IconBtn>
+    </Symbolknopf>
   </div>
 </div>
 
