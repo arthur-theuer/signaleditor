@@ -195,13 +195,10 @@
     data.signale = [...data.signale, knoten];
     markDirty();
     await tick();
-    // Focus the first input in the last row
-    const rows = document.querySelectorAll('.signal-row, .knoten-row, .notiz-row, .abzweigung-row, .import-row');
-    const lastRow = rows[rows.length - 1];
-    if (lastRow) {
-      const input = lastRow.querySelector<HTMLElement>('input, select, textarea');
-      if (input) input.focus();
-    }
+    // Focus the knoten input we just appended (last one in the DOM)
+    const inputs = document.querySelectorAll<HTMLElement>('.knoten-input');
+    const last = inputs[inputs.length - 1];
+    if (last) last.focus();
   }
 
   function handleExportMeldungen() {
