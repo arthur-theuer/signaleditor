@@ -166,6 +166,14 @@
           <FolderClosed size={16} strokeWidth={1.5} /><Hinweis text="Dateien" />
         {/if}
       </button>
+      <button
+        class="tb-btn save-btn hl"
+        onclick={onSave}
+        disabled={saving || !dirty}
+        title="Speichern (Ctrl+S)"
+      >
+        <Save size={16} strokeWidth={1.5} /><Hinweis text="Speichern" />
+      </button>
     </div>
 
     {#if currentFileName}
@@ -177,17 +185,6 @@
         </span>
       </span>
     {/if}
-
-    <div class="flex items-center gap-card">
-      <button
-        class="tb-btn save-btn hl"
-        onclick={onSave}
-        disabled={saving || !dirty}
-        title="Speichern (Ctrl+S)"
-      >
-        <Save size={16} strokeWidth={1.5} /><Hinweis text="Speichern" />
-      </button>
-    </div>
   {/if}
 
   <div class="flex-1"></div>
