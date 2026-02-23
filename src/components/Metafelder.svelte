@@ -114,7 +114,6 @@
     flex-wrap: wrap;
     gap: var(--card-gap);
     padding: var(--card-gap);
-    overflow: hidden;
   }
   .meta-field {
     flex: 1;

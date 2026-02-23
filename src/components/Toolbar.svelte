@@ -242,7 +242,7 @@
     background: linear-gradient(var(--color-red-bg), transparent);
   }
   .header h1 { margin-right: var(--space-md); }
-  @media (max-width: 700px) {
+  @media (max-width: 1400px) {
     .header h1 { display: none; }
   }
 
