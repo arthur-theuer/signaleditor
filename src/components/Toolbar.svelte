@@ -91,13 +91,15 @@
     pinValue = '';
     pinError = false;
   }
+
+  const btnGroup = 'flex items-center gap-card lg:gap-md';
 </script>
 
 <div class="header flex gap-card lg:gap-md items-center flex-wrap sticky top-0 z-10 py-cell mb-page" class:logged-out={!loggedIn}>
   <h1 class="hidden xl:block mr-md">Signaleditor</h1>
 
   <!-- Group: History -->
-  <div class="flex items-center gap-card">
+  <div class={btnGroup}>
     <button id="undoBtn" class="tb-btn hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
       <Undo2 size={16} strokeWidth={1.5} /><Hinweis text="Rückgängig" />
     </button>
@@ -109,7 +111,7 @@
   <div class="separator mx-card"></div>
 
   <!-- Group: New -->
-  <div class="flex items-center gap-card">
+  <div class={btnGroup}>
     <button class="tb-btn hl" onclick={() => onNew('strecke')} title="Neue Strecke">
       <Milestone size={16} strokeWidth={1.5} /><Hinweis text="Strecke" />
     </button>
@@ -121,7 +123,7 @@
   <div class="separator mx-card"></div>
 
   <!-- Group: Local I/O -->
-  <div class="flex items-center gap-card">
+  <div class={btnGroup}>
     <input
       type="file"
       accept=".yaml,.yml,.html"
@@ -140,7 +142,7 @@
   <div class="separator mx-card hidden sm:block"></div>
 
   <!-- Group: View toggles (hidden at sm) -->
-  <div class="hidden sm:flex items-center gap-card">
+  <div class="hidden sm:flex items-center gap-card lg:gap-md">
     <button class="tb-btn toggle-btn hl" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
       <Code size={16} strokeWidth={1.5} /><Hinweis text="Signaldatei" />
     </button>
@@ -153,7 +155,7 @@
   {#if loggedIn}
     <div class="separator mx-card"></div>
 
-    <div class="flex items-center gap-card">
+    <div class={btnGroup}>
       <button
         class="tb-btn dateien-btn hl"
         class:active={showDateien}
