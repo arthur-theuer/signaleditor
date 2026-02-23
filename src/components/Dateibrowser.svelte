@@ -151,6 +151,7 @@
   .dateibrowser {
     width: 100%;
     max-width: 600px;
+    margin: 0 var(--spacing-page);
     max-height: 80vh;
     display: flex;
     flex-direction: column;
