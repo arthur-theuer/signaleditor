@@ -92,7 +92,7 @@
     pinError = false;
   }
 
-  const btnGroup = 'flex items-center gap-card lg:gap-md';
+  const btnGroup = 'flex flex-col sm:flex-row items-center gap-card lg:gap-md';
 </script>
 
 <div class="header flex gap-card lg:gap-md items-center flex-wrap sticky top-0 z-10 py-cell mb-page" class:logged-out={!loggedIn}>
