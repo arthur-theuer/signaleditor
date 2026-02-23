@@ -118,7 +118,7 @@
   }
   .meta-field {
     flex: 1;
-    min-width: 150px;
+    min-width: min(150px, 100%);
     display: flex;
     flex-direction: column;
     background: var(--color-bg-raised);
@@ -150,6 +150,7 @@
   }
   .meta-field input {
     flex: 1;
+    min-width: 0;
     padding: 0 var(--cell-padding);
     border: none;
     font-size: var(--input-font-size);
