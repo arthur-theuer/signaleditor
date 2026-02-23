@@ -224,7 +224,7 @@
 
   // Disable meldungen panel when viewport is too narrow
   $effect(() => {
-    const bp = getComputedStyle(document.documentElement).getPropertyValue('--breakpoint-sm').trim() || '700px';
+    const bp = getComputedStyle(document.documentElement).getPropertyValue('--breakpoint-sm').trim() || '640px';
     const mq = window.matchMedia(`(max-width: ${bp})`);
     function handle(e: MediaQueryListEvent | MediaQueryList) {
       meldungenAllowed = !e.matches;

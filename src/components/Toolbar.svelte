@@ -239,8 +239,8 @@
   .header {
     border-bottom: 1px solid var(--color-border);
   }
-  .header h1 { margin-right: var(--spacing-md); }
-  @media (max-width: 1400px) { /* --bp-toolbar-title */
+  .header h1 { margin-right: var(--spacing-md); font-size: 1.5rem; font-weight: var(--font-weight-bold); }
+  @media (max-width: 1280px) { /* below xl */
     .header h1 { display: none; }
   }
 

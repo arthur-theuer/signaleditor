@@ -51,10 +51,7 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* Breakpoints (mobile-first: sm and up) */
-  --breakpoint-sm: 700px;
-  --breakpoint-md: 900px;
-  --breakpoint-lg: 1400px;
+  /* Breakpoints: using Tailwind defaults (sm=640 md=768 lg=1024 xl=1280 2xl=1536) */
 }
 
 /* Colors: defined in :root with dark overrides, then exposed to Tailwind */
