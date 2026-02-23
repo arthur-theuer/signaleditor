@@ -10,18 +10,18 @@
   let {
     eintrag = $bindable(),
     usedFiles = new Set<string>(),
-    compact = false,
+    countTier = 0,
     stitchTier = 0,
     onchange,
-    ontruncate,
+    oncounttruncate,
     onstitchtruncate,
   }: {
     eintrag: Importeintrag;
     usedFiles?: Set<string>;
-    compact?: boolean;
+    countTier?: number;
     stitchTier?: number;
     onchange: () => void;
-    ontruncate?: (truncated: boolean) => void;
+    oncounttruncate?: (tier: number) => void;
     onstitchtruncate?: (tier: number) => void;
   } = $props();
 
@@ -84,24 +84,28 @@
     return () => { ro.disconnect(); if (lastStitchTier !== 0) { lastStitchTier = 0; onstitchtruncate?.(0); } };
   });
 
-  // Count truncation detection: report to parent so all import rows switch together
-  let countEl = $state<HTMLElement | null>(null);
-  let lastTruncated: boolean | null = null;
+  // Count truncation detection: three tiers (0=text, 1=icons+commas, 2=icons only)
+  let countTextEl = $state<HTMLElement | null>(null);
+  let countIconsEl = $state<HTMLElement | null>(null);
+  let lastCountTier = -1;
 
   $effect(() => {
-    const el = countEl;
-    if (!el) { if (lastTruncated !== false) { lastTruncated = false; ontruncate?.(false); } return; }
+    const textEl = countTextEl;
+    const iconsEl = countIconsEl;
+    if (!textEl || !iconsEl) { if (lastCountTier !== 0) { lastCountTier = 0; oncounttruncate?.(0); } return; }
 
     function check() {
-      const t = el!.scrollWidth > el!.clientWidth;
-      if (t !== lastTruncated) { lastTruncated = t; ontruncate?.(t); }
+      let tier = 2;
+      if (textEl!.scrollWidth <= textEl!.clientWidth) tier = 0;
+      else if (iconsEl!.scrollWidth <= iconsEl!.clientWidth) tier = 1;
+      if (tier !== lastCountTier) { lastCountTier = tier; oncounttruncate?.(tier); }
     }
 
     const ro = new ResizeObserver(check);
-    ro.observe(el);
+    ro.observe(textEl);
     check();
 
-    return () => { ro.disconnect(); if (lastTruncated !== false) { lastTruncated = false; ontruncate?.(false); } };
+    return () => { ro.disconnect(); if (lastCountTier !== 0) { lastCountTier = 0; oncounttruncate?.(0); } };
   });
 
   // Derive start/end knoten from resolved signals
@@ -207,10 +211,15 @@
         {/if}
       </span>
       <span class="import-divider"></span>
-      <!-- Hidden measurement span to detect truncation -->
-      <span class="import-count count-measure" bind:this={countEl}>{countText() || '—'}</span>
-      {#if compact}
-        <span class="import-count count-icons">
+      <!-- Hidden measurement spans for count truncation detection -->
+      <span class="import-count count-measure" bind:this={countTextEl}>{countText() || '—'}</span>
+      <span class="import-count count-measure count-measure-icons" bind:this={countIconsEl}>
+        {#each countItems() as item, i}{#if i}, {/if}{item.count}<item.icon size={14} strokeWidth={2.5} />{/each}
+      </span>
+      {#if countTier === 0}
+        <span class="import-count">{countText() || '—'}</span>
+      {:else}
+        <span class="import-count count-icons" class:no-commas={countTier >= 2}>
           {#each countItems() as item}
             <span class="count-icon-item">
               {item.count}
@@ -219,8 +228,6 @@
           {/each}
           {#if !countItems().length}—{/if}
         </span>
-      {:else}
-        <span class="import-count">{countText() || '—'}</span>
       {/if}
     {/if}
   </div>
@@ -323,6 +330,9 @@
   .count-icon-item + .count-icon-item::before {
     content: ',';
     margin-right: 2px;
+  }
+  .no-commas .count-icon-item + .count-icon-item::before {
+    content: none;
   }
   .import-stitch { color: var(--color-import-text); }
   .import-error { color: var(--color-red); }

@@ -29,18 +29,6 @@
     new Set(signale.filter(isImporteintrag).map(s => s.import.datei).filter(Boolean))
   );
 
-  // Per-field-type truncation tracking: when any row of a type is truncated, all switch to compact
-  let truncatedRows: Record<string, Set<number>> = {};
-  let compactFields = $state<Record<string, boolean>>({});
-
-  function reportTruncation(fieldType: string, rowIdx: number, isTruncated: boolean) {
-    if (!truncatedRows[fieldType]) truncatedRows[fieldType] = new Set();
-    const set = truncatedRows[fieldType];
-    if (isTruncated) set.add(rowIdx); else set.delete(rowIdx);
-    const val = set.size > 0;
-    if (compactFields[fieldType] !== val) compactFields = { ...compactFields, [fieldType]: val };
-  }
-
   // Per-field-type tier tracking: each row reports a tier (0=full, 1=medium, 2=compact),
   // all rows of that type use the max tier for consistent appearance
   let tierRows: Record<string, Map<number, number>> = {};
@@ -370,10 +358,10 @@
         <Importzeile
           bind:eintrag={signale[idx] as Importeintrag}
           usedFiles={usedImportFiles}
-          compact={compactFields['import'] ?? false}
+          countTier={fieldTiers['import-count'] ?? 0}
           stitchTier={fieldTiers['import-stitch'] ?? 0}
           {onchange}
-          ontruncate={(t) => reportTruncation('import', idx, t)}
+          oncounttruncate={(t) => reportTier('import-count', idx, t)}
           onstitchtruncate={(t) => reportTier('import-stitch', idx, t)}
         />
       {/if}
@@ -394,6 +382,8 @@
   onAddAbzweigung={() => appendEntry(makeAbzweigung(signale.length))}
   onAddKnoten={() => appendEntry(makeKnoten(signale.length))}
   onAddImport={() => appendEntry(makeImport(signale.length))}
+  compact={fieldTiers['plusleiste'] ?? 0}
+  ontruncate={(t) => reportTier('plusleiste', 0, t)}
 />
 
 
