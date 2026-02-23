@@ -1,7 +1,7 @@
 <script lang="ts">
   import {
     Undo2, Redo2, Upload, Download, Save, Lock, LockOpen,
-    Milestone, Route, FolderOpen, RulerDimensionLine, Code, Megaphone,
+    Milestone, Route, FolderOpen, FolderClosed, RulerDimensionLine, Code, Megaphone,
   } from 'lucide-svelte';
 
   let {
@@ -171,7 +171,11 @@
           onclick={onToggleDateien}
           title="Dateien"
         >
-          <FolderOpen size={20} strokeWidth={2} /><span>Dateien</span>
+          {#if currentFileName}
+            <FolderOpen size={20} strokeWidth={2} /><span>Dateien</span>
+          {:else}
+            <FolderClosed size={20} strokeWidth={2} /><span>Dateien</span>
+          {/if}
         </button>
       {/if}
     </div>

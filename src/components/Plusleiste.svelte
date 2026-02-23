@@ -17,11 +17,11 @@
 </script>
 
 <div class="add-bar">
-  <button class="add-signal hl" onclick={onAddSignal}><DiamondPlus size={16} strokeWidth={2} /><span>Signal</span></button>
-  <button class="add-note hl" onclick={onAddNotiz}><SquarePen size={16} strokeWidth={2} /><span>Notiz</span></button>
-  <button class="add-abzweigung hl" onclick={onAddAbzweigung}><Share2 size={16} strokeWidth={2} /><span>Abzweigung</span></button>
-  <button class="add-knoten hl" onclick={onAddKnoten}><Crosshair size={16} strokeWidth={2} /><span>Knoten</span></button>
-  <button class="add-import hl" onclick={onAddImport}><Import size={16} strokeWidth={2} /><span>Import</span></button>
+  <button class="add-signal hl" onclick={onAddSignal}><DiamondPlus size={16} strokeWidth={2.5} /><span>Signal</span></button>
+  <button class="add-note hl" onclick={onAddNotiz}><SquarePen size={16} strokeWidth={2.5} /><span>Notiz</span></button>
+  <button class="add-abzweigung hl" onclick={onAddAbzweigung}><Share2 size={16} strokeWidth={2.5} /><span>Abzweigung</span></button>
+  <button class="add-knoten hl" onclick={onAddKnoten}><Crosshair size={16} strokeWidth={2.5} /><span>Knoten</span></button>
+  <button class="add-import hl" onclick={onAddImport}><Import size={16} strokeWidth={2.5} /><span>Import</span></button>
 </div>
 
 <style>
