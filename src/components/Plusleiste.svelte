@@ -44,6 +44,7 @@
     align-items: center;
     justify-content: center;
     gap: var(--space-sm);
+    container-type: inline-size;
   }
   .add-bar button :global(svg) {
     flex-shrink: 0;
@@ -73,7 +74,7 @@
     color: var(--color-import-text);
     border: 1px solid var(--color-import-text);
   }
-  @container (max-width: 500px) { /* --bp-plusleiste-icons */
-    .add-bar button span { display: none; }
+  @container (max-width: 80px) { /* --bp-plusleiste-btn-icons: per-button threshold */
+    span { display: none; }
   }
 </style>
