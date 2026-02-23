@@ -267,12 +267,16 @@
     height: 0;
   }
   .count-icons {
-    gap: var(--space-md);
+    gap: 2px;
   }
   .count-icon-item {
     display: inline-flex;
     align-items: center;
     gap: 2px;
+  }
+  .count-icon-item + .count-icon-item::before {
+    content: ',';
+    margin-right: 2px;
   }
   .import-stitch { color: var(--color-import-text); }
   .import-error { color: var(--color-red); }
