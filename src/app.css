@@ -278,7 +278,7 @@ input, select, textarea, button {
   display: flex;
   align-items: center;
   height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2 + 2 * var(--spacing-card));
-  padding: 0 var(--spacing-cell);
+  padding: 0 var(--spacing-card) 0 var(--spacing-cell);
   font-weight: var(--font-weight-semibold);
   font-size: var(--text-input);
   background: var(--color-bg-subtle);
