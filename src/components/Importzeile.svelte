@@ -52,6 +52,25 @@
     return items;
   });
 
+  // Truncation detection: swap text for icons when text overflows
+  let countEl = $state<HTMLElement | null>(null);
+  let truncated = $state(false);
+
+  $effect(() => {
+    const el = countEl;
+    if (!el) { truncated = false; return; }
+
+    function check() {
+      truncated = el!.scrollWidth > el!.clientWidth;
+    }
+
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    check();
+
+    return () => ro.disconnect();
+  });
+
   // Derive start/end knoten from resolved signals
   let firstKnoten = $derived(() => {
     if (!resolved) return null;
@@ -142,16 +161,21 @@
     {:else if hasFile && resolved}
       <span class="import-stitch">{stitchText() || '—'}</span>
       <span class="import-divider"></span>
-      <span class="import-count count-text">{countText() || '—'}</span>
-      <span class="import-count count-icons">
-        {#each countItems() as item}
-          <span class="count-icon-item">
-            {item.count}
-            <item.icon size={14} strokeWidth={2.5} />
-          </span>
-        {/each}
-        {#if !countItems().length}—{/if}
-      </span>
+      <!-- Hidden measurement span to detect truncation -->
+      <span class="import-count count-measure" bind:this={countEl}>{countText() || '—'}</span>
+      {#if truncated}
+        <span class="import-count count-icons">
+          {#each countItems() as item}
+            <span class="count-icon-item">
+              {item.count}
+              <item.icon size={14} strokeWidth={2.5} />
+            </span>
+          {/each}
+          {#if !countItems().length}—{/if}
+        </span>
+      {:else}
+        <span class="import-count">{countText() || '—'}</span>
+      {/if}
     {/if}
   </div>
 </div>
@@ -217,6 +241,7 @@
     justify-content: center;
     height: 100%;
     overflow: hidden;
+    position: relative;
   }
   .import-divider {
     border-top: 1px solid var(--color-border);
@@ -233,12 +258,16 @@
     flex: 1;
   }
   .import-count { color: var(--color-text-secondary); }
-  /* Default: show text, hide icons */
-  .count-icons { display: none !important; }
-  .count-text { display: flex; }
-  @container (max-width: 500px) {
-    .count-text { display: none !important; }
-    .count-icons { display: flex !important; gap: var(--space-md); }
+  .count-measure {
+    position: absolute;
+    left: 0;
+    right: 0;
+    visibility: hidden;
+    pointer-events: none;
+    height: 0;
+  }
+  .count-icons {
+    gap: var(--space-md);
   }
   .count-icon-item {
     display: inline-flex;
