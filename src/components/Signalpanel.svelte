@@ -29,6 +29,17 @@
     new Set(signale.filter(isImporteintrag).map(s => s.import.datei).filter(Boolean))
   );
 
+  // Per-field-type truncation tracking: when any row of a type is truncated, all switch to compact
+  let truncatedRows: Record<string, Set<number>> = {};
+  let compactFields = $state<Record<string, boolean>>({});
+
+  function reportTruncation(fieldType: string, rowIdx: number, isTruncated: boolean) {
+    if (!truncatedRows[fieldType]) truncatedRows[fieldType] = new Set();
+    const set = truncatedRows[fieldType];
+    if (isTruncated) set.add(rowIdx); else set.delete(rowIdx);
+    compactFields = { ...compactFields, [fieldType]: set.size > 0 };
+  }
+
   let listEl: HTMLDivElement;
 
   // Drag-and-drop state
@@ -341,7 +352,13 @@
       {:else if isAbzweigungseintrag(eintrag)}
         <Abzweigungszeile bind:eintrag={signale[idx] as Abzweigungseintrag} {onchange} />
       {:else if isImporteintrag(eintrag)}
-        <Importzeile bind:eintrag={signale[idx] as Importeintrag} usedFiles={usedImportFiles} {onchange} />
+        <Importzeile
+          bind:eintrag={signale[idx] as Importeintrag}
+          usedFiles={usedImportFiles}
+          compact={compactFields['import'] ?? false}
+          {onchange}
+          ontruncate={(t) => reportTruncation('import', idx, t)}
+        />
       {/if}
 
       <Zeilenaktionen

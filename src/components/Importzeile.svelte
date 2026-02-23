@@ -10,11 +10,15 @@
   let {
     eintrag = $bindable(),
     usedFiles = new Set<string>(),
+    compact = false,
     onchange,
+    ontruncate,
   }: {
     eintrag: Importeintrag;
     usedFiles?: Set<string>;
+    compact?: boolean;
     onchange: () => void;
+    ontruncate?: (truncated: boolean) => void;
   } = $props();
 
   let showPicker = $state(false);
@@ -52,23 +56,22 @@
     return items;
   });
 
-  // Truncation detection: swap text for icons when text overflows
+  // Truncation detection: report to parent so all import rows switch together
   let countEl = $state<HTMLElement | null>(null);
-  let truncated = $state(false);
 
   $effect(() => {
     const el = countEl;
-    if (!el) { truncated = false; return; }
+    if (!el) { ontruncate?.(false); return; }
 
     function check() {
-      truncated = el!.scrollWidth > el!.clientWidth;
+      ontruncate?.(el!.scrollWidth > el!.clientWidth);
     }
 
     const ro = new ResizeObserver(check);
     ro.observe(el);
     check();
 
-    return () => ro.disconnect();
+    return () => { ro.disconnect(); ontruncate?.(false); };
   });
 
   // Derive start/end knoten from resolved signals
@@ -163,7 +166,7 @@
       <span class="import-divider"></span>
       <!-- Hidden measurement span to detect truncation -->
       <span class="import-count count-measure" bind:this={countEl}>{countText() || '—'}</span>
-      {#if truncated}
+      {#if compact}
         <span class="import-count count-icons">
           {#each countItems() as item}
             <span class="count-icon-item">
