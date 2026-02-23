@@ -123,6 +123,12 @@
   /* Composite tokens (not mappable to @theme) */
   --card-border: 1px solid var(--color-border);
 
+  /* Inset rails: vertical alignment from viewport edge */
+  --inset-page: var(--spacing-page);                                   /* 20px — container borders */
+  --inset-container: calc(var(--spacing-page) + 1px);                  /* 21px — inside bordered containers */
+  --inset-card: calc(var(--spacing-page) + 1px + var(--spacing-card)); /* 25px — signal rows, toolbar buttons */
+  --inset-cell: calc(var(--spacing-page) + 1px + var(--spacing-cell)); /* 33px — section headers, plusleiste */
+
   /* Flex ratios for signal row layout */
   --preview-flex: 2;
   --input-flex: 3;

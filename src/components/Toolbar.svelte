@@ -224,8 +224,8 @@
   .header {
     background: var(--color-focus-bg);
     border-bottom: 1px solid var(--color-border);
-    padding-left: calc(var(--spacing-page) + var(--spacing-card) + 1px);
-    padding-right: calc(var(--spacing-page) + var(--spacing-card) + 1px);
+    padding-left: var(--inset-card);
+    padding-right: var(--inset-card);
   }
   .header.logged-out {
     background: var(--color-red-bg);
