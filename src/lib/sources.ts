@@ -1,6 +1,7 @@
 import type { Eintrag, Import, Editordaten } from './types';
 import { isImporteintrag, isKnoteneintrag } from './types';
 import { parseYAMLContent, extractYAMLFromHTML } from './yaml';
+import { loadFile } from './api';
 
 const importCache: Record<string, Editordaten> = {};
 
@@ -17,9 +18,7 @@ export async function resolveImport(imp: Import): Promise<ResolveResult> {
   try {
     let parsed = importCache[datei];
     if (!parsed) {
-      const resp = await fetch('strecken/' + datei);
-      if (!resp.ok) throw new Error(`${resp.status} ${resp.statusText}`);
-      let content = await resp.text();
+      let content = await loadFile('strecken', datei);
 
       if (datei.endsWith('.html')) {
         const yamlContent = extractYAMLFromHTML(content);
