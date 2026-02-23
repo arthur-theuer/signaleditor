@@ -50,6 +50,15 @@ Tracking cleanup/modernization progress per component.
 - Prefer `value` + `oninput` over `bind:value` when the input handler does more than just assign (e.g. `autoArrow`).
 - Don't mix `bind:value` + `oninput` on the same input — it's redundant.
 
+### Buttons and icons
+
+- **Icon sizes**: two tiers — `size={16}` for in-content buttons, `size={20}` for toolbar buttons.
+- **Stroke width**: all icons render at 1px absolute (`strokeWidth={1.5}` for size=16, `strokeWidth={1.2}` for size=20).
+- **Hover stroke**: `.hl:hover svg` increases stroke-width to 2.25 (~1.5px absolute) globally.
+- **IconBtn component**: use for standard icon buttons (icon-only or icon+label) with `color`, `active`, `wide` props. Handles sizing, borders, hl, and color variants.
+- **Colored borders**: toggle/action buttons with semantic meaning (Km toggle, Schließen) use colored borders via IconBtn `color` prop. Neutral buttons use `card-border`.
+- **Custom buttons**: Plusleiste, Zwischenaktionen, Importzeile, Toolbar have unique styling — use raw `<button>` with `.hl` class for hover stroke effect.
+
 ### Tooltips
 
 - Shared pattern: hidden by default, shown on hover, positioned below parent with `top: calc(100% + var(--spacing-card))`.
@@ -79,8 +88,9 @@ Tracking cleanup/modernization progress per component.
 | Abzweigungszeile | — | — | — | — | |
 | Meldungspanel | ✅ | ✅ | ✅ sm/md | ✅ | Tailwind layout, card-style close btn, collapsed muted branches, font-mono |
 | Dateibrowser | — | — | — | — | |
-| Zeilenaktionen | — | — | — | — | |
+| Zeilenaktionen | ✅ | ✅ | — | ✅ | Uses IconBtn |
 | Zwischenaktionen | — | — | — | — | |
+| IconBtn | ✅ | ✅ | — | ✅ | Shared button component |
 | BreakpointDebug | ✅ | — | ✅ | ✅ | Debug-only, removable |
 
 ## Meldungspanel Audit

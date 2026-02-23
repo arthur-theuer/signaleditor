@@ -1,5 +1,6 @@
 <script lang="ts">
   import { X } from 'lucide-svelte';
+  import IconBtn from './IconBtn.svelte';
   import type { Eintrag } from '../lib/types';
   import type { MeldungRow } from '../lib/reports';
   import { generiereAlleMeldungen } from '../lib/reports';
@@ -44,10 +45,9 @@
     </div>
   {/each}
   <div class="mx-card my-half-card">
-    <button class="close-btn hl flex w-full items-center justify-center gap-card px-cell" onclick={onclose} title="Meldungen schließen">
+    <IconBtn onclick={onclose} title="Meldungen schließen" color="red" wide label="Schließen">
       <X size={16} strokeWidth={1.5} />
-      Schließen
-    </button>
+    </IconBtn>
   </div>
 </div>
 
@@ -77,15 +77,4 @@
   .fett { font-weight: var(--font-weight-bold); }
 
   .meldung-colored { border-color: currentColor; }
-  .close-btn {
-    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
-    border-radius: var(--radius-card);
-    cursor: pointer;
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--text-input);
-    background: var(--color-bg-raised);
-    border: 1px solid var(--color-red);
-    color: var(--color-red);
-    box-sizing: border-box;
-  }
 </style>

@@ -15,6 +15,7 @@
   import Datenpanel from './components/Datenpanel.svelte';
   import Signalpanel from './components/Signalpanel.svelte';
 
+  import IconBtn from './components/IconBtn.svelte';
   import Codepanel from './components/Codepanel.svelte';
   import Meldungspanel from './components/Meldungspanel.svelte';
   import Dateibrowser from './components/Dateibrowser.svelte';
@@ -310,14 +311,15 @@
   <div class="signals-container">
     <div class="section-header signale-header">
       Signale
-      <button
-        class="km-toggle hl"
-        class:active={showKm}
+      <IconBtn
+        class="km-toggle"
+        color="red"
+        active={showKm}
         onclick={() => showKm = !showKm}
         title="Kilometer ein-/ausblenden"
       >
         <RulerDimensionLine size={16} strokeWidth={1.5} />
-      </button>
+      </IconBtn>
     </div>
     <div class="signals-list">
       <Signalpanel bind:signale={data.signale} {showKm} onchange={markDirty} {scrollAnchor} />
@@ -359,22 +361,6 @@
 
   .km-toggle {
     margin-left: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
-    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
-    padding: 0;
-    background: var(--color-bg-raised);
-    border: 1px solid var(--color-red);
-    border-radius: var(--radius-card);
-    color: var(--color-red);
-    cursor: pointer;
-    box-sizing: border-box;
-  }
-  .km-toggle.active {
-    color: var(--color-green);
-    border-color: var(--color-green);
   }
   .meldungen-section {
     width: 220px;
