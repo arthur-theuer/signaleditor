@@ -179,17 +179,21 @@
     </div>
 
     {#if currentFileName}
-      <span class="file-indicator relative flex items-center gap-sm px-md" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
+      <span class="file-indicator relative flex flex-1 min-w-0 items-center gap-sm px-md" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
         <span class="status-dot shrink-0"></span>
-        {currentFileName}
+        <span class="file-name">{currentFileName}</span>
         <span class="status-label">
           {#if saveStatus === 'saving'}Speichern{:else if saveStatus === 'saved'}Gespeichert{:else if saveStatus === 'dirty'}Ungespeichert{/if}
         </span>
       </span>
+    {:else}
+      <div class="flex-1"></div>
     {/if}
   {/if}
 
-  <div class="flex-1"></div>
+  {#if !loggedIn}
+    <div class="flex-1"></div>
+  {/if}
 
   <!-- Lock (right-aligned) -->
   <div class="relative">
@@ -346,6 +350,11 @@
     font-size: var(--text-input);
     font-family: var(--font-mono);
     color: var(--color-text-secondary);
+  }
+  .file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .status-dot {
     width: var(--spacing-md);
