@@ -179,7 +179,7 @@
     </div>
 
     {#if currentFileName}
-      <span class="file-indicator relative flex flex-1 min-w-0 items-center gap-sm px-md" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
+      <span class="file-indicator relative flex flex-1 min-w-0 items-center justify-center sm:justify-start gap-sm px-md" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
         <span class="status-dot shrink-0"></span>
         <span class="file-name">{currentFileName}</span>
         <span class="status-label">
