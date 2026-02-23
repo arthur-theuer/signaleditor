@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CloudDownload } from 'lucide-svelte';
+  import { CloudDownload, DiamondPlus, SquarePen, Share2, Crosshair } from 'lucide-svelte';
   import type { Importeintrag, Eintrag } from '../lib/types';
   import { isSignaleintrag, isNotizeintrag, isAbzweigungseintrag, isKnoteneintrag } from '../lib/types';
   import { STATIONEN } from '../lib/constants';
@@ -31,7 +31,7 @@
   let abzCount = $derived(resolveResult?.signale.filter(isAbzweigungseintrag).length ?? 0);
   let knotenCount = $derived(resolveResult?.signale.filter(isKnoteneintrag).length ?? 0);
 
-  let countParts = $derived(() => {
+  let countText = $derived(() => {
     if (!resolved) return '';
     const parts: string[] = [];
     if (signalCount) parts.push(`${signalCount} Signale`);
@@ -39,6 +39,17 @@
     if (abzCount) parts.push(`${abzCount} Abzweigungen`);
     if (knotenCount) parts.push(`${knotenCount} Knoten`);
     return parts.join(', ');
+  });
+
+  type CountItem = { count: number; icon: typeof DiamondPlus };
+  let countItems = $derived(() => {
+    if (!resolved) return [] as CountItem[];
+    const items: CountItem[] = [];
+    if (signalCount) items.push({ count: signalCount, icon: DiamondPlus });
+    if (notizCount) items.push({ count: notizCount, icon: SquarePen });
+    if (abzCount) items.push({ count: abzCount, icon: Share2 });
+    if (knotenCount) items.push({ count: knotenCount, icon: Crosshair });
+    return items;
   });
 
   // Derive start/end knoten from resolved signals
@@ -131,7 +142,16 @@
     {:else if hasFile && resolved}
       <span class="import-stitch">{stitchText() || '—'}</span>
       <span class="import-divider"></span>
-      <span class="import-count">{countParts() || '—'}</span>
+      <span class="import-count count-text">{countText() || '—'}</span>
+      <span class="import-count count-icons">
+        {#each countItems() as item}
+          <span class="count-icon-item">
+            {item.count}
+            <item.icon size={14} strokeWidth={2.5} />
+          </span>
+        {/each}
+        {#if !countItems().length}—{/if}
+      </span>
     {/if}
   </div>
 </div>
@@ -213,6 +233,18 @@
     flex: 1;
   }
   .import-count { color: var(--color-text-secondary); }
+  /* Default: show text, hide icons */
+  .count-icons { display: none !important; }
+  .count-text { display: flex; }
+  @container (max-width: 500px) {
+    .count-text { display: none !important; }
+    .count-icons { display: flex !important; gap: var(--space-md); }
+  }
+  .count-icon-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
   .import-stitch { color: var(--color-import-text); }
   .import-error { color: var(--color-red); }
 </style>
