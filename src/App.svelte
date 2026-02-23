@@ -311,7 +311,7 @@
     <div class="section-header">
       Signale
       <button
-        class="km-toggle"
+        class="km-toggle hl"
         class:active={showKm}
         onclick={() => showKm = !showKm}
         title="Kilometer ein-/ausblenden"
@@ -364,19 +364,15 @@
     width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     padding: 0;
-    border: 1px solid var(--color-red);
+    background: var(--color-bg-raised);
+    border: var(--card-border);
     border-radius: var(--radius-card);
-    background: var(--color-red-bg);
     color: var(--color-red);
     cursor: pointer;
-  }
-  .km-toggle:hover {
-    border-color: var(--color-red);
+    box-sizing: border-box;
   }
   .km-toggle.active {
-    background: var(--color-green-bg);
     color: var(--color-green);
-    border-color: var(--color-green);
   }
   .meldungen-section {
     width: 280px;
