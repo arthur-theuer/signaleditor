@@ -213,8 +213,13 @@
       <span class="import-divider"></span>
       <!-- Hidden measurement spans for count truncation detection -->
       <span class="import-count count-measure" bind:this={countTextEl}>{countText() || '—'}</span>
-      <span class="import-count count-measure count-measure-icons" bind:this={countIconsEl}>
-        {#each countItems() as item, i}{#if i}, {/if}{item.count}<item.icon size={14} strokeWidth={2.5} />{/each}
+      <span class="import-count count-measure count-icons" bind:this={countIconsEl}>
+        {#each countItems() as item}
+          <span class="count-icon-item">
+            {item.count}
+            <item.icon size={14} strokeWidth={2.5} />
+          </span>
+        {/each}
       </span>
       {#if countTier === 0}
         <span class="import-count">{countText() || '—'}</span>
@@ -315,9 +320,8 @@
     position: absolute;
     left: 0;
     right: 0;
-    visibility: hidden;
     pointer-events: none;
-    height: 0;
+    clip-path: inset(50%);
   }
   .count-icons {
     gap: 2px;
