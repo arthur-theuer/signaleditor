@@ -74,7 +74,7 @@
     color: var(--color-import-text);
     border: 1px solid var(--color-import-text);
   }
-  @container (max-width: 150px) { /* --bp-plusleiste-btn-icons: per-button threshold */
+  @container (max-width: 100px) { /* --bp-plusleiste-btn-icons: per-button threshold */
     span { display: none; }
   }
 </style>
