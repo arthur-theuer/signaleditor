@@ -357,6 +357,8 @@
 
   .km-toggle {
     margin-left: auto;
+    margin-top: calc(-1 * var(--spacing-cell) + var(--spacing-card));
+    margin-bottom: calc(-1 * var(--spacing-cell) + var(--spacing-card));
     margin-right: calc(-1 * var(--spacing-cell) + var(--spacing-card));
     display: flex;
     align-items: center;
@@ -364,14 +366,14 @@
     width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     padding: 0;
-    border: var(--card-border);
+    border: 1px solid var(--color-red);
     border-radius: var(--radius-card);
-    background: var(--color-bg-raised);
+    background: var(--color-red-bg);
     color: var(--color-red);
     cursor: pointer;
   }
   .km-toggle:hover {
-    border-color: var(--color-text-muted);
+    border-color: var(--color-red);
   }
   .km-toggle.active {
     background: var(--color-green-bg);
