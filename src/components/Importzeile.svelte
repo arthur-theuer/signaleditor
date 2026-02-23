@@ -234,14 +234,12 @@
   .tier-full, .tier-medium { display: none; }
   .tier-compact { display: flex; }
 
-  /* ~30 chars × 8.4px + 24px padding = ~276px */
-  @container (min-width: 276px) {
+  @container (min-width: 300px) {
     .tier-medium { display: flex; }
     .tier-compact { display: none; }
   }
 
-  /* ~45 chars × 8.4px + 24px padding = ~402px */
-  @container (min-width: 402px) {
+  @container (min-width: 420px) {
     .tier-full { display: flex; }
     .tier-medium { display: none; }
   }
