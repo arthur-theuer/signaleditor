@@ -26,10 +26,11 @@
 
   let dirty = $state(false);
   let showKm = $state(false);
-  let showYaml = $state(false);
+  let wantYaml = $state(false);
   let wantMeldungen = $state(false);
-  let meldungenAllowed = $state(true);
-  let showMeldungen = $derived(wantMeldungen && meldungenAllowed);
+  let panelsAllowed = $state(true);
+  let showYaml = $derived(wantYaml && panelsAllowed);
+  let showMeldungen = $derived(wantMeldungen && panelsAllowed);
   let currentFileName = $state<string | null>(null);
   let saving = $state(false);
   let showDateien = $state(false);
@@ -223,12 +224,12 @@
     return () => window.removeEventListener('beforeunload', handler);
   });
 
-  // Disable meldungen panel when viewport is too narrow
+  // Disable side panels when viewport is too narrow for toggles
   $effect(() => {
     const bp = getComputedStyle(document.documentElement).getPropertyValue('--breakpoint-sm').trim() || '640px';
     const mq = window.matchMedia(`(max-width: ${bp})`);
     function handle(e: MediaQueryListEvent | MediaQueryList) {
-      meldungenAllowed = !e.matches;
+      panelsAllowed = !e.matches;
     }
     handle(mq);
     mq.addEventListener('change', handle);
@@ -275,11 +276,11 @@
 <Toolbar
   {showYaml}
   {showMeldungen}
-  {meldungenAllowed}
+  meldungenAllowed={panelsAllowed}
   undoEnabled={history.canUndo}
   redoEnabled={history.canRedo}
   loggedIn={isLoggedIn()}
-  onToggleYaml={() => showYaml = !showYaml}
+  onToggleYaml={() => wantYaml = !wantYaml}
   onToggleMeldungen={() => wantMeldungen = !wantMeldungen}
   onNew={newFile}
   onFileLoad={handleFileLoad}

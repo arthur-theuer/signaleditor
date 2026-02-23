@@ -193,14 +193,20 @@
 
   <div class="separator"></div>
 
-  <!-- Group: View toggles + Export -->
-  <div class="flex items-center gap-card">
+  <!-- Group: View toggles (hidden at sm) -->
+  <div class="hidden sm:flex items-center gap-card">
     <button class="tb-btn toggle-btn hl" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
       <Code size={20} strokeWidth={2} /><span class="tooltip">Signaldatei</span>
     </button>
     <button class="tb-btn toggle-btn hl" class:active={showMeldungen} disabled={!meldungenAllowed} onclick={onToggleMeldungen} title="Meldungen">
       <Megaphone size={20} strokeWidth={2} /><span class="tooltip">Meldungen</span>
     </button>
+  </div>
+
+  <div class="separator hidden sm:block"></div>
+
+  <!-- Group: Export -->
+  <div class="flex items-center gap-card">
     <button class="tb-btn download-btn hl" onclick={onExportMeldungen} title="Meldungen exportieren">
       <Download size={20} strokeWidth={2} /><span class="tooltip">Export</span>
     </button>
