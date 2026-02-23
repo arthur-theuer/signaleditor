@@ -117,13 +117,13 @@
   }
 </script>
 
-<div class="signal-cell" class:has-name={needsName && !disabled} class:has-bahnhof={needsBahnhof && !disabled} class:disabled>
-  <div class="signal-cell-inner">
-    <div class="signal-input-wrapper hl-wrap">
-      <div class="signal-preview prev">{disabled ? '' : prevSignal}</div>
+<div class="signal-cell flex flex-col relative flex-1 min-w-0" class:has-name={needsName && !disabled} class:has-bahnhof={needsBahnhof && !disabled} class:disabled>
+  <div class="signal-cell-inner flex h-full shrink-0">
+    <div class="signal-input-wrapper flex-1 flex flex-col min-w-0 h-full hl-wrap">
+      <div class="signal-preview prev whitespace-nowrap overflow-hidden text-ellipsis pointer-events-none px-cell">{disabled ? '' : prevSignal}</div>
       <input
         type="text"
-        class="signal-input"
+        class="signal-input px-cell"
         readonly
         value={disabled ? '' : base}
         placeholder={disabled ? '' : placeholder}
@@ -131,14 +131,14 @@
         onfocus={handleSignalFocus}
         tabindex={disabled ? -1 : 0}
       />
-      <div class="signal-preview next">{disabled ? '' : nextSignal}</div>
+      <div class="signal-preview next whitespace-nowrap overflow-hidden text-ellipsis pointer-events-none px-cell">{disabled ? '' : nextSignal}</div>
     </div>
     {#if needsName || name}
       <div class="name-wrapper hl-wrap" class:visible={needsName}>
         <div class="name-spacer"></div>
         <input
           type="text"
-          class="name-input"
+          class="name-input px-cell"
           value={name}
           oninput={handleNameInput}
           placeholder="Name"
@@ -151,7 +151,7 @@
     {/if}
     {#if isMainSignal && onToggleAlt}
       <button
-        class="alt-toggle-btn"
+        class="alt-toggle-btn absolute right-0 flex items-center justify-center w-unit h-unit p-0 z-1"
         class:active={isAltActive}
         onclick={onToggleAlt}
         title="Alternativsignal"
@@ -163,7 +163,7 @@
     <div class="bahnhof-wrapper hl-wrap visible">
       <input
         type="text"
-        class="bahnhof-input"
+        class="bahnhof-input w-full flex-1 px-cell"
         value={bahnhof || ''}
         oninput={handleBahnhofInput}
         onfocus={handleBahnhofFocus}
@@ -178,13 +178,7 @@
 
 <style>
   /* Base .signal-cell styles are in app.css */
-  .signal-cell-inner { display: flex; height: 100%; flex-shrink: 0; }
   .signal-input-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    height: 100%;
     border-radius: calc(var(--radius-card) - 1px);
   }
   .has-name .signal-input-wrapper {
@@ -203,14 +197,9 @@
     flex: var(--preview-flex);
     display: flex;
     font-size: var(--text-preview);
-    font-family: monospace;
+    font-family: var(--font-mono);
     color: var(--color-text-muted);
     opacity: 0;
-    padding: 0 var(--spacing-cell);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    pointer-events: none;
   }
   .signal-input-wrapper:focus-within .signal-preview { opacity: 0.5; }
   .signal-input-wrapper:focus-within .signal-preview.prev { border-bottom: 1px solid var(--color-border); }
@@ -220,11 +209,10 @@
 
   .signal-input {
     flex: var(--input-flex);
-    padding: 0 var(--spacing-cell);
     border: none;
     background: transparent;
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -246,11 +234,10 @@
   .name-spacer { flex: var(--preview-flex); pointer-events: none; }
   .name-input {
     flex: var(--input-flex);
-    padding: 0 var(--spacing-cell);
     border: none;
     background: transparent;
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     display: flex;
     align-items: center;
   }
@@ -270,13 +257,10 @@
   }
   .bahnhof-wrapper.visible { display: flex; }
   .bahnhof-input {
-    width: 100%;
-    padding: 0 var(--spacing-cell);
     border: none;
     background: var(--color-highlight);
     font-size: var(--text-input);
-    font-family: monospace;
-    flex: 1;
+    font-family: var(--font-mono);
     box-sizing: border-box;
     border-radius: inherit;
   }
@@ -284,23 +268,14 @@
   .bahnhof-input::placeholder { color: var(--color-text-muted); }
 
   .alt-toggle-btn {
-    position: absolute;
     top: 50%;
-    right: 0;
     transform: translateY(-50%);
-    width: var(--spacing-unit);
-    height: var(--spacing-unit);
     border: none;
     border-radius: 0;
     background: none;
     color: inherit;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     opacity: 0;
-    padding: 0;
-    z-index: 1;
   }
   .has-bahnhof .alt-toggle-btn { top: 0; transform: none; }
   .signal-cell:hover .alt-toggle-btn { opacity: 0.6; }
