@@ -8,7 +8,7 @@
   .hinweis {
     display: none;
     position: absolute;
-    top: calc(100% + (var(--spacing-row) - var(--spacing-unit)) / 2 + 1px);
+    top: calc(100% + (var(--spacing-row) - var(--spacing-unit) * 1.5) / 2);
     left: 50%;
     transform: translateX(-50%);
     height: calc(var(--spacing-unit) / 2);
