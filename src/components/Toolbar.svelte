@@ -149,17 +149,11 @@
     </button>
   </div>
 
-  <!-- Group: Cloud (centered) -->
+  <!-- Group: Cloud -->
   {#if loggedIn}
+    <div class="separator mx-card"></div>
+
     <div class="flex items-center gap-card">
-      <button
-        class="tb-btn save-btn hl"
-        onclick={onSave}
-        disabled={saving || !dirty}
-        title="Speichern (Ctrl+S)"
-      >
-        <Save size={16} strokeWidth={1.5} /><Hinweis text="Speichern" />
-      </button>
       <button
         class="tb-btn dateien-btn hl"
         class:active={showDateien}
@@ -183,6 +177,17 @@
         </span>
       </span>
     {/if}
+
+    <div class="flex items-center gap-card">
+      <button
+        class="tb-btn save-btn hl"
+        onclick={onSave}
+        disabled={saving || !dirty}
+        title="Speichern (Ctrl+S)"
+      >
+        <Save size={16} strokeWidth={1.5} /><Hinweis text="Speichern" />
+      </button>
+    </div>
   {/if}
 
   <div class="flex-1"></div>
@@ -322,9 +327,9 @@
     color: var(--color-red);
   }
 
-  /* Save / Download */
+  /* Cloud buttons */
   .save-btn { color: var(--color-focus); }
-  .download-btn { color: var(--color-focus); }
+  .dateien-btn { color: var(--color-focus); }
 
   /* Dateien active */
   .dateien-btn.active {
