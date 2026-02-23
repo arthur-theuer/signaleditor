@@ -22,8 +22,9 @@
     white-space: nowrap;
     pointer-events: none;
     z-index: 4;
-    background: var(--color-bg-raised);
-    color: var(--color-text);
-    border: var(--card-border);
+    background: inherit;
+    color: inherit;
+    border: 1px solid;
+    border-color: inherit;
   }
 </style>
