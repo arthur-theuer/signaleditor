@@ -98,6 +98,7 @@
   .symbolknopf.bordered.active {
     color: var(--color-green);
     border-color: var(--color-green);
+    background: var(--color-green-bg);
   }
 
   .symbolknopf:disabled {
