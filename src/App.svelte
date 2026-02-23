@@ -315,8 +315,7 @@
         onclick={() => showKm = !showKm}
         title="Kilometer ein-/ausblenden"
       >
-        <RulerDimensionLine size={14} strokeWidth={2} />
-        <span>Km</span>
+        <RulerDimensionLine size={16} strokeWidth={2} />
       </button>
     </div>
     <div class="signals-list">
@@ -358,21 +357,20 @@
 
   .km-toggle {
     margin-left: auto;
+    margin-right: calc(-1 * var(--spacing-cell) + var(--spacing-card));
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-xs);
-    padding: 0 var(--spacing-md);
+    width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    padding: 0;
     border: var(--card-border);
     border-radius: var(--radius-card);
     background: var(--color-bg-raised);
-    color: var(--color-text-muted);
-    font-size: var(--text-preview);
+    color: var(--color-red);
     cursor: pointer;
   }
   .km-toggle:hover {
-    color: var(--color-text);
     border-color: var(--color-text-muted);
   }
   .km-toggle.active {
