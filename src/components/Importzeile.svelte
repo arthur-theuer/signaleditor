@@ -31,14 +31,14 @@
   let abzCount = $derived(resolveResult?.signale.filter(isAbzweigungseintrag).length ?? 0);
   let knotenCount = $derived(resolveResult?.signale.filter(isKnoteneintrag).length ?? 0);
 
-  function buildCount(labels: [string, string, string, string], sep = ' '): string {
+  function buildCount(labels: [string, string, string, string], sep = ' ', join = ', '): string {
     if (!resolved) return '';
     const parts: string[] = [];
     if (signalCount) parts.push(`${signalCount}${sep}${labels[0]}`);
     if (notizCount) parts.push(`${notizCount}${sep}${labels[1]}`);
     if (abzCount) parts.push(`${abzCount}${sep}${labels[2]}`);
     if (knotenCount) parts.push(`${knotenCount}${sep}${labels[3]}`);
-    return parts.join(', ');
+    return parts.join(join);
   }
 
   let countFull = $derived(buildCount([
@@ -48,7 +48,7 @@
     'Knoten',
   ]));
   let countMedium = $derived(buildCount(['Sig.', 'Not.', 'Abzw.', 'Kn.']));
-  let countShort = $derived(buildCount(['S', 'N', 'A', 'K'], ''));
+  let countShort = $derived(buildCount(['S', 'N', 'A', 'K'], '', ' '));
 
 
 
