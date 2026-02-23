@@ -77,8 +77,26 @@ Tracking cleanup/modernization progress per component.
 | Knotenzeile | — | — | — | — | |
 | Notizzeile | — | — | — | — | |
 | Abzweigungszeile | — | — | — | — | |
-| Meldungspanel | — | — | — | — | |
+| Meldungspanel | ✅ | ✅ | ✅ sm/md | ✅ | Tailwind layout, card-style close btn, collapsed muted branches, font-mono |
 | Dateibrowser | — | — | — | — | |
 | Zeilenaktionen | — | — | — | — | |
 | Zwischenaktionen | — | — | — | — | |
 | BreakpointDebug | ✅ | — | ✅ | ✅ | Debug-only, removable |
+
+## Meldungspanel Audit
+
+### Gradient option
+The original `editor.html` had colored tinted backgrounds on meldung rows:
+- Single-segment: 15% blend of signal color with white as background + colored border
+- Multi-segment: vertical `linear-gradient` of tinted backgrounds + averaged border color
+
+This was lost in the Svelte port. Restoring it requires `colorToLightBg` and `averageColors` utilities — tracked as a future enhancement.
+
+### Completed fixes
+1. ✅ Close button → standard card style (`card-border`, `color-bg-raised`) + `hl` + X icon
+2. ✅ Meldung color classes moved from `:global()` in component to `app.css`
+3. ✅ Collapsed 4 repetitive muted-row branches into single `{#if}` with inline label
+4. ✅ Layout properties moved to Tailwind classes
+5. ✅ Responsive width: 220px at sm, 280px at md+; margin-left uses `ml-cell` token
+6. ✅ `font-family: monospace` → `var(--font-mono)`
+7. ✅ Section-header stays in App.svelte (matches Pluszeile height for visual alignment)

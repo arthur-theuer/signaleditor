@@ -245,6 +245,15 @@
 .hl.hl-flash::after { opacity: 1; }
 .hl-wrap > input, .hl-wrap > select { outline: none; }
 
+/* Meldung signal-type colors (applied dynamically via class={seg.klasse}) */
+.meldung-block,
+.meldung-spurwechsel { color: var(--color-meldung-block); }
+.meldung-ausfahrt { color: var(--color-meldung-ausfahrt); }
+.meldung-wiederholung { color: var(--color-meldung-wiederholung); }
+.meldung-standard { color: var(--color-meldung-standard); }
+.meldung-bahnhof-a { color: var(--color-meldung-bahnhof-a); }
+.meldung-bahnhof-b { color: var(--color-meldung-bahnhof-b); }
+
 body {
   font-family: var(--font-sans);
   background: var(--color-bg);
@@ -278,7 +287,7 @@ input, select, textarea, button {
   display: flex;
   align-items: center;
   height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2 + 2 * var(--spacing-card));
-  padding: 0 var(--spacing-card) 0 var(--spacing-cell);
+  padding: 0 var(--spacing-cell);
   font-weight: var(--font-weight-semibold);
   font-size: var(--text-input);
   background: var(--color-bg-subtle);

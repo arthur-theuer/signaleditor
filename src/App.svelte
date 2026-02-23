@@ -308,7 +308,7 @@
 
 <div class="main-content px-page">
   <div class="signals-container">
-    <div class="section-header">
+    <div class="section-header signale-header">
       Signale
       <button
         class="km-toggle hl"
@@ -325,7 +325,7 @@
   </div>
 
   {#if showMeldungen}
-    <div class="meldungen-section">
+    <div class="meldungen-section ml-cell shrink-0">
       <div class="meldungen-panel">
         <div class="section-header">Meldungen</div>
         <Meldungspanel signale={data.signale} onclose={() => wantMeldungen = false} />
@@ -354,6 +354,7 @@
     overflow: hidden;
     container-type: inline-size;
   }
+  .signale-header { padding-right: var(--spacing-card); }
   .signals-list { padding: var(--spacing-half-card) 0; }
 
   .km-toggle {
@@ -375,9 +376,10 @@
     color: var(--color-green);
   }
   .meldungen-section {
-    width: 280px;
-    flex-shrink: 0;
-    margin-left: 12px;
+    width: 220px;
+  }
+  @media (min-width: 768px) {
+    .meldungen-section { width: 280px; }
   }
   .meldungen-panel {
     background: var(--color-bg);
