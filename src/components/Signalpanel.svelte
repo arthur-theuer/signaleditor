@@ -40,6 +40,20 @@
     compactFields = { ...compactFields, [fieldType]: set.size > 0 };
   }
 
+  // Per-field-type tier tracking: each row reports a tier (0=full, 1=medium, 2=compact),
+  // all rows of that type use the max tier for consistent appearance
+  let tierRows: Record<string, Map<number, number>> = {};
+  let fieldTiers = $state<Record<string, number>>({});
+
+  function reportTier(fieldType: string, rowIdx: number, tier: number) {
+    if (!tierRows[fieldType]) tierRows[fieldType] = new Map();
+    const map = tierRows[fieldType];
+    map.set(rowIdx, tier);
+    let max = 0;
+    for (const t of map.values()) { if (t > max) max = t; }
+    fieldTiers = { ...fieldTiers, [fieldType]: max };
+  }
+
   let listEl: HTMLDivElement;
 
   // Drag-and-drop state
@@ -356,8 +370,10 @@
           bind:eintrag={signale[idx] as Importeintrag}
           usedFiles={usedImportFiles}
           compact={compactFields['import'] ?? false}
+          stitchTier={fieldTiers['import-stitch'] ?? 0}
           {onchange}
           ontruncate={(t) => reportTruncation('import', idx, t)}
+          onstitchtruncate={(t) => reportTier('import-stitch', idx, t)}
         />
       {/if}
 

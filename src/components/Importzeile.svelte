@@ -11,14 +11,18 @@
     eintrag = $bindable(),
     usedFiles = new Set<string>(),
     compact = false,
+    stitchTier = 0,
     onchange,
     ontruncate,
+    onstitchtruncate,
   }: {
     eintrag: Importeintrag;
     usedFiles?: Set<string>;
     compact?: boolean;
+    stitchTier?: number;
     onchange: () => void;
     ontruncate?: (truncated: boolean) => void;
+    onstitchtruncate?: (tier: number) => void;
   } = $props();
 
   let showPicker = $state(false);
@@ -56,7 +60,29 @@
     return items;
   });
 
-  // Truncation detection: report to parent so all import rows switch together
+  // Stitch truncation detection: three tiers (0=full, 1=medium, 2=compact)
+  let stitchFullEl = $state<HTMLElement | null>(null);
+  let stitchMediumEl = $state<HTMLElement | null>(null);
+
+  $effect(() => {
+    const fullEl = stitchFullEl;
+    const medEl = stitchMediumEl;
+    if (!fullEl || !medEl) { onstitchtruncate?.(0); return; }
+
+    function check() {
+      if (fullEl!.scrollWidth <= fullEl!.clientWidth) { onstitchtruncate?.(0); return; }
+      if (medEl!.scrollWidth <= medEl!.clientWidth) { onstitchtruncate?.(1); return; }
+      onstitchtruncate?.(2);
+    }
+
+    const ro = new ResizeObserver(check);
+    ro.observe(fullEl);
+    check();
+
+    return () => { ro.disconnect(); onstitchtruncate?.(0); };
+  });
+
+  // Count truncation detection: report to parent so all import rows switch together
   let countEl = $state<HTMLElement | null>(null);
 
   $effect(() => {
@@ -89,31 +115,33 @@
     return null;
   });
 
-  function knotenLabel(code: string): string {
-    const name = STATIONEN[code];
-    return name ? `${code} (${name})` : code;
+  function knotenCode(source: string | undefined, fallback: (() => string | null)): string {
+    if (source) return source;
+    const fb = fallback();
+    return fb ?? '';
   }
 
-  let vonLabel = $derived(() => {
-    if (eintrag.import.von) return knotenLabel(eintrag.import.von);
-    const fk = firstKnoten();
-    if (fk) return knotenLabel(fk);
+  let vonCode = $derived(knotenCode(eintrag.import.von, firstKnoten));
+  let bisCode = $derived(knotenCode(eintrag.import.bis, lastKnoten));
+
+  function formatStitch(von: string, bis: string, fmt: (code: string) => string): string {
+    const v = von ? fmt(von) : '';
+    const b = bis ? fmt(bis) : '';
+    if (v && b) return `${v} → ${b}`;
+    if (v) return `${v} → ?`;
+    if (b) return `? → ${b}`;
     return '';
-  });
-  let bisLabel = $derived(() => {
-    if (eintrag.import.bis) return knotenLabel(eintrag.import.bis);
-    const lk = lastKnoten();
-    if (lk) return knotenLabel(lk);
-    return '';
-  });
-  let stitchText = $derived(() => {
-    const von = vonLabel();
-    const bis = bisLabel();
-    if (von && bis) return `${von} → ${bis}`;
-    if (von) return `${von} → ?`;
-    if (bis) return `? → ${bis}`;
-    return '';
-  });
+  }
+
+  // Three tiers: "Bern (BN) → Rothrist (RTR)", "Bern → Rothrist", "BN → RTR"
+  let stitchFull = $derived(() => formatStitch(vonCode, bisCode, (c) => {
+    const name = STATIONEN[c];
+    return name ? `${name} (${c})` : c;
+  }));
+  let stitchMedium = $derived(() => formatStitch(vonCode, bisCode, (c) => {
+    return STATIONEN[c] ?? c;
+  }));
+  let stitchCompact = $derived(() => formatStitch(vonCode, bisCode, (c) => c));
 
   let otherUsedFiles = $derived(() => {
     const s = new Set(usedFiles);
@@ -162,7 +190,18 @@
     {#if resolveResult?.error}
       <span class="import-error">{resolveResult.error}</span>
     {:else if hasFile && resolved}
-      <span class="import-stitch">{stitchText() || '—'}</span>
+      <!-- Hidden measurement spans for stitch truncation detection -->
+      <span class="import-stitch stitch-measure" bind:this={stitchFullEl}>{stitchFull() || '—'}</span>
+      <span class="import-stitch stitch-measure" bind:this={stitchMediumEl}>{stitchMedium() || '—'}</span>
+      <span class="import-stitch">
+        {#if stitchTier === 0}
+          {stitchFull() || '—'}
+        {:else if stitchTier === 1}
+          {stitchMedium() || '—'}
+        {:else}
+          {stitchCompact() || '—'}
+        {/if}
+      </span>
       <span class="import-divider"></span>
       <!-- Hidden measurement span to detect truncation -->
       <span class="import-count count-measure" bind:this={countEl}>{countText() || '—'}</span>
@@ -261,7 +300,7 @@
     flex: 1;
   }
   .import-count { color: var(--color-text-secondary); }
-  .count-measure {
+  .stitch-measure, .count-measure {
     position: absolute;
     left: 0;
     right: 0;
