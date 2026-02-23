@@ -63,6 +63,15 @@ export async function autoStitchImporte(signale: Eintrag[]): Promise<void> {
     .map((s, i) => (isImporteintrag(s) ? i : -1))
     .filter(i => i !== -1);
 
+  // Clear existing stitch points before recalculating
+  for (const i of importIndices) {
+    const e = signale[i];
+    if (isImporteintrag(e)) {
+      e.import.von = undefined;
+      e.import.bis = undefined;
+    }
+  }
+
   for (let k = 0; k < importIndices.length - 1; k++) {
     const idxA = importIndices[k];
     const idxB = importIndices[k + 1];
