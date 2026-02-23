@@ -115,14 +115,11 @@ export function isRoutendaten(d: Editordaten): d is Routendaten {
 
 /** Derive the file ID from metadata */
 export function dateiId(data: Editordaten): string {
-  if (isStreckendaten(data)) {
-    const { strecke, von, nach, via } = data.meta;
-    const base = [strecke, von, nach].filter(Boolean).join('_');
-    return via ? `${base}_${via}` : base;
-  }
-  const { linie, von, nach, via } = data.meta;
-  const base = [linie, von, nach].filter(Boolean).join('_');
-  return via ? `${base}_${via}` : base;
+  const { von, nach, via } = data.meta;
+  const key = isStreckendaten(data) ? data.meta.strecke : data.meta.linie;
+  const base = [key, von, nach].filter(Boolean).join('_');
+  const id = via ? `${base}_${via}` : base;
+  return id.replace(/\s+/g, '_');
 }
 
 export function emptyStreckendaten(): Streckendaten {

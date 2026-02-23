@@ -302,7 +302,7 @@
   <Dateibrowser onload={handleCloudLoad} onclose={() => showDateien = false} />
 {/if}
 
-<Datenpanel bind:data={data} onchange={markDirty} ontabout={handleDatenTabOut} />
+<Datenpanel bind:data={data} ontabout={handleDatenTabOut} />
 
 <div class="main-content">
   <div class="signals-container">

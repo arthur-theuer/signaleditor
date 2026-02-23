@@ -5,11 +5,9 @@
 
   let {
     data = $bindable(),
-    onchange,
     ontabout,
   }: {
     data: Editordaten;
-    onchange: () => void;
     ontabout: () => void;
   } = $props();
 
@@ -28,7 +26,6 @@
     const val = (e.target as HTMLInputElement).value;
     if (isStrecke && streckeMeta) streckeMeta.strecke = val;
     else if (routenMeta) routenMeta.linie = val;
-    onchange();
   }
 
   function autoArrow(e: Event, setter: (val: string) => void) {
@@ -42,7 +39,6 @@
       input.setSelectionRange(pos - diff, pos - diff);
     }
     setter(input.value);
-    onchange();
   }
 
   function stationPreview(code: string, example: string): string {
@@ -82,14 +78,14 @@
     <div class={secondaryClass}>
       <label for="meta-von">Von</label>
       <span class="hl-wrap">
-        <input id="meta-von" type="text" bind:value={data.meta.von} oninput={onchange} placeholder="Code" class="code-input" />
+        <input id="meta-von" type="text" bind:value={data.meta.von} placeholder="Code" class="code-input" />
         <span class="station-preview" class:has-value={data.meta.von && STATIONEN[data.meta.von.toUpperCase()]}>{stationPreview(data.meta.von, 'OL')}</span>
       </span>
     </div>
     <div class={secondaryClass}>
       <label for="meta-nach">Nach</label>
       <span class="hl-wrap">
-        <input id="meta-nach" type="text" bind:value={data.meta.nach} oninput={onchange} placeholder="Code" class="code-input" />
+        <input id="meta-nach" type="text" bind:value={data.meta.nach} placeholder="Code" class="code-input" />
         <span class="station-preview" class:has-value={data.meta.nach && STATIONEN[data.meta.nach.toUpperCase()]}>{stationPreview(data.meta.nach, 'AA')}</span>
       </span>
     </div>
@@ -177,7 +173,7 @@
   .header-id {
     font-weight: var(--font-weight-normal);
     color: var(--color-text-muted);
-    font-size: var(--text-preview);
+    font-size: var(--text-input);
     margin-left: auto;
     font-family: monospace;
     text-transform: uppercase;
