@@ -30,19 +30,6 @@
   );
 
   // Per-field-type tier tracking: each row reports a tier (0=full, 1=medium, 2=compact),
-  // all rows of that type use the max tier for consistent appearance
-  let tierRows: Record<string, Map<number, number>> = {};
-  let fieldTiers = $state<Record<string, number>>({});
-
-  function reportTier(fieldType: string, rowIdx: number, tier: number) {
-    if (!tierRows[fieldType]) tierRows[fieldType] = new Map();
-    const map = tierRows[fieldType];
-    map.set(rowIdx, tier);
-    let max = 0;
-    for (const t of map.values()) { if (t > max) max = t; }
-    if (fieldTiers[fieldType] !== max) fieldTiers = { ...fieldTiers, [fieldType]: max };
-  }
-
   let listEl: HTMLDivElement;
 
   // Drag-and-drop state
@@ -358,11 +345,7 @@
         <Importzeile
           bind:eintrag={signale[idx] as Importeintrag}
           usedFiles={usedImportFiles}
-          countTier={fieldTiers['import-count'] ?? 0}
-          stitchTier={fieldTiers['import-stitch'] ?? 0}
           {onchange}
-          oncounttruncate={(t) => reportTier('import-count', idx, t)}
-          onstitchtruncate={(t) => reportTier('import-stitch', idx, t)}
         />
       {/if}
 

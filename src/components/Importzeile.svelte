@@ -10,19 +10,11 @@
   let {
     eintrag = $bindable(),
     usedFiles = new Set<string>(),
-    countTier = 0,
-    stitchTier = 0,
     onchange,
-    oncounttruncate,
-    onstitchtruncate,
   }: {
     eintrag: Importeintrag;
     usedFiles?: Set<string>;
-    countTier?: number;
-    stitchTier?: number;
     onchange: () => void;
-    oncounttruncate?: (tier: number) => void;
-    onstitchtruncate?: (tier: number) => void;
   } = $props();
 
   let showPicker = $state(false);
@@ -49,62 +41,16 @@
     return parts.join(', ');
   }
 
-  let countFull = $derived(() => buildCount([
+  let countFull = $derived(buildCount([
     signalCount === 1 ? 'Signal' : 'Signale',
     notizCount === 1 ? 'Notiz' : 'Notizen',
     abzCount === 1 ? 'Abzweigung' : 'Abzweigungen',
     'Knoten',
   ]));
-  let countMedium = $derived(() => buildCount(['Sig.', 'Not.', 'Abzw.', 'Kn.']));
-  let countShort = $derived(() => buildCount(['S', 'N', 'A', 'K'], ''));
+  let countMedium = $derived(buildCount(['Sig.', 'Not.', 'Abzw.', 'Kn.']));
+  let countShort = $derived(buildCount(['S', 'N', 'A', 'K'], ''));
 
-  // Stitch truncation detection: three tiers (0=full, 1=medium, 2=compact)
-  let stitchFullEl = $state<HTMLElement | null>(null);
-  let stitchMediumEl = $state<HTMLElement | null>(null);
-  let lastStitchTier = -1;
 
-  $effect(() => {
-    const fullEl = stitchFullEl;
-    const medEl = stitchMediumEl;
-    if (!fullEl || !medEl) { if (lastStitchTier !== 0) { lastStitchTier = 0; onstitchtruncate?.(0); } return; }
-
-    function check() {
-      let tier = 2;
-      if (fullEl!.scrollWidth <= fullEl!.clientWidth) tier = 0;
-      else if (medEl!.scrollWidth <= medEl!.clientWidth) tier = 1;
-      if (tier !== lastStitchTier) { lastStitchTier = tier; onstitchtruncate?.(tier); }
-    }
-
-    const ro = new ResizeObserver(check);
-    ro.observe(fullEl);
-    check();
-
-    return () => { ro.disconnect(); if (lastStitchTier !== 0) { lastStitchTier = 0; onstitchtruncate?.(0); } };
-  });
-
-  // Count truncation detection: three tiers (0=full, 1=abbreviated, 2=letters)
-  let countFullEl = $state<HTMLElement | null>(null);
-  let countMediumEl = $state<HTMLElement | null>(null);
-  let lastCountTier = -1;
-
-  $effect(() => {
-    const fullEl = countFullEl;
-    const medEl = countMediumEl;
-    if (!fullEl || !medEl) { if (lastCountTier !== 0) { lastCountTier = 0; oncounttruncate?.(0); } return; }
-
-    function check() {
-      let tier = 2;
-      if (fullEl!.scrollWidth <= fullEl!.clientWidth) tier = 0;
-      else if (medEl!.scrollWidth <= medEl!.clientWidth) tier = 1;
-      if (tier !== lastCountTier) { lastCountTier = tier; oncounttruncate?.(tier); }
-    }
-
-    const ro = new ResizeObserver(check);
-    ro.observe(fullEl);
-    check();
-
-    return () => { ro.disconnect(); if (lastCountTier !== 0) { lastCountTier = 0; oncounttruncate?.(0); } };
-  });
 
   // Derive start/end knoten from resolved signals
   let firstKnoten = $derived(() => {
@@ -121,14 +67,8 @@
     return null;
   });
 
-  function knotenCode(source: string | undefined, fallback: (() => string | null)): string {
-    if (source) return source;
-    const fb = fallback();
-    return fb ?? '';
-  }
-
-  let vonCode = $derived(knotenCode(eintrag.import.von, firstKnoten));
-  let bisCode = $derived(knotenCode(eintrag.import.bis, lastKnoten));
+  let vonCode = $derived(eintrag.import.von || firstKnoten() || '');
+  let bisCode = $derived(eintrag.import.bis || lastKnoten() || '');
 
   function formatStitch(von: string, bis: string, fmt: (code: string) => string): string {
     const v = von ? fmt(von) : '';
@@ -140,16 +80,16 @@
   }
 
   // Three tiers: "Bern (BN) → Rothrist (RTR)", "Bern → Rothrist", "BN → RTR"
-  let stitchFull = $derived(() => formatStitch(vonCode, bisCode, (c) => {
+  let stitchFull = $derived(formatStitch(vonCode, bisCode, (c) => {
     const name = STATIONEN[c];
     return name ? `${name} (${c})` : c;
   }));
-  let stitchMedium = $derived(() => formatStitch(vonCode, bisCode, (c) => {
+  let stitchMedium = $derived(formatStitch(vonCode, bisCode, (c) => {
     return STATIONEN[c] ?? c;
   }));
-  let stitchCompact = $derived(() => formatStitch(vonCode, bisCode, (c) => c));
+  let stitchCompact = $derived(formatStitch(vonCode, bisCode, (c) => c));
 
-  let otherUsedFiles = $derived(() => {
+  let otherUsedFiles = $derived.by(() => {
     const s = new Set(usedFiles);
     if (eintrag.import.datei) s.delete(eintrag.import.datei);
     return s;
@@ -196,31 +136,13 @@
     {#if resolveResult?.error}
       <span class="import-error">{resolveResult.error}</span>
     {:else if hasFile && resolved}
-      <!-- Hidden measurement spans for stitch truncation detection -->
-      <span class="import-stitch stitch-measure" bind:this={stitchFullEl}>{stitchFull() || '—'}</span>
-      <span class="import-stitch stitch-measure" bind:this={stitchMediumEl}>{stitchMedium() || '—'}</span>
-      <span class="import-stitch">
-        {#if stitchTier === 0}
-          {stitchFull() || '—'}
-        {:else if stitchTier === 1}
-          {stitchMedium() || '—'}
-        {:else}
-          {stitchCompact() || '—'}
-        {/if}
-      </span>
+      <span class="import-stitch tier-full">{stitchFull || '—'}</span>
+      <span class="import-stitch tier-medium">{stitchMedium || '—'}</span>
+      <span class="import-stitch tier-compact">{stitchCompact || '—'}</span>
       <span class="import-divider"></span>
-      <!-- Hidden measurement spans for count truncation detection -->
-      <span class="import-count count-measure" bind:this={countFullEl}>{countFull() || '—'}</span>
-      <span class="import-count count-measure" bind:this={countMediumEl}>{countMedium() || '—'}</span>
-      <span class="import-count">
-        {#if countTier === 0}
-          {countFull() || '—'}
-        {:else if countTier === 1}
-          {countMedium() || '—'}
-        {:else}
-          {countShort() || '—'}
-        {/if}
-      </span>
+      <span class="import-count tier-full">{countFull || '—'}</span>
+      <span class="import-count tier-medium">{countMedium || '—'}</span>
+      <span class="import-count tier-compact">{countShort || '—'}</span>
     {/if}
   </div>
 </div>
@@ -229,7 +151,7 @@
   <Dateibrowser
     mode="select"
     lockedTab="strecken"
-    usedFiles={otherUsedFiles()}
+    usedFiles={otherUsedFiles}
     onload={handleFileSelect}
     onclose={() => showPicker = false}
   />
@@ -248,7 +170,7 @@
   }
   .import-filename {
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     font-weight: var(--font-weight-medium);
     color: var(--color-text);
     overflow: hidden;
@@ -257,7 +179,7 @@
   }
   .import-placeholder {
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     color: var(--color-text-muted);
     user-select: none;
     pointer-events: none;
@@ -280,20 +202,22 @@
     background: var(--color-bg);
     pointer-events: none;
   }
+  .import-info-cell {
+    container-type: inline-size;
+  }
   .import-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
     height: 100%;
     overflow: hidden;
-    position: relative;
   }
   .import-divider {
     border-top: 1px solid var(--color-border);
   }
   .import-count, .import-stitch, .import-error {
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -303,13 +227,22 @@
     flex: 1;
   }
   .import-count { color: var(--color-text-secondary); }
-  .stitch-measure, .count-measure {
-    position: absolute;
-    left: 0;
-    right: 0;
-    pointer-events: none;
-    clip-path: inset(50%);
-  }
   .import-stitch { color: var(--color-import-text); }
   .import-error { color: var(--color-red); }
+
+  /* Tier visibility: compact shown by default, wider tiers override */
+  .tier-full, .tier-medium { display: none; }
+  .tier-compact { display: flex; }
+
+  /* ~30 chars × 8.4px + 24px padding = ~276px */
+  @container (min-width: 276px) {
+    .tier-medium { display: flex; }
+    .tier-compact { display: none; }
+  }
+
+  /* ~45 chars × 8.4px + 24px padding = ~402px */
+  @container (min-width: 402px) {
+    .tier-full { display: flex; }
+    .tier-medium { display: none; }
+  }
 </style>
