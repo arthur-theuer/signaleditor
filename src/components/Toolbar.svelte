@@ -201,7 +201,7 @@
     <button class="tb-btn toggle-btn hl" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
       <Code size={20} strokeWidth={2} /><span>Signaldatei</span>
     </button>
-    <button class="tb-btn toggle-btn hl" class:active={showMeldungen} onclick={onToggleMeldungen} title="Meldungen">
+    <button class="tb-btn toggle-btn meldungen-btn hl" class:active={showMeldungen} onclick={onToggleMeldungen} title="Meldungen">
       <Megaphone size={20} strokeWidth={2} /><span>Meldungen</span>
     </button>
   </div>
@@ -240,6 +240,9 @@
   .header h1 { margin-right: var(--space-md); }
   @media (max-width: 1400px) {
     .header h1 { display: none; }
+  }
+  @media (max-width: 768px) {
+    .meldungen-btn { display: none; }
   }
 
   /* Groups and separators */

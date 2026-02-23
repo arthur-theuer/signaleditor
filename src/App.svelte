@@ -219,6 +219,17 @@
     return () => window.removeEventListener('beforeunload', handler);
   });
 
+  // Close meldungen panel when viewport is too narrow
+  $effect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    function handle(e: MediaQueryListEvent | MediaQueryList) {
+      if (e.matches) showMeldungen = false;
+    }
+    handle(mq);
+    mq.addEventListener('change', handle);
+    return () => mq.removeEventListener('change', handle);
+  });
+
   // Auto-stitch importe when datei values change
   $effect(() => {
     const importeDateien = data.signale
