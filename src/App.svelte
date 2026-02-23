@@ -358,9 +358,6 @@
 
   .km-toggle {
     margin-left: auto;
-    margin-top: calc(-1 * var(--spacing-cell) + var(--spacing-card));
-    margin-bottom: calc(-1 * var(--spacing-cell) + var(--spacing-card));
-    margin-right: calc(-1 * var(--spacing-cell) + var(--spacing-card));
     display: flex;
     align-items: center;
     justify-content: center;

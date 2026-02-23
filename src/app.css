@@ -277,7 +277,8 @@ input, select, textarea, button {
 .section-header {
   display: flex;
   align-items: center;
-  padding: var(--spacing-cell);
+  height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2 + 2 * var(--spacing-card));
+  padding: 0 var(--spacing-cell);
   font-weight: var(--font-weight-semibold);
   font-size: var(--text-input);
   background: var(--color-bg-subtle);
