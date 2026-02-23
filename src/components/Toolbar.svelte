@@ -108,7 +108,19 @@
 
   <div class="separator mx-card"></div>
 
-  <!-- Group: File -->
+  <!-- Group: New -->
+  <div class="flex items-center gap-card">
+    <button class="tb-btn hl" onclick={() => onNew('strecke')} title="Neue Strecke">
+      <Milestone size={16} strokeWidth={1.5} /><Hinweis text="Strecke" />
+    </button>
+    <button class="tb-btn hl" onclick={() => onNew('route')} title="Neue Route">
+      <Route size={16} strokeWidth={1.5} /><Hinweis text="Route" />
+    </button>
+  </div>
+
+  <div class="separator mx-card"></div>
+
+  <!-- Group: Local I/O -->
   <div class="flex items-center gap-card">
     <input
       type="file"
@@ -117,18 +129,15 @@
       bind:this={fileInput}
       onchange={onFileLoad}
     />
-    <button class="tb-btn hl" onclick={() => onNew('strecke')} title="Neue Strecke">
-      <Milestone size={16} strokeWidth={1.5} /><Hinweis text="Strecke" />
-    </button>
-    <button class="tb-btn hl" onclick={() => onNew('route')} title="Neue Route">
-      <Route size={16} strokeWidth={1.5} /><Hinweis text="Route" />
-    </button>
     <button class="tb-btn hl" onclick={() => fileInput.click()} title="Datei laden">
       <Upload size={16} strokeWidth={1.5} /><Hinweis text="Laden" />
     </button>
+    <button class="tb-btn download-btn hl" onclick={onExportMeldungen} title="Meldungen exportieren">
+      <Download size={16} strokeWidth={1.5} /><Hinweis text="Export" />
+    </button>
   </div>
 
-  <div class="separator mx-card"></div>
+  <div class="separator mx-card hidden sm:block"></div>
 
   <!-- Group: View toggles (hidden at sm) -->
   <div class="hidden sm:flex items-center gap-card">
@@ -137,15 +146,6 @@
     </button>
     <button class="tb-btn toggle-btn hl" class:active={showMeldungen} disabled={!meldungenAllowed} onclick={onToggleMeldungen} title="Meldungen">
       <Megaphone size={16} strokeWidth={1.5} /><Hinweis text="Meldungen" />
-    </button>
-  </div>
-
-  <div class="separator mx-card hidden sm:block"></div>
-
-  <!-- Group: Export -->
-  <div class="flex items-center gap-card">
-    <button class="tb-btn download-btn hl" onclick={onExportMeldungen} title="Meldungen exportieren">
-      <Download size={16} strokeWidth={1.5} /><Hinweis text="Export" />
     </button>
   </div>
 
