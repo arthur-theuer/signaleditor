@@ -129,6 +129,8 @@
 
   <div class="separator"></div>
 
+  <div class="spacer"></div>
+
   <!-- Group: Cloud -->
   <div class="btn-group">
     <button
@@ -186,6 +188,8 @@
   {/if}
 
   <div class="spacer"></div>
+
+  <div class="separator"></div>
 
   <!-- Group: View toggles -->
   <div class="btn-group">
