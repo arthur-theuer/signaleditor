@@ -39,14 +39,14 @@
     position: relative;
     background: var(--color-code-bg);
     border: 1px solid var(--color-code-border);
-    border-radius: var(--container-radius);
-    margin-bottom: var(--page-gap);
+    border-radius: var(--radius-container);
+    margin-bottom: var(--spacing-page);
   }
   pre {
     color: var(--color-code-text);
-    padding: var(--space-xl);
+    padding: var(--spacing-xl);
     font-family: monospace;
-    font-size: var(--preview-font-size);
+    font-size: var(--text-preview);
     white-space: pre-wrap;
     max-height: 400px;
     overflow-y: auto;
@@ -54,20 +54,20 @@
   }
   .yaml-actions {
     position: absolute;
-    top: var(--card-gap);
-    right: var(--card-gap);
+    top: var(--spacing-card);
+    right: var(--spacing-card);
     display: flex;
-    gap: var(--card-gap);
+    gap: var(--spacing-card);
   }
   .yaml-btn {
-    padding: var(--space-md) var(--cell-padding);
+    padding: var(--spacing-md) var(--spacing-cell);
     background: var(--color-code-btn-bg);
     color: var(--color-code-btn-text);
     border: 1px solid var(--color-code-btn-border);
-    border-radius: var(--card-radius);
+    border-radius: var(--radius-card);
     cursor: pointer;
-    font-size: var(--input-font-size);
-    font-weight: var(--weight-medium);
+    font-size: var(--text-input);
+    font-weight: var(--font-weight-medium);
   }
   .yaml-btn:hover {
     background: var(--color-code-btn-hover-bg);

@@ -243,27 +243,27 @@
     min-width: 0;
     display: flex;
     align-items: center;
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     height: 100%;
   }
   .import-filename {
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
-    font-weight: var(--weight-medium);
+    font-weight: var(--font-weight-medium);
     color: var(--color-text);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
   .import-placeholder {
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
     color: var(--color-text-muted);
     user-select: none;
     pointer-events: none;
   }
   .import-folder-btn {
-    width: var(--row-height);
+    width: var(--spacing-row);
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -271,7 +271,7 @@
     background: transparent;
     border: none;
     border-left: 1px solid var(--color-border);
-    border-radius: 0 calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0;
+    border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0;
     cursor: pointer;
     color: var(--color-import-text);
     height: 100%;
@@ -292,12 +292,12 @@
     border-top: 1px solid var(--color-border);
   }
   .import-count, .import-stitch, .import-error {
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     display: flex;
     align-items: center;
     flex: 1;

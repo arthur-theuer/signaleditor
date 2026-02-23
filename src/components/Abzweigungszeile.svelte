@@ -113,15 +113,15 @@
   .abzweigung-field .abzweigung-btn {
     border: none;
     background: transparent;
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
     height: 100%;
     outline: none;
     color: var(--color-text);
-    font-weight: var(--weight-normal);
+    font-weight: var(--font-weight-normal);
   }
   .abzweigung-field input {
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     min-width: 0;
     width: 100%;
     text-align: center;
@@ -135,13 +135,13 @@
     padding: 0;
     width: 100%;
   }
-  .abzweigung-arrow-field { width: var(--row-height); flex-shrink: 0; }
+  .abzweigung-arrow-field { width: var(--spacing-row); flex-shrink: 0; }
   .abzweigung-strecke-field { flex: 1; }
   .abzweigung-vonnach-field { flex: 1; }
   .abzweigung-richtung-field { flex: 1; }
   .placeholder { color: var(--color-text-muted); }
 
   /* Corner radii for sub-fields */
-  .abzweigung-inner > :first-child { border-radius: calc(var(--card-radius) - 1px) 0 0 calc(var(--card-radius) - 1px); }
-  .abzweigung-inner > :last-child { border-radius: 0 calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0; }
+  .abzweigung-inner > :first-child { border-radius: calc(var(--radius-card) - 1px) 0 0 calc(var(--radius-card) - 1px); }
+  .abzweigung-inner > :last-child { border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0; }
 </style>

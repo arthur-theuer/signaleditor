@@ -223,7 +223,7 @@
 
   // Disable meldungen panel when viewport is too narrow
   $effect(() => {
-    const bp = getComputedStyle(document.documentElement).getPropertyValue('--bp-meldungen-hide').trim() || '768px';
+    const bp = getComputedStyle(document.documentElement).getPropertyValue('--breakpoint-sm').trim() || '700px';
     const mq = window.matchMedia(`(max-width: ${bp})`);
     function handle(e: MediaQueryListEvent | MediaQueryList) {
       meldungenAllowed = !e.matches;
@@ -320,7 +320,7 @@
     </div>
   {/if}
 </div>
-<div bind:this={scrollAnchor} style="height: 0; margin-top: var(--page-gap);"></div>
+<div bind:this={scrollAnchor} style="height: 0; margin-top: var(--spacing-page);"></div>
 
 {#if showYaml}
   <Codepanel {data} onexport={() => dirty = false} />
@@ -333,11 +333,11 @@
     min-width: 0;
     background: var(--color-bg);
     border: var(--card-border);
-    border-radius: var(--container-radius);
+    border-radius: var(--radius-container);
     overflow: hidden;
     container-type: inline-size;
   }
-  .signals-list { padding: var(--half-gap) 0; }
+  .signals-list { padding: var(--spacing-half-card) 0; }
   .meldungen-section {
     width: 280px;
     flex-shrink: 0;
@@ -346,7 +346,7 @@
   .meldungen-panel {
     background: var(--color-bg);
     border: var(--card-border);
-    border-radius: var(--container-radius);
+    border-radius: var(--radius-container);
     overflow: hidden;
     height: 100%;
     box-sizing: border-box;

@@ -80,8 +80,8 @@
     flex-direction: column;
     background: var(--color-bg-raised);
     border: var(--card-border);
-    border-radius: var(--card-radius);
-    width: var(--row-height);
+    border-radius: var(--radius-card);
+    width: var(--spacing-row);
     flex-shrink: 0;
   }
   .km-cell.visible { display: flex; }
@@ -89,17 +89,17 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    border-radius: calc(var(--card-radius) - 1px);
+    border-radius: calc(var(--radius-card) - 1px);
   }
   .km-preview {
     flex: var(--preview-flex);
     display: flex;
     justify-content: center;
-    font-size: var(--preview-font-size);
+    font-size: var(--text-preview);
     font-family: monospace;
     color: var(--color-text-muted);
     opacity: 0;
-    padding: 0 var(--space-md);
+    padding: 0 var(--spacing-md);
     text-align: center;
     pointer-events: none;
   }
@@ -110,10 +110,10 @@
   .km-cell-inner:focus-within .km-preview.next { border-bottom: 1px solid var(--color-border); }
   .km-input {
     flex: var(--input-flex);
-    padding: 0 var(--space-md);
+    padding: 0 var(--spacing-md);
     border: none;
     background: transparent;
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
     text-align: center;
     width: 100%;

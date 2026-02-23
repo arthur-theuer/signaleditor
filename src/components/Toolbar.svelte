@@ -221,17 +221,17 @@
 <style>
   .header {
     display: flex;
-    gap: var(--space-md);
-    margin-bottom: var(--page-gap);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-page);
     align-items: center;
     flex-wrap: wrap;
     position: sticky;
     top: 0;
     z-index: 10;
     background: var(--color-bg);
-    margin-left: calc(-1 * var(--page-gap));
-    margin-right: calc(-1 * var(--page-gap));
-    padding: var(--cell-padding) var(--page-gap);
+    margin-left: calc(-1 * var(--spacing-page));
+    margin-right: calc(-1 * var(--spacing-page));
+    padding: var(--spacing-cell) var(--spacing-page);
   }
   .header.logged-out {
     background: var(--color-red-bg);
@@ -239,7 +239,7 @@
   .header {
     border-bottom: 1px solid var(--color-border);
   }
-  .header h1 { margin-right: var(--space-md); }
+  .header h1 { margin-right: var(--spacing-md); }
   @media (max-width: 1400px) { /* --bp-toolbar-title */
     .header h1 { display: none; }
   }
@@ -249,57 +249,57 @@
   .btn-group {
     display: flex;
     align-items: center;
-    gap: var(--card-gap);
+    gap: var(--spacing-card);
   }
   .separator {
     width: 1px;
-    height: var(--unit);
+    height: var(--spacing-unit);
     background: var(--color-border);
-    margin: 0 var(--space-xs);
+    margin: 0 var(--spacing-xs);
   }
   .cloud-center {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-md);
+    gap: var(--spacing-md);
   }
 
   /* Base toolbar button: fixed-size icon box, label appears as overlay */
   .tb-btn {
     position: relative;
-    width: var(--unit);
-    height: var(--unit);
+    width: var(--spacing-unit);
+    height: var(--spacing-unit);
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--color-bg-raised);
     border: var(--card-border);
-    border-radius: var(--container-radius);
+    border-radius: var(--radius-container);
     color: var(--color-text-secondary);
     cursor: pointer;
-    font-size: var(--input-font-size);
-    font-weight: var(--weight-medium);
+    font-size: var(--text-input);
+    font-weight: var(--font-weight-medium);
     white-space: nowrap;
     flex-shrink: 0;
   }
   .tb-btn span {
     display: none;
     position: absolute;
-    top: calc(100% + var(--card-gap));
+    top: calc(100% + var(--spacing-card));
     left: 50%;
     transform: translateX(-50%);
-    height: calc(var(--unit) / 2);
+    height: calc(var(--spacing-unit) / 2);
     align-items: center;
     justify-content: center;
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     background: inherit;
     color: inherit;
     border: var(--card-border);
     border-color: inherit;
-    border-radius: var(--container-radius);
-    font-size: var(--preview-font-size);
+    border-radius: var(--radius-container);
+    font-size: var(--text-preview);
     z-index: 1;
     pointer-events: none;
   }
@@ -337,23 +337,23 @@
   /* PIN input */
   .pin-input {
     width: 100px;
-    height: var(--unit);
-    padding: 0 var(--cell-padding);
+    height: var(--spacing-unit);
+    padding: 0 var(--spacing-cell);
     border: var(--card-border);
-    border-radius: var(--container-radius);
+    border-radius: var(--radius-container);
     background: var(--color-bg-raised);
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
     color: var(--color-text);
     outline: none;
   }
   .pin-input:focus {
     border: 2px solid var(--color-focus);
-    padding: 0 calc(var(--cell-padding) - 1px);
+    padding: 0 calc(var(--spacing-cell) - 1px);
   }
   .pin-input.error {
     border: 2px solid var(--color-red);
-    padding: 0 calc(var(--cell-padding) - 1px);
+    padding: 0 calc(var(--spacing-cell) - 1px);
     color: var(--color-red);
   }
   .pin-input.error::placeholder {
@@ -377,16 +377,16 @@
     position: relative;
     display: flex;
     align-items: center;
-    height: var(--unit);
-    gap: var(--space-sm);
-    font-size: var(--input-font-size);
+    height: var(--spacing-unit);
+    gap: var(--spacing-sm);
+    font-size: var(--text-input);
     font-family: monospace;
     color: var(--color-text-secondary);
-    padding: 0 var(--space-md);
+    padding: 0 var(--spacing-md);
   }
   .status-dot {
-    width: var(--space-md);
-    height: var(--space-md);
+    width: var(--spacing-md);
+    height: var(--spacing-md);
     border-radius: 50%;
     flex-shrink: 0;
   }
@@ -396,15 +396,15 @@
   .status-label {
     display: none;
     position: absolute;
-    top: calc(100% + var(--card-gap));
+    top: calc(100% + var(--spacing-card));
     left: 50%;
     transform: translateX(-50%);
-    height: calc(var(--unit) / 2);
+    height: calc(var(--spacing-unit) / 2);
     align-items: center;
     justify-content: center;
-    padding: 0 var(--cell-padding);
-    border-radius: var(--container-radius);
-    font-size: var(--preview-font-size);
+    padding: 0 var(--spacing-cell);
+    border-radius: var(--radius-container);
+    font-size: var(--text-preview);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     white-space: nowrap;
     pointer-events: none;

@@ -1,45 +1,64 @@
-:root {
-  /* Layout */
-  --unit: 40px;
-  --row-height: calc(var(--unit) * 2);
-  --card-gap: 4px;
-  --half-gap: calc(var(--card-gap) / 2);
-  --card-radius: 8px;
-  --container-radius: calc(var(--card-radius) + var(--card-gap));
-  --input-font-size: 14px;
-  --preview-font-size: 11px;
-  --weight-normal: 400;
-  --weight-medium: 500;
-  --weight-semibold: 600;
-  --weight-bold: 700;
+@import "tailwindcss";
+
+/*
+ * Theme: map design tokens to Tailwind utility classes.
+ *
+ * Colors live in :root (with dark overrides) and are pulled in via
+ * @theme inline so utilities like bg-raised, text-muted adapt automatically.
+ *
+ * Static tokens (spacing, radii, font sizes, breakpoints) go directly
+ * into @theme since they don't change between light/dark.
+ */
+
+@theme {
+  /* Clear Tailwind defaults we don't use */
+  --color-*: initial;
+  --font-*: initial;
+  --text-*: initial;
+  --shadow-*: initial;
+  --radius-*: initial;
+  --spacing: 4px;
 
   /* Spacing scale */
-  --space-xs: 4px;
-  --space-sm: 6px;
-  --space-md: 8px;
-  --space-lg: 12px;
-  --space-xl: 16px;
-  --space-2xl: 24px;
+  --spacing-xs: 4px;
+  --spacing-sm: 6px;
+  --spacing-md: 8px;
+  --spacing-lg: 12px;
+  --spacing-xl: 16px;
+  --spacing-2xl: 24px;
+  --spacing-page: 20px;
+  --spacing-cell: 12px;
+  --spacing-card: 4px;
+  --spacing-half-card: 2px;
+  --spacing-unit: 40px;
+  --spacing-row: 80px;
 
-  /* Semantic spacing aliases */
-  --cell-padding: var(--space-lg);
-  --page-gap: 20px;
-  --preview-flex: 2;
-  --input-flex: 3;
+  /* Border radius */
+  --radius-card: 8px;
+  --radius-container: 12px;
 
-  /*
-   * Responsive breakpoints (px)
-   * CSS custom properties can't be used in @media/@container thresholds,
-   * so these serve as the single source of truth — referenced by name
-   * in @media/@container rules and JS matchMedia calls.
-   *
-   * --bp-toolbar-title:   1400  Hide toolbar h1
-   * --bp-meta-reorder:     900  Reorder meta fields to two rows
-   * --bp-meldungen-hide:   700  Disable Meldungen panel toggle
-   * --bp-plusleiste-btn:     100  Hide Plusleiste button text (per-button container query)
-   */
-  --bp-meldungen-hide: 700px;
+  /* Font sizes */
+  --text-input: 14px;
+  --text-preview: 11px;
 
+  /* Font families */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Font weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Breakpoints (mobile-first: sm and up) */
+  --breakpoint-sm: 700px;
+  --breakpoint-md: 900px;
+  --breakpoint-lg: 1400px;
+}
+
+/* Colors: defined in :root with dark overrides, then exposed to Tailwind */
+:root {
   /* Surfaces */
   --color-bg: #f5f5f5;
   --color-bg-raised: white;
@@ -47,14 +66,13 @@
 
   /* Borders */
   --color-border: #e0e0e0;
-  --card-border: 1px solid var(--color-border);
 
   /* Text */
   --color-text: #424242;
   --color-text-secondary: #616161;
   --color-text-muted: #9e9e9e;
 
-  /* Blue (focus, primary actions) — Material Blue */
+  /* Blue (focus, primary actions) */
   --color-focus: #1976d2;
   --color-focus-bg: rgba(25,118,210,0.08);
   --color-focus-ring: #0d47a1;
@@ -104,6 +122,13 @@
   --color-code-btn-hover-bg: var(--color-bg-raised);
   --color-code-btn-hover-text: var(--color-text);
   --color-code-btn-hover-border: var(--color-text-muted);
+
+  /* Composite tokens (not mappable to @theme) */
+  --card-border: 1px solid var(--color-border);
+
+  /* Flex ratios for signal row layout */
+  --preview-flex: 2;
+  --input-flex: 3;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -121,7 +146,7 @@
     --color-text-secondary: #bdbdbd;
     --color-text-muted: #757575;
 
-    /* Blue (focus, primary actions) — Blue 200 */
+    /* Blue */
     --color-focus: #90caf9;
     --color-focus-bg: rgba(144,202,249,0.08);
     --color-focus-ring: #bbdefb;
@@ -137,29 +162,71 @@
     /* Orange */
     --color-clear: #ffb74d;
 
-    /* Highlight (note/bahnhof) */
+    /* Highlight */
     --color-highlight: #2e2a1a;
     --color-highlight-text: #ffd54f;
 
-    /* Row type: Abzweigung (purple) */
+    /* Abzweigung */
     --color-abzweigung: #2a1a2e;
     --color-abzweigung-text: #ce93d8;
 
-    /* Row type: Knoten (teal) */
+    /* Knoten */
     --color-knoten: #1a2e2a;
     --color-knoten-text: #80cbc4;
 
-    /* Row type: Import (blue) */
+    /* Import */
     --color-import: #1a222e;
     --color-import-text: #90caf9;
 
-    /* Meldung signal type colors */
+    /* Meldung */
     --color-meldung-block: #ce93d8;
     --color-meldung-ausfahrt: #e57373;
     --color-meldung-wiederholung: #90caf9;
     --color-meldung-bahnhof-a: #81c784;
     --color-meldung-bahnhof-b: #fdd835;
   }
+}
+
+/* Expose color variables to Tailwind utilities (bg-*, text-*, border-*) */
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-bg-raised: var(--color-bg-raised);
+  --color-bg-subtle: var(--color-bg-subtle);
+  --color-border: var(--color-border);
+  --color-text: var(--color-text);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-focus: var(--color-focus);
+  --color-focus-bg: var(--color-focus-bg);
+  --color-focus-ring: var(--color-focus-ring);
+  --color-green: var(--color-green);
+  --color-green-bg: var(--color-green-bg);
+  --color-red: var(--color-red);
+  --color-red-bg: var(--color-red-bg);
+  --color-clear: var(--color-clear);
+  --color-highlight: var(--color-highlight);
+  --color-highlight-text: var(--color-highlight-text);
+  --color-abzweigung: var(--color-abzweigung);
+  --color-abzweigung-text: var(--color-abzweigung-text);
+  --color-knoten: var(--color-knoten);
+  --color-knoten-text: var(--color-knoten-text);
+  --color-import: var(--color-import);
+  --color-import-text: var(--color-import-text);
+  --color-meldung-block: var(--color-meldung-block);
+  --color-meldung-ausfahrt: var(--color-meldung-ausfahrt);
+  --color-meldung-wiederholung: var(--color-meldung-wiederholung);
+  --color-meldung-standard: var(--color-meldung-standard);
+  --color-meldung-bahnhof-a: var(--color-meldung-bahnhof-a);
+  --color-meldung-bahnhof-b: var(--color-meldung-bahnhof-b);
+  --color-code-bg: var(--color-code-bg);
+  --color-code-text: var(--color-code-text);
+  --color-code-border: var(--color-code-border);
+  --color-code-btn-bg: var(--color-code-btn-bg);
+  --color-code-btn-text: var(--color-code-btn-text);
+  --color-code-btn-border: var(--color-code-btn-border);
+  --color-code-btn-hover-bg: var(--color-code-btn-hover-bg);
+  --color-code-btn-hover-text: var(--color-code-btn-hover-text);
+  --color-code-btn-hover-border: var(--color-code-btn-hover-border);
 }
 
 /* Highlight overlay system */
@@ -181,13 +248,12 @@
 .hl.hl-flash::after { opacity: 1; }
 .hl-wrap > input, .hl-wrap > select { outline: none; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-sans);
   background: var(--color-bg);
   color: var(--color-text);
   color-scheme: light dark;
-  padding: 0 var(--page-gap);
+  padding: 0 var(--spacing-page);
 }
 input, select, textarea, button {
   color: inherit;
@@ -200,11 +266,11 @@ input, select, textarea, button {
   flex-direction: column;
   background: var(--color-bg-raised);
   border: var(--card-border);
-  border-radius: var(--card-radius);
+  border-radius: var(--radius-card);
   position: relative;
   flex: 1;
   min-width: 0;
-  height: var(--row-height);
+  height: var(--spacing-row);
 }
 
 .signal-cell.disabled { background: var(--color-bg); pointer-events: none; }
@@ -212,10 +278,10 @@ input, select, textarea, button {
 .signal-cell.disabled .signal-preview { display: none; }
 
 .section-header {
-  padding: var(--cell-padding);
-  font-weight: var(--weight-semibold);
-  font-size: var(--input-font-size);
+  padding: var(--spacing-cell);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-input);
   background: var(--color-bg-subtle);
   border-bottom: 1px solid var(--color-border);
-  border-radius: var(--container-radius) var(--container-radius) 0 0;
+  border-radius: var(--radius-container) var(--radius-container) 0 0;
 }

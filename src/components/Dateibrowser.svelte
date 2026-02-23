@@ -156,7 +156,7 @@
     flex-direction: column;
     background: var(--color-bg);
     border: var(--card-border);
-    border-radius: var(--container-radius);
+    border-radius: var(--radius-container);
   }
   .tab-header {
     display: flex;
@@ -164,20 +164,20 @@
   }
   .tab-btn {
     flex: 1;
-    padding: var(--cell-padding);
-    font-size: var(--input-font-size);
-    font-weight: var(--weight-semibold);
+    padding: var(--spacing-cell);
+    font-size: var(--text-input);
+    font-weight: var(--font-weight-semibold);
     cursor: pointer;
     background: var(--color-bg-raised);
     color: var(--color-text-secondary);
     border: var(--card-border);
   }
   .tab-btn:first-child {
-    border-radius: var(--container-radius) 0 0 0;
+    border-radius: var(--radius-container) 0 0 0;
     border-right: none;
   }
   .tab-btn:last-child {
-    border-radius: 0 var(--container-radius) 0 0;
+    border-radius: 0 var(--radius-container) 0 0;
     border-left: none;
   }
   .tab-btn:hover::after {
@@ -195,26 +195,26 @@
     height: 360px;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: var(--half-gap) 0;
+    padding: var(--spacing-half-card) 0;
   }
   .file-row {
     display: flex;
-    gap: var(--card-gap);
-    padding: var(--half-gap) var(--card-gap);
+    gap: var(--spacing-card);
+    padding: var(--spacing-half-card) var(--spacing-card);
     align-items: stretch;
   }
   .file-card {
     flex: 1;
-    height: var(--unit);
+    height: var(--spacing-unit);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 var(--space-xl);
+    padding: 0 var(--spacing-xl);
     background: var(--color-bg-raised);
     border: var(--card-border);
-    border-radius: var(--card-radius);
+    border-radius: var(--radius-card);
     cursor: pointer;
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     text-align: left;
   }
   .file-card.used {
@@ -223,45 +223,45 @@
     pointer-events: none;
   }
   .file-name {
-    font-weight: var(--weight-medium);
+    font-weight: var(--font-weight-medium);
     font-family: monospace;
   }
   .file-date {
     color: var(--color-text-secondary);
-    font-size: var(--preview-font-size);
+    font-size: var(--text-preview);
     white-space: nowrap;
-    margin-left: var(--space-xl);
+    margin-left: var(--spacing-xl);
   }
   .delete-btn {
-    width: var(--unit);
-    height: var(--unit);
+    width: var(--spacing-unit);
+    height: var(--spacing-unit);
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--color-bg-raised);
     border: var(--card-border);
-    border-radius: var(--card-radius);
+    border-radius: var(--radius-card);
     cursor: pointer;
     color: var(--color-red);
     flex-shrink: 0;
   }
   .used-indicator {
-    width: var(--unit);
-    height: var(--unit);
+    width: var(--spacing-unit);
+    height: var(--spacing-unit);
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--color-green-bg);
     border: 1px solid var(--color-green);
-    border-radius: var(--card-radius);
+    border-radius: var(--radius-card);
     color: var(--color-green);
     flex-shrink: 0;
   }
   .status {
-    padding: var(--space-2xl);
+    padding: var(--spacing-2xl);
     text-align: center;
     color: var(--color-text-secondary);
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
   }
   .status.error {
     color: var(--color-red);

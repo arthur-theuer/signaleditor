@@ -35,18 +35,18 @@
   .knoten-cell { background: var(--color-knoten); }
   .knoten-inner { display: flex; height: 100%; }
   .knoten-input-wrapper {
-    width: var(--row-height);
+    width: var(--spacing-row);
     flex: none;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
-    border-radius: calc(var(--card-radius) - 1px) 0 0 calc(var(--card-radius) - 1px);
+    border-radius: calc(var(--radius-card) - 1px) 0 0 calc(var(--radius-card) - 1px);
   }
   .knoten-input {
     border: none;
     background: transparent;
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
     text-transform: uppercase;
     width: 100%;
@@ -60,10 +60,10 @@
     min-width: 0;
     display: flex;
     align-items: center;
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     height: 100%;
     border-left: 1px solid var(--color-border);
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
     color: var(--color-text-muted);
     pointer-events: none;
@@ -73,6 +73,6 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    border-radius: 0 calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0;
+    border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0;
   }
 </style>

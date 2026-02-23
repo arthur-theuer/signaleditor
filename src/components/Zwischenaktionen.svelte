@@ -36,22 +36,22 @@
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: calc((var(--row-height) - var(--card-gap)) / 2);
+    height: calc((var(--spacing-row) - var(--spacing-card)) / 2);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--card-gap);
+    gap: var(--spacing-card);
   }
   .insert-zone-target button {
     opacity: 0;
     pointer-events: none;
-    width: calc((var(--row-height) - var(--card-gap)) / 2);
-    height: calc((var(--row-height) - var(--card-gap)) / 2);
+    width: calc((var(--spacing-row) - var(--spacing-card)) / 2);
+    height: calc((var(--spacing-row) - var(--spacing-card)) / 2);
     display: flex;
     align-items: center;
     justify-content: center;
     border: var(--card-border);
-    border-radius: var(--card-radius);
+    border-radius: var(--radius-card);
     cursor: pointer;
   }
   .insert-zone-target:hover button {

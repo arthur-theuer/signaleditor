@@ -185,28 +185,28 @@
     flex-direction: column;
     min-width: 0;
     height: 100%;
-    border-radius: calc(var(--card-radius) - 1px);
+    border-radius: calc(var(--radius-card) - 1px);
   }
   .has-name .signal-input-wrapper {
     width: 50%;
     flex: none;
-    border-radius: calc(var(--card-radius) - 1px) 0 0 calc(var(--card-radius) - 1px);
+    border-radius: calc(var(--radius-card) - 1px) 0 0 calc(var(--radius-card) - 1px);
   }
   .has-bahnhof .signal-input-wrapper {
-    border-radius: calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0 0;
+    border-radius: calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0 0;
   }
   .has-name.has-bahnhof .signal-input-wrapper {
-    border-radius: calc(var(--card-radius) - 1px) 0 0 0;
+    border-radius: calc(var(--radius-card) - 1px) 0 0 0;
   }
 
   .signal-preview {
     flex: var(--preview-flex);
     display: flex;
-    font-size: var(--preview-font-size);
+    font-size: var(--text-preview);
     font-family: monospace;
     color: var(--color-text-muted);
     opacity: 0;
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -220,10 +220,10 @@
 
   .signal-input {
     flex: var(--input-flex);
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     border: none;
     background: transparent;
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
     cursor: pointer;
     display: flex;
@@ -239,42 +239,42 @@
     border-left: 1px solid var(--color-border);
     background: transparent;
     height: 100%;
-    border-radius: 0 calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0;
+    border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0;
   }
   .name-wrapper.visible { display: flex; }
-  .has-bahnhof .name-wrapper { border-radius: 0 calc(var(--card-radius) - 1px) 0 0; }
+  .has-bahnhof .name-wrapper { border-radius: 0 calc(var(--radius-card) - 1px) 0 0; }
   .name-spacer { flex: var(--preview-flex); pointer-events: none; }
   .name-input {
     flex: var(--input-flex);
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     border: none;
     background: transparent;
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
     display: flex;
     align-items: center;
   }
   .name-input:focus { outline: none; }
 
-  .has-bahnhof .signal-cell-inner { height: var(--unit); }
-  .has-bahnhof .signal-input-wrapper { height: var(--unit); }
+  .has-bahnhof .signal-cell-inner { height: var(--spacing-unit); }
+  .has-bahnhof .signal-input-wrapper { height: var(--spacing-unit); }
   .has-bahnhof .signal-preview { display: none; }
-  .has-bahnhof .name-wrapper { height: var(--unit); }
+  .has-bahnhof .name-wrapper { height: var(--spacing-unit); }
   .has-bahnhof .name-spacer { display: none; }
 
   .bahnhof-wrapper {
     display: none;
     border-top: 1px solid var(--color-border);
     flex: 1;
-    border-radius: 0 0 calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px);
+    border-radius: 0 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px);
   }
   .bahnhof-wrapper.visible { display: flex; }
   .bahnhof-input {
     width: 100%;
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     border: none;
     background: var(--color-highlight);
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
     flex: 1;
     box-sizing: border-box;
@@ -288,8 +288,8 @@
     top: 50%;
     right: 0;
     transform: translateY(-50%);
-    width: var(--unit);
-    height: var(--unit);
+    width: var(--spacing-unit);
+    height: var(--spacing-unit);
     border: none;
     border-radius: 0;
     background: none;

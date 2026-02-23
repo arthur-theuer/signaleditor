@@ -60,26 +60,26 @@
 </div>
 
 <style>
-  .meldungen-list { padding: var(--half-gap) 0; }
+  .meldungen-list { padding: var(--spacing-half-card) 0; }
   .meldung-row {
-    min-height: calc(var(--row-height) + var(--card-gap));
+    min-height: calc(var(--spacing-row) + var(--spacing-card));
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: var(--half-gap) var(--card-gap);
+    padding: var(--spacing-half-card) var(--spacing-card);
     font-family: monospace;
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
   }
   .meldung-row-inner {
     background: var(--color-bg-raised);
     border: var(--card-border);
-    border-radius: var(--card-radius);
+    border-radius: var(--radius-card);
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     text-align: center;
   }
   .meldung-row-inner.muted {
@@ -90,10 +90,10 @@
     border-color: var(--color-red);
     background: var(--color-red-bg);
   }
-  .meldung-text { font-weight: var(--weight-medium); }
+  .meldung-text { font-weight: var(--font-weight-medium); }
   .muted-text { color: var(--color-text-muted); font-style: italic; }
   .meldung-error { color: var(--color-red); font-style: italic; }
-  .fett { font-weight: var(--weight-bold); }
+  .fett { font-weight: var(--font-weight-bold); }
 
   /* Signal type colors (dynamic classes, need :global) */
   :global(.meldung-block),
@@ -107,16 +107,16 @@
   /* Colored row border inherits from the color class */
   .meldung-colored { border-color: currentColor; }
   .close-bar {
-    margin: var(--half-gap) var(--card-gap);
+    margin: var(--spacing-half-card) var(--spacing-card);
   }
   .close-btn {
     width: 100%;
-    height: calc(var(--row-height) / 2 - var(--card-gap) / 2);
-    padding: 0 var(--cell-padding);
-    border-radius: var(--card-radius);
+    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    padding: 0 var(--spacing-cell);
+    border-radius: var(--radius-card);
     cursor: pointer;
-    font-weight: var(--weight-semibold);
-    font-size: var(--input-font-size);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-input);
     display: flex;
     align-items: center;
     justify-content: center;

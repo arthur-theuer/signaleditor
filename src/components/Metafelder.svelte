@@ -105,15 +105,15 @@
   .meta-section {
     background: var(--color-bg);
     border: var(--card-border);
-    border-radius: var(--container-radius);
+    border-radius: var(--radius-container);
     overflow: hidden;
-    margin-bottom: var(--page-gap);
+    margin-bottom: var(--spacing-page);
   }
   .meta-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--card-gap);
-    padding: var(--card-gap);
+    gap: var(--spacing-card);
+    padding: var(--spacing-card);
   }
   .meta-field {
     flex: 1;
@@ -122,41 +122,41 @@
     flex-direction: column;
     background: var(--color-bg-raised);
     border: var(--card-border);
-    border-radius: var(--card-radius);
+    border-radius: var(--radius-card);
   }
   @media (max-width: 900px) { /* --bp-meta-reorder */
     .meta-primary {
       order: 0;
-      flex: 0 1 calc(50% - var(--card-gap) / 2);
+      flex: 0 1 calc(50% - var(--spacing-card) / 2);
     }
     .meta-secondary {
       order: 1;
     }
   }
   .meta-field label {
-    font-size: var(--preview-font-size);
-    font-weight: var(--weight-semibold);
+    font-size: var(--text-preview);
+    font-weight: var(--font-weight-semibold);
     text-transform: uppercase;
     color: var(--color-text-secondary);
-    padding: 8px var(--cell-padding) 4px;
+    padding: 8px var(--spacing-cell) 4px;
     background: var(--color-bg-subtle);
     border-bottom: 1px solid var(--color-border);
-    border-radius: var(--card-radius) var(--card-radius) 0 0;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
   }
   .meta-field :global(.hl-wrap) {
     display: flex;
-    border-radius: 0 0 var(--card-radius) var(--card-radius);
+    border-radius: 0 0 var(--radius-card) var(--radius-card);
   }
   .meta-field input {
     flex: 1;
     min-width: 0;
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     border: none;
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
-    height: var(--unit);
-    line-height: var(--unit);
-    border-radius: 0 0 var(--card-radius) var(--card-radius);
+    height: var(--spacing-unit);
+    line-height: var(--spacing-unit);
+    border-radius: 0 0 var(--radius-card) var(--radius-card);
   }
   .meta-field input:focus { outline: none; }
   .code-input::placeholder {
@@ -164,7 +164,7 @@
   }
 
   .code-input {
-    width: var(--row-height);
+    width: var(--spacing-row);
     flex: none !important;
     text-transform: uppercase;
     text-align: center;
@@ -174,9 +174,9 @@
     min-width: 0;
     display: flex;
     align-items: center;
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     border-left: 1px solid var(--color-border);
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
     color: var(--color-text-muted);
     overflow: hidden;
@@ -191,9 +191,9 @@
     align-items: center;
   }
   .header-id {
-    font-weight: var(--weight-normal);
+    font-weight: var(--font-weight-normal);
     color: var(--color-text-muted);
-    font-size: var(--preview-font-size);
+    font-size: var(--text-preview);
     margin-left: auto;
     font-family: monospace;
     text-transform: uppercase;

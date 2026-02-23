@@ -23,9 +23,9 @@
   .signal-actions {
     display: grid;
     grid-template-rows: repeat(2, 1fr);
-    gap: var(--card-gap);
-    width: calc(var(--row-height) / 2 - var(--card-gap) / 2);
-    height: var(--row-height);
+    gap: var(--spacing-card);
+    width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    height: var(--spacing-row);
     flex-shrink: 0;
   }
   .signal-actions button {
@@ -34,7 +34,7 @@
     justify-content: center;
     background: var(--color-bg-raised);
     border: var(--card-border);
-    border-radius: var(--card-radius);
+    border-radius: var(--radius-card);
     cursor: pointer;
     margin: 0;
     padding: 0;

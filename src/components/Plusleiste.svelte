@@ -27,23 +27,23 @@
 <style>
   .add-bar {
     display: flex;
-    gap: var(--card-gap);
-    margin: var(--half-gap) var(--card-gap);
+    gap: var(--spacing-card);
+    margin: var(--spacing-half-card) var(--spacing-card);
   }
   .add-bar button {
     flex: 1;
     min-width: 0;
     overflow: hidden;
-    height: calc(var(--row-height) / 2 - var(--card-gap) / 2);
-    padding: 0 var(--cell-padding);
-    border-radius: var(--card-radius);
+    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    padding: 0 var(--spacing-cell);
+    border-radius: var(--radius-card);
     cursor: pointer;
-    font-weight: var(--weight-semibold);
-    font-size: var(--input-font-size);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-input);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-sm);
+    gap: var(--spacing-sm);
     container-type: inline-size;
   }
   .add-bar button :global(svg) {

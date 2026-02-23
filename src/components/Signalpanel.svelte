@@ -388,24 +388,24 @@
 <style>
   .signal-row {
     display: flex;
-    gap: var(--card-gap);
-    padding: var(--half-gap) var(--card-gap);
+    gap: var(--spacing-card);
+    padding: var(--spacing-half-card) var(--spacing-card);
     align-items: stretch;
-    min-height: calc(var(--row-height) + var(--card-gap));
+    min-height: calc(var(--spacing-row) + var(--spacing-card));
   }
   .signal-id {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--unit);
+    width: var(--spacing-unit);
     flex-shrink: 0;
-    font-size: var(--input-font-size);
-    font-weight: var(--weight-bold);
+    font-size: var(--text-input);
+    font-weight: var(--font-weight-bold);
     color: var(--color-text-secondary);
     font-family: monospace;
     background: var(--color-bg-raised);
     border: var(--card-border);
-    border-radius: var(--card-radius);
+    border-radius: var(--radius-card);
     user-select: none;
     cursor: grab;
   }
@@ -415,8 +415,8 @@
   .signal-row.drag-ready :global(.signal-actions) { visibility: hidden; }
   .drop-indicator {
     position: absolute;
-    left: var(--card-gap);
-    right: var(--card-gap);
+    left: var(--spacing-card);
+    right: var(--spacing-card);
     height: 0;
     box-shadow: 0 0 0 1px var(--color-focus);
     border-radius: 1px;

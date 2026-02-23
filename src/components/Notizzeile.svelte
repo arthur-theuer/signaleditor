@@ -33,15 +33,15 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    border-radius: calc(var(--card-radius) - 1px);
+    border-radius: calc(var(--radius-card) - 1px);
   }
   .note-spacer { flex: var(--preview-flex); }
   .note-input {
     flex: var(--input-flex);
-    padding: 0 var(--cell-padding);
+    padding: 0 var(--spacing-cell);
     border: none;
     background: transparent;
-    font-size: var(--input-font-size);
+    font-size: var(--text-input);
     font-family: monospace;
     display: flex;
     align-items: center;
