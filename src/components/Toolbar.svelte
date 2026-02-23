@@ -93,7 +93,7 @@
   }
 </script>
 
-<div class="header flex gap-card lg:gap-md items-center flex-wrap sticky top-0 z-10 px-page py-cell mb-page" class:logged-out={!loggedIn}>
+<div class="header flex gap-card lg:gap-md items-center flex-wrap sticky top-0 z-10 py-cell mb-page" class:logged-out={!loggedIn}>
   <h1 class="hidden xl:block mr-card lg:mr-md">Signaleditor</h1>
 
   <!-- Group: History -->
@@ -224,6 +224,8 @@
   .header {
     background: var(--color-focus-bg);
     border-bottom: 1px solid var(--color-border);
+    padding-left: calc(var(--spacing-page) + var(--spacing-card));
+    padding-right: calc(var(--spacing-page) + var(--spacing-card));
   }
   .header.logged-out {
     background: var(--color-red-bg);
