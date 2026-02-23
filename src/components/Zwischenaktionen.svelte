@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DiamondPlus, SquarePen, Share2, Crosshair, Import } from 'lucide-svelte';
+  import { DiamondPlus, SquarePen, Share2, Crosshair, FilePlus } from 'lucide-svelte';
 
   let {
     onInsertSignal,
@@ -22,7 +22,7 @@
     <button class="insert-note hl" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen"><SquarePen size={16} strokeWidth={1.5} /></button>
     <button class="insert-abzweigung hl" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen"><Share2 size={16} strokeWidth={1.5} /></button>
     <button class="insert-knoten hl" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen"><Crosshair size={16} strokeWidth={1.5} /></button>
-    <button class="insert-import hl" onclick={onInsertImport} tabindex={-1} title="Import einfügen"><Import size={16} strokeWidth={1.5} /></button>
+    <button class="insert-import hl" onclick={onInsertImport} tabindex={-1} title="Import einfügen"><FilePlus size={16} strokeWidth={1.5} /></button>
   </div>
 </div>
 
