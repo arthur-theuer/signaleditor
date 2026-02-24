@@ -52,27 +52,22 @@
   .add-signal {
     background: var(--color-bg-raised);
     color: var(--color-text-secondary);
-    border-color: var(--color-text-muted);
   }
   .add-note {
     background: var(--color-highlight);
     color: var(--color-highlight-text);
-    border-color: var(--color-highlight-text);
   }
   .add-abzweigung {
     background: var(--color-abzweigung);
     color: var(--color-abzweigung-text);
-    border-color: var(--color-abzweigung-text);
   }
   .add-knoten {
     background: var(--color-knoten);
     color: var(--color-knoten-text);
-    border-color: var(--color-knoten-text);
   }
   .add-import {
     background: var(--color-import);
     color: var(--color-import-text);
-    border-color: var(--color-import-text);
   }
   /* Tier visibility: narrow (icon only) by default, wider tiers override */
   .tier-full, .tier-medium { display: none; }
