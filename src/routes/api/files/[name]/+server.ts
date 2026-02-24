@@ -64,6 +64,49 @@ export const PUT: RequestHandler = async ({ request, params, url }) => {
   return json({ name: params.name, typ: prefix, url: blob.url });
 };
 
+/** PATCH /api/files/:name?typ=strecken|routen — rename file */
+export const PATCH: RequestHandler = async ({ request, params, url }) => {
+  const denied = verifyPin(request);
+  if (denied) return denied;
+
+  const prefix = getPrefix(url);
+  if (!prefix) {
+    return json({ error: 'Missing or invalid typ parameter (strecken|routen)' }, { status: 400 });
+  }
+
+  const { newName } = await request.json();
+  if (typeof newName !== 'string' || !newName.trim()) {
+    return json({ error: 'Missing newName' }, { status: 400 });
+  }
+
+  const safeName = newName.replace(/[^a-zA-Z0-9._-]/g, '_');
+
+  const blob = await findBlob(prefix, params.name);
+  if (!blob) {
+    return json({ error: 'File not found' }, { status: 404 });
+  }
+
+  // Read content from old blob
+  const result = await get(blob.url, { access: 'private' });
+  if (!result || result.statusCode !== 200) {
+    return json({ error: 'Failed to read file' }, { status: 500 });
+  }
+  const content = await new Response(result.stream).text();
+
+  // Write under new name
+  const newPath = `${prefix}/${safeName}`;
+  await put(newPath, content, {
+    access: 'private',
+    contentType: 'text/yaml',
+    addRandomSuffix: false,
+  });
+
+  // Delete old blob
+  await del(blob.url);
+
+  return json({ oldName: params.name, newName: safeName, typ: prefix });
+};
+
 /** DELETE /api/files/:name?typ=strecken|routen — delete file */
 export const DELETE: RequestHandler = async ({ request, params, url }) => {
   const denied = verifyPin(request);

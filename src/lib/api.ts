@@ -89,3 +89,12 @@ export async function deleteFile(typ: StoragePrefix, name: string): Promise<void
   });
   await handleResponse(res);
 }
+
+export async function renameFile(typ: StoragePrefix, oldName: string, newName: string): Promise<void> {
+  const res = await fetch(`/api/files/${encodeURIComponent(oldName)}?typ=${typ}`, {
+    method: 'PATCH',
+    headers: headers(),
+    body: JSON.stringify({ newName }),
+  });
+  await handleResponse(res);
+}

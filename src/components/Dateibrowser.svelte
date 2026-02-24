@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Trash2, Check } from 'lucide-svelte';
-  import { listFiles, loadFile, deleteFile, type FileInfo, type StoragePrefix } from '../lib/api';
+  import { Trash2, Check, Pencil } from 'lucide-svelte';
+  import { listFiles, loadFile, deleteFile, renameFile, type FileInfo, type StoragePrefix } from '../lib/api';
   import { invalidateImportCache } from '../lib/sources';
 
   let {
@@ -60,8 +60,42 @@
     }
   }
 
+  let renamingFile: string | null = $state(null);
+  let renameValue = $state('');
+
+  function startRename(file: FileInfo) {
+    renamingFile = file.name;
+    // Strip .yaml extension for editing
+    renameValue = file.name.replace(/\.ya?ml$/, '');
+  }
+
+  async function submitRename(file: FileInfo) {
+    const newName = renameValue.trim();
+    if (!newName || newName === file.name.replace(/\.ya?ml$/, '')) {
+      renamingFile = null;
+      return;
+    }
+    const ext = file.name.match(/\.ya?ml$/)?.[0] || '.yaml';
+    const fullNewName = newName + ext;
+    try {
+      await renameFile(activeTab, file.name, fullNewName);
+      invalidateImportCache(file.name);
+      renamingFile = null;
+      await refresh();
+    } catch (e: any) {
+      alert(`Umbenennen fehlgeschlagen: ${e.message}`);
+    }
+  }
+
+  function cancelRename() {
+    renamingFile = null;
+  }
+
   function handleKeydown(e: KeyboardEvent) {
-    if (e.key === 'Escape') onclose();
+    if (e.key === 'Escape') {
+      if (renamingFile) { cancelRename(); e.stopPropagation(); }
+      else onclose();
+    }
   }
 
   function handleBackdropClick(e: MouseEvent) {
@@ -113,23 +147,43 @@
         {#each files as file}
           {@const used = mode === 'select' && isFileUsed(file)}
           <div class="file-row">
-            <button
-              class="file-card hl"
-              class:used
-              disabled={used}
-              onclick={() => handleLoad(file)}
-            >
-              <span class="file-name">{file.name}</span>
-              <span class="file-date">{formatDate(file.uploadedAt)}</span>
-            </button>
-            {#if mode === 'manage'}
-              <button class="delete-btn hl" onclick={() => handleDelete(file)} title="Löschen">
-                <Trash2 size={16} strokeWidth={1.5} />
-              </button>
-            {:else if used}
-              <div class="used-indicator">
-                <Check size={16} strokeWidth={1.5} />
+            {#if renamingFile === file.name}
+              <div class="file-card rename-card">
+                <input
+                  class="rename-input"
+                  type="text"
+                  bind:value={renameValue}
+                  onkeydown={(e) => { if (e.key === 'Enter') submitRename(file); if (e.key === 'Escape') { cancelRename(); e.stopPropagation(); } }}
+                  autofocus
+                  autocomplete="off" autocorrect="off" spellcheck="false"
+                />
+                <span class="rename-ext">{file.name.match(/\.ya?ml$/)?.[0] || '.yaml'}</span>
               </div>
+              <button class="action-btn confirm-btn hl" onclick={() => submitRename(file)} title="Bestätigen">
+                <Check size={16} strokeWidth={1.5} />
+              </button>
+            {:else}
+              <button
+                class="file-card hl"
+                class:used
+                disabled={used}
+                onclick={() => handleLoad(file)}
+              >
+                <span class="file-name">{file.name}</span>
+                <span class="file-date">{formatDate(file.uploadedAt)}</span>
+              </button>
+              {#if mode === 'manage'}
+                <button class="action-btn rename-btn hl" onclick={() => startRename(file)} title="Umbenennen">
+                  <Pencil size={16} strokeWidth={1.5} />
+                </button>
+                <button class="action-btn delete-btn hl" onclick={() => handleDelete(file)} title="Löschen">
+                  <Trash2 size={16} strokeWidth={1.5} />
+                </button>
+              {:else if used}
+                <div class="used-indicator">
+                  <Check size={16} strokeWidth={1.5} />
+                </div>
+              {/if}
             {/if}
           </div>
         {/each}
@@ -235,7 +289,7 @@
     white-space: nowrap;
     margin-left: var(--spacing-xl);
   }
-  .delete-btn {
+  .action-btn {
     width: var(--spacing-unit);
     height: var(--spacing-unit);
     display: flex;
@@ -245,8 +299,29 @@
     border: var(--card-border);
     border-radius: var(--radius-card);
     cursor: pointer;
-    color: var(--color-red);
     flex-shrink: 0;
+  }
+  .delete-btn { color: var(--color-red); }
+  .rename-btn { color: var(--color-text-secondary); }
+  .confirm-btn { color: var(--color-green); }
+  .rename-card {
+    cursor: default;
+  }
+  .rename-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    font-size: var(--text-input);
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-medium);
+    outline: none;
+  }
+  .rename-ext {
+    color: var(--color-text-muted);
+    font-size: var(--text-input);
+    font-family: var(--font-mono);
+    white-space: nowrap;
   }
   .used-indicator {
     width: var(--spacing-unit);
