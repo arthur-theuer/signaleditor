@@ -1,14 +1,19 @@
 <script lang="ts">
   import { tick } from 'svelte';
+  import type { Snippet } from 'svelte';
 
   let {
     open = $bindable(false),
+    unlocked = false,
     onsubmit,
-    oncancel,
+    onclick,
+    children,
   }: {
     open: boolean;
+    unlocked?: boolean;
     onsubmit: (value: string) => void;
-    oncancel: () => void;
+    onclick: () => void;
+    children: Snippet;
   } = $props();
 
   let value = $state('');
@@ -41,12 +46,14 @@
 
   function cancel() {
     hide();
-    oncancel();
   }
 </script>
 
-<div class="passwortfeld" class:open class:error>
-  <div class="cell">
+<div class="pill" class:open class:error class:unlocked>
+  <button class="icon" onclick={onclick}>
+    {@render children()}
+  </button>
+  <div class="field">
     <input
       bind:this={inputEl}
       bind:value
@@ -60,25 +67,56 @@
 </div>
 
 <style>
-  .passwortfeld {
-    display: grid;
-    grid-template-columns: 0fr;
-    transition: grid-template-columns 200ms ease;
-    flex-shrink: 0;
-  }
-  .passwortfeld.open {
-    grid-template-columns: 1fr;
-  }
-  .cell {
-    overflow: hidden;
-  }
-  .cell input {
-    width: 80px;
+  .pill {
+    display: flex;
+    align-items: center;
     height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     border: var(--card-border);
-    border-right: none;
-    border-radius: var(--radius-container) 0 0 var(--radius-container);
+    border-radius: var(--radius-container);
     background: var(--color-bg-raised);
+    flex-shrink: 0;
+    transition: box-shadow 200ms ease, border-color 200ms ease;
+  }
+  .pill.unlocked {
+    background: var(--color-green-bg);
+    border-color: var(--color-green);
+    color: var(--color-green);
+  }
+  .pill.open {
+    border-color: var(--color-focus);
+    box-shadow: 0 0 0 1px var(--color-focus);
+  }
+  .pill.error {
+    border-color: var(--color-red);
+    box-shadow: 0 0 0 1px var(--color-red);
+  }
+  .icon {
+    width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .field {
+    width: 0;
+    overflow: hidden;
+    transition: width 200ms ease;
+  }
+  .open .field {
+    width: 80px;
+  }
+  .field input {
+    width: 80px;
+    height: 100%;
+    border: none;
+    border-left: 1px solid var(--color-border);
+    background: transparent;
     font-size: var(--text-input);
     font-family: var(--font-mono);
     color: var(--color-text);
@@ -87,14 +125,10 @@
     padding: 0 var(--spacing-cell);
     box-sizing: border-box;
   }
-  .passwortfeld.open .cell input {
-    border-color: var(--color-focus);
-  }
-  .error .cell input {
+  .error .field input {
     color: var(--color-red);
-    border-color: var(--color-red) !important;
   }
-  .error .cell input::placeholder {
+  .error .field input::placeholder {
     color: var(--color-red);
   }
 </style>

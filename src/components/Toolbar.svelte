@@ -56,7 +56,6 @@
 
   let fileInput: HTMLInputElement;
   let passwortfeld: Passwortfeld;
-  let pinOpen = $state(false);
 
   function handleLockClick() {
     if (loggedIn) {
@@ -179,22 +178,13 @@
   {/if}
 
   <!-- Lock with expanding PIN field -->
-  <div class="lock-group">
-    <Passwortfeld bind:this={passwortfeld} bind:open={pinOpen} onsubmit={handlePinSubmit} oncancel={() => {}} />
-    <button
-      class="tb-btn lock-btn hl"
-      class:unlocked={loggedIn}
-      class:pin-open={pinOpen}
-      onclick={handleLockClick}
-      title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
-    >
-      {#if loggedIn}
-        <LockOpen size={16} strokeWidth={1.5} /><Hinweis text="Abmelden" />
-      {:else}
-        <Lock size={16} strokeWidth={1.5} /><Hinweis text="Anmelden" />
-      {/if}
-    </button>
-  </div>
+  <Passwortfeld bind:this={passwortfeld} unlocked={loggedIn} onsubmit={handlePinSubmit} onclick={handleLockClick}>
+    {#if loggedIn}
+      <LockOpen size={16} strokeWidth={1.5} />
+    {:else}
+      <Lock size={16} strokeWidth={1.5} />
+    {/if}
+  </Passwortfeld>
 </div>
 
 <style>
@@ -264,22 +254,7 @@
     border-color: var(--color-green);
   }
 
-  /* Lock group — no gap between Passwortfeld and lock button */
-  .lock-group {
-    display: flex;
-    align-items: center;
-  }
-  .lock-btn.pin-open {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-left: none;
-    border-color: var(--color-focus);
-  }
-  .lock-btn.unlocked {
-    background: var(--color-green-bg);
-    border-color: var(--color-green);
-    color: var(--color-green);
-  }
+
 
   /* Cloud buttons */
   .save-btn { color: var(--color-focus); }
