@@ -228,7 +228,7 @@
    */
   .dropdown {
     position: absolute;
-    top: calc(100% + 1px);
+    top: 100%;
     left: -1px;
     right: -1px;
     z-index: 2;
