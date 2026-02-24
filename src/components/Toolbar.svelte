@@ -3,8 +3,8 @@
     Undo2, Redo2, Upload, Download, Save, Lock, LockOpen,
     Milestone, Route, FolderOpen, FolderClosed, Code, Megaphone,
   } from 'lucide-svelte';
-  import { tick } from 'svelte';
   import Hinweis from './ui/Hinweis.svelte';
+  import Passwortfeld from './ui/Passwortfeld.svelte';
 
   let {
     showYaml,
@@ -55,41 +55,24 @@
   } = $props();
 
   let fileInput: HTMLInputElement;
-  let showPinInput = $state(false);
-  let pinValue = $state('');
-  let pinError = $state(false);
-  let pinInputEl = $state<HTMLInputElement>();
+  let passwortfeld: Passwortfeld;
+  let pinOpen = $state(false);
 
-  async function handleLockClick() {
+  function handleLockClick() {
     if (loggedIn) {
       onLogout();
     } else {
-      showPinInput = true;
-      pinError = false;
-      pinValue = '';
-      await tick();
-      pinInputEl?.focus();
+      passwortfeld.show();
     }
   }
 
-  async function submitPin() {
-    if (!pinValue) return;
-    const ok = await onLogin(pinValue);
+  async function handlePinSubmit(pin: string) {
+    const ok = await onLogin(pin);
     if (ok) {
-      showPinInput = false;
-      pinValue = '';
-      pinError = false;
+      passwortfeld.hide();
     } else {
-      pinError = true;
-      pinValue = '';
-      pinInputEl?.focus();
+      passwortfeld.showError();
     }
-  }
-
-  function cancelPin() {
-    showPinInput = false;
-    pinValue = '';
-    pinError = false;
   }
 
   const btnGroup = 'flex flex-col sm:flex-row items-center gap-card lg:gap-md';
@@ -195,30 +178,22 @@
     <div class="flex-1"></div>
   {/if}
 
-  <!-- Lock pill (expands to include PIN input) -->
-  <div class="lock-pill hl" class:expanded={showPinInput} class:unlocked={loggedIn}>
+  <!-- Lock with expanding PIN field -->
+  <div class="lock-group">
+    <Passwortfeld bind:this={passwortfeld} bind:open={pinOpen} onsubmit={handlePinSubmit} oncancel={() => {}} />
     <button
-      class="lock-icon"
+      class="tb-btn lock-btn hl"
+      class:unlocked={loggedIn}
+      class:pin-open={pinOpen}
       onclick={handleLockClick}
       title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
     >
       {#if loggedIn}
-        <LockOpen size={16} strokeWidth={1.5} />
+        <LockOpen size={16} strokeWidth={1.5} /><Hinweis text="Abmelden" />
       {:else}
-        <Lock size={16} strokeWidth={1.5} />
+        <Lock size={16} strokeWidth={1.5} /><Hinweis text="Anmelden" />
       {/if}
     </button>
-    <input
-      bind:this={pinInputEl}
-      bind:value={pinValue}
-      class="pin-input"
-      class:error={pinError}
-      type="password"
-      placeholder="PIN"
-      tabindex={showPinInput ? 0 : -1}
-      onkeydown={(e) => { if (e.key === 'Enter') submitPin(); if (e.key === 'Escape') cancelPin(); }}
-      onblur={cancelPin}
-    />
   </div>
 </div>
 
@@ -289,70 +264,21 @@
     border-color: var(--color-green);
   }
 
-  /* Lock pill — expands to include PIN input */
-  .lock-pill {
+  /* Lock group — no gap between Passwortfeld and lock button */
+  .lock-group {
     display: flex;
     align-items: center;
-    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
-    border: var(--card-border);
-    border-radius: var(--radius-container);
-    background: var(--color-bg-raised);
-    overflow: hidden;
-    flex-shrink: 0;
-    transition: border-color 200ms ease;
   }
-  .lock-pill.unlocked {
-    background: var(--color-green-bg);
-    border-color: var(--color-green);
-  }
-  .lock-pill.expanded {
+  .lock-btn.pin-open {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
     border-color: var(--color-focus);
   }
-  .lock-pill.expanded:has(.pin-input.error) {
-    border-color: var(--color-red);
-  }
-  .lock-icon {
-    width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    border: none;
-    background: transparent;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    flex-shrink: 0;
-    border-radius: var(--radius-container);
-  }
-  .lock-pill.unlocked .lock-icon {
+  .lock-btn.unlocked {
+    background: var(--color-green-bg);
+    border-color: var(--color-green);
     color: var(--color-green);
-  }
-  .pin-input {
-    width: 0;
-    height: 100%;
-    border: none;
-    background: transparent;
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
-    color: var(--color-text);
-    text-align: center;
-    outline: none;
-    padding: 0;
-    opacity: 0;
-    transition: width 200ms ease, opacity 150ms ease, padding 200ms ease;
-  }
-  .expanded .pin-input {
-    width: 80px;
-    padding: 0 var(--spacing-cell);
-    border-left: 1px solid var(--color-border);
-    opacity: 1;
-  }
-  .pin-input.error {
-    color: var(--color-red);
-  }
-  .pin-input.error::placeholder {
-    color: var(--color-red);
   }
 
   /* Cloud buttons */
