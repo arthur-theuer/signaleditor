@@ -118,9 +118,9 @@
   }
 </script>
 
-<div class="station-search">
-  <span class="code-preview" class:has-code={validCode}>{code || 'Code'}</span>
-  <div class="search-field-wrapper">
+<div class="station-field">
+  <span class="code-col" class:has-code={validCode}>{code || 'Code'}</span>
+  <div class="name-col">
     <input
       bind:this={searchInput}
       type="text"
@@ -140,34 +140,33 @@
       <span class="search-icon"><Search size={16} strokeWidth={1.5} /></span>
     {/if}
   </div>
-  {#if open && results.length > 0}
-    <div class="dropdown">
-      {#each results as entry, i}
-        <button
-          class="dropdown-item"
-          class:active={i === activeIndex}
-          onmousedown={() => select(entry)}
-          onmouseenter={() => activeIndex = i}
-          tabindex={-1}
-        >
-          <span class="item-code">{@html highlightMatch(entry.code, query.trim())}</span>
-          <span class="item-name">{@html highlightMatch(entry.name, query.trim())}</span>
-        </button>
-      {/each}
-    </div>
-  {/if}
 </div>
+{#if open && results.length > 0}
+  <div class="dropdown">
+    {#each results as entry, i}
+      <button
+        class="dropdown-item"
+        class:active={i === activeIndex}
+        onmousedown={() => select(entry)}
+        onmouseenter={() => activeIndex = i}
+        tabindex={-1}
+      >
+        <span class="code-col">{@html highlightMatch(entry.code, query.trim())}</span>
+        <span class="name-col">{@html highlightMatch(entry.name, query.trim())}</span>
+      </button>
+    {/each}
+  </div>
+{/if}
 
 <style>
-  .station-search {
+  .station-field {
     display: flex;
-    flex-wrap: wrap;
     height: 100%;
     width: 100%;
-    position: relative;
   }
 
-  .code-preview {
+  /* Shared two-column layout for field and dropdown rows */
+  .code-col {
     width: var(--spacing-row);
     flex: none;
     display: flex;
@@ -177,15 +176,15 @@
     font-family: var(--font-mono);
     color: var(--color-text-muted);
   }
-  .code-preview.has-code {
+  .code-col.has-code {
     color: var(--color-text);
   }
-
-  .search-field-wrapper {
+  .name-col {
     flex: 1;
     min-width: 0;
     display: flex;
     align-items: center;
+    position: relative;
     border-left: 1px solid var(--color-border);
   }
 
@@ -216,26 +215,35 @@
     color: var(--color-text-muted);
     pointer-events: none;
   }
-  .search-field-wrapper:focus-within .search-icon :global(svg) {
+  .station-field:focus-within .search-icon :global(svg) {
     stroke-width: 3;
   }
 
-  /* Connected dropdown: flush with field, no gap, shared border edge */
+  /*
+   * Dropdown: positioned from .hl-wrap (nearest positioned ancestor).
+   * Uses 2px focus-colored border that merges with the .hl-wrap::after
+   * focus ring — the ::after (z-index 3) covers the dropdown's top
+   * border, creating a seamless connected appearance.
+   * The -1px side offsets match the ::after's inset: -1px pattern.
+   */
   .dropdown {
     position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 50;
+    top: calc(100% + 1px);
+    left: -1px;
+    right: -1px;
+    z-index: 2;
     background: var(--color-bg-raised);
-    border: var(--card-border);
-    border-top: none;
+    border: 2px solid var(--color-focus);
     border-radius: 0 0 var(--radius-card) var(--radius-card);
     overflow: hidden;
   }
 
-  /* Remove parent .hl-wrap bottom rounding when dropdown is open */
+  /* Remove parent bottom rounding when dropdown is open */
   :global(.hl-wrap:has(.dropdown)) {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+  :global(.hl-wrap:has(.dropdown))::after {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
@@ -253,24 +261,17 @@
     cursor: pointer;
     text-align: left;
   }
-  .dropdown-item.active {
-    background: var(--color-focus-bg);
+  .dropdown-item .code-col {
+    font-size: var(--text-preview);
   }
-
-  .item-code {
-    width: var(--spacing-row);
-    flex: none;
-    text-align: center;
-  }
-
-  .item-name {
-    flex: 1;
-    min-width: 0;
+  .dropdown-item .name-col {
     padding: 0 var(--spacing-cell);
-    border-left: 1px solid var(--color-border);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+  .dropdown-item.active {
+    background: var(--color-focus-bg);
   }
 
   .dropdown-item :global(mark) {
