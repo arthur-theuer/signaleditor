@@ -96,3 +96,13 @@ export const MELDUNG_FARBEN: Record<string, string> = {
 export const BAHNHOF_FARBEN = ['#2e7d32', '#f9a825'] as const;
 
 export { STATIONEN } from './stationen';
+
+// Reverse lookup: station name (lowercase) → code
+import { STATIONEN as _ST } from './stationen';
+export const STATION_BY_NAME: Record<string, string> = {};
+export const STATION_NAMES: string[] = [];
+for (const [code, name] of Object.entries(_ST)) {
+  const key = name.toLowerCase();
+  STATION_BY_NAME[key] = code;
+  STATION_NAMES.push(key);
+}

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Editordaten, Streckenmeta, Routenmeta } from '../lib/types';
   import { isStreckendaten, dateiId } from '../lib/types';
-  import { STATIONEN } from '../lib/constants';
+  import { STATIONEN, STATION_BY_NAME, STATION_NAMES } from '../lib/constants';
 
   let {
     data = $bindable(),
@@ -46,6 +46,28 @@
     return STATIONEN[code.toUpperCase()] || '';
   }
 
+  function handleNameSearch(e: Event, setter: (code: string) => void) {
+    const input = e.target as HTMLInputElement;
+    const query = input.value.toLowerCase().trim();
+    if (!query) return;
+    // Exact match first, then prefix match
+    const exact = STATION_BY_NAME[query];
+    if (exact) { setter(exact); return; }
+    const match = STATION_NAMES.find(n => n.startsWith(query));
+    if (match) setter(STATION_BY_NAME[match]);
+  }
+
+  function handleNameKeydown(e: KeyboardEvent, setter: (code: string) => void, currentCode: string) {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      (e.target as HTMLInputElement).value = STATIONEN[currentCode.toUpperCase()] || '';
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      handleNameSearch(e, setter);
+      (e.target as HTMLInputElement).blur();
+    }
+  }
+
   const primaryClass = 'daten-field flex flex-col flex-1 min-w-0 sm:order-0 sm:flex-none sm:basis-[calc(50%-var(--spacing-card)/2)] lg:flex-1';
   const secondaryClass = 'daten-field flex flex-col flex-1 min-w-0 sm:order-1 lg:order-none';
 
@@ -78,15 +100,33 @@
     <div class={secondaryClass}>
       <label for="meta-von">Von</label>
       <span class="hl-wrap">
-        <input id="meta-von" type="text" bind:value={data.meta.von} placeholder="Code" class="code-input" />
-        <span class="station-preview" class:has-value={data.meta.von && STATIONEN[data.meta.von.toUpperCase()]}>{stationPreview(data.meta.von, 'OL')}</span>
+        <input id="meta-von" type="text" bind:value={data.meta.von} placeholder="Code" class="code-input" autocomplete="off" autocorrect="off" spellcheck="false" />
+        <input
+          type="text"
+          class="station-name-input"
+          value={stationPreview(data.meta.von, 'OL')}
+          class:has-value={data.meta.von && STATIONEN[data.meta.von.toUpperCase()]}
+          placeholder="z.B. Olten"
+          onchange={(e) => handleNameSearch(e, v => data.meta.von = v)}
+          onkeydown={(e) => handleNameKeydown(e, v => data.meta.von = v, data.meta.von)}
+          autocomplete="off" autocorrect="off" spellcheck="false"
+        />
       </span>
     </div>
     <div class={secondaryClass}>
       <label for="meta-nach">Nach</label>
       <span class="hl-wrap">
-        <input id="meta-nach" type="text" bind:value={data.meta.nach} placeholder="Code" class="code-input" />
-        <span class="station-preview" class:has-value={data.meta.nach && STATIONEN[data.meta.nach.toUpperCase()]}>{stationPreview(data.meta.nach, 'AA')}</span>
+        <input id="meta-nach" type="text" bind:value={data.meta.nach} placeholder="Code" class="code-input" autocomplete="off" autocorrect="off" spellcheck="false" />
+        <input
+          type="text"
+          class="station-name-input"
+          value={stationPreview(data.meta.nach, 'AA')}
+          class:has-value={data.meta.nach && STATIONEN[data.meta.nach.toUpperCase()]}
+          placeholder="z.B. Aarau"
+          onchange={(e) => handleNameSearch(e, v => data.meta.nach = v)}
+          onkeydown={(e) => handleNameKeydown(e, v => data.meta.nach = v, data.meta.nach)}
+          autocomplete="off" autocorrect="off" spellcheck="false"
+        />
       </span>
     </div>
     <div class={secondaryClass}>
@@ -153,21 +193,24 @@
     text-transform: uppercase;
     text-align: center;
   }
-  .station-preview {
+  .station-name-input {
     flex: 1;
     min-width: 0;
-    display: flex;
-    align-items: center;
     padding: 0 var(--spacing-cell);
+    border: none;
     border-left: 1px solid var(--color-border);
     font-size: var(--text-input);
     font-family: var(--font-mono);
+    height: var(--spacing-unit);
+    line-height: var(--spacing-unit);
     color: var(--color-text-muted);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    border-radius: 0 0 var(--radius-card) 0;
   }
-  .station-preview.has-value {
+  .station-name-input:focus { outline: none; }
+  .station-name-input.has-value {
     color: var(--color-text-secondary);
   }
   .header-id {
