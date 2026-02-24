@@ -242,12 +242,12 @@
     overflow: hidden;
   }
 
-  /* Remove parent bottom rounding when dropdown is open */
-  :global(.hl-wrap:has(.dropdown)) {
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-  }
-  :global(.hl-wrap:has(.dropdown))::after {
+  /* Remove bottom rounding from all ancestors when dropdown is open */
+  :global(.hl-wrap:has(.dropdown)),
+  :global(.hl-wrap:has(.dropdown))::after,
+  :global(.daten-field:has(.dropdown)),
+  :global(.signal-cell:has(.dropdown)),
+  :global(.knoten-search-wrapper:has(.dropdown)) {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
