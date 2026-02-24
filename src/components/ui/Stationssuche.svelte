@@ -22,7 +22,47 @@
     return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   }
 
-  const entries = Object.entries(STATIONEN).map(([c, n]) => ({
+  // Return matched character indices for a substring match, or null
+  function substringIndices(folded: string, q: string): number[] | null {
+    const idx = folded.indexOf(q);
+    if (idx === -1) return null;
+    return Array.from({ length: q.length }, (_, i) => idx + i);
+  }
+
+  // Return matched character indices for a fuzzy match, or null.
+  // Greedy left-to-right: each query char must appear after the previous.
+  function fuzzyIndices(folded: string, q: string): number[] | null {
+    const indices: number[] = [];
+    let pos = 0;
+    for (const ch of q) {
+      const idx = folded.indexOf(ch, pos);
+      if (idx === -1) return null;
+      indices.push(idx);
+      pos = idx + 1;
+    }
+    return indices;
+  }
+
+  // Render text with matched indices wrapped in <mark>.
+  // Groups consecutive indices into single <mark> spans.
+  function highlight(text: string, indices: number[]): string {
+    if (!indices.length) return text;
+    const set = new Set(indices);
+    let result = '';
+    let inMark = false;
+    for (let i = 0; i < text.length; i++) {
+      if (set.has(i) && !inMark) { result += '<mark>'; inMark = true; }
+      else if (!set.has(i) && inMark) { result += '</mark>'; inMark = false; }
+      result += text[i];
+    }
+    if (inMark) result += '</mark>';
+    return result;
+  }
+
+  type Entry = { code: string; name: string; nameFolded: string; codeFolded: string };
+  type Result = Entry & { nameIndices: number[]; codeIndices: number[] };
+
+  const entries: Entry[] = Object.entries(STATIONEN).map(([c, n]) => ({
     code: c,
     name: n,
     nameFolded: fold(n),
@@ -32,30 +72,44 @@
   let resolvedName = $derived(STATIONEN[code] || '');
   let validCode = $derived(!!resolvedName);
 
-  let results = $derived.by(() => {
+  let results: Result[] = $derived.by(() => {
     const q = fold(query.trim());
     if (!q) return [];
-    const exact: typeof entries = [];
-    const prefix: typeof entries = [];
-    const substring: typeof entries = [];
+    const exact: Result[] = [];
+    const prefix: Result[] = [];
+    const substring: Result[] = [];
+    const fuzzy: Result[] = [];
     for (const e of entries) {
+      const ni = substringIndices(e.nameFolded, q);
+      const ci = substringIndices(e.codeFolded, q);
       if (e.nameFolded === q || e.codeFolded === q) {
-        exact.push(e);
+        exact.push({ ...e, nameIndices: ni || [], codeIndices: ci || [] });
       } else if (e.nameFolded.startsWith(q) || e.codeFolded.startsWith(q)) {
-        prefix.push(e);
-      } else if (e.nameFolded.includes(q) || e.codeFolded.includes(q)) {
-        substring.push(e);
+        prefix.push({ ...e, nameIndices: ni || [], codeIndices: ci || [] });
+      } else if (ni || ci) {
+        substring.push({ ...e, nameIndices: ni || [], codeIndices: ci || [] });
+      } else {
+        const nf = fuzzyIndices(e.nameFolded, q);
+        const cf = fuzzyIndices(e.codeFolded, q);
+        if (nf || cf) {
+          fuzzy.push({ ...e, nameIndices: nf || [], codeIndices: cf || [] });
+        }
       }
     }
-    return [...exact, ...prefix, ...substring].slice(0, 6);
+    // Sort fuzzy by match compactness (tighter span = better)
+    fuzzy.sort((a, b) => {
+      const spanA = Math.min(
+        a.nameIndices.length ? a.nameIndices[a.nameIndices.length - 1] - a.nameIndices[0] : Infinity,
+        a.codeIndices.length ? a.codeIndices[a.codeIndices.length - 1] - a.codeIndices[0] : Infinity,
+      );
+      const spanB = Math.min(
+        b.nameIndices.length ? b.nameIndices[b.nameIndices.length - 1] - b.nameIndices[0] : Infinity,
+        b.codeIndices.length ? b.codeIndices[b.codeIndices.length - 1] - b.codeIndices[0] : Infinity,
+      );
+      return spanA - spanB;
+    });
+    return [...exact, ...prefix, ...substring, ...fuzzy].slice(0, 6);
   });
-
-  function highlightMatch(text: string, q: string): string {
-    if (!q) return text;
-    const idx = fold(text).indexOf(fold(q));
-    if (idx === -1) return text;
-    return `${text.slice(0, idx)}<mark>${text.slice(idx, idx + q.length)}</mark>${text.slice(idx + q.length)}`;
-  }
 
   function select(entry: { code: string }) {
     code = entry.code;
@@ -158,8 +212,8 @@
         onmouseenter={() => activeIndex = i}
         tabindex={-1}
       >
-        <span class="code-col">{@html highlightMatch(entry.code, query.trim())}</span>
-        <span class="name-col">{@html highlightMatch(entry.name, query.trim())}</span>
+        <span class="code-col">{@html highlight(entry.code, entry.codeIndices)}</span>
+        <span class="name-col">{@html highlight(entry.name, entry.nameIndices)}</span>
       </button>
     {/each}
   </div>
