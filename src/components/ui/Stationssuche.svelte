@@ -25,7 +25,7 @@
       codeLower: c.toLowerCase(),
     }));
 
-  let resolvedName = $derived(STATIONEN[code.toUpperCase()] || '');
+  let resolvedName = $derived(STATIONEN[code] || '');
   let validCode = $derived(!!resolvedName);
 
   let results = $derived.by(() => {
@@ -119,7 +119,7 @@
 </script>
 
 <div class="station-search">
-  <span class="code-preview" class:has-code={validCode}>{code.toUpperCase() || 'Code'}</span>
+  <span class="code-preview" class:has-code={validCode}>{code || 'Code'}</span>
   <div class="search-field-wrapper">
     <input
       bind:this={searchInput}
@@ -139,30 +139,32 @@
     {#if !validCode}
       <span class="search-icon"><Search size={16} strokeWidth={1.5} /></span>
     {/if}
-    {#if open && results.length > 0}
-      <div class="dropdown">
-        {#each results as entry, i}
-          <button
-            class="dropdown-item"
-            class:active={i === activeIndex}
-            onmousedown={() => select(entry)}
-            onmouseenter={() => activeIndex = i}
-            tabindex={-1}
-          >
-            <span class="item-name">{@html highlightMatch(entry.name, query.trim())}</span>
-            <span class="item-code">{@html highlightMatch(entry.code, query.trim())}</span>
-          </button>
-        {/each}
-      </div>
-    {/if}
   </div>
+  {#if open && results.length > 0}
+    <div class="dropdown">
+      {#each results as entry, i}
+        <button
+          class="dropdown-item"
+          class:active={i === activeIndex}
+          onmousedown={() => select(entry)}
+          onmouseenter={() => activeIndex = i}
+          tabindex={-1}
+        >
+          <span class="item-code">{@html highlightMatch(entry.code, query.trim())}</span>
+          <span class="item-name">{@html highlightMatch(entry.name, query.trim())}</span>
+        </button>
+      {/each}
+    </div>
+  {/if}
 </div>
 
 <style>
   .station-search {
     display: flex;
+    flex-wrap: wrap;
     height: 100%;
     width: 100%;
+    position: relative;
   }
 
   .code-preview {
@@ -173,7 +175,6 @@
     justify-content: center;
     font-size: var(--text-input);
     font-family: var(--font-mono);
-    text-transform: uppercase;
     color: var(--color-text-muted);
   }
   .code-preview.has-code {
@@ -183,7 +184,6 @@
   .search-field-wrapper {
     flex: 1;
     min-width: 0;
-    position: relative;
     display: flex;
     align-items: center;
     border-left: 1px solid var(--color-border);
@@ -220,24 +220,31 @@
     stroke-width: 3;
   }
 
+  /* Connected dropdown: flush with field, no gap, shared border edge */
   .dropdown {
     position: absolute;
     top: 100%;
-    left: -1px;
+    left: 0;
     right: 0;
     z-index: 50;
     background: var(--color-bg-raised);
     border: var(--card-border);
-    border-radius: var(--radius-card);
+    border-top: none;
+    border-radius: 0 0 var(--radius-card) var(--radius-card);
     overflow: hidden;
-    margin-top: var(--spacing-card);
+  }
+
+  /* Remove parent .hl-wrap bottom rounding when dropdown is open */
+  :global(.hl-wrap:has(.dropdown)) {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
   }
 
   .dropdown-item {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: var(--spacing-xs) var(--spacing-cell);
+    padding: var(--spacing-xs) 0;
     border: none;
     background: transparent;
     font-size: var(--text-preview);
@@ -245,27 +252,30 @@
     color: var(--color-text);
     cursor: pointer;
     text-align: left;
-    gap: var(--spacing-cell);
   }
   .dropdown-item.active {
     background: var(--color-focus-bg);
   }
 
+  .item-code {
+    width: var(--spacing-row);
+    flex: none;
+    text-align: center;
+  }
+
   .item-name {
     flex: 1;
     min-width: 0;
+    padding: 0 var(--spacing-cell);
+    border-left: 1px solid var(--color-border);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-  .item-code {
-    flex: none;
-    color: var(--color-text-muted);
-  }
 
   .dropdown-item :global(mark) {
     background: transparent;
-    color: inherit;
+    color: var(--color-focus);
     font-weight: var(--font-weight-bold);
     padding: 0;
   }
