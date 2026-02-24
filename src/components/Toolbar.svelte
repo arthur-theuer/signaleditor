@@ -196,9 +196,9 @@
   {/if}
 
   <!-- Lock pill (expands to include PIN input) -->
-  <div class="lock-pill" class:expanded={showPinInput} class:unlocked={loggedIn}>
+  <div class="lock-pill hl" class:expanded={showPinInput} class:unlocked={loggedIn}>
     <button
-      class="lock-icon hl"
+      class="lock-icon"
       onclick={handleLockClick}
       title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
     >
