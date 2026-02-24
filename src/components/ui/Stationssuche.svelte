@@ -12,13 +12,11 @@
     onchange?: () => void;
   } = $props();
 
-  // --- search state ---
   let query = $state('');
   let open = $state(false);
   let activeIndex = $state(0);
-  let nameInput: HTMLInputElement | undefined = $state();
+  let searchInput: HTMLInputElement | undefined = $state();
 
-  // Precomputed lowercase entries for search
   const entries: { code: string; name: string; nameLower: string; codeLower: string }[] =
     Object.entries(STATIONEN).map(([c, n]) => ({
       code: c,
@@ -33,7 +31,6 @@
   let results = $derived.by(() => {
     const q = query.toLowerCase().trim();
     if (!q) return [];
-    // Partition into prefix matches and substring-only matches
     const prefix: typeof entries = [];
     const substring: typeof entries = [];
     for (const e of entries) {
@@ -48,13 +45,9 @@
 
   function highlightMatch(text: string, q: string): string {
     if (!q) return text;
-    const lower = text.toLowerCase();
-    const idx = lower.indexOf(q.toLowerCase());
+    const idx = text.toLowerCase().indexOf(q.toLowerCase());
     if (idx === -1) return text;
-    const before = text.slice(0, idx);
-    const match = text.slice(idx, idx + q.length);
-    const after = text.slice(idx + q.length);
-    return `${before}<mark>${match}</mark>${after}`;
+    return `${text.slice(0, idx)}<mark>${text.slice(idx, idx + q.length)}</mark>${text.slice(idx + q.length)}`;
   }
 
   function select(entry: { code: string }) {
@@ -64,53 +57,39 @@
     onchange?.();
   }
 
-  function handleCodeInput() {
-    code = code.toUpperCase();
-    onchange?.();
-  }
-
-  function handleCodeKeydown(e: KeyboardEvent) {
-    // Tab-skip: if code is valid, skip the name field
-    if (e.key === 'Tab' && !e.shiftKey && validCode) {
-      // Let default Tab behavior proceed — name field has tabindex -1
-    }
-  }
-
-  function handleNameFocus() {
+  function handleFocus() {
     if (validCode) {
-      // Pre-fill with resolved name so user can see what they're replacing
       query = resolvedName;
-      nameInput?.select();
+      searchInput?.select();
     }
     open = true;
     activeIndex = 0;
   }
 
-  function handleNameBlur() {
-    // Delay to allow click on dropdown item
+  function handleBlur() {
     setTimeout(() => {
       open = false;
       query = '';
     }, 150);
   }
 
-  function handleNameInput() {
+  function handleInput() {
     open = true;
     activeIndex = 0;
   }
 
   function focusNextTabbable() {
-    if (!nameInput) return;
+    if (!searchInput) return;
     const all = Array.from(
       document.querySelectorAll<HTMLElement>(
         'input:not([tabindex="-1"]):not([disabled]), button:not([tabindex="-1"]):not([disabled]), select:not([tabindex="-1"]):not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])'
       )
     ).filter(el => el.offsetParent !== null);
-    const idx = all.indexOf(nameInput);
+    const idx = all.indexOf(searchInput);
     if (idx >= 0 && idx < all.length - 1) all[idx + 1].focus();
   }
 
-  function handleNameKeydown(e: KeyboardEvent) {
+  function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (results.length) activeIndex = (activeIndex + 1) % results.length;
@@ -127,41 +106,31 @@
       if (open && results.length) {
         e.preventDefault();
         select(results[activeIndex]);
-        nameInput?.blur();
+        searchInput?.blur();
       }
     } else if (e.key === 'Escape') {
       e.preventDefault();
-      open = false;
+      code = '';
       query = '';
-      nameInput?.blur();
+      open = false;
+      onchange?.();
     }
   }
 </script>
 
 <div class="station-search">
-  <input
-    type="text"
-    class="code-field"
-    bind:value={code}
-    oninput={handleCodeInput}
-    onkeydown={handleCodeKeydown}
-    placeholder="Code"
-    autocomplete="off"
-    autocorrect="off"
-    spellcheck="false"
-  />
-  <div class="name-field-wrapper">
+  <span class="code-preview" class:has-code={validCode}>{code.toUpperCase() || ''}</span>
+  <div class="search-field-wrapper">
     <input
-      bind:this={nameInput}
+      bind:this={searchInput}
       type="text"
-      class="name-field"
+      class="search-field"
       class:has-value={validCode && !open}
-      tabindex={validCode ? -1 : 0}
       value={open ? query : (resolvedName || '')}
-      oninput={(e) => { query = (e.target as HTMLInputElement).value; handleNameInput(); }}
-      onfocus={handleNameFocus}
-      onblur={handleNameBlur}
-      onkeydown={handleNameKeydown}
+      oninput={(e) => { query = (e.target as HTMLInputElement).value; handleInput(); }}
+      onfocus={handleFocus}
+      onblur={handleBlur}
+      onkeydown={handleKeydown}
       placeholder={placeholder}
       autocomplete="off"
       autocorrect="off"
@@ -196,25 +165,22 @@
     width: 100%;
   }
 
-  .code-field {
+  .code-preview {
     width: var(--spacing-row);
     flex: none;
-    border: none;
-    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: var(--text-input);
     font-family: var(--font-mono);
     text-transform: uppercase;
-    text-align: center;
-    outline: none;
-    color: var(--color-text);
-    height: 100%;
-  }
-  .code-field::placeholder {
-    text-transform: none;
     color: var(--color-text-muted);
   }
+  .code-preview.has-code {
+    color: var(--color-text);
+  }
 
-  .name-field-wrapper {
+  .search-field-wrapper {
     flex: 1;
     min-width: 0;
     position: relative;
@@ -223,7 +189,7 @@
     border-left: 1px solid var(--color-border);
   }
 
-  .name-field {
+  .search-field {
     flex: 1;
     min-width: 0;
     border: none;
@@ -238,7 +204,7 @@
     outline: none;
     height: 100%;
   }
-  .name-field.has-value {
+  .search-field.has-value {
     color: var(--color-text-secondary);
   }
 
@@ -250,8 +216,7 @@
     color: var(--color-text-muted);
     pointer-events: none;
   }
-  /* Thicken icon on focus, matching global button:hover svg pattern */
-  .name-field-wrapper:focus-within .search-icon :global(svg) {
+  .search-field-wrapper:focus-within .search-icon :global(svg) {
     stroke-width: 3;
   }
 
