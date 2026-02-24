@@ -195,33 +195,32 @@
     <div class="flex-1"></div>
   {/if}
 
-  <!-- PIN inline input -->
-  {#if showPinInput}
-    <input
-      bind:this={pinInputEl}
-      bind:value={pinValue}
-      class="pin-input px-cell"
-      class:error={pinError}
-      type="password"
-      placeholder="PIN"
-      onkeydown={(e) => { if (e.key === 'Enter') submitPin(); if (e.key === 'Escape') cancelPin(); }}
-      onblur={cancelPin}
-    />
-  {/if}
-
-  <!-- Lock (right-aligned) -->
-  <button
-    class="tb-btn lock-btn hl"
-    class:unlocked={loggedIn}
-    onclick={handleLockClick}
-    title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
-  >
-    {#if loggedIn}
-      <LockOpen size={16} strokeWidth={1.5} /><Hinweis text="Abmelden" />
-    {:else}
-      <Lock size={16} strokeWidth={1.5} /><Hinweis text="Anmelden" />
+  <!-- Lock pill (expands to include PIN input) -->
+  <div class="lock-pill" class:expanded={showPinInput} class:unlocked={loggedIn}>
+    <button
+      class="lock-icon hl"
+      onclick={handleLockClick}
+      title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
+    >
+      {#if loggedIn}
+        <LockOpen size={16} strokeWidth={1.5} />
+      {:else}
+        <Lock size={16} strokeWidth={1.5} />
+      {/if}
+    </button>
+    {#if showPinInput}
+      <input
+        bind:this={pinInputEl}
+        bind:value={pinValue}
+        class="pin-input"
+        class:error={pinError}
+        type="password"
+        placeholder="PIN"
+        onkeydown={(e) => { if (e.key === 'Enter') submitPin(); if (e.key === 'Escape') cancelPin(); }}
+        onblur={cancelPin}
+      />
     {/if}
-  </button>
+  </div>
 </div>
 
 <style>
@@ -291,34 +290,58 @@
     border-color: var(--color-green);
   }
 
-  /* Lock */
-  .lock-btn.unlocked {
-    background: var(--color-green-bg);
-    border-color: var(--color-green);
-    color: var(--color-green);
-  }
-
-
-  /* PIN input (inline in toolbar) */
-  .pin-input {
-    width: 100px;
+  /* Lock pill — expands to include PIN input */
+  .lock-pill {
+    display: flex;
+    align-items: center;
     height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     border: var(--card-border);
     border-radius: var(--radius-container);
     background: var(--color-bg-raised);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .lock-pill.unlocked {
+    background: var(--color-green-bg);
+    border-color: var(--color-green);
+  }
+  .lock-pill.expanded {
+    border-color: var(--color-focus);
+  }
+  .lock-pill.expanded:has(.pin-input.error) {
+    border-color: var(--color-red);
+  }
+  .lock-icon {
+    width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    flex-shrink: 0;
+    border-radius: var(--radius-container);
+  }
+  .lock-pill.unlocked .lock-icon {
+    color: var(--color-green);
+  }
+  .pin-input {
+    width: 80px;
+    height: 100%;
+    border: none;
+    border-left: 1px solid var(--color-border);
+    background: transparent;
     font-size: var(--text-input);
     font-family: var(--font-mono);
     color: var(--color-text);
     text-align: center;
     outline: none;
-  }
-  .pin-input:focus {
-    border: 2px solid var(--color-focus);
-    padding: 0 calc(var(--spacing-cell) - 1px);
+    padding: 0 var(--spacing-cell);
   }
   .pin-input.error {
-    border: 2px solid var(--color-red);
-    padding: 0 calc(var(--spacing-cell) - 1px);
     color: var(--color-red);
   }
   .pin-input.error::placeholder {
