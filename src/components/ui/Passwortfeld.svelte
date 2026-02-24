@@ -46,15 +46,17 @@
 </script>
 
 <div class="passwortfeld" class:open class:error>
-  <input
-    bind:this={inputEl}
-    bind:value
-    type="password"
-    placeholder="PIN"
-    tabindex={open ? 0 : -1}
-    onkeydown={(e) => { if (e.key === 'Enter') submit(); if (e.key === 'Escape') cancel(); }}
-    onblur={cancel}
-  />
+  <div class="cell">
+    <input
+      bind:this={inputEl}
+      bind:value
+      type="password"
+      placeholder="PIN"
+      tabindex={open ? 0 : -1}
+      onkeydown={(e) => { if (e.key === 'Enter') submit(); if (e.key === 'Escape') cancel(); }}
+      onblur={cancel}
+    />
+  </div>
 </div>
 
 <style>
@@ -67,8 +69,10 @@
   .passwortfeld.open {
     grid-template-columns: 1fr;
   }
-  .passwortfeld input {
-    min-width: 0;
+  .cell {
+    overflow: hidden;
+  }
+  .cell input {
     width: 80px;
     height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     border: var(--card-border);
@@ -82,16 +86,15 @@
     outline: none;
     padding: 0 var(--spacing-cell);
     box-sizing: border-box;
-    overflow: hidden;
   }
-  .passwortfeld.open input {
+  .passwortfeld.open .cell input {
     border-color: var(--color-focus);
   }
-  .error input {
+  .error .cell input {
     color: var(--color-red);
     border-color: var(--color-red) !important;
   }
-  .error input::placeholder {
+  .error .cell input::placeholder {
     color: var(--color-red);
   }
 </style>
