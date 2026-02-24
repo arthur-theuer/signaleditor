@@ -96,16 +96,19 @@
     return s;
   });
 
+  let resolveSeq = 0;
+
   $effect(() => {
     const datei = eintrag.import.datei;
+    const seq = ++resolveSeq;
     if (!datei) {
       resolveResult = null;
       return;
     }
     resolveImport(eintrag.import).then(res => {
-      resolveResult = res;
+      if (seq === resolveSeq) resolveResult = res;
     }).catch(err => {
-      resolveResult = { signale: [], error: (err as Error).message };
+      if (seq === resolveSeq) resolveResult = { signale: [], error: (err as Error).message };
     });
   });
 

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Trash2, Check } from 'lucide-svelte';
   import { listFiles, loadFile, deleteFile, type FileInfo, type StoragePrefix } from '../lib/api';
+  import { invalidateImportCache } from '../lib/sources';
 
   let {
     onload,
@@ -52,6 +53,7 @@
     if (!confirm(`"${file.name}" wirklich löschen?`)) return;
     try {
       await deleteFile(activeTab, file.name);
+      invalidateImportCache(file.name);
       await refresh();
     } catch (e: any) {
       alert(`Löschen fehlgeschlagen: ${e.message}`);

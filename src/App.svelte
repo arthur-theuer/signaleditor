@@ -4,7 +4,7 @@
   import { tick } from 'svelte';
   import { parseYAMLContent, extractYAMLFromHTML } from './lib/yaml';
   import { History } from './lib/history.svelte';
-  import { autoStitchImporte } from './lib/sources';
+  import { autoStitchImporte, invalidateImportCache } from './lib/sources';
   import { generateYAML } from './lib/yaml';
   import { downloadMeldungenHTML } from './lib/reports';
   import { isLoggedIn, login, logout } from './lib/auth.svelte';
@@ -172,6 +172,7 @@
       currentFileName = fileName;
       dirty = false;
       saveStatus = 'saved';
+      invalidateImportCache(fileName);
     } catch (e: any) {
       saveStatus = 'dirty';
       alert(`Speichern fehlgeschlagen: ${e.message}`);

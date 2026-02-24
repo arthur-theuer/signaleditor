@@ -5,6 +5,16 @@ import { loadFile } from './api';
 
 const importCache: Record<string, Editordaten> = {};
 
+/** Remove a file from the import cache so the next resolve re-fetches it */
+export function invalidateImportCache(datei: string): void {
+  delete importCache[datei];
+}
+
+/** Clear the entire import cache */
+export function clearImportCache(): void {
+  for (const key of Object.keys(importCache)) delete importCache[key];
+}
+
 export type ResolveResult = {
   signale: Eintrag[];
   meta?: Editordaten['meta'];
