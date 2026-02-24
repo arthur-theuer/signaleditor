@@ -233,7 +233,7 @@
     right: -1px;
     z-index: 2;
     background: var(--color-bg-raised);
-    border: 2px solid var(--color-focus);
+    border: var(--card-border);
     border-radius: 0 0 var(--radius-card) var(--radius-card);
     overflow: hidden;
   }
