@@ -316,7 +316,7 @@
   /* Default: show full text, hide abbreviations */
   .tier-abbrev { display: none; }
 
-  @container (max-width: 150px) {
+  @container (max-width: 180px) {
     .tier-full { display: none; }
     .tier-abbrev { display: inline; }
     .signal-input { color: transparent; }
