@@ -35,16 +35,19 @@
   let results = $derived.by(() => {
     const q = fold(query.trim());
     if (!q) return [];
+    const exact: typeof entries = [];
     const prefix: typeof entries = [];
     const substring: typeof entries = [];
     for (const e of entries) {
-      if (e.nameFolded.startsWith(q) || e.codeFolded.startsWith(q)) {
+      if (e.nameFolded === q || e.codeFolded === q) {
+        exact.push(e);
+      } else if (e.nameFolded.startsWith(q) || e.codeFolded.startsWith(q)) {
         prefix.push(e);
       } else if (e.nameFolded.includes(q) || e.codeFolded.includes(q)) {
         substring.push(e);
       }
     }
-    return [...prefix, ...substring].slice(0, 6);
+    return [...exact, ...prefix, ...substring].slice(0, 6);
   });
 
   function highlightMatch(text: string, q: string): string {
