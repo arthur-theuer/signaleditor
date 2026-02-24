@@ -225,7 +225,7 @@
   }
   .file-name {
     font-weight: var(--font-weight-medium);
-    font-family: monospace;
+    font-family: var(--font-mono);
   }
   .file-date {
     color: var(--color-text-secondary);

@@ -75,6 +75,8 @@ export function isImporteintrag(e: Eintrag): e is Importeintrag {
 
 export type Dateityp = 'strecke' | 'route';
 
+export type StoragePrefix = 'strecken' | 'routen';
+
 export type Streckenmeta = {
   strecke: string;
   von: string;

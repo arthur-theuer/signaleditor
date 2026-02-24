@@ -1,4 +1,6 @@
-export type StoragePrefix = 'strecken' | 'routen';
+import type { StoragePrefix } from './types';
+
+export type { StoragePrefix };
 
 export type FileInfo = {
   name: string;

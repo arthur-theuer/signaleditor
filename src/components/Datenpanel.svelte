@@ -137,7 +137,7 @@
     padding: 0 var(--spacing-cell);
     border: none;
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     height: var(--spacing-unit);
     line-height: var(--spacing-unit);
     border-radius: 0 0 var(--radius-card) var(--radius-card);
@@ -161,7 +161,7 @@
     padding: 0 var(--spacing-cell);
     border-left: 1px solid var(--color-border);
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     color: var(--color-text-muted);
     overflow: hidden;
     white-space: nowrap;
@@ -175,7 +175,7 @@
     color: var(--color-text-muted);
     font-size: var(--text-input);
     margin-left: auto;
-    font-family: monospace;
+    font-family: var(--font-mono);
     text-transform: uppercase;
   }
 </style>

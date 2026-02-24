@@ -42,7 +42,7 @@
     border: none;
     background: transparent;
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     display: flex;
     align-items: center;
   }

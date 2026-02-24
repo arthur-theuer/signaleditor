@@ -47,7 +47,7 @@
     border: none;
     background: transparent;
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     text-transform: uppercase;
     width: 100%;
     text-align: center;
@@ -64,7 +64,7 @@
     height: 100%;
     border-left: 1px solid var(--color-border);
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     color: var(--color-text-muted);
     pointer-events: none;
   }

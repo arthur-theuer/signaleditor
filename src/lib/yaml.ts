@@ -16,23 +16,32 @@ import {
   emptyRoutendaten,
 } from './types';
 
+/** Quote a YAML string value if it contains characters that would break bare output */
+function yamlStr(value: string): string {
+  if (!value) return value;
+  if (/[:#\[\]{}&*!|>'"%@`]/.test(value) || value !== value.trim() || /^\s*$/.test(value)) {
+    return `"${value.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
+  }
+  return value;
+}
+
 export function generateYAML(data: Editordaten): string {
   let yaml = `typ: ${data.typ}\n`;
 
   if (isStreckendaten(data)) {
     const m = data.meta;
-    yaml += `strecke: ${m.strecke}\n`;
-    yaml += `von: ${m.von}\n`;
-    yaml += `nach: ${m.nach}\n`;
-    yaml += `via: ${m.via}\n`;
-    yaml += `name: ${m.name}\n`;
+    yaml += `strecke: ${yamlStr(m.strecke)}\n`;
+    yaml += `von: ${yamlStr(m.von)}\n`;
+    yaml += `nach: ${yamlStr(m.nach)}\n`;
+    yaml += `via: ${yamlStr(m.via)}\n`;
+    yaml += `name: ${yamlStr(m.name)}\n`;
   } else {
     const m = data.meta;
-    yaml += `linie: ${m.linie}\n`;
-    yaml += `von: ${m.von}\n`;
-    yaml += `nach: ${m.nach}\n`;
-    yaml += `via: ${m.via}\n`;
-    yaml += `name: ${m.name}\n`;
+    yaml += `linie: ${yamlStr(m.linie)}\n`;
+    yaml += `von: ${yamlStr(m.von)}\n`;
+    yaml += `nach: ${yamlStr(m.nach)}\n`;
+    yaml += `via: ${yamlStr(m.via)}\n`;
+    yaml += `name: ${yamlStr(m.name)}\n`;
   }
 
   yaml += `\nsignale:\n`;
@@ -41,13 +50,13 @@ export function generateYAML(data: Editordaten): string {
     yaml += `  - id: ${sig.id}\n`;
 
     if (isNotizeintrag(sig)) {
-      yaml += `    notiz: ${sig.notiz}\n`;
+      yaml += `    notiz: ${yamlStr(sig.notiz)}\n`;
     } else if (isAbzweigungseintrag(sig)) {
       const abz = sig.abzweigung;
       const dirKey = abz.von_nach === 'von' ? 'von' : 'nach';
       yaml += `    abzweigung: { strecke: "${abz.strecke}", ${dirKey}: "${abz.richtung}", seite: "${abz.seite}" }\n`;
     } else if (isKnoteneintrag(sig)) {
-      yaml += `    knoten: ${sig.knoten}\n`;
+      yaml += `    knoten: ${yamlStr(sig.knoten)}\n`;
     } else if (isImporteintrag(sig)) {
       const q = sig.import;
       const parts = [`datei: ${q.datei}`];
@@ -55,11 +64,11 @@ export function generateYAML(data: Editordaten): string {
       if (q.bis) parts.push(`bis: ${q.bis}`);
       yaml += `    import: { ${parts.join(', ')} }\n`;
     } else if (isSignaleintrag(sig)) {
-      if (sig.signal_1) yaml += `    signal_1: ${sig.signal_1}\n`;
-      if (sig.signal_1b) yaml += `    signal_1b: ${sig.signal_1b}\n`;
-      if (sig.signal_2) yaml += `    signal_2: ${sig.signal_2}\n`;
-      if (sig.signal_2b) yaml += `    signal_2b: ${sig.signal_2b}\n`;
-      if (sig.bahnhof) yaml += `    bahnhof: ${sig.bahnhof}\n`;
+      if (sig.signal_1) yaml += `    signal_1: ${yamlStr(sig.signal_1)}\n`;
+      if (sig.signal_1b) yaml += `    signal_1b: ${yamlStr(sig.signal_1b)}\n`;
+      if (sig.signal_2) yaml += `    signal_2: ${yamlStr(sig.signal_2)}\n`;
+      if (sig.signal_2b) yaml += `    signal_2b: ${yamlStr(sig.signal_2b)}\n`;
+      if (sig.bahnhof) yaml += `    bahnhof: ${yamlStr(sig.bahnhof)}\n`;
     }
 
     if (sig.km !== undefined) yaml += `    km: ${sig.km}\n`;
@@ -67,6 +76,14 @@ export function generateYAML(data: Editordaten): string {
   });
 
   return yaml;
+}
+
+/** Strip surrounding double quotes and unescape if present */
+function unquoteYaml(value: string): string {
+  if (value.startsWith('"') && value.endsWith('"')) {
+    return value.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
+  }
+  return value;
 }
 
 export function parseYAMLContent(content: string): Editordaten {
@@ -86,7 +103,7 @@ export function parseYAMLContent(content: string): Editordaten {
     if (match) {
       const [, key, value] = match;
       if (key === 'typ') typ = value === 'route' ? 'route' : 'strecke';
-      else meta[key] = value;
+      else meta[key] = unquoteYaml(value);
     }
   }
 
@@ -168,7 +185,8 @@ function parseSignalField(trimmed: string, currentSignal: Record<string, any>): 
   } else {
     const match = trimmed.match(/^(\w+):\s*(.*)$/);
     if (match) {
-      const [, key, value] = match;
+      const [, key, rawValue] = match;
+      const value = unquoteYaml(rawValue);
       if (key === 'knoten') currentSignal.knoten = value;
       else if (key === 'notiz') currentSignal.notiz = value;
       else if (key === 'signal_1') currentSignal.signal_1 = value;

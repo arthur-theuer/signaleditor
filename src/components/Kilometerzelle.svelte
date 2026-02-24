@@ -96,7 +96,7 @@
     display: flex;
     justify-content: center;
     font-size: var(--text-preview);
-    font-family: monospace;
+    font-family: var(--font-mono);
     color: var(--color-text-muted);
     opacity: 0;
     padding: 0 var(--spacing-md);
@@ -114,7 +114,7 @@
     border: none;
     background: transparent;
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     text-align: center;
     width: 100%;
     box-sizing: border-box;

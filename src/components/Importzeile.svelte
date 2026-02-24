@@ -54,13 +54,13 @@
 
 
   // Derive start/end knoten from resolved signals
-  let firstKnoten = $derived(() => {
+  let firstKnoten = $derived.by(() => {
     if (!resolved) return null;
     const first = resolveResult!.signale[0];
     if (first && isKnoteneintrag(first)) return first.knoten;
     return null;
   });
-  let lastKnoten = $derived(() => {
+  let lastKnoten = $derived.by(() => {
     if (!resolved) return null;
     const entries = resolveResult!.signale;
     const last = entries[entries.length - 1];
@@ -68,8 +68,8 @@
     return null;
   });
 
-  let vonCode = $derived(eintrag.import.von || firstKnoten() || '');
-  let bisCode = $derived(eintrag.import.bis || lastKnoten() || '');
+  let vonCode = $derived(eintrag.import.von || firstKnoten || '');
+  let bisCode = $derived(eintrag.import.bis || lastKnoten || '');
 
   function formatStitch(von: string, bis: string, fmt: (code: string) => string): string {
     const v = von ? fmt(von) : '';

@@ -114,7 +114,7 @@
     border: none;
     background: transparent;
     font-size: var(--text-input);
-    font-family: monospace;
+    font-family: var(--font-mono);
     height: 100%;
     outline: none;
     color: var(--color-text);
