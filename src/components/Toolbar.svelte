@@ -208,18 +208,17 @@
         <Lock size={16} strokeWidth={1.5} />
       {/if}
     </button>
-    {#if showPinInput}
-      <input
-        bind:this={pinInputEl}
-        bind:value={pinValue}
-        class="pin-input"
-        class:error={pinError}
-        type="password"
-        placeholder="PIN"
-        onkeydown={(e) => { if (e.key === 'Enter') submitPin(); if (e.key === 'Escape') cancelPin(); }}
-        onblur={cancelPin}
-      />
-    {/if}
+    <input
+      bind:this={pinInputEl}
+      bind:value={pinValue}
+      class="pin-input"
+      class:error={pinError}
+      type="password"
+      placeholder="PIN"
+      tabindex={showPinInput ? 0 : -1}
+      onkeydown={(e) => { if (e.key === 'Enter') submitPin(); if (e.key === 'Escape') cancelPin(); }}
+      onblur={cancelPin}
+    />
   </div>
 </div>
 
@@ -300,6 +299,7 @@
     background: var(--color-bg-raised);
     overflow: hidden;
     flex-shrink: 0;
+    transition: border-color 200ms ease;
   }
   .lock-pill.unlocked {
     background: var(--color-green-bg);
@@ -329,17 +329,24 @@
     color: var(--color-green);
   }
   .pin-input {
-    width: 80px;
+    width: 0;
     height: 100%;
     border: none;
-    border-left: 1px solid var(--color-border);
     background: transparent;
     font-size: var(--text-input);
     font-family: var(--font-mono);
     color: var(--color-text);
     text-align: center;
     outline: none;
+    padding: 0;
+    opacity: 0;
+    transition: width 200ms ease, opacity 150ms ease, padding 200ms ease;
+  }
+  .expanded .pin-input {
+    width: 80px;
     padding: 0 var(--spacing-cell);
+    border-left: 1px solid var(--color-border);
+    opacity: 1;
   }
   .pin-input.error {
     color: var(--color-red);
