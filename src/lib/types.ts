@@ -122,8 +122,8 @@ export function isRoutendaten(d: Editordaten): d is Routendaten {
 export function dateiId(data: Editordaten): string {
   const { von, nach, via } = data.meta;
   const key = isStreckendaten(data) ? data.meta.strecke : data.meta.linie;
-  const base = [key, von, nach].filter(Boolean).join('_');
-  const id = via ? `${base}_${via}` : base;
+  const base = [key, von, nach].filter(Boolean).map(s => s.toUpperCase()).join('_');
+  const id = via ? `${base}_${via.toUpperCase()}` : base;
   return id.replace(/\s+/g, '_');
 }
 
