@@ -151,7 +151,7 @@
       spellcheck="false"
     />
     {#if !validCode}
-      <span class="search-icon"><Search size={14} strokeWidth={1.5} /></span>
+      <span class="search-icon"><Search size={16} strokeWidth={1.5} /></span>
     {/if}
     {#if open && results.length > 0}
       <div class="dropdown">
@@ -175,7 +175,7 @@
 <style>
   .station-search {
     display: flex;
-    height: var(--spacing-unit);
+    height: 100%;
     width: 100%;
   }
 
@@ -235,7 +235,7 @@
   }
   /* Thicken icon on focus, matching global button:hover svg pattern */
   .name-field-wrapper:focus-within .search-icon :global(svg) {
-    stroke-width: 2.5;
+    stroke-width: 3;
   }
 
   .dropdown {
@@ -247,19 +247,18 @@
     background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--radius-card);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     overflow: hidden;
-    margin-top: 2px;
+    margin-top: var(--spacing-card);
   }
 
   .dropdown-item {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 6px var(--spacing-cell);
+    padding: var(--spacing-xs) var(--spacing-cell);
     border: none;
     background: transparent;
-    font-size: var(--text-input);
+    font-size: var(--text-preview);
     font-family: var(--font-mono);
     color: var(--color-text);
     cursor: pointer;
@@ -280,7 +279,6 @@
   .item-code {
     flex: none;
     color: var(--color-text-muted);
-    font-size: 12px;
   }
 
   .dropdown-item :global(mark) {

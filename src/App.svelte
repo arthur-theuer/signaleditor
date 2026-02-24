@@ -355,7 +355,6 @@
     background: var(--color-bg);
     border: var(--card-border);
     border-radius: var(--radius-container);
-    overflow: hidden;
     container-type: inline-size;
   }
   .signale-header { padding-right: var(--spacing-card); }

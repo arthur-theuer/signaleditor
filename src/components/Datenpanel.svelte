@@ -121,6 +121,7 @@
   }
   .daten-field :global(.hl-wrap) {
     display: flex;
+    height: var(--spacing-unit);
     border-radius: 0 0 var(--radius-card) var(--radius-card);
   }
   .daten-field input {
