@@ -29,7 +29,7 @@ export const SIGNAL_ABBREV: Record<string, string> = {
   'Abschnitteinfahr-Vorsignal': 'Abschnitteinfahr-VS',
   'Abschnittausfahr-Vorsignal': 'Abschnittausfahr-VS',
   'Ausfahr-Vorsignal': 'Ausfahr-VS',
-  'Block-Vorsignal zu': 'Block-VS',
+  'Block-Vorsignal zu': 'Block-VS zu',
   'Einfahr-Vorsignal': 'Einfahr-VS',
   'Vorsignal zu Spurwechsel': 'VS zu Spw.',
   'Wiederholungssignal': 'Wiederholungss.',
