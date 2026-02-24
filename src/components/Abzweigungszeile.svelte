@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Abzweigungseintrag } from '../lib/types';
+  import type { Abzweigungseintrag, AbzweigungPfeil } from '../lib/types';
 
   let {
     eintrag = $bindable(),
@@ -9,28 +9,40 @@
     onchange: () => void;
   } = $props();
 
-  let arrowGlyph = $derived(
-    (eintrag.abzweigung.seite === 'links') === (eintrag.abzweigung.von_nach === 'nach') ? '<<' : '>>'
-  );
-
+  const PFEIL_CYCLE: AbzweigungPfeil[] = ['', '>>', '<<'];
   const VON_NACH_ENUM: Array<'von' | 'nach'> = ['von', 'nach'];
 
-  function toggleSeite() {
-    eintrag.abzweigung.seite = eintrag.abzweigung.seite === 'links' ? 'rechts' : 'links';
+  function cycleArrow(side: 'links' | 'rechts') {
+    const current = eintrag.abzweigung[side];
+    const idx = PFEIL_CYCLE.indexOf(current);
+    eintrag.abzweigung[side] = PFEIL_CYCLE[(idx + 1) % PFEIL_CYCLE.length];
     onchange();
+  }
+
+  function handleArrowKeydown(e: KeyboardEvent, side: 'links' | 'rechts') {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+      e.preventDefault();
+      const current = eintrag.abzweigung[side];
+      const idx = PFEIL_CYCLE.indexOf(current);
+      eintrag.abzweigung[side] = PFEIL_CYCLE[(idx + 1) % PFEIL_CYCLE.length];
+      onchange();
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const current = eintrag.abzweigung[side];
+      const idx = PFEIL_CYCLE.indexOf(current);
+      eintrag.abzweigung[side] = PFEIL_CYCLE[(idx - 1 + PFEIL_CYCLE.length) % PFEIL_CYCLE.length];
+      onchange();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      eintrag.abzweigung[side] = '';
+      onchange();
+    }
   }
 
   function cycleVonNach(direction: 1 | -1 = 1) {
     const idx = VON_NACH_ENUM.indexOf(eintrag.abzweigung.von_nach as 'von' | 'nach');
     eintrag.abzweigung.von_nach = VON_NACH_ENUM[(idx + direction + VON_NACH_ENUM.length) % VON_NACH_ENUM.length];
     onchange();
-  }
-
-  function handleArrowKeydown(e: KeyboardEvent) {
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-      e.preventDefault();
-      toggleSeite();
-    }
   }
 
   function handleVonNachKeydown(e: KeyboardEvent) {
@@ -58,7 +70,13 @@
 <div class="signal-cell abzweigung-cell">
   <div class="abzweigung-inner">
     <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
-      <button class="abzweigung-btn abzweigung-arrow" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); toggleSeite(); }} onkeydown={handleArrowKeydown}>{arrowGlyph}</button>
+      <button class="abzweigung-btn abzweigung-arrow" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleArrow('links'); }} onkeydown={(e) => handleArrowKeydown(e, 'links')}>
+        {#if eintrag.abzweigung.links}
+          {eintrag.abzweigung.links}
+        {:else}
+          <span class="placeholder">&#x2194;</span>
+        {/if}
+      </button>
     </div>
     <div class="abzweigung-field abzweigung-strecke-field hl-wrap">
       <input
@@ -94,7 +112,13 @@
       />
     </div>
     <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
-      <button class="abzweigung-btn abzweigung-arrow" tabindex={-1} onclick={toggleSeite} onkeydown={handleArrowKeydown}>{arrowGlyph}</button>
+      <button class="abzweigung-btn abzweigung-arrow" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleArrow('rechts'); }} onkeydown={(e) => handleArrowKeydown(e, 'rechts')}>
+        {#if eintrag.abzweigung.rechts}
+          {eintrag.abzweigung.rechts}
+        {:else}
+          <span class="placeholder">&#x2194;</span>
+        {/if}
+      </button>
     </div>
   </div>
 </div>

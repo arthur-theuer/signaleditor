@@ -3,6 +3,7 @@ import type {
   Eintrag,
   Import,
   Abzweigung,
+  AbzweigungPfeil,
   Dateityp,
 } from './types';
 import {
@@ -54,7 +55,11 @@ export function generateYAML(data: Editordaten): string {
     } else if (isAbzweigungseintrag(sig)) {
       const abz = sig.abzweigung;
       const dirKey = abz.von_nach === 'von' ? 'von' : 'nach';
-      yaml += `    abzweigung: { strecke: "${abz.strecke}", ${dirKey}: "${abz.richtung}", seite: "${abz.seite}" }\n`;
+      const parts = [`strecke: "${abz.strecke}"`];
+      if (abz.richtung) parts.push(`${dirKey}: "${abz.richtung}"`);
+      if (abz.links) parts.push(`links: "${abz.links}"`);
+      if (abz.rechts) parts.push(`rechts: "${abz.rechts}"`);
+      yaml += `    abzweigung: { ${parts.join(', ')} }\n`;
     } else if (isKnoteneintrag(sig)) {
       yaml += `    knoten: ${yamlStr(sig.knoten)}\n`;
     } else if (isImporteintrag(sig)) {
@@ -175,11 +180,22 @@ function parseSignalField(trimmed: string, currentSignal: Record<string, any>): 
     };
     const vonVal = getVal('von');
     const nachVal = getVal('nach');
+    const linksVal = getVal('links') as AbzweigungPfeil;
+    const rechtsVal = getVal('rechts') as AbzweigungPfeil;
+    // Backward compatibility: convert old 'seite' field to new links/rechts
+    const seiteVal = getVal('seite');
+    let links: AbzweigungPfeil = linksVal || '';
+    let rechts: AbzweigungPfeil = rechtsVal || '';
+    if (seiteVal && !linksVal && !rechtsVal) {
+      if (seiteVal === 'links') links = '<<';
+      else if (seiteVal === 'rechts') rechts = '>>';
+    }
     const abzweigung: Abzweigung = {
       strecke: getVal('strecke'),
       richtung: vonVal || nachVal,
-      von_nach: vonVal ? 'von' : (nachVal ? 'nach' : 'von'),
-      seite: (getVal('seite') || 'links') as 'links' | 'rechts',
+      von_nach: vonVal ? 'von' : (nachVal ? 'nach' : ''),
+      links,
+      rechts,
     };
     currentSignal.abzweigung = abzweigung;
   } else {

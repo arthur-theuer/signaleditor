@@ -1,5 +1,8 @@
+export type AbzweigungPfeil = '' | '<<' | '>>';
+
 export type Abzweigung = {
-  seite: 'links' | 'rechts';
+  links: AbzweigungPfeil;
+  rechts: AbzweigungPfeil;
   strecke: string;
   von_nach: 'von' | 'nach' | '';
   richtung: string;

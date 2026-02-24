@@ -197,7 +197,7 @@
     } else if (isKnoteneintrag(entry)) {
       signale[idx] = { id, knoten: '' };
     } else if (isAbzweigungseintrag(entry)) {
-      signale[idx] = { id, abzweigung: { strecke: '', richtung: '', von_nach: '', seite: 'links' } };
+      signale[idx] = { id, abzweigung: { strecke: '', richtung: '', von_nach: '', links: '', rechts: '' } };
     } else if (isImporteintrag(entry)) {
       signale[idx] = { id, import: { datei: '' } };
     } else {
@@ -267,7 +267,7 @@
     return { id: idx, notiz: '' };
   }
   function makeAbzweigung(idx: number): Abzweigungseintrag {
-    return { id: idx, abzweigung: { strecke: '', richtung: '', von_nach: '', seite: 'links' } };
+    return { id: idx, abzweigung: { strecke: '', richtung: '', von_nach: '', links: '', rechts: '' } };
   }
   function makeKnoten(idx: number): Knoteneintrag {
     return { id: idx, knoten: '' };

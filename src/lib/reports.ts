@@ -82,8 +82,7 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
 
     if (isAbzweigungseintrag(sig)) {
       const abz = sig.abzweigung;
-      const arrow = (abz.seite === 'links') === (abz.von_nach === 'nach') ? '<<' : '>>';
-      const label = [arrow, abz.strecke, abz.von_nach, abz.richtung, arrow].filter(Boolean).join(' ');
+      const label = [abz.links, abz.strecke, abz.von_nach, abz.richtung, abz.rechts].filter(Boolean).join(' ');
       meldungen.push({
         id: sig.id, km: sig.km, abzweigung: label,
         signalname: '', signal_1_display: '', signal_2_display: '',
