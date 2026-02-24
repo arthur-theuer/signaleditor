@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
+  import { SIGNAL_ABBREV } from '../lib/constants';
   import type { Eintrag } from '../lib/types';
 
   let {
@@ -45,6 +46,8 @@
     currentIdx >= 0 ? enumList[(currentIdx + 1) % enumList.length] :
     enumList[0] ?? ''
   );
+
+  function abbrev(s: string): string { return SIGNAL_ABBREV[s] ?? s; }
 
   // Derive placeholder
   let fieldNum = $derived(field.replace('signal_', ''));
@@ -120,18 +123,21 @@
 <div class="signal-cell flex flex-col relative flex-1 min-w-0" class:has-name={needsName && !disabled} class:has-bahnhof={needsBahnhof && !disabled} class:disabled>
   <div class="signal-cell-inner flex h-full shrink-0">
     <div class="signal-input-wrapper flex-1 flex flex-col min-w-0 h-full hl-wrap">
-      <div class="signal-preview prev whitespace-nowrap overflow-hidden text-ellipsis pointer-events-none px-cell">{disabled ? '' : prevSignal}</div>
-      <input
-        type="text"
-        class="signal-input px-cell"
-        readonly
-        value={disabled ? '' : base}
-        placeholder={disabled ? '' : placeholder}
-        onkeydown={handleKeydown}
-        onfocus={handleSignalFocus}
-        tabindex={disabled ? -1 : 0}
-      />
-      <div class="signal-preview next whitespace-nowrap overflow-hidden text-ellipsis pointer-events-none px-cell">{disabled ? '' : nextSignal}</div>
+      <div class="signal-preview prev whitespace-nowrap overflow-hidden text-ellipsis pointer-events-none px-cell"><span class="tier-full">{disabled ? '' : prevSignal}</span><span class="tier-abbrev">{disabled ? '' : abbrev(prevSignal)}</span></div>
+      <div class="signal-input-slot">
+        <input
+          type="text"
+          class="signal-input px-cell"
+          readonly
+          value={disabled ? '' : base}
+          placeholder={disabled ? '' : placeholder}
+          onkeydown={handleKeydown}
+          onfocus={handleSignalFocus}
+          tabindex={disabled ? -1 : 0}
+        />
+        <div class="signal-abbrev px-cell">{disabled ? '' : abbrev(base)}</div>
+      </div>
+      <div class="signal-preview next whitespace-nowrap overflow-hidden text-ellipsis pointer-events-none px-cell"><span class="tier-full">{disabled ? '' : nextSignal}</span><span class="tier-abbrev">{disabled ? '' : abbrev(nextSignal)}</span></div>
     </div>
     {#if needsName || name}
       <div class="name-wrapper hl-wrap" class:visible={needsName}>
@@ -180,6 +186,7 @@
   /* Base .signal-cell styles are in app.css */
   .signal-input-wrapper {
     border-radius: calc(var(--radius-card) - 1px);
+    container-type: inline-size;
   }
   .has-name .signal-input-wrapper {
     width: 50%;
@@ -281,4 +288,39 @@
   .signal-cell:hover .alt-toggle-btn { opacity: 0.6; }
   .signal-cell:hover .alt-toggle-btn:hover { opacity: 1; }
   .alt-toggle-btn.active { opacity: 0.4 !important; color: var(--color-text-muted); }
+
+  /* Input + abbreviation overlay share the same flex slot */
+  .signal-input-slot {
+    flex: var(--input-flex);
+    position: relative;
+    display: flex;
+  }
+  .signal-input-slot .signal-input {
+    flex: 1;
+    min-width: 0;
+  }
+  .signal-abbrev {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    font-size: var(--text-input);
+    font-family: var(--font-mono);
+    display: none;
+    align-items: center;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Default: show full text, hide abbreviations */
+  .tier-abbrev { display: none; }
+
+  @container (max-width: 140px) {
+    .tier-full { display: none; }
+    .tier-abbrev { display: inline; }
+    .signal-input { color: transparent; }
+    .signal-input::placeholder { color: transparent; }
+    .signal-abbrev { display: flex; }
+  }
 </style>
