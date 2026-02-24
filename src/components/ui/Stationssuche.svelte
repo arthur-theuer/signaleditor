@@ -17,26 +17,30 @@
   let activeIndex = $state(0);
   let searchInput: HTMLInputElement | undefined = $state();
 
-  const entries: { code: string; name: string; nameLower: string; codeLower: string }[] =
-    Object.entries(STATIONEN).map(([c, n]) => ({
-      code: c,
-      name: n,
-      nameLower: n.toLowerCase(),
-      codeLower: c.toLowerCase(),
-    }));
+  // Strip diacritics: ü→u, ö→o, ä→a, é→e etc.
+  function fold(s: string): string {
+    return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  }
+
+  const entries = Object.entries(STATIONEN).map(([c, n]) => ({
+    code: c,
+    name: n,
+    nameFolded: fold(n),
+    codeFolded: fold(c),
+  }));
 
   let resolvedName = $derived(STATIONEN[code] || '');
   let validCode = $derived(!!resolvedName);
 
   let results = $derived.by(() => {
-    const q = query.toLowerCase().trim();
+    const q = fold(query.trim());
     if (!q) return [];
     const prefix: typeof entries = [];
     const substring: typeof entries = [];
     for (const e of entries) {
-      if (e.nameLower.startsWith(q) || e.codeLower.startsWith(q)) {
+      if (e.nameFolded.startsWith(q) || e.codeFolded.startsWith(q)) {
         prefix.push(e);
-      } else if (e.nameLower.includes(q) || e.codeLower.includes(q)) {
+      } else if (e.nameFolded.includes(q) || e.codeFolded.includes(q)) {
         substring.push(e);
       }
     }
@@ -45,7 +49,7 @@
 
   function highlightMatch(text: string, q: string): string {
     if (!q) return text;
-    const idx = text.toLowerCase().indexOf(q.toLowerCase());
+    const idx = fold(text).indexOf(fold(q));
     if (idx === -1) return text;
     return `${text.slice(0, idx)}<mark>${text.slice(idx, idx + q.length)}</mark>${text.slice(idx + q.length)}`;
   }
