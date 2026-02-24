@@ -269,6 +269,7 @@
     font-size: var(--text-preview);
   }
   .dropdown-item .name-col {
+    display: block;
     padding: 0 var(--spacing-cell);
     overflow: hidden;
     white-space: nowrap;
