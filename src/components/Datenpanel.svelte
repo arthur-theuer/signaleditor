@@ -103,7 +103,6 @@
     background: var(--color-bg);
     border: var(--card-border);
     border-radius: var(--radius-container);
-    overflow: hidden;
   }
   .daten-field {
     background: var(--color-bg-raised);

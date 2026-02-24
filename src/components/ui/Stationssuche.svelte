@@ -150,7 +150,7 @@
       autocorrect="off"
       spellcheck="false"
     />
-    {#if !validCode && !open}
+    {#if !validCode}
       <span class="search-icon"><Search size={14} strokeWidth={1.5} /></span>
     {/if}
     {#if open && results.length > 0}
@@ -175,7 +175,7 @@
 <style>
   .station-search {
     display: flex;
-    height: 100%;
+    height: var(--spacing-unit);
     width: 100%;
   }
 
@@ -190,6 +190,7 @@
     text-align: center;
     outline: none;
     color: var(--color-text);
+    height: 100%;
   }
   .code-field::placeholder {
     text-transform: none;
@@ -218,6 +219,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     outline: none;
+    height: 100%;
   }
   .name-field.has-value {
     color: var(--color-text-secondary);
@@ -230,7 +232,10 @@
     align-items: center;
     color: var(--color-text-muted);
     pointer-events: none;
-    opacity: 0.5;
+  }
+  /* Thicken icon on focus, matching global button:hover svg pattern */
+  .name-field-wrapper:focus-within .search-icon :global(svg) {
+    stroke-width: 2.5;
   }
 
   .dropdown {
@@ -239,10 +244,10 @@
     left: -1px;
     right: 0;
     z-index: 50;
-    background: var(--color-surface, #fff);
+    background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--radius-card);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     overflow: hidden;
     margin-top: 2px;
   }
@@ -279,7 +284,7 @@
   }
 
   .dropdown-item :global(mark) {
-    background: rgba(25, 118, 210, 0.2);
+    background: var(--color-focus-bg);
     color: inherit;
     border-radius: 1px;
     padding: 0;
