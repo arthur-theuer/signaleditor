@@ -119,7 +119,7 @@
 </script>
 
 <div class="station-search">
-  <span class="code-preview" class:has-code={validCode}>{code.toUpperCase() || ''}</span>
+  <span class="code-preview" class:has-code={validCode}>{code.toUpperCase() || 'Code'}</span>
   <div class="search-field-wrapper">
     <input
       bind:this={searchInput}
@@ -264,9 +264,9 @@
   }
 
   .dropdown-item :global(mark) {
-    background: var(--color-focus-bg);
+    background: transparent;
     color: inherit;
-    border-radius: 1px;
+    font-weight: var(--font-weight-bold);
     padding: 0;
   }
 </style>

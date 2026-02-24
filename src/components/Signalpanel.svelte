@@ -112,7 +112,7 @@
     '.abzweigung-strecke',
     '.abzweigung-vonnach',
     '.abzweigung-richtung',
-    '.knoten-input',
+    '.search-field',
     '.import-folder-btn',
   ].join(', ');
 
@@ -133,7 +133,7 @@
       if (kmInput) return kmInput;
     }
     return rowEl.querySelector<HTMLElement>(
-      '.signal-input, .note-input, .abzweigung-btn, .knoten-input, .import-folder-btn'
+      '.signal-input, .note-input, .abzweigung-btn, .search-field, .import-folder-btn'
     );
   }
 
