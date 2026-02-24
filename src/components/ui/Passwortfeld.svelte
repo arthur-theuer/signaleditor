@@ -91,7 +91,7 @@
     box-shadow: 0 0 0 1px var(--color-red);
   }
   .icon {
-    width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2 - 2px);
     height: 100%;
     display: flex;
     align-items: center;
