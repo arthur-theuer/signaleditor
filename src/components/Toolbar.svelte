@@ -195,35 +195,33 @@
     <div class="flex-1"></div>
   {/if}
 
+  <!-- PIN inline input -->
+  {#if showPinInput}
+    <input
+      bind:this={pinInputEl}
+      bind:value={pinValue}
+      class="pin-input px-cell"
+      class:error={pinError}
+      type="password"
+      placeholder="PIN"
+      onkeydown={(e) => { if (e.key === 'Enter') submitPin(); if (e.key === 'Escape') cancelPin(); }}
+      onblur={cancelPin}
+    />
+  {/if}
+
   <!-- Lock (right-aligned) -->
-  <div class="relative">
-    <button
-      class="tb-btn lock-btn hl"
-      class:unlocked={loggedIn}
-      onclick={handleLockClick}
-      title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
-    >
-      {#if loggedIn}
-        <LockOpen size={16} strokeWidth={1.5} /><Hinweis text="Abmelden" />
-      {:else}
-        <Lock size={16} strokeWidth={1.5} /><Hinweis text="Anmelden" />
-      {/if}
-    </button>
-    {#if showPinInput}
-      <div class="pin-popover">
-        <input
-          bind:this={pinInputEl}
-          bind:value={pinValue}
-          class="pin-input px-cell"
-          class:error={pinError}
-          type="password"
-          placeholder="PIN"
-          onkeydown={(e) => { if (e.key === 'Enter') submitPin(); if (e.key === 'Escape') cancelPin(); }}
-          onblur={cancelPin}
-        />
-      </div>
+  <button
+    class="tb-btn lock-btn hl"
+    class:unlocked={loggedIn}
+    onclick={handleLockClick}
+    title={loggedIn ? 'Abmelden' : 'Anmelden (Cloud)'}
+  >
+    {#if loggedIn}
+      <LockOpen size={16} strokeWidth={1.5} /><Hinweis text="Abmelden" />
+    {:else}
+      <Lock size={16} strokeWidth={1.5} /><Hinweis text="Anmelden" />
     {/if}
-  </div>
+  </button>
 </div>
 
 <style>
@@ -301,29 +299,17 @@
   }
 
 
-  /* PIN popover */
-  .pin-popover {
-    position: absolute;
-    top: calc(100% + var(--spacing-card));
-    right: 0;
-    z-index: 10;
-    background: var(--color-bg-raised);
-    border: var(--card-border);
-    border-radius: var(--radius-container);
-    padding: var(--spacing-card);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-
-  /* PIN input */
+  /* PIN input (inline in toolbar) */
   .pin-input {
-    width: 120px;
+    width: 100px;
     height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
     border: var(--card-border);
     border-radius: var(--radius-container);
-    background: var(--color-bg);
+    background: var(--color-bg-raised);
     font-size: var(--text-input);
     font-family: var(--font-mono);
     color: var(--color-text);
+    text-align: center;
     outline: none;
   }
   .pin-input:focus {
