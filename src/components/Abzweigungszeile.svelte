@@ -74,7 +74,7 @@
         {#if eintrag.abzweigung.links}
           {eintrag.abzweigung.links}
         {:else}
-          <span class="placeholder">&#x2194;</span>
+          <span class="placeholder">&lt;&gt;</span>
         {/if}
       </button>
     </div>
@@ -116,7 +116,7 @@
         {#if eintrag.abzweigung.rechts}
           {eintrag.abzweigung.rechts}
         {:else}
-          <span class="placeholder">&#x2194;</span>
+          <span class="placeholder">&lt;&gt;</span>
         {/if}
       </button>
     </div>

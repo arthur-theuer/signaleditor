@@ -100,7 +100,7 @@
     <div class={secondaryClass}>
       <label for="meta-von">Von</label>
       <span class="hl-wrap">
-        <input id="meta-von" type="text" bind:value={data.meta.von} placeholder="Code" class="code-input" autocomplete="off" autocorrect="off" spellcheck="false" />
+        <input id="meta-von" type="text" bind:value={data.meta.von} oninput={() => data.meta.von = data.meta.von.toUpperCase()} placeholder="Code" class="code-input" autocomplete="off" autocorrect="off" spellcheck="false" />
         <input
           type="text"
           class="station-name-input"
@@ -116,7 +116,7 @@
     <div class={secondaryClass}>
       <label for="meta-nach">Nach</label>
       <span class="hl-wrap">
-        <input id="meta-nach" type="text" bind:value={data.meta.nach} placeholder="Code" class="code-input" autocomplete="off" autocorrect="off" spellcheck="false" />
+        <input id="meta-nach" type="text" bind:value={data.meta.nach} oninput={() => data.meta.nach = data.meta.nach.toUpperCase()} placeholder="Code" class="code-input" autocomplete="off" autocorrect="off" spellcheck="false" />
         <input
           type="text"
           class="station-name-input"
