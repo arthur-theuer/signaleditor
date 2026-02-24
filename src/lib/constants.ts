@@ -19,9 +19,9 @@ export const VORSIGNAL_ENUM = [
 ] as const;
 
 export const SIGNAL_ENUM = [
-  ...HAUPTSIGNAL_ENUM,
-  'Wiederholungssignal',
   ...VORSIGNAL_ENUM,
+  'Wiederholungssignal',
+  ...HAUPTSIGNAL_ENUM,
 ] as const;
 
 export const REQUIRES_NAME = [
