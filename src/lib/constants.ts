@@ -25,21 +25,21 @@ export const SIGNAL_ENUM = [
 ] as const;
 
 export const SIGNAL_ABBREV: Record<string, string> = {
-  'Abschnitt-Vorsignal': 'Abschn.-VS',
-  'Abschnitteinfahr-Vorsignal': 'Abschn.einf.-VS',
-  'Abschnittausfahr-Vorsignal': 'Abschn.ausf.-VS',
-  'Ausfahr-Vorsignal': 'Ausf.-VS',
+  'Abschnitt-Vorsignal': 'Abschnitt-VS',
+  'Abschnitteinfahr-Vorsignal': 'Abschnitteinfahr-VS',
+  'Abschnittausfahr-Vorsignal': 'Abschnittausfahr-VS',
+  'Ausfahr-Vorsignal': 'Ausfahr-VS',
   'Block-Vorsignal zu': 'Block-VS',
-  'Einfahr-Vorsignal': 'Einf.-VS',
-  'Vorsignal zu Spurwechsel': 'VS Spurw.',
-  'Wiederholungssignal': 'Wdh.signal',
-  'Abschnittsignal': 'Abschn.sig.',
-  'Abschnitteinfahrsignal': 'Abschn.einf.sig.',
-  'Abschnittausfahrsignal': 'Abschn.ausf.sig.',
-  'Ausfahrsignal': 'Ausf.sig.',
-  'Blocksignal': 'Blocksig.',
-  'Einfahrsignal': 'Einf.sig.',
-  'Spurwechsel': 'Spurw.',
+  'Einfahr-Vorsignal': 'Einfahr-VS',
+  'Vorsignal zu Spurwechsel': 'VS zu Spw.',
+  'Wiederholungssignal': 'Wiederholungss.',
+  'Abschnittsignal': 'Abschnitts.',
+  'Abschnitteinfahrsignal': 'Abschnitteinfahrs.',
+  'Abschnittausfahrsignal': 'Abschnittausfahrs.',
+  'Ausfahrsignal': 'Ausfahrs.',
+  'Blocksignal': 'Blocks.',
+  'Einfahrsignal': 'Einfahrs.',
+  'Spurwechsel': 'Spw.',
 };
 
 export const REQUIRES_NAME = [
