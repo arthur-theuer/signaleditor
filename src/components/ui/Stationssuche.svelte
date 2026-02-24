@@ -99,6 +99,17 @@
     activeIndex = 0;
   }
 
+  function focusNextTabbable() {
+    if (!nameInput) return;
+    const all = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        'input:not([tabindex="-1"]):not([disabled]), button:not([tabindex="-1"]):not([disabled]), select:not([tabindex="-1"]):not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])'
+      )
+    ).filter(el => el.offsetParent !== null);
+    const idx = all.indexOf(nameInput);
+    if (idx >= 0 && idx < all.length - 1) all[idx + 1].focus();
+  }
+
   function handleNameKeydown(e: KeyboardEvent) {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -106,7 +117,13 @@
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (results.length) activeIndex = (activeIndex - 1 + results.length) % results.length;
-    } else if (e.key === 'Enter' || (e.key === 'Tab' && !e.shiftKey)) {
+    } else if (e.key === 'Tab' && !e.shiftKey) {
+      if (open && results.length) {
+        e.preventDefault();
+        select(results[activeIndex]);
+        focusNextTabbable();
+      }
+    } else if (e.key === 'Enter') {
       if (open && results.length) {
         e.preventDefault();
         select(results[activeIndex]);
