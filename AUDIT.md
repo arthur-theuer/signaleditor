@@ -95,18 +95,6 @@ If a signal name contains `:`, `#`, or leading/trailing whitespace, the generate
 
 **Fix**: Quote string values or use a YAML library.
 
-#### 1.6 `yaml.ts` — Legacy format detection is fragile
-
-```ts
-if (content.includes('\nstrecke:\n') || content.startsWith('strecke:\n')) {
-  return parseLegacyYAML(content);
-}
-```
-
-This check runs *after* the main parser has already extracted meta fields. If a file has `typ: strecke` on line 1 and also contains `strecke:` as a section header, the main parser partially processes it before the legacy check triggers.
-
-**Impact**: Edge case — only affects legacy files that also have a `typ:` field.
-
 ---
 
 ### 2. Consistency Issues
@@ -149,10 +137,6 @@ The project convention (per prior refactoring) is: layout in Tailwind classes, a
 - `src/lib/server/files.ts`: `export type StoragePrefix = 'strecken' | 'routen';`
 
 **Fix**: Define once in `types.ts` and import in both.
-
-#### 2.4 Section header pattern
-
-`section-header` is a global class in `app.css`. It's used by `Signalpanel` (via `App.svelte`), `Meldungspanel`, and `Datenpanel`. The `Datenpanel` version is slightly different (it has a `.header-id` child). This works but the shared global class makes it non-obvious which components depend on it.
 
 ---
 
@@ -237,14 +221,12 @@ No manual toggle exists — it follows system preference only.
 
 ## Summary of Actionable Items
 
-| Priority | Item | Effort |
+| Priority | Item | Status |
 |----------|------|--------|
-| **Bug** | Fix `$derived(() => ...)` → `$derived.by(...)` in Importzeile | 5 min |
-| **Bug** | Add YAML string quoting for special characters | 30 min |
-| **Consistency** | Replace `font-family: monospace` → `var(--font-mono)` in 5 components | 10 min |
-| **Consistency** | Deduplicate `StoragePrefix` type | 5 min |
-| **Cleanup** | Remove or conditionally render `Breakpoints.svelte` | 2 min |
-| **Quality** | Add unit tests for `yaml.ts`, `signals.ts`, `reports.ts` | 2-4 hrs |
-| **Refactor** | Migrate remaining components to Tailwind layout convention | 1-2 hrs |
-| **Robustness** | Add staleness check to Importzeile async resolution | 15 min |
-| **Robustness** | Add cache invalidation to `importCache` | 15 min |
+| **Bug** | Fix `$derived(() => ...)` → `$derived.by(...)` in Importzeile | ✅ Done |
+| **Bug** | Add YAML string quoting for special characters | ✅ Done |
+| **Consistency** | Replace `font-family: monospace` → `var(--font-mono)` in 7 components | ✅ Done |
+| **Consistency** | Deduplicate `StoragePrefix` type | ✅ Done |
+| **Refactor** | Migrate remaining components to Tailwind layout convention | Deferred |
+| **Robustness** | Add staleness check to Importzeile async resolution | Open |
+| **Robustness** | Add cache invalidation to `importCache` | Open |
