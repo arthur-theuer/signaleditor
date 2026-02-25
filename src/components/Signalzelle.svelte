@@ -421,17 +421,13 @@
     .signal-abbrev { display: flex; }
   }
 
-  /* Collapse signal enum to square when bahnhof is revealed */
+  /* Collapse signal enum when bahnhof is revealed */
   .has-bahnhof .signal-input-wrapper {
     flex: none;
+    width: calc(3ch + 2 * var(--spacing-cell));
   }
-  .has-bahnhof .signal-input-slot {
-    flex: none;
-  }
-  .has-bahnhof .signal-input { display: none; }
+  .has-bahnhof .signal-input { color: transparent; }
+  .has-bahnhof .signal-input::placeholder { color: transparent; }
   .has-bahnhof .signal-abbrev { display: none; }
-  .has-bahnhof .signal-short {
-    display: flex;
-    position: static;
-  }
+  .has-bahnhof .signal-short { display: flex; }
 </style>
