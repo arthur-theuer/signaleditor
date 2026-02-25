@@ -253,7 +253,7 @@
 .hl-field > input, .hl-field > select { outline: none; }
 
 /* Lucide icons: thicken stroke on hover (1px → 2px effective at 16px/24 viewBox) */
-button:hover svg { stroke-width: 3 !important; }
+button:hover:not(:disabled) svg { stroke-width: 3 !important; }
 
 /* Meldung signal-type colors (applied dynamically via class={seg.klasse}) */
 .meldung-block,
