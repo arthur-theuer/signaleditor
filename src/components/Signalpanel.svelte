@@ -292,7 +292,7 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div bind:this={listEl} onkeydown={handleKeydown} class="signal-list-inner relative">
+<div bind:this={listEl} onkeydown={handleKeydown} class="signal-list-inner">
   {#each signale as eintrag, idx (eintrag.id)}
     <Zwischenaktionen
       onInsertSignal={() => insertSignalAt(idx)}
@@ -302,7 +302,7 @@
       onInsertImport={() => insertAt(idx, makeImport(idx))}
     />
     <div
-      class="signal-row flex gap-card py-half-card px-card items-stretch"
+      class="signal-row"
       class:drag-ready={dragHandle === idx}
       data-row-index={idx}
       draggable={dragHandle === idx}
@@ -314,7 +314,7 @@
     >
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <div
-        class="signal-id flex items-center justify-center w-unit shrink-0 select-none"
+        class="signal-id"
         onmousedown={() => dragHandle = idx}
         onmouseup={() => dragHandle = null}
       >{idx}</div>
@@ -356,7 +356,7 @@
     </div>
   {/each}
   {#if indicatorY !== null}
-    <div class="drop-indicator absolute left-card right-card h-0 z-5 pointer-events-none" style="top: {indicatorY}px;"></div>
+    <div class="drop-indicator" style="top: {indicatorY}px;"></div>
   {/if}
 </div>
 <Plusleiste
@@ -369,10 +369,21 @@
 
 
 <style>
+  .signal-list-inner { position: relative; }
   .signal-row {
+    display: flex;
+    gap: var(--spacing-card);
+    padding: var(--spacing-half-card) var(--spacing-card);
+    align-items: stretch;
     min-height: calc(var(--spacing-unit) + var(--spacing-card));
   }
   .signal-id {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--spacing-unit);
+    flex-shrink: 0;
+    user-select: none;
     font-size: var(--text-input);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-secondary);
@@ -386,6 +397,12 @@
 
   .signal-row.drag-ready :global(.signal-actions) { visibility: hidden; }
   .drop-indicator {
+    position: absolute;
+    left: var(--spacing-card);
+    right: var(--spacing-card);
+    height: 0;
+    z-index: 5;
+    pointer-events: none;
     box-shadow: 0 0 0 1px var(--color-focus);
     border-radius: 1px;
   }

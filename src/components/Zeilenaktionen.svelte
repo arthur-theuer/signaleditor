@@ -33,7 +33,7 @@
   });
 </script>
 
-<div class="signal-actions shrink-0 flex gap-card" bind:this={menuEl}>
+<div class="signal-actions" bind:this={menuEl}>
   {#if menuOpen}
     <Symbolknopf onclick={() => handleAction(onclear)} title="Leeren" color="clear" tabindex={-1} class="action-btn">
       <Eraser {...ICON} />
@@ -55,6 +55,9 @@
 
 <style>
   .signal-actions {
+    display: flex;
+    gap: var(--spacing-card);
+    flex-shrink: 0;
     height: var(--spacing-unit);
   }
 

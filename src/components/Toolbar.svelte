@@ -74,10 +74,10 @@
     }
   }
 
-  const btnGroup = 'flex flex-col sm:flex-row items-center gap-card lg:gap-md';
+  const btnGroup = 'btn-group sm:flex-row lg:gap-md';
 </script>
 
-<div class="header flex gap-card lg:gap-md items-center flex-wrap sticky top-0 z-10 py-cell mb-cell sm:mb-page" class:logged-out={!loggedIn}>
+<div class="header lg:gap-md sm:mb-page" class:logged-out={!loggedIn}>
   <h1 class="hidden xl:block mr-md">Signaleditor</h1>
 
   <!-- Group: History -->
@@ -90,7 +90,7 @@
     </button>
   </div>
 
-  <div class="separator mx-card"></div>
+  <div class="separator"></div>
 
   <!-- Group: New -->
   <div class={btnGroup}>
@@ -102,7 +102,7 @@
     </button>
   </div>
 
-  <div class="separator mx-card"></div>
+  <div class="separator"></div>
 
   <!-- Group: Local I/O -->
   <div class={btnGroup}>
@@ -121,10 +121,10 @@
     </button>
   </div>
 
-  <div class="separator mx-card hidden sm:block"></div>
+  <div class="separator hidden sm:block"></div>
 
   <!-- Group: View toggles (hidden at sm) -->
-  <div class="hidden sm:flex items-center gap-card lg:gap-md">
+  <div class="toggle-group hidden sm:flex lg:gap-md">
     <button class="tb-btn toggle-btn btn" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
       <Code {...ICON} />
     </button>
@@ -135,7 +135,7 @@
 
   <!-- Group: Cloud -->
   {#if loggedIn}
-    <div class="separator mx-card"></div>
+    <div class="separator"></div>
 
     <div class={btnGroup}>
       <button
@@ -161,8 +161,8 @@
     </div>
 
     {#if currentFileName}
-      <span class="file-indicator relative flex flex-1 min-w-0 items-center justify-center sm:justify-start gap-sm px-md" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
-        <span class="status-dot shrink-0"></span>
+      <span class="file-indicator sm:justify-start" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
+        <span class="status-dot"></span>
         <span class="file-name">{currentFileName}</span>
         <span class="status-label">
           {#if saveStatus === 'saving'}Speichern{:else if saveStatus === 'saved'}Gespeichert{:else if saveStatus === 'dirty'}Ungespeichert{/if}
@@ -189,11 +189,18 @@
 
 <style>
   .header {
+    display: flex;
+    gap: var(--spacing-card);
+    align-items: center;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: var(--spacing-cell);
+    margin-bottom: var(--spacing-cell);
     background: var(--color-bg);
     background-image: linear-gradient(var(--color-focus-bg), var(--color-focus-bg));
     border-bottom: 1px solid var(--color-border);
-    padding-left: var(--spacing-cell);
-    padding-right: var(--spacing-cell);
   }
   @media (min-width: 640px) {
     .header {
@@ -207,9 +214,19 @@
   .header h1 { font-size: var(--text-title); font-weight: var(--font-weight-bold); }
 
 
-  /* Separator */
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-card);
+  }
+  .toggle-group {
+    align-items: center;
+    gap: var(--spacing-card);
+  }
   .separator {
     width: 1px;
+    margin: 0 var(--spacing-card);
     align-self: stretch;
     background: var(--color-border);
   }
@@ -260,6 +277,14 @@
 
   /* File status indicator */
   .file-indicator {
+    position: relative;
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: 0 var(--spacing-md);
     height: var(--spacing-unit);
     font-size: var(--text-input);
     font-family: var(--font-mono);
@@ -274,6 +299,7 @@
     width: var(--spacing-md);
     height: var(--spacing-md);
     border-radius: 50%;
+    flex-shrink: 0;
   }
   .file-indicator.dirty .status-dot { background: var(--color-red); }
   .file-indicator.saving .status-dot { background: var(--color-clear); }

@@ -56,14 +56,14 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="daten-section mb-page" onkeydown={handleKeydown}>
+<div class="daten-section" onkeydown={handleKeydown}>
   <div class="section-header">
     {isStrecke ? 'Streckendaten' : 'Routendaten'}
     {#if id}
       <span class="header-id">{id}</span>
     {/if}
   </div>
-  <div class="flex flex-col sm:flex-row sm:flex-wrap gap-card p-card">
+  <div class="daten-fields sm:flex-row sm:flex-wrap">
     <div class={primaryClass}>
       <label for={primaryId}>{primaryLabel}</label>
       <span class="hl-field">
@@ -100,9 +100,16 @@
 <style>
   /* Appearance only — layout is handled by Tailwind classes */
   .daten-section {
+    margin-bottom: var(--spacing-page);
     background: var(--color-bg);
     border: var(--card-border);
     border-radius: var(--radius-container);
+  }
+  .daten-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-card);
+    padding: var(--spacing-card);
   }
   .daten-field {
     background: var(--color-bg-raised);

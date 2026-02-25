@@ -203,12 +203,12 @@
 
 </script>
 
-<div class="row-cell relative" class:has-name={needsName && !disabled} class:has-bahnhof={showBahnhof && !disabled} class:disabled>
-  <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-field">
+<div class="row-cell" class:has-name={needsName && !disabled} class:has-bahnhof={showBahnhof && !disabled} class:disabled>
+  <div class="signal-input-wrapper hl-field">
     <div class="signal-input-slot">
       <input
         type="text"
-        class="signal-input px-cell"
+        class="signal-input"
         readonly
         value={disabled ? '' : base}
         placeholder={disabled ? '' : placeholder}
@@ -220,8 +220,8 @@
         autocorrect="off"
         spellcheck="false"
       />
-      <div class="signal-abbrev px-cell">{disabled ? '' : abbrev(base)}</div>
-      <div class="signal-short px-cell">{disabled ? '' : (SIGNAL_SHORT[base] ?? abbrev(base))}</div>
+      <div class="signal-abbrev">{disabled ? '' : abbrev(base)}</div>
+      <div class="signal-short">{disabled ? '' : (SIGNAL_SHORT[base] ?? abbrev(base))}</div>
     </div>
     {#if dropdownOpen && fuzzyMatches.length > 1}
       <div class="dropdown">
@@ -241,7 +241,7 @@
       {:else}
         <input
           type="text"
-          class="name-input px-cell"
+          class="name-input"
           value={stationName}
           oninput={(e) => { stationName = (e.target as HTMLInputElement).value; handleNameChange(); }}
           placeholder="Name"
@@ -257,7 +257,7 @@
     <div class="bahnhof-wrapper hl-field visible">
       <input
         type="text"
-        class="bahnhof-input w-full flex-1 px-cell"
+        class="bahnhof-input"
         value={bahnhof || ''}
         oninput={handleBahnhofInput}
         onfocus={handleBahnhofFocus}
@@ -270,7 +270,7 @@
   {/if}
   {#if isMainSignal && onToggleAlt}
     <button
-      class="alt-toggle-btn absolute right-0 flex items-center justify-center w-unit h-unit p-0 z-1"
+      class="alt-toggle-btn"
       class:active={isAltActive}
       onclick={onToggleAlt}
       title="Alternativsignal"
@@ -283,6 +283,10 @@
   /* Override overflow: hidden from .row-cell — dropdown needs to overflow */
   .row-cell { overflow: visible; }
   .signal-input-wrapper {
+    flex: 1;
+    display: flex;
+    min-width: 0;
+    height: 100%;
     border-radius: var(--radius-inner);
     container-type: inline-size;
   }
@@ -294,6 +298,7 @@
     flex: 1;
     border: none;
     background: transparent;
+    padding: 0 var(--spacing-cell);
     font-size: var(--text-input);
     font-family: var(--font-mono);
     cursor: pointer;
@@ -355,8 +360,11 @@
   }
   .bahnhof-wrapper.visible { display: flex; }
   .bahnhof-input {
+    width: 100%;
+    flex: 1;
     border: none;
     background: var(--color-highlight);
+    padding: 0 var(--spacing-cell);
     font-size: var(--text-input);
     font-family: var(--font-mono);
     box-sizing: border-box;
@@ -366,8 +374,17 @@
   .bahnhof-input::placeholder { color: var(--color-text-muted); }
 
   .alt-toggle-btn {
+    position: absolute;
+    right: 0;
     top: 50%;
     transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--spacing-unit);
+    height: var(--spacing-unit);
+    padding: 0;
+    z-index: 1;
     border: none;
     border-radius: 0;
     background: none;
@@ -390,6 +407,7 @@
     position: absolute;
     inset: 0;
     background: transparent;
+    padding: 0 var(--spacing-cell);
     font-size: var(--text-input);
     font-family: var(--font-mono);
     display: none;

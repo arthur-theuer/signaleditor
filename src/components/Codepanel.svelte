@@ -27,9 +27,9 @@
   }
 </script>
 
-<div class="yaml-output relative mb-page">
+<div class="yaml-output">
   <pre>{yamlText}</pre>
-  <div class="absolute top-card right-card flex gap-card">
+  <div class="yaml-actions">
     <button class="yaml-btn btn" onclick={copyYaml} tabindex={-1}>{copyLabel}</button>
     <button class="yaml-btn btn" onclick={downloadYaml} tabindex={-1}>Herunterladen</button>
   </div>
@@ -37,9 +37,18 @@
 
 <style>
   .yaml-output {
+    position: relative;
+    margin-bottom: var(--spacing-page);
     background: var(--color-bg-subtle);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-container);
+  }
+  .yaml-actions {
+    position: absolute;
+    top: var(--spacing-card);
+    right: var(--spacing-card);
+    display: flex;
+    gap: var(--spacing-card);
   }
   pre {
     color: var(--color-text);
