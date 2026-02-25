@@ -1,14 +1,16 @@
 <script lang="ts">
   import { Search } from 'lucide-svelte';
   import { ICON, STATIONEN } from '../../lib/constants';
-  import { search, highlight, type Result } from '../../lib/station-search';
+  import { search, highlight, codeForName, type Result } from '../../lib/station-search';
 
   let {
-    code = $bindable(),
+    mode,
+    value = $bindable(),
     placeholder = '',
     onchange,
   }: {
-    code: string;
+    mode: 'code' | 'name';
+    value: string;
     placeholder?: string;
     onchange?: () => void;
   } = $props();
@@ -18,20 +20,23 @@
   let activeIndex = $state(0);
   let searchInput: HTMLInputElement | undefined = $state();
 
-  let resolvedName = $derived(STATIONEN[code]?.[0] || '');
-  let validCode = $derived(!!resolvedName);
+  let resolvedName = $derived(mode === 'code' ? (STATIONEN[value]?.[0] || '') : '');
+  let valid = $derived(mode === 'code' ? !!resolvedName : !!codeForName(value));
   let results: Result[] = $derived(search(query));
 
   function select(entry: Result) {
-    code = entry.code;
+    value = mode === 'code' ? entry.code : entry.name;
     query = '';
     open = false;
     onchange?.();
   }
 
   function handleFocus() {
-    if (validCode) {
+    if (mode === 'code' && valid) {
       query = resolvedName;
+      searchInput?.select();
+    } else if (mode === 'name' && value) {
+      query = value;
       searchInput?.select();
     }
     open = true;
@@ -78,7 +83,7 @@
       }
     } else if (e.key === 'Escape') {
       e.preventDefault();
-      code = '';
+      value = '';
       query = '';
       open = false;
       onchange?.();
@@ -86,29 +91,47 @@
   }
 </script>
 
-<div class="station-field">
-  <span class="code-col" class:has-code={validCode}>{code || 'Code'}</span>
-  <div class="name-col">
-    <input
-      bind:this={searchInput}
-      type="text"
-      class="search-field"
-      class:has-value={validCode && !open}
-      value={open ? query : (resolvedName || '')}
-      oninput={(e) => { query = (e.target as HTMLInputElement).value; handleInput(); }}
-      onfocus={handleFocus}
-      onblur={handleBlur}
-      onkeydown={handleKeydown}
-      placeholder={placeholder}
-      autocomplete="none"
-      autocorrect="off"
-      spellcheck="false"
-    />
-    {#if !validCode}
-      <span class="search-icon"><Search {...ICON} /></span>
-    {/if}
+{#if mode === 'code'}
+  <div class="station-field">
+    <span class="code-col" class:has-code={valid}>{value || 'Code'}</span>
+    <div class="name-col">
+      <input
+        bind:this={searchInput}
+        type="text"
+        class="search-field"
+        class:has-value={valid && !open}
+        value={open ? query : (resolvedName || '')}
+        oninput={(e) => { query = (e.target as HTMLInputElement).value; handleInput(); }}
+        onfocus={handleFocus}
+        onblur={handleBlur}
+        onkeydown={handleKeydown}
+        placeholder={placeholder}
+        autocomplete="none"
+        autocorrect="off"
+        spellcheck="false"
+      />
+      {#if !valid}
+        <span class="search-icon"><Search {...ICON} /></span>
+      {/if}
+    </div>
   </div>
-</div>
+{:else}
+  <input
+    bind:this={searchInput}
+    type="text"
+    class="search-field name-input"
+    class:has-value={valid && !open}
+    value={open ? query : (value || '')}
+    oninput={(e) => { query = (e.target as HTMLInputElement).value; handleInput(); }}
+    onfocus={handleFocus}
+    onblur={handleBlur}
+    onkeydown={handleKeydown}
+    placeholder={placeholder}
+    autocomplete="none"
+    autocorrect="off"
+    spellcheck="false"
+  />
+{/if}
 {#if open && results.length > 0}
   <div class="dropdown">
     {#each results as entry, i}
@@ -119,14 +142,20 @@
         onmouseenter={() => activeIndex = i}
         tabindex={-1}
       >
-        <span class="code-col">{@html highlight(entry.code, entry.codeIndices)}</span>
-        <span class="name-col">{@html highlight(entry.name, entry.nameIndices)}</span>
+        {#if mode === 'code'}
+          <span class="code-col">{@html highlight(entry.code, entry.codeIndices)}</span>
+          <span class="name-col">{@html highlight(entry.name, entry.nameIndices)}</span>
+        {:else}
+          <span class="item-name">{@html highlight(entry.name, entry.nameIndices)}</span>
+          <span class="item-code">{@html highlight(entry.code, entry.codeIndices)}</span>
+        {/if}
       </button>
     {/each}
   </div>
 {/if}
 
 <style>
+  /* Code mode: two-column layout */
   .station-field {
     display: flex;
     height: 100%;
@@ -155,6 +184,7 @@
     border-left: 1px solid var(--color-border);
   }
 
+  /* Shared input style */
   .search-field {
     flex: 1;
     min-width: 0;
@@ -174,6 +204,7 @@
     color: var(--color-text-secondary);
   }
 
+  /* Search icon (code mode only) */
   .search-icon {
     position: absolute;
     right: var(--spacing-cell);
@@ -186,6 +217,7 @@
     stroke-width: 3;
   }
 
+  /* Dropdown */
   .dropdown {
     position: absolute;
     top: 100%;
@@ -207,6 +239,7 @@
     border-bottom-right-radius: 0 !important;
   }
 
+  /* Dropdown items */
   .dropdown-item {
     display: flex;
     align-items: center;
@@ -232,6 +265,24 @@
   }
   .dropdown-item.active {
     background: var(--color-focus-bg);
+  }
+
+  /* Name mode dropdown items */
+  .item-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .item-code {
+    flex: none;
+    color: var(--color-text-muted);
+    text-align: right;
+  }
+  .dropdown-item:has(.item-name) {
+    padding: var(--spacing-xs) var(--spacing-cell);
+    gap: var(--spacing-cell);
   }
 
   .dropdown-item :global(mark) {

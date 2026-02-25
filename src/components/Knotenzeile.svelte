@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Knoteneintrag } from '../lib/types';
-  import Stationssuche from './ui/Stationssuche.svelte';
+  import Stationsfeld from './ui/Stationsfeld.svelte';
 
   let {
     eintrag = $bindable(),
@@ -13,7 +13,7 @@
 
 <div class="signal-cell knoten-cell">
   <div class="knoten-search-wrapper hl-field">
-    <Stationssuche bind:code={eintrag.knoten} placeholder="z.B. Zürich" onchange={onchange} />
+    <Stationsfeld mode="code" bind:value={eintrag.knoten} placeholder="z.B. Zürich" onchange={onchange} />
   </div>
 </div>
 

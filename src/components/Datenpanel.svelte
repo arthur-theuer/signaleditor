@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Editordaten, Streckenmeta, Routenmeta } from '../lib/types';
   import { isStreckendaten, dateiId } from '../lib/types';
-  import Stationssuche from './ui/Stationssuche.svelte';
+  import Stationsfeld from './ui/Stationsfeld.svelte';
 
   let {
     data = $bindable(),
@@ -73,13 +73,13 @@
     <div class={secondaryClass}>
       <label for="meta-von">Von</label>
       <span class="hl-field">
-        <Stationssuche bind:code={data.meta.von} placeholder="z.B. Olten" />
+        <Stationsfeld mode="code" bind:value={data.meta.von} placeholder="z.B. Olten" />
       </span>
     </div>
     <div class={secondaryClass}>
       <label for="meta-nach">Nach</label>
       <span class="hl-field">
-        <Stationssuche bind:code={data.meta.nach} placeholder="z.B. Aarau" />
+        <Stationsfeld mode="code" bind:value={data.meta.nach} placeholder="z.B. Aarau" />
       </span>
     </div>
     <div class={secondaryClass}>

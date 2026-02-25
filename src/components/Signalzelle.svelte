@@ -2,7 +2,7 @@
   import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsStationSearch, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
   import { ICON, SIGNAL_ABBREV, SIGNAL_SHORT } from '../lib/constants';
-  import Stationsname from './ui/Stationsname.svelte';
+  import Stationsfeld from './ui/Stationsfeld.svelte';
   import type { Eintrag } from '../lib/types';
 
   let {
@@ -237,7 +237,7 @@
   {#if needsName || stationName}
     <div class="name-wrapper hl-field" class:visible={needsName} onfocusin={handleNameFocus}>
       {#if useStationSearch}
-        <Stationsname bind:name={stationName} onchange={handleNameChange} />
+        <Stationsfeld mode="name" bind:value={stationName} onchange={handleNameChange} />
       {:else}
         <input
           type="text"
