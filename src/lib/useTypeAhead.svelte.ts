@@ -16,15 +16,11 @@ function fuzzyMatch(text: string, query: string): boolean {
   return true;
 }
 
-type TypeAheadState = {
-  buffer: string;
-  dropdownOpen: boolean;
-  dropdownIndex: number;
-  fuzzyMatches: string[];
-};
-
 type TypeAheadResult = {
-  readonly state: TypeAheadState;
+  readonly buffer: string;
+  readonly dropdownOpen: boolean;
+  readonly dropdownIndex: number;
+  readonly fuzzyMatches: string[];
   handleKeydown: (e: KeyboardEvent) => string | null;
   reset: () => void;
 };
@@ -141,14 +137,10 @@ export function useTypeAhead(
   }
 
   return {
-    get state() {
-      return {
-        get buffer() { return buffer; },
-        get dropdownOpen() { return dropdownOpen; },
-        get dropdownIndex() { return dropdownIndex; },
-        get fuzzyMatches() { return fuzzyMatches; },
-      };
-    },
+    get buffer() { return buffer; },
+    get dropdownOpen() { return dropdownOpen; },
+    get dropdownIndex() { return dropdownIndex; },
+    get fuzzyMatches() { return fuzzyMatches; },
     handleKeydown,
     reset,
   };

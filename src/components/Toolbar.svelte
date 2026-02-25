@@ -74,10 +74,10 @@
     }
   }
 
-  const btnGroup = 'btn-group sm:flex-row lg:gap-md';
+  const btnGroup = 'btn-group';
 </script>
 
-<div class="header lg:gap-md sm:mb-page" class:logged-out={!loggedIn}>
+<div class="header" class:logged-out={!loggedIn}>
   <h1 class="hidden xl:block mr-md">Signaleditor</h1>
 
   <!-- Group: History -->
@@ -161,7 +161,7 @@
     </div>
 
     {#if currentFileName}
-      <span class="file-indicator sm:justify-start" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
+      <span class="file-indicator" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
         <span class="status-dot"></span>
         <span class="file-name">{currentFileName}</span>
         <span class="status-label">
@@ -206,7 +206,11 @@
     .header {
       padding-left: var(--inset-card);
       padding-right: var(--inset-card);
+      margin-bottom: var(--spacing-page);
     }
+  }
+  @media (min-width: 1024px) {
+    .header { gap: var(--spacing-md); }
   }
   .header.logged-out {
     background-image: linear-gradient(color-mix(in srgb, var(--color-red) 8%, transparent), color-mix(in srgb, var(--color-red) 8%, transparent));
@@ -220,9 +224,18 @@
     align-items: center;
     gap: var(--spacing-card);
   }
+  @media (min-width: 640px) {
+    .btn-group { flex-direction: row; }
+  }
+  @media (min-width: 1024px) {
+    .btn-group { gap: var(--spacing-md); }
+  }
   .toggle-group {
     align-items: center;
     gap: var(--spacing-card);
+  }
+  @media (min-width: 1024px) {
+    .toggle-group { gap: var(--spacing-md); }
   }
   .separator {
     width: 1px;
@@ -289,6 +302,9 @@
     font-size: var(--text-input);
     font-family: var(--font-mono);
     color: var(--color-text-secondary);
+  }
+  @media (min-width: 640px) {
+    .file-indicator { justify-content: flex-start; }
   }
   .file-name {
     overflow: hidden;

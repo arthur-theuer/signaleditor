@@ -107,12 +107,12 @@
       />
       <div class="signal-abbrev">{disabled ? '' : shortLabel}</div>
     </div>
-    {#if typeAhead.state.dropdownOpen && typeAhead.state.fuzzyMatches.length > 1}
+    {#if typeAhead.dropdownOpen && typeAhead.fuzzyMatches.length > 1}
       <div class="dropdown">
-        {#each typeAhead.state.fuzzyMatches as match, i}
+        {#each typeAhead.fuzzyMatches as match, i}
           <div
             class="dropdown-item"
-            class:active={i === typeAhead.state.dropdownIndex}
+            class:active={i === typeAhead.dropdownIndex}
           >{match}</div>
         {/each}
       </div>

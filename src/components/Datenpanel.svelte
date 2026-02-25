@@ -63,7 +63,7 @@
       <span class="header-id">{id}</span>
     {/if}
   </div>
-  <div class="daten-fields sm:flex-row sm:flex-wrap">
+  <div class="daten-fields">
     <div class={primaryClass}>
       <label for={primaryId}>{primaryLabel}</label>
       <span class="hl-field">
@@ -110,6 +110,9 @@
     flex-direction: column;
     gap: var(--spacing-card);
     padding: var(--spacing-card);
+  }
+  @media (min-width: 640px) {
+    .daten-fields { flex-direction: row; flex-wrap: wrap; }
   }
   .daten-field {
     background: var(--color-bg-raised);
