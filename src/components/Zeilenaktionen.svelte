@@ -43,20 +43,18 @@
 </div>
 
 <!-- Narrow: ellipsis menu -->
-<div class="signal-actions signal-actions-narrow shrink-0 relative" bind:this={menuEl}>
+<div class="signal-actions signal-actions-narrow shrink-0 flex gap-card" bind:this={menuEl}>
+  {#if menuOpen}
+    <Symbolknopf onclick={() => handleAction(onclear)} title="Leeren" color="clear" tabindex={-1}>
+      <Eraser size={16} strokeWidth={1.5} />
+    </Symbolknopf>
+    <Symbolknopf onclick={() => handleAction(ondelete)} title="Löschen" color="red" tabindex={-1}>
+      <Trash2 size={16} strokeWidth={1.5} />
+    </Symbolknopf>
+  {/if}
   <Symbolknopf onclick={() => menuOpen = !menuOpen} title="Aktionen" tabindex={-1}>
     <EllipsisVertical size={16} strokeWidth={1.5} />
   </Symbolknopf>
-  {#if menuOpen}
-    <div class="actions-overlay">
-      <Symbolknopf onclick={() => handleAction(onclear)} title="Leeren" color="clear" tabindex={-1}>
-        <Eraser size={16} strokeWidth={1.5} />
-      </Symbolknopf>
-      <Symbolknopf onclick={() => handleAction(ondelete)} title="Löschen" color="red" tabindex={-1}>
-        <Trash2 size={16} strokeWidth={1.5} />
-      </Symbolknopf>
-    </div>
-  {/if}
 </div>
 
 <style>
@@ -68,15 +66,6 @@
   }
   .signal-actions-narrow {
     display: none;
-  }
-
-  .actions-overlay {
-    position: absolute;
-    right: 0;
-    top: 0;
-    display: flex;
-    gap: var(--spacing-card);
-    z-index: 3;
   }
 
   @media (max-width: 639px) {
