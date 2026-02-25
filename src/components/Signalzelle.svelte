@@ -284,14 +284,6 @@
     flex: 1;
     border-radius: calc(var(--radius-card) - 1px) 0 0 calc(var(--radius-card) - 1px);
   }
-  .has-bahnhof .signal-input-wrapper {
-    flex: none;
-    width: var(--spacing-unit);
-  }
-  .has-bahnhof .signal-input { color: transparent; }
-  .has-bahnhof .signal-input::placeholder { color: transparent; }
-  .has-bahnhof .signal-abbrev { display: flex; }
-
   .signal-input {
     flex: 1;
     border: none;
@@ -426,4 +418,13 @@
     .signal-input::placeholder { color: transparent; }
     .signal-abbrev { display: flex; }
   }
+
+  /* Collapse signal enum to square when bahnhof is revealed */
+  .has-bahnhof .signal-input-wrapper {
+    flex: none;
+    width: var(--spacing-unit);
+  }
+  .has-bahnhof .signal-input { color: transparent; }
+  .has-bahnhof .signal-input::placeholder { color: transparent; }
+  .has-bahnhof .signal-abbrev { display: flex; }
 </style>
