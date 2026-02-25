@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Search } from 'lucide-svelte';
-  import { STATIONEN } from '../../lib/constants';
+  import { ICON, STATIONEN } from '../../lib/constants';
   import { search, highlight, type Result } from '../../lib/station-search';
 
   let {
@@ -105,7 +105,7 @@
       spellcheck="false"
     />
     {#if !validCode}
-      <span class="search-icon"><Search size={16} strokeWidth={1.5} /></span>
+      <span class="search-icon"><Search {...ICON} /></span>
     {/if}
   </div>
 </div>

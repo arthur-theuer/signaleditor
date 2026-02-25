@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsStationSearch, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
-  import { SIGNAL_ABBREV, SIGNAL_SHORT } from '../lib/constants';
+  import { ICON, SIGNAL_ABBREV, SIGNAL_SHORT } from '../lib/constants';
   import Stationsname from './ui/Stationsname.svelte';
   import type { Eintrag } from '../lib/types';
 
@@ -275,7 +275,7 @@
       onclick={onToggleAlt}
       title="Alternativsignal"
       tabindex={-1}
-    ><Diff size={16} strokeWidth={1.5} /></button>
+    ><Diff {...ICON} /></button>
   {/if}
 </div>
 

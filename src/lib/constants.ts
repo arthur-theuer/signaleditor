@@ -1,3 +1,6 @@
+/** Default props for all lucide-svelte icons. Usage: <Icon {...ICON} /> */
+export const ICON = { size: 16, strokeWidth: 1.5 } as const;
+
 export const HAUPTSIGNAL_ENUM = [
   'Abschnittsignal',
   'Abschnitteinfahrsignal',

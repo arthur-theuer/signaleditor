@@ -3,6 +3,7 @@
     Undo2, Redo2, Upload, Download, Save, Lock, LockOpen,
     Milestone, Route, FolderOpen, FolderClosed, Code, Megaphone,
   } from 'lucide-svelte';
+  import { ICON } from '../lib/constants';
   import Passwortfeld from './ui/Passwortfeld.svelte';
 
   let {
@@ -82,10 +83,10 @@
   <!-- Group: History -->
   <div class={btnGroup}>
     <button id="undoBtn" class="tb-btn btn" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
-      <Undo2 size={16} strokeWidth={1.5} />
+      <Undo2 {...ICON} />
     </button>
     <button id="redoBtn" class="tb-btn btn" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
-      <Redo2 size={16} strokeWidth={1.5} />
+      <Redo2 {...ICON} />
     </button>
   </div>
 
@@ -94,10 +95,10 @@
   <!-- Group: New -->
   <div class={btnGroup}>
     <button class="tb-btn btn" onclick={() => onNew('strecke')} title="Neue Strecke">
-      <Milestone size={16} strokeWidth={1.5} />
+      <Milestone {...ICON} />
     </button>
     <button class="tb-btn btn" onclick={() => onNew('route')} title="Neue Route">
-      <Route size={16} strokeWidth={1.5} />
+      <Route {...ICON} />
     </button>
   </div>
 
@@ -113,10 +114,10 @@
       onchange={onFileLoad}
     />
     <button class="tb-btn btn" onclick={() => fileInput.click()} title="Datei laden">
-      <Upload size={16} strokeWidth={1.5} />
+      <Upload {...ICON} />
     </button>
     <button class="tb-btn download-btn btn" onclick={onExportMeldungen} title="Meldungen exportieren">
-      <Download size={16} strokeWidth={1.5} />
+      <Download {...ICON} />
     </button>
   </div>
 
@@ -125,10 +126,10 @@
   <!-- Group: View toggles (hidden at sm) -->
   <div class="hidden sm:flex items-center gap-card lg:gap-md">
     <button class="tb-btn toggle-btn btn" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
-      <Code size={16} strokeWidth={1.5} />
+      <Code {...ICON} />
     </button>
     <button class="tb-btn toggle-btn btn" class:active={showMeldungen} disabled={!meldungenAllowed} onclick={onToggleMeldungen} title="Meldungen">
-      <Megaphone size={16} strokeWidth={1.5} />
+      <Megaphone {...ICON} />
     </button>
   </div>
 
@@ -144,9 +145,9 @@
         title="Dateien"
       >
         {#if currentFileName}
-          <FolderOpen size={16} strokeWidth={1.5} />
+          <FolderOpen {...ICON} />
         {:else}
-          <FolderClosed size={16} strokeWidth={1.5} />
+          <FolderClosed {...ICON} />
         {/if}
       </button>
       <button
@@ -155,7 +156,7 @@
         disabled={saving || !dirty}
         title="Speichern (Ctrl+S)"
       >
-        <Save size={16} strokeWidth={1.5} />
+        <Save {...ICON} />
       </button>
     </div>
 
@@ -179,9 +180,9 @@
   <!-- Lock with expanding PIN field -->
   <Passwortfeld bind:this={passwortfeld} unlocked={loggedIn} onsubmit={handlePinSubmit} onclick={handleLockClick}>
     {#if loggedIn}
-      <LockOpen size={16} strokeWidth={1.5} />
+      <LockOpen {...ICON} />
     {:else}
-      <Lock size={16} strokeWidth={1.5} />
+      <Lock {...ICON} />
     {/if}
   </Passwortfeld>
 </div>

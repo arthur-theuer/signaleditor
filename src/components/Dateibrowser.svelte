@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Trash2, Check, Pencil } from 'lucide-svelte';
+  import { ICON } from '../lib/constants';
   import { listFiles, loadFile, deleteFile, renameFile, type FileInfo, type StoragePrefix } from '../lib/api';
   import { invalidateImportCache } from '../lib/sources';
 
@@ -160,7 +161,7 @@
                 <span class="rename-ext">{file.name.match(/\.ya?ml$/)?.[0] || '.yaml'}</span>
               </div>
               <button class="action-btn confirm-btn btn" onclick={() => submitRename(file)} title="Bestätigen">
-                <Check size={16} strokeWidth={1.5} />
+                <Check {...ICON} />
               </button>
             {:else}
               <button
@@ -174,14 +175,14 @@
               </button>
               {#if mode === 'manage'}
                 <button class="action-btn rename-btn btn" onclick={() => startRename(file)} title="Umbenennen">
-                  <Pencil size={16} strokeWidth={1.5} />
+                  <Pencil {...ICON} />
                 </button>
                 <button class="action-btn delete-btn btn" onclick={() => handleDelete(file)} title="Löschen">
-                  <Trash2 size={16} strokeWidth={1.5} />
+                  <Trash2 {...ICON} />
                 </button>
               {:else if used}
                 <div class="used-indicator">
-                  <Check size={16} strokeWidth={1.5} />
+                  <Check {...ICON} />
                 </div>
               {/if}
             {/if}

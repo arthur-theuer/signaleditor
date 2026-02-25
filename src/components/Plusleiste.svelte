@@ -1,5 +1,6 @@
 <script lang="ts">
   import { DiamondPlus, SquarePen, Share2, Crosshair, FilePlus } from 'lucide-svelte';
+  import { ICON } from '../lib/constants';
 
   let {
     onAddSignal,
@@ -17,11 +18,11 @@
 </script>
 
 <div class="add-bar">
-  <button class="add-signal btn" onclick={onAddSignal}><DiamondPlus size={16} strokeWidth={1.5} /><span class="tier-full">Signal</span><span class="tier-medium">Sig.</span></button>
-  <button class="add-note btn" onclick={onAddNotiz}><SquarePen size={16} strokeWidth={1.5} /><span class="tier-full">Notiz</span><span class="tier-medium">Not.</span></button>
-  <button class="add-abzweigung btn" onclick={onAddAbzweigung}><Share2 size={16} strokeWidth={1.5} /><span class="tier-full">Abzweigung</span><span class="tier-medium">Abzw.</span></button>
-  <button class="add-knoten btn" onclick={onAddKnoten}><Crosshair size={16} strokeWidth={1.5} /><span class="tier-full">Knoten</span><span class="tier-medium">Kn.</span></button>
-  <button class="add-import btn" onclick={onAddImport}><FilePlus size={16} strokeWidth={1.5} /><span class="tier-full">Import</span><span class="tier-medium">Imp.</span></button>
+  <button class="add-signal btn" onclick={onAddSignal}><DiamondPlus {...ICON} /><span class="tier-full">Signal</span><span class="tier-medium">Sig.</span></button>
+  <button class="add-note btn" onclick={onAddNotiz}><SquarePen {...ICON} /><span class="tier-full">Notiz</span><span class="tier-medium">Not.</span></button>
+  <button class="add-abzweigung btn" onclick={onAddAbzweigung}><Share2 {...ICON} /><span class="tier-full">Abzweigung</span><span class="tier-medium">Abzw.</span></button>
+  <button class="add-knoten btn" onclick={onAddKnoten}><Crosshair {...ICON} /><span class="tier-full">Knoten</span><span class="tier-medium">Kn.</span></button>
+  <button class="add-import btn" onclick={onAddImport}><FilePlus {...ICON} /><span class="tier-full">Import</span><span class="tier-medium">Imp.</span></button>
 </div>
 
 <style>

@@ -2,7 +2,7 @@
   import { CloudDownload } from 'lucide-svelte';
   import type { Importeintrag, Eintrag } from '../lib/types';
   import { isSignaleintrag, isNotizeintrag, isAbzweigungseintrag, isKnoteneintrag } from '../lib/types';
-  import { STATIONEN } from '../lib/constants';
+  import { ICON, STATIONEN } from '../lib/constants';
   import { resolveImport, cacheImport } from '../lib/sources';
   import { parseYAMLContent } from '../lib/yaml';
   import Dateibrowser from './Dateibrowser.svelte';
@@ -138,7 +138,7 @@
     {/if}
   </div>
   <button class="import-folder-btn" onclick={(e) => { e.stopPropagation(); showPicker = true; }} title="Datei auswählen">
-    <CloudDownload size={16} strokeWidth={1.5} />
+    <CloudDownload {...ICON} />
   </button>
 </div>
 <div class="signal-cell import-cell import-info-cell" class:empty={!hasFile}>

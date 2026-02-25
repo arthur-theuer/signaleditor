@@ -11,6 +11,7 @@
   import { dateiId, isStreckendaten } from './lib/types';
   import { saveFile, createFile, type StoragePrefix } from './lib/api';
   import { RulerDimensionLine } from 'lucide-svelte';
+  import { ICON } from './lib/constants';
   import Toolbar from './components/Toolbar.svelte';
   import Datenpanel from './components/Datenpanel.svelte';
   import Signalpanel from './components/Signalpanel.svelte';
@@ -320,7 +321,7 @@
         onclick={() => showKm = !showKm}
         title="Kilometer ein-/ausblenden"
       >
-        <RulerDimensionLine size={16} strokeWidth={1.5} />
+        <RulerDimensionLine {...ICON} />
       </Symbolknopf>
     </div>
     <div class="signals-list">

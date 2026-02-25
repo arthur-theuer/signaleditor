@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Eraser, Trash2, EllipsisVertical } from 'lucide-svelte';
+  import { ICON } from '../lib/constants';
   import Symbolknopf from './ui/Symbolknopf.svelte';
 
   let {
@@ -35,20 +36,20 @@
 <div class="signal-actions shrink-0 flex gap-card" bind:this={menuEl}>
   {#if menuOpen}
     <Symbolknopf onclick={() => handleAction(onclear)} title="Leeren" color="clear" tabindex={-1} class="action-btn">
-      <Eraser size={16} strokeWidth={1.5} />
+      <Eraser {...ICON} />
     </Symbolknopf>
     <Symbolknopf onclick={() => handleAction(ondelete)} title="Löschen" color="red" tabindex={-1} class="action-btn">
-      <Trash2 size={16} strokeWidth={1.5} />
+      <Trash2 {...ICON} />
     </Symbolknopf>
   {/if}
   <Symbolknopf onclick={() => menuOpen = !menuOpen} title="Aktionen" tabindex={-1} class="ellipsis-btn">
-    <EllipsisVertical size={16} strokeWidth={1.5} />
+    <EllipsisVertical {...ICON} />
   </Symbolknopf>
   <Symbolknopf onclick={onclear} title="Leeren" color="clear" tabindex={-1} class="wide-btn">
-    <Eraser size={16} strokeWidth={1.5} />
+    <Eraser {...ICON} />
   </Symbolknopf>
   <Symbolknopf onclick={ondelete} title="Löschen" color="red" tabindex={-1} class="wide-btn">
-    <Trash2 size={16} strokeWidth={1.5} />
+    <Trash2 {...ICON} />
   </Symbolknopf>
 </div>
 
