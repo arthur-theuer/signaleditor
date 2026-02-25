@@ -217,29 +217,7 @@
     stroke-width: 3;
   }
 
-  /* Dropdown */
-  .dropdown {
-    position: absolute;
-    top: 100%;
-    left: -1px;
-    right: -1px;
-    z-index: 2;
-    background: var(--color-bg-raised);
-    border: var(--card-border);
-    border-radius: 0 0 var(--radius-card) var(--radius-card);
-    overflow: hidden;
-  }
-
-  :global(.hl-field:has(.dropdown)),
-  :global(.hl-field:has(.dropdown))::after,
-  :global(.daten-field:has(.dropdown)),
-  :global(.row-cell:has(.dropdown)),
-  :global(.knoten-search-wrapper:has(.dropdown)) {
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-  }
-
-  /* Dropdown items */
+  /* Dropdown items — container styles in app.css (.dropdown) */
   .dropdown-item {
     display: flex;
     align-items: center;
@@ -263,10 +241,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-  .dropdown-item.active {
-    background: var(--color-focus-bg);
-  }
-
   /* Name mode dropdown items */
   .item-name {
     flex: 1;

@@ -224,10 +224,10 @@
       <div class="signal-short px-cell">{disabled ? '' : (SIGNAL_SHORT[base] ?? abbrev(base))}</div>
     </div>
     {#if dropdownOpen && fuzzyMatches.length > 1}
-      <div class="signal-dropdown">
+      <div class="dropdown">
         {#each fuzzyMatches as match, i}
           <div
-            class="signal-dropdown-item"
+            class="dropdown-item"
             class:active={i === dropdownIndex}
           >{match}</div>
         {/each}
@@ -306,24 +306,8 @@
   .signal-input:focus { outline: none; }
   .signal-input::placeholder { color: var(--color-text-muted); }
 
-  :global(.hl-field:has(.signal-dropdown)),
-  :global(.hl-field:has(.signal-dropdown))::after {
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-  }
-
-  .signal-dropdown {
-    position: absolute;
-    top: 100%;
-    left: -1px;
-    right: -1px;
-    z-index: 2;
-    background: var(--color-bg-raised);
-    border: var(--card-border);
-    border-radius: 0 0 var(--radius-card) var(--radius-card);
-    overflow: hidden;
-  }
-  .signal-dropdown-item {
+  /* Dropdown items — container and radius-flattening in app.css (.dropdown) */
+  .dropdown-item {
     padding: var(--spacing-xs) var(--spacing-cell);
     font-size: var(--text-caption);
     font-family: var(--font-mono);
@@ -333,9 +317,6 @@
     text-overflow: ellipsis;
     -webkit-user-select: none;
     user-select: none;
-  }
-  .signal-dropdown-item.active {
-    background: var(--color-focus-bg);
   }
 
   .name-wrapper {
