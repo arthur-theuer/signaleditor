@@ -71,7 +71,7 @@ Data is stored as YAML files. The app supports local file import/export and clou
 | Token | Value | Usage |
 |---|---|---|
 | `--unit` | 40px | Base size for buttons, inputs, single-height elements |
-| `--row-height` | 80px (2 × unit) | Signal row height (input + preview stacked) |
+| ~~`--row-height`~~ | removed | Row height now equals `--unit` (40px) |
 | `--card-gap` | 4px | Gap between cards/cells in a row |
 | `--half-gap` | 2px | Half of card-gap, used for vertical padding |
 | `--card-radius` | 8px | Border radius for individual cards/cells |

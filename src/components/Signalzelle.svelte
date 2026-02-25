@@ -191,62 +191,51 @@
   }
 </script>
 
-<div class="signal-cell flex flex-col relative flex-1 min-w-0" class:has-name={needsName && !disabled} class:has-bahnhof={needsBahnhof && !disabled} class:disabled>
-  <div class="signal-cell-inner flex h-full shrink-0">
-    <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-wrap">
-      <div class="signal-input-slot">
-        <input
-          type="text"
-          class="signal-input px-cell"
-          readonly
-          value={disabled ? '' : base}
-          placeholder={disabled ? '' : placeholder}
-          onkeydown={handleKeydown}
-          onfocus={handleSignalFocus}
-          onblur={handleSignalBlur}
-          tabindex={disabled ? -1 : 0}
-        />
-        <div class="signal-abbrev px-cell">{disabled ? '' : abbrev(base)}</div>
-      </div>
-      {#if dropdownOpen && fuzzyMatches.length > 1}
-        <div class="signal-dropdown">
-          {#each fuzzyMatches as match, i}
-            <div
-              class="signal-dropdown-item"
-              class:active={i === dropdownIndex}
-            >{match}</div>
-          {/each}
-        </div>
-      {/if}
+<div class="signal-cell flex relative flex-1 min-w-0" class:has-name={needsName && !disabled} class:has-bahnhof={needsBahnhof && !disabled} class:disabled>
+  <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-wrap">
+    <div class="signal-input-slot">
+      <input
+        type="text"
+        class="signal-input px-cell"
+        readonly
+        value={disabled ? '' : base}
+        placeholder={disabled ? '' : placeholder}
+        onkeydown={handleKeydown}
+        onfocus={handleSignalFocus}
+        onblur={handleSignalBlur}
+        tabindex={disabled ? -1 : 0}
+      />
+      <div class="signal-abbrev px-cell">{disabled ? '' : abbrev(base)}</div>
     </div>
-    {#if needsName || stationName}
-      <div class="name-wrapper hl-wrap" class:visible={needsName}>
-        {#if useStationSearch}
-          <Stationsname bind:name={stationName} onchange={handleNameChange} />
-        {:else}
-          <input
-            type="text"
-            class="name-input px-cell"
-            value={stationName}
-            oninput={(e) => { stationName = (e.target as HTMLInputElement).value; handleNameChange(); }}
-            placeholder="Name"
-            autocomplete="off"
-            autocorrect="off"
-            spellcheck="false"
-          />
-        {/if}
+    {#if dropdownOpen && fuzzyMatches.length > 1}
+      <div class="signal-dropdown">
+        {#each fuzzyMatches as match, i}
+          <div
+            class="signal-dropdown-item"
+            class:active={i === dropdownIndex}
+          >{match}</div>
+        {/each}
       </div>
-    {/if}
-    {#if isMainSignal && onToggleAlt}
-      <button
-        class="alt-toggle-btn absolute right-0 flex items-center justify-center w-unit h-unit p-0 z-1"
-        class:active={isAltActive}
-        onclick={onToggleAlt}
-        title="Alternativsignal"
-        tabindex={-1}
-      ><Diff size={16} strokeWidth={1.5} /></button>
     {/if}
   </div>
+  {#if needsName || stationName}
+    <div class="name-wrapper hl-wrap" class:visible={needsName}>
+      {#if useStationSearch}
+        <Stationsname bind:name={stationName} onchange={handleNameChange} />
+      {:else}
+        <input
+          type="text"
+          class="name-input px-cell"
+          value={stationName}
+          oninput={(e) => { stationName = (e.target as HTMLInputElement).value; handleNameChange(); }}
+          placeholder="Name"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+      {/if}
+    </div>
+  {/if}
   {#if needsBahnhof}
     <div class="bahnhof-wrapper hl-wrap visible">
       <input
@@ -262,6 +251,15 @@
       />
     </div>
   {/if}
+  {#if isMainSignal && onToggleAlt}
+    <button
+      class="alt-toggle-btn absolute right-0 flex items-center justify-center w-unit h-unit p-0 z-1"
+      class:active={isAltActive}
+      onclick={onToggleAlt}
+      title="Alternativsignal"
+      tabindex={-1}
+    ><Diff size={16} strokeWidth={1.5} /></button>
+  {/if}
 </div>
 
 <style>
@@ -271,15 +269,8 @@
     container-type: inline-size;
   }
   .has-name .signal-input-wrapper {
-    width: 50%;
-    flex: none;
+    flex: 1;
     border-radius: calc(var(--radius-card) - 1px) 0 0 calc(var(--radius-card) - 1px);
-  }
-  .has-bahnhof .signal-input-wrapper {
-    border-radius: calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0 0;
-  }
-  .has-name.has-bahnhof .signal-input-wrapper {
-    border-radius: calc(var(--radius-card) - 1px) 0 0 0;
   }
 
   .signal-input {
@@ -328,15 +319,14 @@
 
   .name-wrapper {
     display: none;
-    width: 50%;
-    flex-direction: column;
+    flex: 1;
     border-left: 1px solid var(--color-border);
     background: transparent;
     height: 100%;
     border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0;
   }
   .name-wrapper.visible { display: flex; }
-  .has-bahnhof .name-wrapper { border-radius: 0 calc(var(--radius-card) - 1px) 0 0; }
+  .has-bahnhof .name-wrapper { border-radius: 0; }
   .name-input {
     flex: 1;
     min-width: 0;
@@ -354,15 +344,11 @@
   }
   .name-input::placeholder { color: var(--color-text-muted); }
 
-  .has-bahnhof .signal-cell-inner { height: var(--spacing-unit); }
-  .has-bahnhof .signal-input-wrapper { height: var(--spacing-unit); }
-  .has-bahnhof .name-wrapper { height: var(--spacing-unit); }
-
   .bahnhof-wrapper {
     display: none;
-    border-top: 1px solid var(--color-border);
+    border-left: 1px solid var(--color-border);
     flex: 1;
-    border-radius: 0 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px);
+    border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0;
   }
   .bahnhof-wrapper.visible { display: flex; }
   .bahnhof-input {
@@ -386,7 +372,6 @@
     cursor: pointer;
     opacity: 0;
   }
-  .has-bahnhof .alt-toggle-btn { top: 0; transform: none; }
   .signal-cell:hover .alt-toggle-btn { opacity: 0.6; }
   .signal-cell:hover .alt-toggle-btn:hover { opacity: 1; }
   .alt-toggle-btn.active { opacity: 0.4 !important; color: var(--color-text-muted); }

@@ -33,7 +33,7 @@
   .add-bar button {
     flex: 1;
     min-width: 0;
-    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    height: var(--spacing-unit);
     padding: 0 var(--spacing-cell);
     border: var(--card-border);
     border-radius: var(--radius-card);

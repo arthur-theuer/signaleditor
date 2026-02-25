@@ -302,7 +302,7 @@
       onInsertImport={() => insertAt(idx, makeImport(idx))}
     />
     <div
-      class="signal-row flex gap-card py-half-card px-card items-stretch"
+      class="signal-row flex gap-card py-card px-card items-stretch"
       class:drag-ready={dragHandle === idx}
       data-row-index={idx}
       draggable={dragHandle === idx}
@@ -370,7 +370,7 @@
 
 <style>
   .signal-row {
-    min-height: calc(var(--spacing-row) + var(--spacing-card));
+    min-height: calc(var(--spacing-unit) + var(--spacing-card));
   }
   .signal-id {
     font-size: var(--text-input);

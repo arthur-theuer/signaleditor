@@ -217,8 +217,8 @@
   /* Base toolbar button: fixed-size icon box, label appears as overlay */
   .tb-btn {
     position: relative;
-    width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
-    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    width: var(--spacing-unit);
+    height: var(--spacing-unit);
     padding: 0;
     display: flex;
     align-items: center;
@@ -270,7 +270,7 @@
 
   /* File status indicator */
   .file-indicator {
-    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    height: var(--spacing-unit);
     font-size: var(--text-input);
     font-family: var(--font-mono);
     color: var(--color-text-secondary);

@@ -63,20 +63,20 @@
 
   /* Square sizing for icon-only buttons */
   .symbolknopf:not(.has-label):not(.wide) {
-    width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
-    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    width: var(--spacing-unit);
+    height: var(--spacing-unit);
   }
 
   /* Buttons with labels get height but flexible width */
   .symbolknopf.has-label {
-    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    height: var(--spacing-unit);
     padding: 0 var(--spacing-cell);
   }
 
   /* Full-width variant */
   .symbolknopf.wide {
     width: 100%;
-    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    height: var(--spacing-unit);
     padding: 0 var(--spacing-cell);
   }
 

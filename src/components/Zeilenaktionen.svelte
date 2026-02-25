@@ -22,8 +22,7 @@
 
 <style>
   .signal-actions {
-    grid-template-rows: repeat(2, 1fr);
-    width: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
-    height: var(--spacing-row);
+    grid-template-columns: repeat(2, 1fr);
+    height: var(--spacing-unit);
   }
 </style>

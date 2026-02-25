@@ -53,7 +53,7 @@
 
 <style>
   .meldung-row {
-    min-height: calc(var(--spacing-row) + var(--spacing-card));
+    min-height: calc(var(--spacing-unit) + var(--spacing-card));
     font-family: var(--font-mono);
     font-size: var(--text-input);
   }

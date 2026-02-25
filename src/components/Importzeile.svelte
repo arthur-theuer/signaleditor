@@ -198,7 +198,7 @@
     pointer-events: none;
   }
   .import-folder-btn {
-    width: var(--spacing-row);
+    width: calc(2 * var(--spacing-unit));
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -248,13 +248,13 @@
   }
   .import-info {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    align-items: center;
     height: 100%;
     overflow: hidden;
   }
   .import-divider {
-    border-top: 1px solid var(--color-border);
+    border-left: 1px solid var(--color-border);
+    align-self: stretch;
   }
   .import-count, .import-stitch, .import-error {
     font-size: var(--text-input);
@@ -266,6 +266,7 @@
     display: flex;
     align-items: center;
     flex: 1;
+    min-width: 0;
   }
   .import-count { color: var(--color-text-secondary); }
   .import-stitch { color: var(--color-import-text); }

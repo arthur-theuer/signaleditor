@@ -135,7 +135,7 @@
   }
 
   .code-col {
-    width: var(--spacing-row);
+    width: calc(2 * var(--spacing-unit));
     flex: none;
     display: flex;
     align-items: center;

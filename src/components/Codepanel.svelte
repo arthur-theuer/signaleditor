@@ -47,7 +47,7 @@
     padding: var(--spacing-xl);
     font-size: var(--text-preview);
     white-space: pre-wrap;
-    max-height: calc(5 * var(--spacing-row));
+    max-height: calc(10 * var(--spacing-unit));
     overflow-y: auto;
     margin: 0;
   }

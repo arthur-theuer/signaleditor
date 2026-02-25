@@ -71,7 +71,7 @@
     background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--radius-card);
-    width: var(--spacing-row);
+    width: calc(2 * var(--spacing-unit));
     flex-shrink: 0;
   }
   .km-cell.visible { display: flex; }

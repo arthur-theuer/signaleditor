@@ -36,7 +36,7 @@
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: calc((var(--spacing-row) - var(--spacing-card)) / 2);
+    height: var(--spacing-unit);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -45,8 +45,8 @@
   .insert-zone-target button {
     opacity: 0;
     pointer-events: none;
-    width: calc((var(--spacing-row) - var(--spacing-card)) / 2);
-    height: calc((var(--spacing-row) - var(--spacing-card)) / 2);
+    width: var(--spacing-unit);
+    height: var(--spacing-unit);
     display: flex;
     align-items: center;
     justify-content: center;

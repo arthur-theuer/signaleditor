@@ -159,7 +159,7 @@
     padding: 0;
     width: 100%;
   }
-  .abzweigung-arrow-field { width: var(--spacing-row); flex-shrink: 0; }
+  .abzweigung-arrow-field { width: calc(2 * var(--spacing-unit)); flex-shrink: 0; }
   .abzweigung-strecke-field { flex: 1; }
   .abzweigung-vonnach-field { flex: 1; }
   .abzweigung-richtung-field { flex: 1; }

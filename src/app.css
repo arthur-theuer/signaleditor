@@ -31,7 +31,6 @@
   --spacing-card: 4px;
   --spacing-half-card: 2px;
   --spacing-unit: 40px;
-  --spacing-row: 80px;
 
   /* Border radius */
   --radius-card: 8px;
@@ -283,17 +282,16 @@ input, select, textarea, button {
   position: relative;
   flex: 1;
   min-width: 0;
-  height: var(--spacing-row);
+  height: var(--spacing-unit);
 }
 
 .signal-cell.disabled { background: var(--color-bg); pointer-events: none; }
 .signal-cell.disabled .signal-input { color: var(--color-text-muted); cursor: default; }
-.signal-cell.disabled .signal-preview { display: none; }
 
 .section-header {
   display: flex;
   align-items: center;
-  height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2 + 2 * var(--spacing-card));
+  height: var(--spacing-unit);
   padding: 0 var(--spacing-cell);
   font-weight: var(--font-weight-semibold);
   font-size: var(--text-input);

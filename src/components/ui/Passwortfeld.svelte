@@ -70,7 +70,7 @@
   .pill {
     display: flex;
     align-items: center;
-    height: calc(var(--spacing-row) / 2 - var(--spacing-card) / 2);
+    height: var(--spacing-unit);
     border: var(--card-border);
     border-radius: var(--radius-container);
     background: var(--color-bg-raised);
