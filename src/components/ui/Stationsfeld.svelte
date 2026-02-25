@@ -231,6 +231,7 @@
     cursor: pointer;
     text-align: left;
   }
+  .dropdown-item.active { background: var(--color-focus-bg); }
   .dropdown-item .code-col {
     font-size: var(--text-caption);
   }

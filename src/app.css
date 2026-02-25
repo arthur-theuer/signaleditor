@@ -256,7 +256,8 @@
   border-radius: 0 0 var(--radius-card) var(--radius-card);
   overflow: hidden;
 }
-.dropdown-item.active { background: var(--color-focus-bg); }
+/* .dropdown-item.active is in each component's scoped CSS — global rule
+   can't override scoped background due to equal specificity + CSS order. */
 :has(> .dropdown) {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;

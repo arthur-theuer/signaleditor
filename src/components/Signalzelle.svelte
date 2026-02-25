@@ -323,6 +323,7 @@
     -webkit-user-select: none;
     user-select: none;
   }
+  .dropdown-item.active { background: var(--color-focus-bg); }
 
   .name-wrapper {
     display: none;
