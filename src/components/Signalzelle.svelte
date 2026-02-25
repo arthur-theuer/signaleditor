@@ -203,12 +203,11 @@
 </script>
 
 <div class="signal-cell relative" class:has-name={needsName && !disabled} class:has-bahnhof={showBahnhof && !disabled} class:disabled>
-  <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-wrap" class:compact={showBahnhof && !disabled}>
+  <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-wrap">
     <div class="signal-input-slot">
       <input
         type="text"
         class="signal-input px-cell"
-        class:collapsed={showBahnhof && !disabled}
         readonly
         value={disabled ? '' : base}
         placeholder={disabled ? '' : placeholder}
@@ -217,7 +216,8 @@
         onblur={handleSignalBlur}
         tabindex={disabled ? -1 : 0}
       />
-      <div class="signal-abbrev px-cell" class:force-show={showBahnhof && !disabled}>{disabled ? '' : (showBahnhof ? (SIGNAL_SHORT[base] ?? abbrev(base)) : abbrev(base))}</div>
+      <div class="signal-abbrev px-cell">{disabled ? '' : abbrev(base)}</div>
+      <div class="signal-short px-cell">{disabled ? '' : (SIGNAL_SHORT[base] ?? abbrev(base))}</div>
     </div>
     {#if dropdownOpen && fuzzyMatches.length > 1}
       <div class="signal-dropdown">
@@ -400,7 +400,7 @@
     display: flex;
     min-width: 0;
   }
-  .signal-abbrev {
+  .signal-abbrev, .signal-short {
     position: absolute;
     inset: 0;
     background: transparent;
@@ -421,11 +421,12 @@
   }
 
   /* Collapse signal enum to square when bahnhof is revealed */
-  .signal-input-wrapper.compact {
-    flex: none !important;
+  .has-bahnhof .signal-input-wrapper {
+    flex: none;
     width: var(--spacing-unit);
   }
-  .signal-input.collapsed { color: transparent; }
-  .signal-input.collapsed::placeholder { color: transparent; }
-  .signal-abbrev.force-show { display: flex; }
+  .has-bahnhof .signal-input { color: transparent; }
+  .has-bahnhof .signal-input::placeholder { color: transparent; }
+  .has-bahnhof .signal-abbrev { display: none; }
+  .has-bahnhof .signal-short { display: flex; }
 </style>
