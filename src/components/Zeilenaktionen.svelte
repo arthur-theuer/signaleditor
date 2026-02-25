@@ -32,28 +32,23 @@
   });
 </script>
 
-<!-- Wide: two buttons inline -->
-<div class="signal-actions signal-actions-wide grid gap-card shrink-0">
-  <Symbolknopf onclick={onclear} title="Leeren" color="clear" tabindex={-1}>
-    <Eraser size={16} strokeWidth={1.5} />
-  </Symbolknopf>
-  <Symbolknopf onclick={ondelete} title="Löschen" color="red" tabindex={-1}>
-    <Trash2 size={16} strokeWidth={1.5} />
-  </Symbolknopf>
-</div>
-
-<!-- Narrow: ellipsis menu -->
-<div class="signal-actions signal-actions-narrow shrink-0 flex gap-card" bind:this={menuEl}>
+<div class="signal-actions shrink-0 flex gap-card" bind:this={menuEl}>
   {#if menuOpen}
-    <Symbolknopf onclick={() => handleAction(onclear)} title="Leeren" color="clear" tabindex={-1}>
+    <Symbolknopf onclick={() => handleAction(onclear)} title="Leeren" color="clear" tabindex={-1} class="action-btn">
       <Eraser size={16} strokeWidth={1.5} />
     </Symbolknopf>
-    <Symbolknopf onclick={() => handleAction(ondelete)} title="Löschen" color="red" tabindex={-1}>
+    <Symbolknopf onclick={() => handleAction(ondelete)} title="Löschen" color="red" tabindex={-1} class="action-btn">
       <Trash2 size={16} strokeWidth={1.5} />
     </Symbolknopf>
   {/if}
-  <Symbolknopf onclick={() => menuOpen = !menuOpen} title="Aktionen" tabindex={-1}>
+  <Symbolknopf onclick={() => menuOpen = !menuOpen} title="Aktionen" tabindex={-1} class="ellipsis-btn">
     <EllipsisVertical size={16} strokeWidth={1.5} />
+  </Symbolknopf>
+  <Symbolknopf onclick={onclear} title="Leeren" color="clear" tabindex={-1} class="wide-btn">
+    <Eraser size={16} strokeWidth={1.5} />
+  </Symbolknopf>
+  <Symbolknopf onclick={ondelete} title="Löschen" color="red" tabindex={-1} class="wide-btn">
+    <Trash2 size={16} strokeWidth={1.5} />
   </Symbolknopf>
 </div>
 
@@ -61,15 +56,14 @@
   .signal-actions {
     height: var(--spacing-unit);
   }
-  .signal-actions-wide {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .signal-actions-narrow {
-    display: none;
-  }
+
+  /* Wide: show inline buttons, hide ellipsis and expandable actions */
+  :global(.ellipsis-btn) { display: none; }
+  :global(.action-btn) { display: none; }
 
   @media (max-width: 639px) {
-    .signal-actions-wide { display: none; }
-    .signal-actions-narrow { display: block; }
+    :global(.wide-btn) { display: none; }
+    :global(.ellipsis-btn) { display: flex; }
+    :global(.action-btn) { display: flex; }
   }
 </style>
