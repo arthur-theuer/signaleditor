@@ -17,14 +17,6 @@
   let prevKm = $derived(
     prevEintrag?.km !== undefined ? (prevEintrag.km + 0.1).toFixed(1) : 'km'
   );
-  let nextKm = $derived(
-    eintrag.km !== undefined ? (eintrag.km + 0.1).toFixed(1) : ''
-  );
-  let prevKmDisplay = $derived(
-    eintrag.km !== undefined && eintrag.km - 0.1 >= 0
-      ? (eintrag.km - 0.1).toFixed(1)
-      : ''
-  );
 
   function handleInput(e: Event) {
     const val = (e.target as HTMLInputElement).value;
@@ -61,7 +53,6 @@
 
 <div class="km-cell" class:visible={showKm}>
   <div class="km-cell-inner hl-wrap">
-    <div class="km-preview next">{nextKm}</div>
     <input
       type="text"
       class="km-input"
@@ -70,7 +61,6 @@
       onkeydown={handleKeydown}
       placeholder={prevKm}
     />
-    <div class="km-preview prev">{prevKmDisplay}</div>
   </div>
 </div>
 
@@ -87,29 +77,11 @@
   .km-cell.visible { display: flex; }
   .km-cell-inner {
     display: flex;
-    flex-direction: column;
     height: 100%;
     border-radius: calc(var(--radius-card) - 1px);
   }
-  .km-preview {
-    flex: var(--preview-flex);
-    display: flex;
-    justify-content: center;
-    font-size: var(--text-preview);
-    font-family: var(--font-mono);
-    color: var(--color-text-muted);
-    opacity: 0;
-    padding: 0 var(--spacing-md);
-    text-align: center;
-    pointer-events: none;
-  }
-  .km-preview.next { order: -1; align-items: center; padding-top: 2px; }
-  .km-preview.prev { order: 1; align-items: center; padding-bottom: 2px; }
-  .km-cell-inner:focus-within .km-preview { opacity: 0.5; }
-  .km-cell-inner:focus-within .km-preview.prev { border-top: 1px solid var(--color-border); }
-  .km-cell-inner:focus-within .km-preview.next { border-bottom: 1px solid var(--color-border); }
   .km-input {
-    flex: var(--input-flex);
+    flex: 1;
     padding: 0 var(--spacing-md);
     border: none;
     background: transparent;

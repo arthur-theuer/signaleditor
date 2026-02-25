@@ -129,9 +129,6 @@
   --inset-card: calc(var(--spacing-page) + 1px + var(--spacing-card)); /* 25px — signal rows, toolbar buttons */
   --inset-cell: calc(var(--spacing-page) + 1px + var(--spacing-cell)); /* 33px — section headers, plusleiste */
 
-  /* Flex ratios for signal row layout */
-  --preview-flex: 2;
-  --input-flex: 3;
 }
 
 @media (prefers-color-scheme: dark) {

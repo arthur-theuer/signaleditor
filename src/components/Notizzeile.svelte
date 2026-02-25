@@ -12,7 +12,6 @@
 
 <div class="signal-cell note-cell">
   <div class="note-wrapper hl-wrap">
-    <div class="note-spacer"></div>
     <input
       type="text"
       class="note-input"
@@ -23,7 +22,6 @@
       autocorrect="off"
       spellcheck="false"
     />
-    <div class="note-spacer"></div>
   </div>
 </div>
 
@@ -31,13 +29,11 @@
   .note-cell { background: var(--color-highlight); }
   .note-wrapper {
     display: flex;
-    flex-direction: column;
     height: 100%;
     border-radius: calc(var(--radius-card) - 1px);
   }
-  .note-spacer { flex: var(--preview-flex); }
   .note-input {
-    flex: var(--input-flex);
+    flex: 1;
     padding: 0 var(--spacing-cell);
     border: none;
     background: transparent;
