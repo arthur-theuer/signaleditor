@@ -159,12 +159,21 @@
   }
 
   let stationName = $state('');
+  let bahnhofRevealed = $state(false);
   // Keep stationName in sync with the derived name
   $effect(() => { stationName = extractName(value ?? ''); });
+  // Reveal bahnhof if it already has a value
+  $effect(() => { if (needsBahnhof && bahnhof) bahnhofRevealed = true; });
+
+  let showBahnhof = $derived(needsBahnhof && bahnhofRevealed);
 
   function handleNameChange() {
     value = stationName ? `${base} ${stationName}` : base;
     onchange();
+  }
+
+  function handleNameFocus() {
+    if (needsBahnhof) bahnhofRevealed = true;
   }
 
   function handleBahnhofInput(e: Event) {
@@ -193,7 +202,7 @@
 
 </script>
 
-<div class="signal-cell relative" class:has-name={needsName && !disabled} class:has-bahnhof={needsBahnhof && !disabled} class:disabled>
+<div class="signal-cell relative" class:has-name={needsName && !disabled} class:has-bahnhof={showBahnhof && !disabled} class:disabled>
   <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-wrap">
     <div class="signal-input-slot">
       <input
@@ -221,7 +230,7 @@
     {/if}
   </div>
   {#if needsName || stationName}
-    <div class="name-wrapper hl-wrap" class:visible={needsName}>
+    <div class="name-wrapper hl-wrap" class:visible={needsName} onfocusin={handleNameFocus}>
       {#if useStationSearch}
         <Stationsname bind:name={stationName} onchange={handleNameChange} />
       {:else}
@@ -239,7 +248,7 @@
     </div>
   {/if}
 
-  {#if needsBahnhof}
+  {#if showBahnhof}
     <div class="bahnhof-wrapper hl-wrap visible">
       <input
         type="text"
@@ -275,6 +284,13 @@
     flex: 1;
     border-radius: calc(var(--radius-card) - 1px) 0 0 calc(var(--radius-card) - 1px);
   }
+  .has-bahnhof .signal-input-wrapper {
+    flex: none;
+    width: var(--spacing-unit);
+  }
+  .has-bahnhof .signal-input { color: transparent; }
+  .has-bahnhof .signal-input::placeholder { color: transparent; }
+  .has-bahnhof .signal-abbrev { display: flex; }
 
   .signal-input {
     flex: 1;
