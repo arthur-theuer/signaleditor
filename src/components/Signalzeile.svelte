@@ -20,16 +20,26 @@
   let signal2Disabled = $derived(isWdh || isVs);
   let has1b = $derived(!isWdh && eintrag.signal_1b !== undefined);
   let has2b = $derived(!signal2Disabled && eintrag.signal_2b !== undefined);
-  let needsBahnhof = $derived(signalNeedsBahnhof(extractSignalBase(eintrag.signal_1) || ''));
+
+  // Bahnhof appears after signal_1 group if signal_1 (or signal_1b) needs it
+  let bahnhofAfter1 = $derived(
+    signalNeedsBahnhof(extractSignalBase(eintrag.signal_1) || '') ||
+    (has1b && signalNeedsBahnhof(extractSignalBase(eintrag.signal_1b ?? '') || ''))
+  );
+  // Bahnhof appears after signal_2 group if signal_2 (or signal_2b) needs it
+  let bahnhofAfter2 = $derived(
+    signalNeedsBahnhof(extractSignalBase(eintrag.signal_2 ?? '') || '') ||
+    (has2b && signalNeedsBahnhof(extractSignalBase(eintrag.signal_2b ?? '') || ''))
+  );
 
   function handleBahnhofInput(e: Event) {
     eintrag.bahnhof = (e.target as HTMLInputElement).value;
     onchange();
   }
 
-  function handleBahnhofFocus() {
+  function handleBahnhofFocus(signalValue: string) {
     if (eintrag.bahnhof) return;
-    const nameVal = extractName(eintrag.signal_1 ?? '').trim();
+    const nameVal = extractName(signalValue ?? '').trim();
     if (nameVal) {
       eintrag.bahnhof = nameVal;
       onchange();
@@ -87,15 +97,15 @@
   />
 {/if}
 
-<!-- bahnhof (separate cell, only for Einfahr-Vorsignal) -->
-{#if needsBahnhof}
+<!-- bahnhof after signal_1 group -->
+{#if bahnhofAfter1}
   <div class="signal-cell bahnhof-cell hl-wrap">
     <input
       type="text"
       class="bahnhof-input"
       value={eintrag.bahnhof || ''}
       oninput={handleBahnhofInput}
-      onfocus={handleBahnhofFocus}
+      onfocus={() => handleBahnhofFocus(eintrag.signal_1 ?? '')}
       placeholder="Kurzname"
       autocomplete="off"
       autocorrect="off"
@@ -126,6 +136,23 @@
     {signale}
     onchange={onchange}
   />
+{/if}
+
+<!-- bahnhof after signal_2 group -->
+{#if bahnhofAfter2}
+  <div class="signal-cell bahnhof-cell hl-wrap">
+    <input
+      type="text"
+      class="bahnhof-input"
+      value={eintrag.bahnhof || ''}
+      oninput={handleBahnhofInput}
+      onfocus={() => handleBahnhofFocus(eintrag.signal_2 ?? '')}
+      placeholder="Kurzname"
+      autocomplete="off"
+      autocorrect="off"
+      spellcheck="false"
+    />
+  </div>
 {/if}
 
 <style>
