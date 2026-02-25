@@ -250,6 +250,7 @@
     display: flex;
     align-items: center;
     height: 100%;
+    width: 100%;
     overflow: hidden;
   }
   .import-divider {
@@ -260,8 +261,9 @@
     font-size: var(--text-input);
     font-family: var(--font-mono);
     white-space: nowrap;
-    overflow: hidden;
     padding: 0 var(--spacing-cell);
+    flex: 1;
+    min-width: 0;
   }
   .import-count { color: var(--color-text-secondary); }
   .import-stitch { color: var(--color-import-text); }
