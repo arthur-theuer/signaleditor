@@ -62,6 +62,9 @@
       tabindex={open ? 0 : -1}
       onkeydown={(e) => { if (e.key === 'Enter') submit(); if (e.key === 'Escape') cancel(); }}
       onblur={cancel}
+      autocomplete="none"
+      autocorrect="off"
+      spellcheck="false"
     />
   </div>
 </div>

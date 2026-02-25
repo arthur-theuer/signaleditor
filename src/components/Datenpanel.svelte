@@ -67,7 +67,7 @@
     <div class={primaryClass}>
       <label for={primaryId}>{primaryLabel}</label>
       <span class="hl-wrap">
-        <input id={primaryId} type="text" value={primaryValue} oninput={handlePrimaryInput} placeholder={primaryPlaceholder} autocomplete="none" />
+        <input id={primaryId} type="text" value={primaryValue} oninput={handlePrimaryInput} placeholder={primaryPlaceholder} autocomplete="none" autocorrect="off" spellcheck="false" />
       </span>
     </div>
     <div class={secondaryClass}>
@@ -85,13 +85,13 @@
     <div class={secondaryClass}>
       <label for="meta-via">Via</label>
       <span class="hl-wrap">
-        <input id="meta-via" type="text" bind:value={data.meta.via} oninput={(e) => autoArrow(e, v => data.meta.via = v)} placeholder="z.B. VL, NBS" autocomplete="none" />
+        <input id="meta-via" type="text" bind:value={data.meta.via} oninput={(e) => autoArrow(e, v => data.meta.via = v)} placeholder="z.B. VL, NBS" autocomplete="none" autocorrect="off" spellcheck="false" />
       </span>
     </div>
     <div class={primaryClass}>
       <label for="meta-name">Name</label>
       <span class="hl-wrap">
-        <input id="meta-name" type="text" bind:value={data.meta.name} oninput={(e) => autoArrow(e, v => data.meta.name = v)} placeholder="z.B. Olten → Aarau" autocomplete="none" />
+        <input id="meta-name" type="text" bind:value={data.meta.name} oninput={(e) => autoArrow(e, v => data.meta.name = v)} placeholder="z.B. Olten → Aarau" autocomplete="none" autocorrect="off" spellcheck="false" />
       </span>
     </div>
   </div>

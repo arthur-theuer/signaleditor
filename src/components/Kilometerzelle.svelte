@@ -61,6 +61,8 @@
       onkeydown={handleKeydown}
       placeholder={prevKm}
       autocomplete="none"
+      autocorrect="off"
+      spellcheck="false"
     />
   </div>
 </div>

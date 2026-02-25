@@ -216,6 +216,9 @@
         onfocus={handleSignalFocus}
         onblur={handleSignalBlur}
         tabindex={disabled ? -1 : 0}
+        autocomplete="none"
+        autocorrect="off"
+        spellcheck="false"
       />
       <div class="signal-abbrev px-cell">{disabled ? '' : abbrev(base)}</div>
       <div class="signal-short px-cell">{disabled ? '' : (SIGNAL_SHORT[base] ?? abbrev(base))}</div>
