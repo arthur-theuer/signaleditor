@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Search } from 'lucide-svelte';
   import { search, highlight, codeForName, type Result } from '../../lib/station-search';
 
   let {
@@ -100,9 +99,6 @@
   autocorrect="off"
   spellcheck="false"
 />
-{#if !validName}
-  <span class="search-icon"><Search size={16} strokeWidth={1.5} /></span>
-{/if}
 {#if open && results.length > 0}
   <div class="dropdown">
     {#each results as entry, i}
@@ -113,8 +109,8 @@
         onmouseenter={() => activeIndex = i}
         tabindex={-1}
       >
-        <span class="item-code">{@html highlight(entry.code, entry.codeIndices)}</span>
         <span class="item-name">{@html highlight(entry.name, entry.nameIndices)}</span>
+        <span class="item-code">{@html highlight(entry.code, entry.codeIndices)}</span>
       </button>
     {/each}
   </div>
@@ -138,18 +134,6 @@
   }
   .search-field.has-value {
     color: var(--color-text-secondary);
-  }
-
-  .search-icon {
-    position: absolute;
-    right: var(--spacing-cell);
-    display: flex;
-    align-items: center;
-    color: var(--color-text-muted);
-    pointer-events: none;
-  }
-  .search-field:focus ~ .search-icon :global(svg) {
-    stroke-width: 3;
   }
 
   .dropdown {
@@ -191,6 +175,7 @@
   .item-code {
     flex: none;
     color: var(--color-text-muted);
+    text-align: right;
   }
   .item-name {
     flex: 1;
