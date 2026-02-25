@@ -18,7 +18,7 @@
 </div>
 
 <style>
-  .knoten-cell { background: var(--color-knoten); }
+  .knoten-cell { background: var(--color-knoten); overflow: visible; }
   .knoten-search-wrapper {
     flex: 1;
     min-width: 0;

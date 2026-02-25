@@ -280,7 +280,8 @@
 </div>
 
 <style>
-  /* Base .signal-cell styles are in app.css */
+  /* Override overflow: hidden from .signal-cell — dropdown needs to overflow */
+  .signal-cell { overflow: visible; }
   .signal-input-wrapper {
     border-radius: var(--radius-inner);
     container-type: inline-size;

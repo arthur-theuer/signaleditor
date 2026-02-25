@@ -278,6 +278,7 @@ input, select, textarea, button {
   flex: 1;
   min-width: 0;
   height: var(--spacing-unit);
+  overflow: hidden;
 }
 
 .signal-cell.disabled { background: var(--color-bg); pointer-events: none; }
