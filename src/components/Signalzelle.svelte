@@ -29,8 +29,10 @@
     onchange: () => void;
   } = $props();
 
-  let typeAheadBuffer = '';
+  let typeAheadBuffer = $state('');
   let typeAheadTimeout: ReturnType<typeof setTimeout>;
+  let dropdownOpen = $state(false);
+  let dropdownIndex = $state(0);
 
   let base = $derived(extractSignalBase(value ?? '') || '');
   let needsName = $derived(signalNeedsName(base));
@@ -39,16 +41,25 @@
   let enumList = $derived(getEnumForField(field, rowIdx, signale));
 
   let currentIdx = $derived(base ? enumList.indexOf(base) : -1);
-  let prevSignal = $derived(
-    currentIdx >= 0 ? enumList[(currentIdx - 1 + enumList.length) % enumList.length] :
-    enumList[enumList.length - 1] ?? ''
-  );
-  let nextSignal = $derived(
-    currentIdx >= 0 ? enumList[(currentIdx + 1) % enumList.length] :
-    enumList[0] ?? ''
-  );
 
   function abbrev(s: string): string { return SIGNAL_ABBREV[s] ?? s; }
+
+  // Prefix-anchored fuzzy: first char must match at index 0
+  function fuzzyMatch(text: string, query: string): boolean {
+    const t = text.toLowerCase();
+    let pos = 0;
+    for (let i = 0; i < query.length; i++) {
+      const idx = t.indexOf(query[i], pos);
+      if (idx === -1) return false;
+      if (i === 0 && idx !== 0) return false;
+      pos = idx + 1;
+    }
+    return true;
+  }
+
+  let fuzzyMatches = $derived(
+    typeAheadBuffer ? enumList.filter(s => fuzzyMatch(s, typeAheadBuffer)) : []
+  );
 
   // Derive placeholder
   let fieldNum = $derived(field.replace('signal_', ''));
@@ -66,32 +77,84 @@
     onchange();
   }
 
+  function resetBuffer() {
+    typeAheadBuffer = '';
+    dropdownOpen = false;
+    dropdownIndex = 0;
+    clearTimeout(typeAheadTimeout);
+  }
+
+  function startCooldown() {
+    clearTimeout(typeAheadTimeout);
+    typeAheadTimeout = setTimeout(() => resetBuffer(), 1000);
+  }
+
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      typeAheadBuffer = '';
-      const idx = (currentIdx + 1) % enumList.length;
-      setSignal(enumList[idx]);
+      if (dropdownOpen && fuzzyMatches.length > 0) {
+        // Navigate within dropdown
+        dropdownIndex = (dropdownIndex + 1) % fuzzyMatches.length;
+        setSignal(fuzzyMatches[dropdownIndex]);
+        startCooldown();
+      } else {
+        // No buffer: cycle through enum
+        resetBuffer();
+        const idx = (currentIdx + 1) % enumList.length;
+        setSignal(enumList[idx]);
+      }
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      typeAheadBuffer = '';
-      const idx = (currentIdx - 1 + enumList.length) % enumList.length;
-      setSignal(enumList[idx]);
+      if (dropdownOpen && fuzzyMatches.length > 0) {
+        dropdownIndex = (dropdownIndex - 1 + fuzzyMatches.length) % fuzzyMatches.length;
+        setSignal(fuzzyMatches[dropdownIndex]);
+        startCooldown();
+      } else {
+        resetBuffer();
+        const idx = (currentIdx - 1 + enumList.length) % enumList.length;
+        setSignal(enumList[idx]);
+      }
+    } else if (e.key === 'Tab' || e.key === 'Enter') {
+      if (dropdownOpen) {
+        // Confirm current selection
+        resetBuffer();
+        // Don't prevent default for Tab — let focus advance naturally
+        if (e.key === 'Enter') e.preventDefault();
+      }
     } else if (e.key === 'Escape') {
       e.preventDefault();
-      typeAheadBuffer = '';
-      value = '';
-      onchange();
+      if (dropdownOpen) {
+        resetBuffer();
+      } else {
+        value = '';
+        onchange();
+      }
     } else if (e.key === 'Backspace') {
       e.preventDefault();
-      typeAheadBuffer = typeAheadBuffer.slice(0, -1);
+      if (typeAheadBuffer.length > 1) {
+        typeAheadBuffer = typeAheadBuffer.slice(0, -1);
+        // Re-match and select best
+        if (fuzzyMatches.length > 0) {
+          dropdownIndex = 0;
+          setSignal(fuzzyMatches[0]);
+          dropdownOpen = fuzzyMatches.length > 1;
+        }
+        startCooldown();
+      } else {
+        resetBuffer();
+      }
     } else if (e.key.length === 1 && e.key.match(/[a-zA-Z\-]/)) {
       e.preventDefault();
       typeAheadBuffer += e.key.toLowerCase();
-      clearTimeout(typeAheadTimeout);
-      typeAheadTimeout = setTimeout(() => { typeAheadBuffer = ''; }, 1000);
-      const match = enumList.find(s => s.toLowerCase().startsWith(typeAheadBuffer));
-      if (match) setSignal(match);
+      // Use fuzzyMatches derived value won't update until next tick,
+      // so compute inline for immediate response
+      const matches = enumList.filter(s => fuzzyMatch(s, typeAheadBuffer));
+      if (matches.length > 0) {
+        dropdownIndex = 0;
+        setSignal(matches[0]);
+        dropdownOpen = matches.length > 1;
+      }
+      startCooldown();
     }
   }
 
@@ -114,6 +177,10 @@
     requestAnimationFrame(() => input.setSelectionRange(0, 0));
   }
 
+  function handleSignalBlur() {
+    resetBuffer();
+  }
+
   function handleBahnhofFocus() {
     if (bahnhof) return;
     const nameVal = extractName(value ?? '').trim();
@@ -126,8 +193,7 @@
 
 <div class="signal-cell flex flex-col relative flex-1 min-w-0" class:has-name={needsName && !disabled} class:has-bahnhof={needsBahnhof && !disabled} class:disabled>
   <div class="signal-cell-inner flex h-full shrink-0">
-    <div class="signal-input-wrapper flex-1 flex flex-col min-w-0 h-full hl-wrap">
-      <div class="signal-preview prev whitespace-nowrap overflow-hidden text-ellipsis pointer-events-none px-cell"><span class="tier-full">{disabled ? '' : prevSignal}</span><span class="tier-abbrev">{disabled ? '' : abbrev(prevSignal)}</span></div>
+    <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-wrap">
       <div class="signal-input-slot">
         <input
           type="text"
@@ -137,15 +203,24 @@
           placeholder={disabled ? '' : placeholder}
           onkeydown={handleKeydown}
           onfocus={handleSignalFocus}
+          onblur={handleSignalBlur}
           tabindex={disabled ? -1 : 0}
         />
         <div class="signal-abbrev px-cell">{disabled ? '' : abbrev(base)}</div>
       </div>
-      <div class="signal-preview next whitespace-nowrap overflow-hidden text-ellipsis pointer-events-none px-cell"><span class="tier-full">{disabled ? '' : nextSignal}</span><span class="tier-abbrev">{disabled ? '' : abbrev(nextSignal)}</span></div>
+      {#if dropdownOpen && fuzzyMatches.length > 1}
+        <div class="signal-dropdown">
+          {#each fuzzyMatches as match, i}
+            <div
+              class="signal-dropdown-item"
+              class:active={i === dropdownIndex}
+            >{match}</div>
+          {/each}
+        </div>
+      {/if}
     </div>
     {#if needsName || stationName}
       <div class="name-wrapper hl-wrap" class:visible={needsName}>
-        <div class="name-spacer"></div>
         {#if useStationSearch}
           <Stationsname bind:name={stationName} onchange={handleNameChange} />
         {:else}
@@ -160,7 +235,6 @@
             spellcheck="false"
           />
         {/if}
-        <div class="name-spacer"></div>
       </div>
     {/if}
     {#if isMainSignal && onToggleAlt}
@@ -208,22 +282,8 @@
     border-radius: calc(var(--radius-card) - 1px) 0 0 0;
   }
 
-  .signal-preview {
-    flex: var(--preview-flex);
-    display: flex;
-    font-size: var(--text-preview);
-    font-family: var(--font-mono);
-    color: var(--color-text-muted);
-    opacity: 0;
-  }
-  .signal-input-wrapper:focus-within .signal-preview { opacity: 0.5; }
-  .signal-input-wrapper:focus-within .signal-preview.prev { border-bottom: 1px solid var(--color-border); }
-  .signal-input-wrapper:focus-within .signal-preview.next { border-top: 1px solid var(--color-border); }
-  .signal-preview.prev { order: -1; align-items: center; padding-top: 2px; }
-  .signal-preview.next { order: 1; align-items: center; padding-bottom: 2px; }
-
   .signal-input {
-    flex: var(--input-flex);
+    flex: 1;
     border: none;
     background: transparent;
     font-size: var(--text-input);
@@ -231,9 +291,40 @@
     cursor: pointer;
     display: flex;
     align-items: center;
+    user-select: none;
   }
   .signal-input:focus { outline: none; }
   .signal-input::placeholder { color: var(--color-text-muted); }
+
+  :global(.hl-wrap:has(.signal-dropdown)),
+  :global(.hl-wrap:has(.signal-dropdown))::after {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+
+  .signal-dropdown {
+    position: absolute;
+    top: 100%;
+    left: -1px;
+    right: -1px;
+    z-index: 2;
+    background: var(--color-bg-raised);
+    border: var(--card-border);
+    border-radius: 0 0 var(--radius-card) var(--radius-card);
+    overflow: hidden;
+  }
+  .signal-dropdown-item {
+    padding: var(--spacing-xs) var(--spacing-cell);
+    font-size: var(--text-preview);
+    font-family: var(--font-mono);
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .signal-dropdown-item.active {
+    background: var(--color-focus-bg);
+  }
 
   .name-wrapper {
     display: none;
@@ -246,12 +337,8 @@
   }
   .name-wrapper.visible { display: flex; }
   .has-bahnhof .name-wrapper { border-radius: 0 calc(var(--radius-card) - 1px) 0 0; }
-  .name-spacer { flex: var(--preview-flex); pointer-events: none; }
-  .name-wrapper :global(.search-field) {
-    flex: var(--input-flex);
-  }
   .name-input {
-    flex: var(--input-flex);
+    flex: 1;
     min-width: 0;
     border: none;
     background: transparent;
@@ -269,9 +356,7 @@
 
   .has-bahnhof .signal-cell-inner { height: var(--spacing-unit); }
   .has-bahnhof .signal-input-wrapper { height: var(--spacing-unit); }
-  .has-bahnhof .signal-preview { display: none; }
   .has-bahnhof .name-wrapper { height: var(--spacing-unit); }
-  .has-bahnhof .name-spacer { display: none; }
 
   .bahnhof-wrapper {
     display: none;
@@ -308,12 +393,9 @@
 
   /* Input + abbreviation overlay share the same flex slot */
   .signal-input-slot {
-    flex: var(--input-flex);
+    flex: 1;
     position: relative;
     display: flex;
-  }
-  .signal-input-slot .signal-input {
-    flex: 1;
     min-width: 0;
   }
   .signal-abbrev {
@@ -330,12 +412,7 @@
     text-overflow: ellipsis;
   }
 
-  /* Default: show full text, hide abbreviations */
-  .tier-abbrev { display: none; }
-
   @container (max-width: 170px) {
-    .tier-full { display: none; }
-    .tier-abbrev { display: inline; }
     .signal-input { color: transparent; }
     .signal-input::placeholder { color: transparent; }
     .signal-abbrev { display: flex; }
