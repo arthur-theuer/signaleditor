@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Signaleintrag, Eintrag } from '../lib/types';
-  import { isWiederholungssignal, isVorsignal, extractSignalBase, signalNeedsBahnhof, extractName } from '../lib/signals';
+  import { isWiederholungssignal, isVorsignal, extractSignalBase } from '../lib/signals';
   import Signalzelle from './Signalzelle.svelte';
 
   let {
@@ -20,31 +20,6 @@
   let signal2Disabled = $derived(isWdh || isVs);
   let has1b = $derived(!isWdh && eintrag.signal_1b !== undefined);
   let has2b = $derived(!signal2Disabled && eintrag.signal_2b !== undefined);
-
-  // Bahnhof appears after signal_1 group if signal_1 (or signal_1b) needs it
-  let bahnhofAfter1 = $derived(
-    signalNeedsBahnhof(extractSignalBase(eintrag.signal_1) || '') ||
-    (has1b && signalNeedsBahnhof(extractSignalBase(eintrag.signal_1b ?? '') || ''))
-  );
-  // Bahnhof appears after signal_2 group if signal_2 (or signal_2b) needs it
-  let bahnhofAfter2 = $derived(
-    signalNeedsBahnhof(extractSignalBase(eintrag.signal_2 ?? '') || '') ||
-    (has2b && signalNeedsBahnhof(extractSignalBase(eintrag.signal_2b ?? '') || ''))
-  );
-
-  function handleBahnhofInput(e: Event) {
-    eintrag.bahnhof = (e.target as HTMLInputElement).value;
-    onchange();
-  }
-
-  function handleBahnhofFocus(signalValue: string) {
-    if (eintrag.bahnhof) return;
-    const nameVal = extractName(signalValue ?? '').trim();
-    if (nameVal) {
-      eintrag.bahnhof = nameVal;
-      onchange();
-    }
-  }
 
   function toggleAlt(mainNum: 1 | 2) {
     const altField = `signal_${mainNum}b` as 'signal_1b' | 'signal_2b';
@@ -66,6 +41,7 @@
       eintrag.signal_2 = '';
       delete eintrag.signal_2b;
     }
+    // Block chain: clear Block-Vorsignal from signal_2 when signal_1 is no longer Blocksignal
     const base = extractSignalBase(eintrag.signal_1) || '';
     if (!base.startsWith('Blocksignal') && extractSignalBase(eintrag.signal_2 || '') === 'Block-Vorsignal zu') {
       eintrag.signal_2 = '';
@@ -80,6 +56,7 @@
   field="signal_1"
   {rowIdx}
   {signale}
+  bind:bahnhof={eintrag.bahnhof}
   isMainSignal={true}
   isAltActive={has1b}
   onToggleAlt={() => toggleAlt(1)}
@@ -93,25 +70,9 @@
     field="signal_1b"
     {rowIdx}
     {signale}
+    bind:bahnhof={eintrag.bahnhof}
     onchange={onchange}
   />
-{/if}
-
-<!-- bahnhof after signal_1 group -->
-{#if bahnhofAfter1}
-  <div class="signal-cell bahnhof-cell hl-wrap">
-    <input
-      type="text"
-      class="bahnhof-input"
-      value={eintrag.bahnhof || ''}
-      oninput={handleBahnhofInput}
-      onfocus={() => handleBahnhofFocus(eintrag.signal_1 ?? '')}
-      placeholder="Kurzname"
-      autocomplete="off"
-      autocorrect="off"
-      spellcheck="false"
-    />
-  </div>
 {/if}
 
 <!-- signal_2 -->
@@ -120,6 +81,7 @@
   field="signal_2"
   {rowIdx}
   {signale}
+  bind:bahnhof={eintrag.bahnhof}
   isMainSignal={!signal2Disabled}
   isAltActive={has2b}
   disabled={signal2Disabled}
@@ -134,44 +96,7 @@
     field="signal_2b"
     {rowIdx}
     {signale}
+    bind:bahnhof={eintrag.bahnhof}
     onchange={onchange}
   />
 {/if}
-
-<!-- bahnhof after signal_2 group -->
-{#if bahnhofAfter2}
-  <div class="signal-cell bahnhof-cell hl-wrap">
-    <input
-      type="text"
-      class="bahnhof-input"
-      value={eintrag.bahnhof || ''}
-      oninput={handleBahnhofInput}
-      onfocus={() => handleBahnhofFocus(eintrag.signal_2 ?? '')}
-      placeholder="Kurzname"
-      autocomplete="off"
-      autocorrect="off"
-      spellcheck="false"
-    />
-  </div>
-{/if}
-
-<style>
-  .bahnhof-cell {
-    flex: 0.5;
-    background: var(--color-highlight);
-  }
-  .bahnhof-input {
-    flex: 1;
-    min-width: 0;
-    border: none;
-    background: transparent;
-    padding: 0 var(--spacing-cell);
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
-    box-sizing: border-box;
-    border-radius: inherit;
-    outline: none;
-    height: 100%;
-  }
-  .bahnhof-input::placeholder { color: var(--color-text-muted); }
-</style>

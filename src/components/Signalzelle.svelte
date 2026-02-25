@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Diff } from 'lucide-svelte';
-  import { extractSignalBase, extractName, signalNeedsName, signalNeedsStationSearch, getEnumForField } from '../lib/signals';
+  import { extractSignalBase, extractName, signalNeedsName, signalNeedsStationSearch, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
   import { SIGNAL_ABBREV } from '../lib/constants';
   import Stationsname from './ui/Stationsname.svelte';
   import type { Eintrag } from '../lib/types';
@@ -10,6 +10,7 @@
     field,
     rowIdx,
     signale,
+    bahnhof = $bindable(),
     isMainSignal = false,
     isAltActive = false,
     disabled = false,
@@ -20,6 +21,7 @@
     field: string;
     rowIdx: number;
     signale: Eintrag[];
+    bahnhof?: string;
     isMainSignal?: boolean;
     isAltActive?: boolean;
     disabled?: boolean;
@@ -35,6 +37,7 @@
   let base = $derived(extractSignalBase(value ?? '') || '');
   let needsName = $derived(signalNeedsName(base));
   let useStationSearch = $derived(signalNeedsStationSearch(base));
+  let needsBahnhof = $derived(signalNeedsBahnhof(base));
   let enumList = $derived(getEnumForField(field, rowIdx, signale));
 
   let currentIdx = $derived(base ? enumList.indexOf(base) : -1);
@@ -164,6 +167,20 @@
     onchange();
   }
 
+  function handleBahnhofInput(e: Event) {
+    bahnhof = (e.target as HTMLInputElement).value;
+    onchange();
+  }
+
+  function handleBahnhofFocus() {
+    if (bahnhof) return;
+    const nameVal = extractName(value ?? '').trim();
+    if (nameVal) {
+      bahnhof = nameVal;
+      onchange();
+    }
+  }
+
   function handleSignalFocus(e: FocusEvent) {
     const input = e.target as HTMLInputElement;
     requestAnimationFrame(() => input.setSelectionRange(0, 0));
@@ -176,7 +193,7 @@
 
 </script>
 
-<div class="signal-cell relative" class:has-name={needsName && !disabled} class:disabled>
+<div class="signal-cell relative" class:has-name={needsName && !disabled} class:has-bahnhof={needsBahnhof && !disabled} class:disabled>
   <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-wrap">
     <div class="signal-input-slot">
       <input
@@ -222,6 +239,21 @@
     </div>
   {/if}
 
+  {#if needsBahnhof}
+    <div class="bahnhof-wrapper hl-wrap visible">
+      <input
+        type="text"
+        class="bahnhof-input w-full flex-1 px-cell"
+        value={bahnhof || ''}
+        oninput={handleBahnhofInput}
+        onfocus={handleBahnhofFocus}
+        placeholder="Kurzname"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+      />
+    </div>
+  {/if}
   {#if isMainSignal && onToggleAlt}
     <button
       class="alt-toggle-btn absolute right-0 flex items-center justify-center w-unit h-unit p-0 z-1"
@@ -298,6 +330,7 @@
     border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0;
   }
   .name-wrapper.visible { display: flex; }
+  .has-bahnhof .name-wrapper { border-radius: 0; }
   .name-input {
     flex: 1;
     min-width: 0;
@@ -314,6 +347,24 @@
     height: 100%;
   }
   .name-input::placeholder { color: var(--color-text-muted); }
+
+  .bahnhof-wrapper {
+    display: none;
+    border-left: 1px solid var(--color-border);
+    flex: 1;
+    border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0;
+  }
+  .bahnhof-wrapper.visible { display: flex; }
+  .bahnhof-input {
+    border: none;
+    background: var(--color-highlight);
+    font-size: var(--text-input);
+    font-family: var(--font-mono);
+    box-sizing: border-box;
+    border-radius: inherit;
+  }
+  .bahnhof-input:focus { outline: none; }
+  .bahnhof-input::placeholder { color: var(--color-text-muted); }
 
   .alt-toggle-btn {
     top: 50%;
