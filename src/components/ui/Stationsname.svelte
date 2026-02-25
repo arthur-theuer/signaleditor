@@ -1,14 +1,13 @@
 <script lang="ts">
   import { Search } from 'lucide-svelte';
-  import { STATIONEN } from '../../lib/constants';
-  import { search, highlight, type Result } from '../../lib/station-search';
+  import { search, highlight, codeForName, type Result } from '../../lib/station-search';
 
   let {
-    code = $bindable(),
-    placeholder = '',
+    name = $bindable(),
+    placeholder = 'Name',
     onchange,
   }: {
-    code: string;
+    name: string;
     placeholder?: string;
     onchange?: () => void;
   } = $props();
@@ -18,20 +17,19 @@
   let activeIndex = $state(0);
   let searchInput: HTMLInputElement | undefined = $state();
 
-  let resolvedName = $derived(STATIONEN[code] || '');
-  let validCode = $derived(!!resolvedName);
+  let validName = $derived(!!codeForName(name));
   let results: Result[] = $derived(search(query));
 
   function select(entry: Result) {
-    code = entry.code;
+    name = entry.name;
     query = '';
     open = false;
     onchange?.();
   }
 
   function handleFocus() {
-    if (validCode) {
-      query = resolvedName;
+    if (name) {
+      query = name;
       searchInput?.select();
     }
     open = true;
@@ -79,7 +77,7 @@
       }
     } else if (e.key === 'Escape') {
       e.preventDefault();
-      code = '';
+      name = '';
       query = '';
       open = false;
       onchange?.();
@@ -87,29 +85,24 @@
   }
 </script>
 
-<div class="station-field">
-  <span class="code-col" class:has-code={validCode}>{code || 'Code'}</span>
-  <div class="name-col">
-    <input
-      bind:this={searchInput}
-      type="text"
-      class="search-field"
-      class:has-value={validCode && !open}
-      value={open ? query : (resolvedName || '')}
-      oninput={(e) => { query = (e.target as HTMLInputElement).value; handleInput(); }}
-      onfocus={handleFocus}
-      onblur={handleBlur}
-      onkeydown={handleKeydown}
-      placeholder={placeholder}
-      autocomplete="off"
-      autocorrect="off"
-      spellcheck="false"
-    />
-    {#if !validCode}
-      <span class="search-icon"><Search size={16} strokeWidth={1.5} /></span>
-    {/if}
-  </div>
-</div>
+<input
+  bind:this={searchInput}
+  type="text"
+  class="search-field name-input"
+  class:has-value={validName && !open}
+  value={open ? query : (name || '')}
+  oninput={(e) => { query = (e.target as HTMLInputElement).value; handleInput(); }}
+  onfocus={handleFocus}
+  onblur={handleBlur}
+  onkeydown={handleKeydown}
+  placeholder={placeholder}
+  autocomplete="off"
+  autocorrect="off"
+  spellcheck="false"
+/>
+{#if !validName}
+  <span class="search-icon"><Search size={16} strokeWidth={1.5} /></span>
+{/if}
 {#if open && results.length > 0}
   <div class="dropdown">
     {#each results as entry, i}
@@ -120,42 +113,14 @@
         onmouseenter={() => activeIndex = i}
         tabindex={-1}
       >
-        <span class="code-col">{@html highlight(entry.code, entry.codeIndices)}</span>
-        <span class="name-col">{@html highlight(entry.name, entry.nameIndices)}</span>
+        <span class="item-code">{@html highlight(entry.code, entry.codeIndices)}</span>
+        <span class="item-name">{@html highlight(entry.name, entry.nameIndices)}</span>
       </button>
     {/each}
   </div>
 {/if}
 
 <style>
-  .station-field {
-    display: flex;
-    height: 100%;
-    width: 100%;
-  }
-
-  .code-col {
-    width: var(--spacing-row);
-    flex: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
-    color: var(--color-text-muted);
-  }
-  .code-col.has-code {
-    color: var(--color-text);
-  }
-  .name-col {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    position: relative;
-    border-left: 1px solid var(--color-border);
-  }
-
   .search-field {
     flex: 1;
     min-width: 0;
@@ -183,7 +148,7 @@
     color: var(--color-text-muted);
     pointer-events: none;
   }
-  .station-field:focus-within .search-icon :global(svg) {
+  .search-field:focus ~ .search-icon :global(svg) {
     stroke-width: 3;
   }
 
@@ -200,10 +165,7 @@
   }
 
   :global(.hl-wrap:has(.dropdown)),
-  :global(.hl-wrap:has(.dropdown))::after,
-  :global(.daten-field:has(.dropdown)),
-  :global(.signal-cell:has(.dropdown)),
-  :global(.knoten-search-wrapper:has(.dropdown)) {
+  :global(.hl-wrap:has(.dropdown))::after {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
@@ -212,7 +174,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    padding: var(--spacing-xs) 0;
+    padding: var(--spacing-xs) var(--spacing-cell);
     border: none;
     background: transparent;
     font-size: var(--text-preview);
@@ -220,19 +182,22 @@
     color: var(--color-text);
     cursor: pointer;
     text-align: left;
-  }
-  .dropdown-item .code-col {
-    font-size: var(--text-preview);
-  }
-  .dropdown-item .name-col {
-    display: block;
-    padding: 0 var(--spacing-cell);
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    gap: var(--spacing-cell);
   }
   .dropdown-item.active {
     background: var(--color-focus-bg);
+  }
+
+  .item-code {
+    flex: none;
+    color: var(--color-text-muted);
+  }
+  .item-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .dropdown-item :global(mark) {

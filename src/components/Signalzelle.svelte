@@ -2,6 +2,7 @@
   import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
   import { SIGNAL_ABBREV } from '../lib/constants';
+  import Stationsname from './ui/Stationsname.svelte';
   import type { Eintrag } from '../lib/types';
 
   let {
@@ -32,7 +33,6 @@
   let typeAheadTimeout: ReturnType<typeof setTimeout>;
 
   let base = $derived(extractSignalBase(value ?? '') || '');
-  let name = $derived(extractName(value ?? ''));
   let needsName = $derived(signalNeedsName(base));
   let needsBahnhof = $derived(signalNeedsBahnhof(base));
   let enumList = $derived(getEnumForField(field, rowIdx, signale));
@@ -94,9 +94,12 @@
     }
   }
 
-  function handleNameInput(e: Event) {
-    const newName = (e.target as HTMLInputElement).value;
-    value = newName ? `${base} ${newName}` : base;
+  let stationName = $state('');
+  // Keep stationName in sync with the derived name
+  $effect(() => { stationName = extractName(value ?? ''); });
+
+  function handleNameChange() {
+    value = stationName ? `${base} ${stationName}` : base;
     onchange();
   }
 
@@ -139,19 +142,10 @@
       </div>
       <div class="signal-preview next whitespace-nowrap overflow-hidden text-ellipsis pointer-events-none px-cell"><span class="tier-full">{disabled ? '' : nextSignal}</span><span class="tier-abbrev">{disabled ? '' : abbrev(nextSignal)}</span></div>
     </div>
-    {#if needsName || name}
+    {#if needsName || stationName}
       <div class="name-wrapper hl-wrap" class:visible={needsName}>
         <div class="name-spacer"></div>
-        <input
-          type="text"
-          class="name-input px-cell"
-          value={name}
-          oninput={handleNameInput}
-          placeholder="Name"
-          autocomplete="off"
-          autocorrect="off"
-          spellcheck="false"
-        />
+        <Stationsname bind:name={stationName} onchange={handleNameChange} />
         <div class="name-spacer"></div>
       </div>
     {/if}
@@ -239,16 +233,9 @@
   .name-wrapper.visible { display: flex; }
   .has-bahnhof .name-wrapper { border-radius: 0 calc(var(--radius-card) - 1px) 0 0; }
   .name-spacer { flex: var(--preview-flex); pointer-events: none; }
-  .name-input {
+  .name-wrapper :global(.search-field) {
     flex: var(--input-flex);
-    border: none;
-    background: transparent;
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
-    display: flex;
-    align-items: center;
   }
-  .name-input:focus { outline: none; }
 
   .has-bahnhof .signal-cell-inner { height: var(--spacing-unit); }
   .has-bahnhof .signal-input-wrapper { height: var(--spacing-unit); }
