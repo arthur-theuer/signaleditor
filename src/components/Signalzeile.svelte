@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Signaleintrag, Eintrag } from '../lib/types';
-  import { isWiederholungssignal, isVorsignal, extractSignalBase } from '../lib/signals';
+  import { isWiederholungssignal, isVorsignal, extractSignalBase, signalNeedsBahnhof, extractName } from '../lib/signals';
   import Signalzelle from './Signalzelle.svelte';
 
   let {
@@ -20,6 +20,21 @@
   let signal2Disabled = $derived(isWdh || isVs);
   let has1b = $derived(!isWdh && eintrag.signal_1b !== undefined);
   let has2b = $derived(!signal2Disabled && eintrag.signal_2b !== undefined);
+  let needsBahnhof = $derived(signalNeedsBahnhof(extractSignalBase(eintrag.signal_1) || ''));
+
+  function handleBahnhofInput(e: Event) {
+    eintrag.bahnhof = (e.target as HTMLInputElement).value;
+    onchange();
+  }
+
+  function handleBahnhofFocus() {
+    if (eintrag.bahnhof) return;
+    const nameVal = extractName(eintrag.signal_1 ?? '').trim();
+    if (nameVal) {
+      eintrag.bahnhof = nameVal;
+      onchange();
+    }
+  }
 
   function toggleAlt(mainNum: 1 | 2) {
     const altField = `signal_${mainNum}b` as 'signal_1b' | 'signal_2b';
@@ -56,7 +71,6 @@
   field="signal_1"
   {rowIdx}
   {signale}
-  bind:bahnhof={eintrag.bahnhof}
   isMainSignal={true}
   isAltActive={has1b}
   onToggleAlt={() => toggleAlt(1)}
@@ -70,7 +84,6 @@
     field="signal_1b"
     {rowIdx}
     {signale}
-    bind:bahnhof={eintrag.bahnhof}
     onchange={onchange}
   />
 {/if}
@@ -81,7 +94,6 @@
   field="signal_2"
   {rowIdx}
   {signale}
-  bind:bahnhof={eintrag.bahnhof}
   isMainSignal={!signal2Disabled}
   isAltActive={has2b}
   disabled={signal2Disabled}
@@ -96,7 +108,24 @@
     field="signal_2b"
     {rowIdx}
     {signale}
-    bind:bahnhof={eintrag.bahnhof}
     onchange={onchange}
   />
 {/if}
+
+<!-- bahnhof (separate cell, only for Einfahr-Vorsignal) -->
+{#if needsBahnhof}
+  <div class="signal-cell bahnhof-cell hl-wrap">
+    <input
+      type="text"
+      class="bahnhof-input"
+      value={eintrag.bahnhof || ''}
+      oninput={handleBahnhofInput}
+      onfocus={handleBahnhofFocus}
+      placeholder="Kurzname"
+      autocomplete="off"
+      autocorrect="off"
+      spellcheck="false"
+    />
+  </div>
+{/if}
+
