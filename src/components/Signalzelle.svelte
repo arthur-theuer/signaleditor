@@ -424,10 +424,11 @@
   /* Collapse signal enum to square when bahnhof is revealed */
   .has-bahnhof .signal-input-wrapper {
     flex: none;
-    width: calc(1.5 * var(--spacing-unit));
   }
-  .has-bahnhof .signal-input { color: transparent; }
-  .has-bahnhof .signal-input::placeholder { color: transparent; }
+  .has-bahnhof .signal-input { display: none; }
   .has-bahnhof .signal-abbrev { display: none; }
-  .has-bahnhof .signal-short { display: flex; }
+  .has-bahnhof .signal-short {
+    display: flex;
+    position: static;
+  }
 </style>
