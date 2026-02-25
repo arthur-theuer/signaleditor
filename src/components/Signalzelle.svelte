@@ -425,6 +425,8 @@
   .has-bahnhof .signal-input-wrapper {
     flex: none;
     width: calc(3ch + 2 * var(--spacing-cell));
+    font-family: var(--font-mono);
+    font-size: var(--text-input);
   }
   .has-bahnhof .signal-input { color: transparent; }
   .has-bahnhof .signal-input::placeholder { color: transparent; }
