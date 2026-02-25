@@ -263,8 +263,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0 var(--spacing-cell);
-    display: flex;
-    align-items: center;
     flex: 1;
     min-width: 0;
   }
@@ -274,15 +272,15 @@
 
   /* Tier visibility: compact shown by default, wider tiers override */
   .tier-full, .tier-medium { display: none; }
-  .tier-compact { display: flex; }
+  .tier-compact { display: block; }
 
   @container (min-width: 300px) {
-    .tier-medium { display: flex; }
+    .tier-medium { display: block; }
     .tier-compact { display: none; }
   }
 
   @container (min-width: 420px) {
-    .tier-full { display: flex; }
+    .tier-full { display: block; }
     .tier-medium { display: none; }
   }
 </style>
