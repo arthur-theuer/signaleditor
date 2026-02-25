@@ -262,6 +262,7 @@
     font-size: var(--text-input);
     font-family: var(--font-mono);
     white-space: nowrap;
+    overflow: hidden;
     padding: 0 var(--spacing-cell);
     flex: 1;
     min-width: 0;
