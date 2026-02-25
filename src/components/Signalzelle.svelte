@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsStationSearch, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
-  import { SIGNAL_ABBREV } from '../lib/constants';
+  import { SIGNAL_ABBREV, SIGNAL_SHORT } from '../lib/constants';
   import Stationsname from './ui/Stationsname.svelte';
   import type { Eintrag } from '../lib/types';
 
@@ -217,7 +217,7 @@
         onblur={handleSignalBlur}
         tabindex={disabled ? -1 : 0}
       />
-      <div class="signal-abbrev px-cell" class:force-show={showBahnhof && !disabled}>{disabled ? '' : abbrev(base)}</div>
+      <div class="signal-abbrev px-cell" class:force-show={showBahnhof && !disabled}>{disabled ? '' : (showBahnhof ? (SIGNAL_SHORT[base] ?? abbrev(base)) : abbrev(base))}</div>
     </div>
     {#if dropdownOpen && fuzzyMatches.length > 1}
       <div class="signal-dropdown">

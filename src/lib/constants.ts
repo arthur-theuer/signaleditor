@@ -42,6 +42,10 @@ export const SIGNAL_ABBREV: Record<string, string> = {
   'Spurwechsel': 'Spw.',
 };
 
+export const SIGNAL_SHORT: Record<string, string> = {
+  'Einfahr-Vorsignal': 'EVS',
+};
+
 export const REQUIRES_NAME = [
   'Einfahrsignal',
   'Einfahr-Vorsignal',
