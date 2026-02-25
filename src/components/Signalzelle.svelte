@@ -285,7 +285,9 @@
     cursor: pointer;
     display: flex;
     align-items: center;
+    -webkit-user-select: none;
     user-select: none;
+    caret-color: transparent;
   }
   .signal-input:focus { outline: none; }
   .signal-input::placeholder { color: var(--color-text-muted); }
@@ -315,6 +317,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    -webkit-user-select: none;
+    user-select: none;
   }
   .signal-dropdown-item.active {
     background: var(--color-focus-bg);

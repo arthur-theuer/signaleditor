@@ -75,7 +75,6 @@
       if (open && results.length) {
         e.preventDefault();
         select(results[activeIndex]);
-        searchInput?.blur();
       }
     } else if (e.key === 'Escape') {
       e.preventDefault();
