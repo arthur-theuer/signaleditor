@@ -82,6 +82,7 @@
   }
   .pill:not(.unlocked) {
     color: var(--color-red);
+    border-color: var(--color-red);
   }
   .pill:hover:not(.open) {
     outline: 2px solid currentColor;
