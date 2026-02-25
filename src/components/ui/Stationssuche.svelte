@@ -18,7 +18,7 @@
   let activeIndex = $state(0);
   let searchInput: HTMLInputElement | undefined = $state();
 
-  let resolvedName = $derived(STATIONEN[code] || '');
+  let resolvedName = $derived(STATIONEN[code]?.[0] || '');
   let validCode = $derived(!!resolvedName);
   let results: Result[] = $derived(search(query));
 

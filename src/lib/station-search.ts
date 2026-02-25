@@ -42,14 +42,15 @@ export function highlight(text: string, indices: number[]): string {
   return result;
 }
 
-export type Entry = { code: string; name: string; nameFolded: string; codeFolded: string };
+export type Entry = { code: string; name: string; nameFolded: string; codeFolded: string; trainStop: boolean };
 export type Result = Entry & { nameIndices: number[]; codeIndices: number[] };
 
-export const entries: Entry[] = Object.entries(STATIONEN).map(([c, n]) => ({
+export const entries: Entry[] = Object.entries(STATIONEN).map(([c, [n, t]]) => ({
   code: c,
   name: n,
   nameFolded: fold(n),
   codeFolded: fold(c),
+  trainStop: t,
 }));
 
 // Reverse lookup: station name (folded) → code
@@ -96,5 +97,8 @@ export function search(rawQuery: string, max = 6): Result[] {
     );
     return spanA - spanB;
   });
-  return [...exact, ...prefix, ...substring, ...fuzzy].slice(0, max);
+  const all = [...exact, ...prefix, ...substring, ...fuzzy];
+  // Show only train stops; fall back to traffic points if no train results
+  const trainResults = all.filter(r => r.trainStop);
+  return (trainResults.length > 0 ? trainResults : all).slice(0, max);
 }

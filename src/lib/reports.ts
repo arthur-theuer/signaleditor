@@ -70,7 +70,7 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
     }
 
     if (isKnoteneintrag(sig)) {
-      const resolved = STATIONEN[sig.knoten];
+      const resolved = STATIONEN[sig.knoten]?.[0];
       const name = resolved ? `${resolved} (${sig.knoten})` : sig.knoten;
       meldungen.push({
         id: sig.id, km: sig.km, knoten: name,

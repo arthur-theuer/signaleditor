@@ -82,11 +82,11 @@
 
   // Three tiers: "Bern (BN) → Rothrist (RTR)", "Bern → Rothrist", "BN → RTR"
   let stitchFull = $derived(formatStitch(vonCode, bisCode, (c) => {
-    const name = STATIONEN[c];
+    const name = STATIONEN[c]?.[0];
     return name ? `${name} (${c})` : c;
   }));
   let stitchMedium = $derived(formatStitch(vonCode, bisCode, (c) => {
-    return STATIONEN[c] ?? c;
+    return STATIONEN[c]?.[0] ?? c;
   }));
   let stitchCompact = $derived(formatStitch(vonCode, bisCode, (c) => c));
 
