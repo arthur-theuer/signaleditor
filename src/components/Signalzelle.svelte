@@ -127,6 +127,7 @@
         resetBuffer();
       } else {
         value = '';
+        bahnhofRevealed = false;
         onchange();
       }
     } else if (e.key === 'Backspace') {
@@ -423,7 +424,7 @@
   /* Collapse signal enum to square when bahnhof is revealed */
   .has-bahnhof .signal-input-wrapper {
     flex: none;
-    width: var(--spacing-unit);
+    width: calc(1.5 * var(--spacing-unit));
   }
   .has-bahnhof .signal-input { color: transparent; }
   .has-bahnhof .signal-input::placeholder { color: transparent; }
