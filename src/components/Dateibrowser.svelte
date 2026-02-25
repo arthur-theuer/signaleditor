@@ -242,7 +242,8 @@
   }
   .tab-btn.active {
     color: var(--color-focus);
-    font-weight: var(--font-weight-bold);
+    outline: 2px solid var(--color-focus);
+    outline-offset: -2px;
   }
   .tab-btn.disabled {
     opacity: 0.4;

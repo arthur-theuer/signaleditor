@@ -80,6 +80,9 @@
     flex-shrink: 0;
     transition: box-shadow 200ms ease, border-color 200ms ease;
   }
+  .pill:not(.unlocked) {
+    color: var(--color-red);
+  }
   .pill:hover:not(.open) {
     outline: 2px solid currentColor;
     outline-offset: -2px;
