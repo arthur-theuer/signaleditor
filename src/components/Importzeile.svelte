@@ -245,6 +245,7 @@
   }
   .import-info-cell {
     container-type: inline-size;
+    overflow: hidden;
   }
   .import-info {
     display: flex;
