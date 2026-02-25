@@ -425,6 +425,9 @@
   .has-bahnhof .signal-input-wrapper {
     flex: none;
   }
+  .has-bahnhof .signal-input-slot {
+    flex: none;
+  }
   .has-bahnhof .signal-input { display: none; }
   .has-bahnhof .signal-abbrev { display: none; }
   .has-bahnhof .signal-short {
