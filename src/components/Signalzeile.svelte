@@ -130,6 +130,7 @@
 
 <style>
   .bahnhof-cell {
+    flex: 0.5;
     background: var(--color-highlight);
   }
   .bahnhof-input {
