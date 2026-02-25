@@ -121,14 +121,14 @@
   <div class="dateibrowser">
     <div class="tab-header">
       <button
-        class="tab-btn hl"
+        class="tab-btn"
         class:active={activeTab === 'strecken'}
         class:disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
         disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
         onclick={() => activeTab = 'strecken'}
       >Strecken</button>
       <button
-        class="tab-btn hl"
+        class="tab-btn"
         class:active={activeTab === 'routen'}
         class:disabled={lockedTab !== undefined && lockedTab !== 'routen'}
         disabled={lockedTab !== undefined && lockedTab !== 'routen'}
@@ -237,11 +237,12 @@
     border-radius: 0 var(--radius-container) 0 0;
     border-left: none;
   }
-  .tab-btn:hover::after {
-    opacity: 0;
+  .tab-btn:hover:not(:disabled) {
+    color: var(--color-text);
   }
-  .tab-btn.active::after {
-    opacity: 1;
+  .tab-btn.active {
+    color: var(--color-focus);
+    font-weight: var(--font-weight-bold);
   }
   .tab-btn.disabled {
     opacity: 0.4;

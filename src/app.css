@@ -34,6 +34,7 @@
 
   /* Border radius */
   --radius-card: 8px;
+  --radius-inner: 7px; /* radius-card - 1px, for sub-fields inside cards */
   --radius-container: 12px;
 
   /* Font sizes */
@@ -230,25 +231,26 @@
   --color-code-btn-hover-border: var(--color-code-btn-hover-border);
 }
 
-/* Highlight overlay system */
-.hl, .hl-wrap { position: relative; cursor: pointer; }
-.hl::after, .hl-wrap::after {
+/* Button hover: border thickens to 2px in the button's own color */
+.hl { position: relative; cursor: pointer; }
+.hl:hover:not(:disabled) { border: 2px solid currentColor; }
+.hl:hover .hinweis { display: flex; }
+.hl.hl-flash { border: 2px solid currentColor; }
+
+/* Field focus: ::after ring in focus color */
+.hl-field { position: relative; cursor: pointer; }
+.hl-field::after {
   content: '';
   position: absolute;
   inset: -1px;
   border: 2px solid var(--color-focus);
-  background: var(--color-focus-bg);
   border-radius: inherit;
   pointer-events: none;
   opacity: 0;
-  z-index: 3;
+  z-index: 2;
 }
-.hl:hover::after { opacity: 1; }
-.hl:hover .hinweis { display: flex; }
-.hl-wrap:focus-within::after { opacity: 1; }
-.hl.hl-primary::after { border-color: var(--color-focus-ring); background: var(--color-focus-bg); }
-.hl.hl-flash::after { opacity: 1; }
-.hl-wrap > input, .hl-wrap > select { outline: none; }
+.hl-field:focus-within::after { opacity: 1; }
+.hl-field > input, .hl-field > select { outline: none; }
 
 /* Lucide icons: thicken stroke on hover (1px → 2px effective at 16px/24 viewBox) */
 button:hover svg { stroke-width: 3 !important; }

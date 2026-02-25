@@ -10,7 +10,7 @@
   } = $props();
 </script>
 
-<div class="signal-cell note-cell hl-wrap">
+<div class="signal-cell note-cell hl-field">
   <input
     type="text"
     class="note-input"
@@ -33,7 +33,7 @@
     background: transparent;
     font-size: var(--text-input);
     font-family: var(--font-mono);
-    border-radius: calc(var(--radius-card) - 1px);
+    border-radius: var(--radius-inner);
   }
   .note-input:focus { outline: none; }
   .note-input::placeholder { color: var(--color-text-muted); }

@@ -147,8 +147,8 @@
     overflow: hidden;
   }
 
-  :global(.hl-wrap:has(.dropdown)),
-  :global(.hl-wrap:has(.dropdown))::after {
+  :global(.hl-field:has(.dropdown)),
+  :global(.hl-field:has(.dropdown))::after {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }

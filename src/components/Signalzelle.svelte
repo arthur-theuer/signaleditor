@@ -204,7 +204,7 @@
 </script>
 
 <div class="signal-cell relative" class:has-name={needsName && !disabled} class:has-bahnhof={showBahnhof && !disabled} class:disabled>
-  <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-wrap">
+  <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-field">
     <div class="signal-input-slot">
       <input
         type="text"
@@ -235,7 +235,7 @@
     {/if}
   </div>
   {#if needsName || stationName}
-    <div class="name-wrapper hl-wrap" class:visible={needsName} onfocusin={handleNameFocus}>
+    <div class="name-wrapper hl-field" class:visible={needsName} onfocusin={handleNameFocus}>
       {#if useStationSearch}
         <Stationsname bind:name={stationName} onchange={handleNameChange} />
       {:else}
@@ -254,7 +254,7 @@
   {/if}
 
   {#if showBahnhof}
-    <div class="bahnhof-wrapper hl-wrap visible">
+    <div class="bahnhof-wrapper hl-field visible">
       <input
         type="text"
         class="bahnhof-input w-full flex-1 px-cell"
@@ -282,12 +282,12 @@
 <style>
   /* Base .signal-cell styles are in app.css */
   .signal-input-wrapper {
-    border-radius: calc(var(--radius-card) - 1px);
+    border-radius: var(--radius-inner);
     container-type: inline-size;
   }
   .has-name .signal-input-wrapper {
     flex: 1;
-    border-radius: calc(var(--radius-card) - 1px) 0 0 calc(var(--radius-card) - 1px);
+    border-radius: var(--radius-inner) 0 0 var(--radius-inner);
   }
   .signal-input {
     flex: 1;
@@ -305,8 +305,8 @@
   .signal-input:focus { outline: none; }
   .signal-input::placeholder { color: var(--color-text-muted); }
 
-  :global(.hl-wrap:has(.signal-dropdown)),
-  :global(.hl-wrap:has(.signal-dropdown))::after {
+  :global(.hl-field:has(.signal-dropdown)),
+  :global(.hl-field:has(.signal-dropdown))::after {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
@@ -344,7 +344,7 @@
     border-left: 1px solid var(--color-border);
     background: transparent;
     height: 100%;
-    border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0;
+    border-radius: 0 var(--radius-inner) var(--radius-inner) 0;
   }
   .name-wrapper.visible { display: flex; }
   .has-bahnhof .name-wrapper { border-radius: 0; }
@@ -369,7 +369,7 @@
     display: none;
     border-left: 1px solid var(--color-border);
     flex: 1;
-    border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0;
+    border-radius: 0 var(--radius-inner) var(--radius-inner) 0;
   }
   .bahnhof-wrapper.visible { display: flex; }
   .bahnhof-input {

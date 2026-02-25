@@ -52,7 +52,7 @@
 </script>
 
 <div class="km-cell" class:visible={showKm}>
-  <div class="km-cell-inner hl-wrap">
+  <div class="km-cell-inner hl-field">
     <input
       type="text"
       class="km-input"
@@ -81,7 +81,7 @@
   .km-cell-inner {
     display: flex;
     height: 100%;
-    border-radius: calc(var(--radius-card) - 1px);
+    border-radius: var(--radius-inner);
   }
   .km-input {
     flex: 1;

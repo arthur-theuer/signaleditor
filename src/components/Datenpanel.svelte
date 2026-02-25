@@ -66,31 +66,31 @@
   <div class="flex flex-col sm:flex-row sm:flex-wrap gap-card p-card">
     <div class={primaryClass}>
       <label for={primaryId}>{primaryLabel}</label>
-      <span class="hl-wrap">
+      <span class="hl-field">
         <input id={primaryId} type="text" value={primaryValue} oninput={handlePrimaryInput} placeholder={primaryPlaceholder} autocomplete="none" autocorrect="off" spellcheck="false" />
       </span>
     </div>
     <div class={secondaryClass}>
       <label for="meta-von">Von</label>
-      <span class="hl-wrap">
+      <span class="hl-field">
         <Stationssuche bind:code={data.meta.von} placeholder="z.B. Olten" />
       </span>
     </div>
     <div class={secondaryClass}>
       <label for="meta-nach">Nach</label>
-      <span class="hl-wrap">
+      <span class="hl-field">
         <Stationssuche bind:code={data.meta.nach} placeholder="z.B. Aarau" />
       </span>
     </div>
     <div class={secondaryClass}>
       <label for="meta-via">Via</label>
-      <span class="hl-wrap">
+      <span class="hl-field">
         <input id="meta-via" type="text" bind:value={data.meta.via} oninput={(e) => autoArrow(e, v => data.meta.via = v)} placeholder="z.B. VL, NBS" autocomplete="none" autocorrect="off" spellcheck="false" />
       </span>
     </div>
     <div class={primaryClass}>
       <label for="meta-name">Name</label>
-      <span class="hl-wrap">
+      <span class="hl-field">
         <input id="meta-name" type="text" bind:value={data.meta.name} oninput={(e) => autoArrow(e, v => data.meta.name = v)} placeholder="z.B. Olten → Aarau" autocomplete="none" autocorrect="off" spellcheck="false" />
       </span>
     </div>
@@ -119,7 +119,7 @@
     border-bottom: 1px solid var(--color-border);
     border-radius: var(--radius-card) var(--radius-card) 0 0;
   }
-  .daten-field :global(.hl-wrap) {
+  .daten-field :global(.hl-field) {
     display: flex;
     height: var(--spacing-unit);
     border-radius: 0 0 var(--radius-card) var(--radius-card);

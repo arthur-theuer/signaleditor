@@ -68,7 +68,7 @@
 </script>
 
 <div class="signal-cell abzweigung-cell">
-  <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
+  <div class="abzweigung-field abzweigung-arrow-field hl-field">
     <button class="abzweigung-btn" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleArrow('links'); }} onkeydown={(e) => handleArrowKeydown(e, 'links')}>
       {#if eintrag.abzweigung.links}
         {eintrag.abzweigung.links}
@@ -77,7 +77,7 @@
       {/if}
     </button>
   </div>
-  <div class="abzweigung-field abzweigung-strecke-field hl-wrap">
+  <div class="abzweigung-field abzweigung-strecke-field hl-field">
     <input
       type="text"
       class="abzweigung-strecke"
@@ -89,7 +89,7 @@
       spellcheck="false"
     />
   </div>
-  <div class="abzweigung-field abzweigung-vonnach-field hl-wrap">
+  <div class="abzweigung-field abzweigung-vonnach-field hl-field">
     <button class="abzweigung-btn" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleVonNach(1); }} onkeydown={handleVonNachKeydown}>
       {#if eintrag.abzweigung.von_nach}
         {eintrag.abzweigung.von_nach}
@@ -98,7 +98,7 @@
       {/if}
     </button>
   </div>
-  <div class="abzweigung-field abzweigung-richtung-field hl-wrap">
+  <div class="abzweigung-field abzweigung-richtung-field hl-field">
     <input
       type="text"
       class="abzweigung-richtung"
@@ -110,7 +110,7 @@
       spellcheck="false"
     />
   </div>
-  <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
+  <div class="abzweigung-field abzweigung-arrow-field hl-field">
     <button class="abzweigung-btn" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleArrow('rechts'); }} onkeydown={(e) => handleArrowKeydown(e, 'rechts')}>
       {#if eintrag.abzweigung.rechts}
         {eintrag.abzweigung.rechts}
@@ -162,6 +162,6 @@
   .abzweigung-richtung-field { flex: 1; }
   .placeholder { color: var(--color-text-muted); }
 
-  .abzweigung-cell > :first-child { border-radius: calc(var(--radius-card) - 1px) 0 0 calc(var(--radius-card) - 1px); }
-  .abzweigung-cell > :last-child { border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0; }
+  .abzweigung-cell > :first-child { border-radius: var(--radius-inner) 0 0 var(--radius-inner); }
+  .abzweigung-cell > :last-child { border-radius: 0 var(--radius-inner) var(--radius-inner) 0; }
 </style>

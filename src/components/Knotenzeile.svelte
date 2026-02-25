@@ -12,7 +12,7 @@
 </script>
 
 <div class="signal-cell knoten-cell">
-  <div class="knoten-search-wrapper hl-wrap">
+  <div class="knoten-search-wrapper hl-field">
     <Stationssuche bind:code={eintrag.knoten} placeholder="z.B. Zürich" onchange={onchange} />
   </div>
 </div>
@@ -24,6 +24,6 @@
     min-width: 0;
     display: flex;
     height: 100%;
-    border-radius: calc(var(--radius-card) - 1px);
+    border-radius: var(--radius-inner);
   }
 </style>

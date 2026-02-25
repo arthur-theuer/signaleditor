@@ -198,8 +198,8 @@
     overflow: hidden;
   }
 
-  :global(.hl-wrap:has(.dropdown)),
-  :global(.hl-wrap:has(.dropdown))::after,
+  :global(.hl-field:has(.dropdown)),
+  :global(.hl-field:has(.dropdown))::after,
   :global(.daten-field:has(.dropdown)),
   :global(.signal-cell:has(.dropdown)),
   :global(.knoten-search-wrapper:has(.dropdown)) {

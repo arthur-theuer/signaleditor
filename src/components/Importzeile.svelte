@@ -137,7 +137,7 @@
       <span class="import-placeholder">Datei auswählen</span>
     {/if}
   </div>
-  <button class="import-folder-btn hl" onclick={(e) => { e.stopPropagation(); showPicker = true; }} title="Datei auswählen">
+  <button class="import-folder-btn" onclick={(e) => { e.stopPropagation(); showPicker = true; }} title="Datei auswählen">
     <CloudDownload size={16} strokeWidth={1.5} />
   </button>
 </div>
@@ -206,10 +206,13 @@
     background: transparent;
     border: none;
     border-left: 1px solid var(--color-border);
-    border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0;
+    border-radius: 0 var(--radius-inner) var(--radius-inner) 0;
     cursor: pointer;
     color: var(--color-import-text);
     height: 100%;
+  }
+  .import-folder-btn:hover {
+    background: color-mix(in srgb, currentColor 8%, transparent);
   }
   .file-noext { display: none; }
 
@@ -226,7 +229,7 @@
     .import-file-cell:not(.has-file) .import-folder-btn {
       width: 100%;
       border-left: none;
-      border-radius: calc(var(--radius-card) - 1px);
+      border-radius: var(--radius-inner);
     }
     .file-full { display: none; }
     .file-noext { display: inline; }
