@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Diff } from 'lucide-svelte';
-  import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
+  import { extractSignalBase, extractName, signalNeedsName, signalNeedsStationSearch, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
   import { SIGNAL_ABBREV } from '../lib/constants';
   import Stationsname from './ui/Stationsname.svelte';
   import type { Eintrag } from '../lib/types';
@@ -34,6 +34,7 @@
 
   let base = $derived(extractSignalBase(value ?? '') || '');
   let needsName = $derived(signalNeedsName(base));
+  let useStationSearch = $derived(signalNeedsStationSearch(base));
   let needsBahnhof = $derived(signalNeedsBahnhof(base));
   let enumList = $derived(getEnumForField(field, rowIdx, signale));
 
@@ -145,7 +146,20 @@
     {#if needsName || stationName}
       <div class="name-wrapper hl-wrap" class:visible={needsName}>
         <div class="name-spacer"></div>
-        <Stationsname bind:name={stationName} onchange={handleNameChange} />
+        {#if useStationSearch}
+          <Stationsname bind:name={stationName} onchange={handleNameChange} />
+        {:else}
+          <input
+            type="text"
+            class="name-input px-cell"
+            value={stationName}
+            oninput={(e) => { stationName = (e.target as HTMLInputElement).value; handleNameChange(); }}
+            placeholder="Name"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+          />
+        {/if}
         <div class="name-spacer"></div>
       </div>
     {/if}
@@ -236,6 +250,22 @@
   .name-wrapper :global(.search-field) {
     flex: var(--input-flex);
   }
+  .name-input {
+    flex: var(--input-flex);
+    min-width: 0;
+    border: none;
+    background: transparent;
+    padding: 0 var(--spacing-cell);
+    font-size: var(--text-input);
+    font-family: var(--font-mono);
+    color: var(--color-text-secondary);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    outline: none;
+    height: 100%;
+  }
+  .name-input::placeholder { color: var(--color-text-muted); }
 
   .has-bahnhof .signal-cell-inner { height: var(--spacing-unit); }
   .has-bahnhof .signal-input-wrapper { height: var(--spacing-unit); }

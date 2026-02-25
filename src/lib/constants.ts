@@ -51,6 +51,8 @@ export const REQUIRES_NAME = [
   'Vorsignal zu Spurwechsel',
 ];
 
+export const REQUIRES_STATION_SEARCH = ['Einfahrsignal', 'Einfahr-Vorsignal'];
+
 export const REQUIRES_BAHNHOF = ['Einfahr-Vorsignal'];
 
 export const VORSIGNAL_TO_HAUPTSIGNAL: Record<string, { signal: string; keepName: boolean }> = {

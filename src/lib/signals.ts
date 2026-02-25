@@ -7,6 +7,7 @@ import {
   SIGNALTYPEN,
   MELDUNGEN,
   REQUIRES_NAME,
+  REQUIRES_STATION_SEARCH,
   REQUIRES_BAHNHOF,
   VORSIGNAL_TO_HAUPTSIGNAL,
 } from './constants';
@@ -97,6 +98,10 @@ export function extractName(signal: string): string {
 
 export function signalNeedsName(signal: string): boolean {
   return REQUIRES_NAME.some(s => signal.startsWith(s));
+}
+
+export function signalNeedsStationSearch(signal: string): boolean {
+  return REQUIRES_STATION_SEARCH.some(s => signal.startsWith(s));
 }
 
 export function signalNeedsBahnhof(signal: string): boolean {
