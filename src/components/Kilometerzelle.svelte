@@ -60,6 +60,7 @@
       oninput={handleInput}
       onkeydown={handleKeydown}
       placeholder={prevKm}
+      autocomplete="none"
     />
   </div>
 </div>

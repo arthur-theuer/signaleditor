@@ -94,7 +94,7 @@
   onblur={handleBlur}
   onkeydown={handleKeydown}
   placeholder={placeholder}
-  autocomplete="off"
+  autocomplete="none"
   autocorrect="off"
   spellcheck="false"
 />

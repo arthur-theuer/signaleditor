@@ -155,7 +155,7 @@
                   bind:value={renameValue}
                   onkeydown={(e) => { if (e.key === 'Enter') submitRename(file); if (e.key === 'Escape') { cancelRename(); e.stopPropagation(); } }}
                   autofocus
-                  autocomplete="off" autocorrect="off" spellcheck="false"
+                  autocomplete="none" autocorrect="off" spellcheck="false"
                 />
                 <span class="rename-ext">{file.name.match(/\.ya?ml$/)?.[0] || '.yaml'}</span>
               </div>

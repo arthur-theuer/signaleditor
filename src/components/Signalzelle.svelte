@@ -203,11 +203,12 @@
 </script>
 
 <div class="signal-cell relative" class:has-name={needsName && !disabled} class:has-bahnhof={showBahnhof && !disabled} class:disabled>
-  <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-wrap">
+  <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-wrap" class:compact={showBahnhof && !disabled}>
     <div class="signal-input-slot">
       <input
         type="text"
         class="signal-input px-cell"
+        class:collapsed={showBahnhof && !disabled}
         readonly
         value={disabled ? '' : base}
         placeholder={disabled ? '' : placeholder}
@@ -216,7 +217,7 @@
         onblur={handleSignalBlur}
         tabindex={disabled ? -1 : 0}
       />
-      <div class="signal-abbrev px-cell">{disabled ? '' : abbrev(base)}</div>
+      <div class="signal-abbrev px-cell" class:force-show={showBahnhof && !disabled}>{disabled ? '' : abbrev(base)}</div>
     </div>
     {#if dropdownOpen && fuzzyMatches.length > 1}
       <div class="signal-dropdown">
@@ -240,7 +241,7 @@
           value={stationName}
           oninput={(e) => { stationName = (e.target as HTMLInputElement).value; handleNameChange(); }}
           placeholder="Name"
-          autocomplete="off"
+          autocomplete="none"
           autocorrect="off"
           spellcheck="false"
         />
@@ -257,7 +258,7 @@
         oninput={handleBahnhofInput}
         onfocus={handleBahnhofFocus}
         placeholder="Kurzname"
-        autocomplete="off"
+        autocomplete="none"
         autocorrect="off"
         spellcheck="false"
       />
@@ -420,11 +421,11 @@
   }
 
   /* Collapse signal enum to square when bahnhof is revealed */
-  .has-bahnhof .signal-input-wrapper {
-    flex: none;
+  .signal-input-wrapper.compact {
+    flex: none !important;
     width: var(--spacing-unit);
   }
-  .has-bahnhof .signal-input { color: transparent; }
-  .has-bahnhof .signal-input::placeholder { color: transparent; }
-  .has-bahnhof .signal-abbrev { display: flex; }
+  .signal-input.collapsed { color: transparent; }
+  .signal-input.collapsed::placeholder { color: transparent; }
+  .signal-abbrev.force-show { display: flex; }
 </style>
