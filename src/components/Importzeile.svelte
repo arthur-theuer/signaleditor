@@ -261,10 +261,7 @@
     font-family: var(--font-mono);
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
     padding: 0 var(--spacing-cell);
-    flex: 1;
-    min-width: 0;
   }
   .import-count { color: var(--color-text-secondary); }
   .import-stitch { color: var(--color-import-text); }
