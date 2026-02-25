@@ -3,7 +3,6 @@
     Undo2, Redo2, Upload, Download, Save, Lock, LockOpen,
     Milestone, Route, FolderOpen, FolderClosed, Code, Megaphone,
   } from 'lucide-svelte';
-  import Hinweis from './ui/Hinweis.svelte';
   import Passwortfeld from './ui/Passwortfeld.svelte';
 
   let {
@@ -83,10 +82,10 @@
   <!-- Group: History -->
   <div class={btnGroup}>
     <button id="undoBtn" class="tb-btn btn" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
-      <Undo2 size={16} strokeWidth={1.5} /><Hinweis text="Rückgängig" />
+      <Undo2 size={16} strokeWidth={1.5} />
     </button>
     <button id="redoBtn" class="tb-btn btn" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
-      <Redo2 size={16} strokeWidth={1.5} /><Hinweis text="Wiederholen" />
+      <Redo2 size={16} strokeWidth={1.5} />
     </button>
   </div>
 
@@ -95,10 +94,10 @@
   <!-- Group: New -->
   <div class={btnGroup}>
     <button class="tb-btn btn" onclick={() => onNew('strecke')} title="Neue Strecke">
-      <Milestone size={16} strokeWidth={1.5} /><Hinweis text="Strecke" />
+      <Milestone size={16} strokeWidth={1.5} />
     </button>
     <button class="tb-btn btn" onclick={() => onNew('route')} title="Neue Route">
-      <Route size={16} strokeWidth={1.5} /><Hinweis text="Route" />
+      <Route size={16} strokeWidth={1.5} />
     </button>
   </div>
 
@@ -114,10 +113,10 @@
       onchange={onFileLoad}
     />
     <button class="tb-btn btn" onclick={() => fileInput.click()} title="Datei laden">
-      <Upload size={16} strokeWidth={1.5} /><Hinweis text="Laden" />
+      <Upload size={16} strokeWidth={1.5} />
     </button>
     <button class="tb-btn download-btn btn" onclick={onExportMeldungen} title="Meldungen exportieren">
-      <Download size={16} strokeWidth={1.5} /><Hinweis text="Export" />
+      <Download size={16} strokeWidth={1.5} />
     </button>
   </div>
 
@@ -126,10 +125,10 @@
   <!-- Group: View toggles (hidden at sm) -->
   <div class="hidden sm:flex items-center gap-card lg:gap-md">
     <button class="tb-btn toggle-btn btn" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
-      <Code size={16} strokeWidth={1.5} /><Hinweis text="Signaldatei" />
+      <Code size={16} strokeWidth={1.5} />
     </button>
     <button class="tb-btn toggle-btn btn" class:active={showMeldungen} disabled={!meldungenAllowed} onclick={onToggleMeldungen} title="Meldungen">
-      <Megaphone size={16} strokeWidth={1.5} /><Hinweis text="Meldungen" />
+      <Megaphone size={16} strokeWidth={1.5} />
     </button>
   </div>
 
@@ -145,9 +144,9 @@
         title="Dateien"
       >
         {#if currentFileName}
-          <FolderOpen size={16} strokeWidth={1.5} /><Hinweis text="Dateien" />
+          <FolderOpen size={16} strokeWidth={1.5} />
         {:else}
-          <FolderClosed size={16} strokeWidth={1.5} /><Hinweis text="Dateien" />
+          <FolderClosed size={16} strokeWidth={1.5} />
         {/if}
       </button>
       <button
@@ -156,7 +155,7 @@
         disabled={saving || !dirty}
         title="Speichern (Ctrl+S)"
       >
-        <Save size={16} strokeWidth={1.5} /><Hinweis text="Speichern" />
+        <Save size={16} strokeWidth={1.5} />
       </button>
     </div>
 

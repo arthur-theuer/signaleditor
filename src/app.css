@@ -225,7 +225,6 @@
   position: relative;
 }
 .btn:hover:not(:disabled) { outline: 2px solid currentColor; outline-offset: -2px; }
-.btn:hover .hinweis { display: flex; }
 .btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
 .btn:disabled { cursor: default; color: var(--color-text-muted); }
 .btn.btn-flash { outline: 2px solid currentColor; outline-offset: -2px; }
