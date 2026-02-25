@@ -10,7 +10,7 @@
   } = $props();
 </script>
 
-<div class="signal-cell note-cell">
+<div class="signal-cell note-cell hl-wrap">
   <input
     type="text"
     class="note-input"
