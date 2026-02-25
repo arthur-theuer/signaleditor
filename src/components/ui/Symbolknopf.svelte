@@ -31,7 +31,8 @@
 </script>
 
 <button
-  class="symbolknopf hl {color} {extraClass}"
+  type="button"
+  class="symbolknopf btn {color} {extraClass}"
   class:bordered
   class:active
   class:wide
@@ -47,18 +48,9 @@
 </button>
 
 <style>
+  /* Extends .btn — only variant-specific styles here */
   .symbolknopf {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     gap: var(--spacing-card);
-    padding: 0;
-    background: var(--color-bg-raised);
-    border: var(--card-border);
-    border-radius: var(--radius-card);
-    cursor: pointer;
-    box-sizing: border-box;
-    color: var(--color-text-secondary);
   }
 
   /* Square sizing for icon-only buttons */
@@ -102,8 +94,6 @@
   }
 
   .symbolknopf:disabled {
-    cursor: default;
-    color: var(--color-text-muted);
     background: var(--color-bg);
     border-color: var(--color-border);
   }

@@ -18,11 +18,11 @@
 
 <div class="insert-zone">
   <div class="insert-zone-target">
-    <button class="insert-signal hl" onclick={onInsertSignal} tabindex={-1} title="Signal einfügen"><DiamondPlus size={16} strokeWidth={1.5} /></button>
-    <button class="insert-note hl" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen"><SquarePen size={16} strokeWidth={1.5} /></button>
-    <button class="insert-abzweigung hl" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen"><Share2 size={16} strokeWidth={1.5} /></button>
-    <button class="insert-knoten hl" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen"><Crosshair size={16} strokeWidth={1.5} /></button>
-    <button class="insert-import hl" onclick={onInsertImport} tabindex={-1} title="Import einfügen"><FilePlus size={16} strokeWidth={1.5} /></button>
+    <button class="insert-signal btn" onclick={onInsertSignal} tabindex={-1} title="Signal einfügen"><DiamondPlus size={16} strokeWidth={1.5} /></button>
+    <button class="insert-note btn" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen"><SquarePen size={16} strokeWidth={1.5} /></button>
+    <button class="insert-abzweigung btn" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen"><Share2 size={16} strokeWidth={1.5} /></button>
+    <button class="insert-knoten btn" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen"><Crosshair size={16} strokeWidth={1.5} /></button>
+    <button class="insert-import btn" onclick={onInsertImport} tabindex={-1} title="Import einfügen"><FilePlus size={16} strokeWidth={1.5} /></button>
   </div>
 </div>
 
@@ -42,17 +42,12 @@
     justify-content: center;
     gap: var(--spacing-card);
   }
+  /* Extends .btn — hidden until parent hover */
   .insert-zone-target button {
     opacity: 0;
     pointer-events: none;
     width: var(--spacing-unit);
     height: var(--spacing-unit);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: var(--card-border);
-    border-radius: var(--radius-card);
-    cursor: pointer;
   }
   .insert-zone-target:hover button {
     opacity: 1;

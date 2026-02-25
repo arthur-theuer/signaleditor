@@ -17,11 +17,11 @@
 </script>
 
 <div class="add-bar">
-  <button class="add-signal hl" onclick={onAddSignal}><DiamondPlus size={16} strokeWidth={1.5} /><span class="tier-full">Signal</span><span class="tier-medium">Sig.</span></button>
-  <button class="add-note hl" onclick={onAddNotiz}><SquarePen size={16} strokeWidth={1.5} /><span class="tier-full">Notiz</span><span class="tier-medium">Not.</span></button>
-  <button class="add-abzweigung hl" onclick={onAddAbzweigung}><Share2 size={16} strokeWidth={1.5} /><span class="tier-full">Abzweigung</span><span class="tier-medium">Abzw.</span></button>
-  <button class="add-knoten hl" onclick={onAddKnoten}><Crosshair size={16} strokeWidth={1.5} /><span class="tier-full">Knoten</span><span class="tier-medium">Kn.</span></button>
-  <button class="add-import hl" onclick={onAddImport}><FilePlus size={16} strokeWidth={1.5} /><span class="tier-full">Import</span><span class="tier-medium">Imp.</span></button>
+  <button class="add-signal btn" onclick={onAddSignal}><DiamondPlus size={16} strokeWidth={1.5} /><span class="tier-full">Signal</span><span class="tier-medium">Sig.</span></button>
+  <button class="add-note btn" onclick={onAddNotiz}><SquarePen size={16} strokeWidth={1.5} /><span class="tier-full">Notiz</span><span class="tier-medium">Not.</span></button>
+  <button class="add-abzweigung btn" onclick={onAddAbzweigung}><Share2 size={16} strokeWidth={1.5} /><span class="tier-full">Abzweigung</span><span class="tier-medium">Abzw.</span></button>
+  <button class="add-knoten btn" onclick={onAddKnoten}><Crosshair size={16} strokeWidth={1.5} /><span class="tier-full">Knoten</span><span class="tier-medium">Kn.</span></button>
+  <button class="add-import btn" onclick={onAddImport}><FilePlus size={16} strokeWidth={1.5} /><span class="tier-full">Import</span><span class="tier-medium">Imp.</span></button>
 </div>
 
 <style>
@@ -30,19 +30,14 @@
     gap: var(--spacing-card);
     margin: var(--spacing-half-card) var(--spacing-card);
   }
+  /* Extends .btn — plusleiste-specific overrides */
   .add-bar button {
     flex: 1;
     min-width: 0;
     height: var(--spacing-unit);
     padding: 0 var(--spacing-cell);
-    border: var(--card-border);
-    border-radius: var(--radius-card);
-    cursor: pointer;
     font-weight: var(--font-weight-semibold);
     font-size: var(--text-input);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     gap: var(--spacing-sm);
     container-type: inline-size;
   }

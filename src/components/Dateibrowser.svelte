@@ -121,14 +121,14 @@
   <div class="dateibrowser">
     <div class="tab-header">
       <button
-        class="tab-btn"
+        class="tab-btn btn"
         class:active={activeTab === 'strecken'}
         class:disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
         disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
         onclick={() => activeTab = 'strecken'}
       >Strecken</button>
       <button
-        class="tab-btn"
+        class="tab-btn btn"
         class:active={activeTab === 'routen'}
         class:disabled={lockedTab !== undefined && lockedTab !== 'routen'}
         disabled={lockedTab !== undefined && lockedTab !== 'routen'}
@@ -159,12 +159,12 @@
                 />
                 <span class="rename-ext">{file.name.match(/\.ya?ml$/)?.[0] || '.yaml'}</span>
               </div>
-              <button class="action-btn confirm-btn hl" onclick={() => submitRename(file)} title="Bestätigen">
+              <button class="action-btn confirm-btn btn" onclick={() => submitRename(file)} title="Bestätigen">
                 <Check size={16} strokeWidth={1.5} />
               </button>
             {:else}
               <button
-                class="file-card hl"
+                class="file-card btn"
                 class:used
                 disabled={used}
                 onclick={() => handleLoad(file)}
@@ -173,10 +173,10 @@
                 <span class="file-date">{formatDate(file.uploadedAt)}</span>
               </button>
               {#if mode === 'manage'}
-                <button class="action-btn rename-btn hl" onclick={() => startRename(file)} title="Umbenennen">
+                <button class="action-btn rename-btn btn" onclick={() => startRename(file)} title="Umbenennen">
                   <Pencil size={16} strokeWidth={1.5} />
                 </button>
-                <button class="action-btn delete-btn hl" onclick={() => handleDelete(file)} title="Löschen">
+                <button class="action-btn delete-btn btn" onclick={() => handleDelete(file)} title="Löschen">
                   <Trash2 size={16} strokeWidth={1.5} />
                 </button>
               {:else if used}
@@ -219,15 +219,12 @@
     display: flex;
     margin: -1px -1px 0 -1px;
   }
+  /* Extends .btn — tab-specific overrides */
   .tab-btn {
     flex: 1;
     padding: var(--spacing-cell);
     font-size: var(--text-input);
     font-weight: var(--font-weight-semibold);
-    cursor: pointer;
-    background: var(--color-bg-raised);
-    color: var(--color-text-secondary);
-    border: var(--card-border);
   }
   .tab-btn:first-child {
     border-radius: var(--radius-container) 0 0 0;
@@ -262,17 +259,12 @@
     padding: var(--spacing-half-card) var(--spacing-card);
     align-items: stretch;
   }
+  /* Extends .btn */
   .file-card {
     flex: 1;
     height: var(--spacing-unit);
-    display: flex;
-    align-items: center;
     justify-content: space-between;
     padding: 0 var(--spacing-xl);
-    background: var(--color-bg-raised);
-    border: var(--card-border);
-    border-radius: var(--radius-card);
-    cursor: pointer;
     font-size: var(--text-input);
     text-align: left;
   }
@@ -291,16 +283,10 @@
     white-space: nowrap;
     margin-left: var(--spacing-xl);
   }
+  /* Extends .btn */
   .action-btn {
     width: var(--spacing-unit);
     height: var(--spacing-unit);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-bg-raised);
-    border: var(--card-border);
-    border-radius: var(--radius-card);
-    cursor: pointer;
     flex-shrink: 0;
   }
   .delete-btn { color: var(--color-red); }

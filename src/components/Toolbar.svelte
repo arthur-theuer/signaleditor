@@ -82,10 +82,10 @@
 
   <!-- Group: History -->
   <div class={btnGroup}>
-    <button id="undoBtn" class="tb-btn hl" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
+    <button id="undoBtn" class="tb-btn btn" disabled={!undoEnabled} onclick={onUndo} title="Rückgängig (Ctrl+Z)">
       <Undo2 size={16} strokeWidth={1.5} /><Hinweis text="Rückgängig" />
     </button>
-    <button id="redoBtn" class="tb-btn hl" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
+    <button id="redoBtn" class="tb-btn btn" disabled={!redoEnabled} onclick={onRedo} title="Wiederholen (Ctrl+Y)">
       <Redo2 size={16} strokeWidth={1.5} /><Hinweis text="Wiederholen" />
     </button>
   </div>
@@ -94,10 +94,10 @@
 
   <!-- Group: New -->
   <div class={btnGroup}>
-    <button class="tb-btn hl" onclick={() => onNew('strecke')} title="Neue Strecke">
+    <button class="tb-btn btn" onclick={() => onNew('strecke')} title="Neue Strecke">
       <Milestone size={16} strokeWidth={1.5} /><Hinweis text="Strecke" />
     </button>
-    <button class="tb-btn hl" onclick={() => onNew('route')} title="Neue Route">
+    <button class="tb-btn btn" onclick={() => onNew('route')} title="Neue Route">
       <Route size={16} strokeWidth={1.5} /><Hinweis text="Route" />
     </button>
   </div>
@@ -113,10 +113,10 @@
       bind:this={fileInput}
       onchange={onFileLoad}
     />
-    <button class="tb-btn hl" onclick={() => fileInput.click()} title="Datei laden">
+    <button class="tb-btn btn" onclick={() => fileInput.click()} title="Datei laden">
       <Upload size={16} strokeWidth={1.5} /><Hinweis text="Laden" />
     </button>
-    <button class="tb-btn download-btn hl" onclick={onExportMeldungen} title="Meldungen exportieren">
+    <button class="tb-btn download-btn btn" onclick={onExportMeldungen} title="Meldungen exportieren">
       <Download size={16} strokeWidth={1.5} /><Hinweis text="Export" />
     </button>
   </div>
@@ -125,10 +125,10 @@
 
   <!-- Group: View toggles (hidden at sm) -->
   <div class="hidden sm:flex items-center gap-card lg:gap-md">
-    <button class="tb-btn toggle-btn hl" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
+    <button class="tb-btn toggle-btn btn" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
       <Code size={16} strokeWidth={1.5} /><Hinweis text="Signaldatei" />
     </button>
-    <button class="tb-btn toggle-btn hl" class:active={showMeldungen} disabled={!meldungenAllowed} onclick={onToggleMeldungen} title="Meldungen">
+    <button class="tb-btn toggle-btn btn" class:active={showMeldungen} disabled={!meldungenAllowed} onclick={onToggleMeldungen} title="Meldungen">
       <Megaphone size={16} strokeWidth={1.5} /><Hinweis text="Meldungen" />
     </button>
   </div>
@@ -139,7 +139,7 @@
 
     <div class={btnGroup}>
       <button
-        class="tb-btn dateien-btn hl"
+        class="tb-btn dateien-btn btn"
         class:active={showDateien}
         onclick={onToggleDateien}
         title="Dateien"
@@ -151,7 +151,7 @@
         {/if}
       </button>
       <button
-        class="tb-btn save-btn hl"
+        class="tb-btn save-btn btn"
         onclick={onSave}
         disabled={saving || !dirty}
         title="Speichern (Ctrl+S)"
@@ -215,19 +215,11 @@
   }
 
   /* Base toolbar button: fixed-size icon box, label appears as overlay */
+  /* Extends .btn — toolbar-specific overrides */
   .tb-btn {
-    position: relative;
     width: var(--spacing-unit);
     height: var(--spacing-unit);
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-bg-raised);
-    border: var(--card-border);
     border-radius: var(--radius-container);
-    color: var(--color-text-secondary);
-    cursor: pointer;
     font-size: var(--text-input);
     font-weight: var(--font-weight-medium);
     white-space: nowrap;
@@ -237,8 +229,6 @@
     z-index: 2;
   }
   .tb-btn:disabled {
-    cursor: default;
-    color: var(--color-text-muted);
     background: var(--color-bg);
     border-color: var(--color-border);
   }

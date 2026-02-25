@@ -231,11 +231,24 @@
   --color-code-btn-hover-border: var(--color-code-btn-hover-border);
 }
 
-/* Button hover: outline drawn inside via negative offset (no layout shift) */
-.hl { position: relative; cursor: pointer; }
-.hl:hover:not(:disabled) { outline: 2px solid currentColor; outline-offset: -2px; }
-.hl:hover .hinweis { display: flex; }
-.hl.hl-flash { outline: 2px solid currentColor; outline-offset: -2px; }
+/* Button base: shared layout, border, and interaction states */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: var(--card-border);
+  border-radius: var(--radius-card);
+  background: var(--color-bg-raised);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  position: relative;
+}
+.btn:hover:not(:disabled) { outline: 2px solid currentColor; outline-offset: -2px; }
+.btn:hover .hinweis { display: flex; }
+.btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+.btn:disabled { cursor: default; color: var(--color-text-muted); }
+.btn.btn-flash { outline: 2px solid currentColor; outline-offset: -2px; }
 
 /* Field focus: ::after ring in focus color */
 .hl-field { position: relative; cursor: pointer; }

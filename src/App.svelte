@@ -252,8 +252,8 @@
   function flashUndoRedoBtn(id: string) {
     const btn = document.getElementById(id) as HTMLButtonElement | null;
     if (!btn || btn.disabled) return;
-    btn.classList.add('hl-flash');
-    setTimeout(() => btn.classList.remove('hl-flash'), 100);
+    btn.classList.add('btn-flash');
+    setTimeout(() => btn.classList.remove('btn-flash'), 100);
   }
 
   // Keyboard shortcuts
