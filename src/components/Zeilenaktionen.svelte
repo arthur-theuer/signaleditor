@@ -58,12 +58,12 @@
   }
 
   /* Wide: show inline buttons, hide ellipsis and expandable actions */
-  :global(.ellipsis-btn) { display: none; }
-  :global(.action-btn) { display: none; }
+  :global(.ellipsis-btn) { display: none !important; }
+  :global(.action-btn) { display: none !important; }
 
   @media (max-width: 639px) {
-    :global(.wide-btn) { display: none; }
-    :global(.ellipsis-btn) { display: flex; }
-    :global(.action-btn) { display: flex; }
+    :global(.wide-btn) { display: none !important; }
+    :global(.ellipsis-btn) { display: flex !important; }
+    :global(.action-btn) { display: flex !important; }
   }
 </style>
