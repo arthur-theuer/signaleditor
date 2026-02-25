@@ -10,7 +10,7 @@
   } = $props();
 </script>
 
-<div class="signal-cell note-cell hl-field">
+<div class="row-cell note-cell hl-field">
   <input
     type="text"
     class="note-input"

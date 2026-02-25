@@ -233,7 +233,7 @@
   :global(.hl-field:has(.dropdown)),
   :global(.hl-field:has(.dropdown))::after,
   :global(.daten-field:has(.dropdown)),
-  :global(.signal-cell:has(.dropdown)),
+  :global(.row-cell:has(.dropdown)),
   :global(.knoten-search-wrapper:has(.dropdown)) {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;

@@ -268,8 +268,8 @@ input, select, textarea, button {
   font: inherit;
 }
 
-/* Base signal-cell: shared by all row type components */
-.signal-cell {
+/* Base row-cell: shared by all row type components */
+.row-cell {
   display: flex;
   background: var(--color-bg-raised);
   border: var(--card-border);
@@ -281,8 +281,8 @@ input, select, textarea, button {
   overflow: hidden;
 }
 
-.signal-cell.disabled { background: var(--color-bg); pointer-events: none; }
-.signal-cell.disabled .signal-input { color: var(--color-text-muted); cursor: default; }
+.row-cell.disabled { background: var(--color-bg); pointer-events: none; }
+.row-cell.disabled .signal-input { color: var(--color-text-muted); cursor: default; }
 
 .section-header {
   display: flex;

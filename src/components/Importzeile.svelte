@@ -122,7 +122,7 @@
 </script>
 
 <div
-  class="signal-cell import-cell import-file-cell"
+  class="row-cell import-cell import-file-cell"
   class:has-file={hasFile}
   role={hasFile ? 'button' : undefined}
   tabindex={hasFile ? 0 : undefined}
@@ -141,7 +141,7 @@
     <CloudDownload {...ICON} />
   </button>
 </div>
-<div class="signal-cell import-cell import-info-cell" class:empty={!hasFile}>
+<div class="row-cell import-cell import-info-cell" class:empty={!hasFile}>
   <div class="import-info">
     {#if resolveResult?.error}
       <span class="import-error">{resolveResult.error}</span>

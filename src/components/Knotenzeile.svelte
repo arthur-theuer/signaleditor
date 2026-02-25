@@ -11,7 +11,7 @@
   } = $props();
 </script>
 
-<div class="signal-cell knoten-cell">
+<div class="row-cell knoten-cell">
   <div class="knoten-search-wrapper hl-field">
     <Stationsfeld mode="code" bind:value={eintrag.knoten} placeholder="z.B. Zürich" onchange={onchange} />
   </div>

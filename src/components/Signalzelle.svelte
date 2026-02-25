@@ -203,7 +203,7 @@
 
 </script>
 
-<div class="signal-cell relative" class:has-name={needsName && !disabled} class:has-bahnhof={showBahnhof && !disabled} class:disabled>
+<div class="row-cell relative" class:has-name={needsName && !disabled} class:has-bahnhof={showBahnhof && !disabled} class:disabled>
   <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-field">
     <div class="signal-input-slot">
       <input
@@ -280,8 +280,8 @@
 </div>
 
 <style>
-  /* Override overflow: hidden from .signal-cell — dropdown needs to overflow */
-  .signal-cell { overflow: visible; }
+  /* Override overflow: hidden from .row-cell — dropdown needs to overflow */
+  .row-cell { overflow: visible; }
   .signal-input-wrapper {
     border-radius: var(--radius-inner);
     container-type: inline-size;
@@ -394,8 +394,8 @@
     cursor: pointer;
     opacity: 0;
   }
-  .signal-cell:hover .alt-toggle-btn { opacity: 0.6; }
-  .signal-cell:hover .alt-toggle-btn:hover { opacity: 1; }
+  .row-cell:hover .alt-toggle-btn { opacity: 0.6; }
+  .row-cell:hover .alt-toggle-btn:hover { opacity: 1; }
   .alt-toggle-btn.active { opacity: 0.4 !important; color: var(--color-text-muted); }
 
   /* Input + abbreviation overlay share the same flex slot */

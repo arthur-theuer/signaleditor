@@ -67,7 +67,7 @@
   }
 </script>
 
-<div class="signal-cell abzweigung-cell">
+<div class="row-cell abzweigung-cell">
   <div class="abzweigung-field abzweigung-arrow-field hl-field">
     <button class="abzweigung-btn" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleArrow('links'); }} onkeydown={(e) => handleArrowKeydown(e, 'links')}>
       {#if eintrag.abzweigung.links}

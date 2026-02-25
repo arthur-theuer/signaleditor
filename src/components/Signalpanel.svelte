@@ -122,7 +122,7 @@
 
   function getFocusableFields(rowEl: HTMLElement): HTMLElement[] {
     return Array.from(rowEl.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(el => {
-      const cell = el.closest('.signal-cell');
+      const cell = el.closest('.row-cell');
       return !cell || !cell.classList.contains('disabled');
     });
   }
