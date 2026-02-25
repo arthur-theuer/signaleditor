@@ -56,7 +56,6 @@
       eintrag.signal_2 = '';
       delete eintrag.signal_2b;
     }
-    // Block chain: clear Block-Vorsignal from signal_2 when signal_1 is no longer Blocksignal
     const base = extractSignalBase(eintrag.signal_1) || '';
     if (!base.startsWith('Blocksignal') && extractSignalBase(eintrag.signal_2 || '') === 'Block-Vorsignal zu') {
       eintrag.signal_2 = '';
@@ -88,6 +87,23 @@
   />
 {/if}
 
+<!-- bahnhof (separate cell, only for Einfahr-Vorsignal) -->
+{#if needsBahnhof}
+  <div class="signal-cell bahnhof-cell hl-wrap">
+    <input
+      type="text"
+      class="bahnhof-input"
+      value={eintrag.bahnhof || ''}
+      oninput={handleBahnhofInput}
+      onfocus={handleBahnhofFocus}
+      placeholder="Kurzname"
+      autocomplete="off"
+      autocorrect="off"
+      spellcheck="false"
+    />
+  </div>
+{/if}
+
 <!-- signal_2 -->
 <Signalzelle
   bind:value={eintrag.signal_2}
@@ -112,20 +128,22 @@
   />
 {/if}
 
-<!-- bahnhof (separate cell, only for Einfahr-Vorsignal) -->
-{#if needsBahnhof}
-  <div class="signal-cell bahnhof-cell hl-wrap">
-    <input
-      type="text"
-      class="bahnhof-input"
-      value={eintrag.bahnhof || ''}
-      oninput={handleBahnhofInput}
-      onfocus={handleBahnhofFocus}
-      placeholder="Kurzname"
-      autocomplete="off"
-      autocorrect="off"
-      spellcheck="false"
-    />
-  </div>
-{/if}
-
+<style>
+  .bahnhof-cell {
+    background: var(--color-highlight);
+  }
+  .bahnhof-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    padding: 0 var(--spacing-cell);
+    font-size: var(--text-input);
+    font-family: var(--font-mono);
+    box-sizing: border-box;
+    border-radius: inherit;
+    outline: none;
+    height: 100%;
+  }
+  .bahnhof-input::placeholder { color: var(--color-text-muted); }
+</style>
