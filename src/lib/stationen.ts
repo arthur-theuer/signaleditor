@@ -1,6 +1,11 @@
 // Swiss railway stations and traffic points
 // Source: https://data.sbb.ch/explore/dataset/dienststellen-gemass-opentransportdataswiss/
 // Filter: TRAIN stops + traffic points with letter-only codes
+// Query: /api/explore/v2.1/catalog/datasets/dienststellen-gemass-opentransportdataswiss/exports/json
+//   ?select=abbreviation,designationofficial
+//   &where=(meansoftransport="TRAIN" OR (meansoftransport IS NULL AND trafficpoint="true"))
+//     AND abbreviation IS NOT NULL AND isocountrycode="CH"
+//   &limit=-1
 export const STATIONEN: Record<string, string> = {
   'AA': 'Aarau',
   'AAGB': 'Aarau GB',
