@@ -191,7 +191,7 @@
   }
 </script>
 
-<div class="signal-cell flex relative flex-1 min-w-0" class:has-name={needsName && !disabled} class:has-bahnhof={needsBahnhof && !disabled} class:disabled>
+<div class="signal-cell relative" class:has-name={needsName && !disabled} class:has-bahnhof={needsBahnhof && !disabled} class:disabled>
   <div class="signal-input-wrapper flex-1 flex min-w-0 h-full hl-wrap">
     <div class="signal-input-slot">
       <input

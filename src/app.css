@@ -275,7 +275,6 @@ input, select, textarea, button {
 /* Base signal-cell: shared by all row type components */
 .signal-cell {
   display: flex;
-  flex-direction: column;
   background: var(--color-bg-raised);
   border: var(--card-border);
   border-radius: var(--radius-card);
