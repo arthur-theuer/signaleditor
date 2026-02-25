@@ -27,21 +27,24 @@ Data is stored as YAML files. The app supports local file import/export and clou
 ### Components (`src/components/`)
 
 - `Toolbar.svelte` — sticky header toolbar with icon buttons (undo/redo, upload, download, save, lock), text buttons (Neues Video, Neue Strecke, Dateien), toggle buttons (Kilometer, Signaldatei, Meldungen), save status indicator
-- `Metafelder.svelte` — meta fields form (streckennummer/linie, von, via, nach, name, video)
+- `Datenpanel.svelte` — meta fields form (streckennummer/linie, von, via, nach, name, video)
 - `Signalpanel.svelte` — main signal list with drag-and-drop reordering, keyboard navigation, row management
 - `Signalzeile.svelte` — single signal row (signal_1, signal_1b, signal_2, signal_2b, bahnhof)
-- `Signalzelle.svelte` — individual signal cell with input and preview
+- `Signalzelle.svelte` — individual signal cell with type-ahead input, abbreviation overlays, and deferred bahnhof reveal (shown on name focus, collapses signal to short abbreviation via `SIGNAL_SHORT`)
 - `Notizzeile.svelte` — note row
 - `Knotenzeile.svelte` — node row
 - `Abzweigungszeile.svelte` — junction row (strecke, richtung, seite buttons)
 - `Importzeile.svelte` — import row (datei, von, bis)
 - `Kilometerzelle.svelte` — optional km cell shown when Kilometer toggle is active
-- `Zeilenaktionen.svelte` — row action buttons (clear, delete) on the right side of each row
+- `Zeilenaktionen.svelte` — row action buttons (clear, delete); collapses to ellipsis menu below sm breakpoint
 - `Zwischenaktionen.svelte` — insert zone between rows (S N A K I buttons, shown on hover)
 - `Plusleiste.svelte` — add bar at bottom of signal list (+ Signal, + Notiz, + Abzweigung, + Knoten, + Import)
 - `Meldungspanel.svelte` — side panel showing generated signal messages with Schließen button
 - `Codepanel.svelte` — YAML code preview/export panel
 - `Dateibrowser.svelte` — cloud file browser for loading/managing saved files
+
+- `ui/Stationssuche.svelte` — station code search with fuzzy matching and dropdown
+- `ui/Stationsname.svelte` — station name search with autocomplete (used in signal name fields)
 
 ### Libraries (`src/lib/`)
 
@@ -55,7 +58,8 @@ Data is stored as YAML files. The app supports local file import/export and clou
 - `colors.ts` — color utilities (light backgrounds, color averaging)
 - `sources.ts` — import auto-stitching logic
 - `stationen.ts` — Swiss station list (SBB Dienststellen dataset)
-- `constants.ts` — signal type constants and options
+- `constants.ts` — signal type constants, abbreviation maps (`SIGNAL_ABBREV`, `SIGNAL_SHORT`)
+- `station-search.ts` — fuzzy search and highlighting for station lookup
 
 ### Server (`src/lib/server/` and `src/routes/api/`)
 
@@ -70,13 +74,21 @@ Data is stored as YAML files. The app supports local file import/export and clou
 
 | Token | Value | Usage |
 |---|---|---|
-| `--unit` | 40px | Base size for buttons, inputs, single-height elements |
-| ~~`--row-height`~~ | removed | Row height now equals `--unit` (40px) |
+| `--unit` | 40px | Base size for buttons, inputs, row height |
 | `--card-gap` | 4px | Gap between cards/cells in a row |
 | `--half-gap` | 2px | Half of card-gap, used for vertical padding |
 | `--card-radius` | 8px | Border radius for individual cards/cells |
 | `--container-radius` | 12px (card-radius + card-gap) | Border radius for outer containers/panels |
 | `--page-gap` | 20px | Page-level horizontal/bottom padding |
+
+### Font Scale
+
+| Token | Value | Usage |
+|---|---|---|
+| `--text-title` | 24px | App title |
+| `--text-header` | 16px | Section headers |
+| `--text-input` | 14px | Primary text (inputs, buttons, labels) |
+| `--text-caption` | 12px | Dropdowns, hints, tooltips |
 
 ### Color Hierarchy
 
@@ -114,7 +126,7 @@ The blue focus/hover overlay used on all interactive elements. Defined globally 
 ### Icons
 
 - Toolbar: 20px Lucide-style inline SVGs, `viewBox="0 0 24 24"`, `stroke-width="2"`, `stroke-linecap="round"`, `stroke-linejoin="round"`, 44x44px hit target
-- Row actions (Zeilenaktionen): `stroke-width="2.5"`
+- Row actions (Zeilenaktionen): uses Symbolknopf with Lucide icons at `size={16}`, `strokeWidth={1.5}`
 - Delete buttons: 16px icon, `stroke-width="2.5"`, `color: var(--color-red)`
 
 ### General Rules

@@ -13,10 +13,10 @@ Tracking cleanup/modernization progress per component.
 
 ### Spacing and sizing
 
-- Use `@theme` tokens: `gap-card`, `p-cell`, `mb-page`, `h-unit`, `h-row`, etc.
+- Use `@theme` tokens: `gap-card`, `p-cell`, `mb-page`, `h-unit`, etc.
 - No hardcoded pixel values — use `var(--spacing-*)` in scoped styles or Tailwind spacing utilities.
 - Exception: `1px` for borders is fine.
-- Computed sizes: use `calc()` with tokens, e.g. `calc(5 * var(--spacing-row))`.
+- Computed sizes: use `calc()` with tokens, e.g. `calc(5 * var(--spacing-unit))`.
 
 ### Colors
 
@@ -32,7 +32,7 @@ Tracking cleanup/modernization progress per component.
 ### Fonts
 
 - Use `var(--font-sans)` or `var(--font-mono)` — never hardcode font stacks.
-- Font sizes: `var(--text-input)` (14px), `var(--text-preview)` (11px).
+- Font sizes: `var(--text-title)` (24px), `var(--text-header)` (16px), `var(--text-input)` (14px), `var(--text-caption)` (12px).
 - Font weights: `var(--font-weight-normal/medium/semibold/bold)`.
 
 ### Repeated class strings
@@ -54,8 +54,8 @@ Tracking cleanup/modernization progress per component.
 
 - **Icon sizes**: `size={16}` everywhere, `strokeWidth={1.5}` (1px absolute).
 - **Hover stroke**: `.hl:hover svg` increases stroke-width to 2.25 (~1.5px absolute) globally.
-- **IconBtn component**: use for standard icon buttons (icon-only or icon+label) with `color`, `active`, `wide` props. Handles sizing, borders, hl, and color variants.
-- **Colored borders**: toggle/action buttons with semantic meaning (Km toggle, Schließen) use colored borders via IconBtn `color` prop. Neutral buttons use `card-border`.
+- **Symbolknopf component**: use for standard icon buttons (icon-only or icon+label) with `color`, `active`, `wide` props. Handles sizing, borders, hl, and color variants.
+- **Colored borders**: toggle/action buttons with semantic meaning (Km toggle, Schließen) use colored borders via Symbolknopf `color` prop. Neutral buttons use `card-border`.
 - **Custom buttons**: Plusleiste, Zwischenaktionen, Importzeile, Toolbar have unique styling — use raw `<button>` with `.hl` class for hover stroke effect.
 
 ### Tooltips
@@ -90,7 +90,7 @@ Tracking cleanup/modernization progress per component.
 | Abzweigungszeile | — | — | — | — | |
 | Meldungspanel | ✅ | ✅ | ✅ sm/md | ✅ | Tailwind layout, card-style close btn, collapsed muted branches, font-mono |
 | Dateibrowser | — | — | — | — | |
-| Zeilenaktionen | ✅ | ✅ | — | ✅ | Uses IconBtn |
+| Zeilenaktionen | ✅ | ✅ | ✅ sm | ✅ | Ellipsis menu below sm, inline buttons above |
 | Zwischenaktionen | — | — | — | — | |
 | ui/Symbolknopf | ✅ | ✅ | — | ✅ | Shared button component |
 | ui/Hinweis | ✅ | ✅ | — | ✅ | Tooltip pill, shown on .hl:hover |

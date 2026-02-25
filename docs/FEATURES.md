@@ -36,7 +36,7 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 21 | Quelle row: datei + file picker + info bar + expand, blue | ✅ | Height differs by design |
 | 22 | Row index cell | ✅ | |
 | 23 | Km cell: hidden by default, shown on toggle | ✅ | |
-| 24 | Row actions: clear (←) and delete (×) | ✅ | |
+| 24 | Row actions: clear (←) and delete (×), ellipsis menu below sm | ✅ | |
 
 ## Signal Cell Behavior
 
@@ -53,7 +53,7 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 33 | Name sub-field for signals requiring name | ✅ | |
 | 34 | Bahnhof sub-field for Einfahr-Vorsignal | ✅ | |
 | 35 | Bahnhof field yellow background | ✅ | |
-| 36 | has-bahnhof: 50/50 split, no previews | ✅ | |
+| 36 | has-bahnhof: deferred reveal on name focus, signal collapses to short abbreviation | ✅ | |
 | 37 | ± alt toggle on hover (not on Wiederholungssignal) | ✅ | |
 | 38 | Alt toggle adds/removes signal_Xb | ✅ | |
 | 39 | Wiederholungssignal: signal_2 disabled, alts removed | ✅ | |

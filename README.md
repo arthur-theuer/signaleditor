@@ -17,4 +17,6 @@ See [docs/SETUP.md](docs/SETUP.md) for Vercel deployment and environment variabl
 - [DATENMODELL.md](docs/DATENMODELL.md) — Data model and YAML format
 - [FEATURES.md](docs/FEATURES.md) — Feature inventory
 - [AGENTS.md](docs/AGENTS.md) — Architecture, components, design system
+- [COMPONENTS.md](docs/COMPONENTS.md) — Component status and conventions
+- [AUDIT.md](docs/AUDIT.md) — Codebase audit findings
 - [MIGRATION_PLAN.md](docs/MIGRATION_PLAN.md) — Migration from original editor.html

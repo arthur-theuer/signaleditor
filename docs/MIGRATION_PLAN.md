@@ -26,7 +26,7 @@ Migrate `editor.html` (single-file, ~2400 lines) to a Svelte 5 + TypeScript + Vi
 - **Module files** (`src/lib/`): English names
 - **Component files** (`src/components/`): German domain nouns + English structural words
 - **TypeScript types**: German, matching YAML field names
-- **CSS variables**: No prefix, keep existing names (`--row-height`, `--card-gap`, etc.)
+- **CSS variables**: No prefix, keep existing names (`--spacing-unit`, `--spacing-card`, etc.)
 
 ## Project Structure
 
