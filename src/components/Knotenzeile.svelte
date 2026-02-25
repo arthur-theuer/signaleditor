@@ -12,16 +12,13 @@
 </script>
 
 <div class="signal-cell knoten-cell">
-  <div class="knoten-inner">
-    <div class="knoten-search-wrapper hl-wrap">
-      <Stationssuche bind:code={eintrag.knoten} placeholder="z.B. Zürich" onchange={onchange} />
-    </div>
+  <div class="knoten-search-wrapper hl-wrap">
+    <Stationssuche bind:code={eintrag.knoten} placeholder="z.B. Zürich" onchange={onchange} />
   </div>
 </div>
 
 <style>
   .knoten-cell { background: var(--color-knoten); }
-  .knoten-inner { display: flex; height: 100%; }
   .knoten-search-wrapper {
     flex: 1;
     min-width: 0;

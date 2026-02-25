@@ -68,64 +68,61 @@
 </script>
 
 <div class="signal-cell abzweigung-cell">
-  <div class="abzweigung-inner">
-    <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
-      <button class="abzweigung-btn abzweigung-arrow" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleArrow('links'); }} onkeydown={(e) => handleArrowKeydown(e, 'links')}>
-        {#if eintrag.abzweigung.links}
-          {eintrag.abzweigung.links}
-        {:else}
-          <span class="placeholder">&lt;&gt;</span>
-        {/if}
-      </button>
-    </div>
-    <div class="abzweigung-field abzweigung-strecke-field hl-wrap">
-      <input
-        type="text"
-        class="abzweigung-strecke"
-        bind:value={eintrag.abzweigung.strecke}
-        oninput={onchange}
-        placeholder="Nummer"
-        autocomplete="off"
-        autocorrect="off"
-        spellcheck="false"
-      />
-    </div>
-    <div class="abzweigung-field abzweigung-vonnach-field hl-wrap">
-      <button class="abzweigung-btn abzweigung-vonnach" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleVonNach(1); }} onkeydown={handleVonNachKeydown}>
-        {#if eintrag.abzweigung.von_nach}
-          {eintrag.abzweigung.von_nach}
-        {:else}
-          <span class="placeholder">von/nach</span>
-        {/if}
-      </button>
-    </div>
-    <div class="abzweigung-field abzweigung-richtung-field hl-wrap">
-      <input
-        type="text"
-        class="abzweigung-richtung"
-        bind:value={eintrag.abzweigung.richtung}
-        oninput={onchange}
-        placeholder="Richtung"
-        autocomplete="off"
-        autocorrect="off"
-        spellcheck="false"
-      />
-    </div>
-    <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
-      <button class="abzweigung-btn abzweigung-arrow" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleArrow('rechts'); }} onkeydown={(e) => handleArrowKeydown(e, 'rechts')}>
-        {#if eintrag.abzweigung.rechts}
-          {eintrag.abzweigung.rechts}
-        {:else}
-          <span class="placeholder">&lt;&gt;</span>
-        {/if}
-      </button>
-    </div>
+  <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
+    <button class="abzweigung-btn" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleArrow('links'); }} onkeydown={(e) => handleArrowKeydown(e, 'links')}>
+      {#if eintrag.abzweigung.links}
+        {eintrag.abzweigung.links}
+      {:else}
+        <span class="placeholder">&lt;&gt;</span>
+      {/if}
+    </button>
+  </div>
+  <div class="abzweigung-field abzweigung-strecke-field hl-wrap">
+    <input
+      type="text"
+      class="abzweigung-strecke"
+      bind:value={eintrag.abzweigung.strecke}
+      oninput={onchange}
+      placeholder="Nummer"
+      autocomplete="off"
+      autocorrect="off"
+      spellcheck="false"
+    />
+  </div>
+  <div class="abzweigung-field abzweigung-vonnach-field hl-wrap">
+    <button class="abzweigung-btn" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleVonNach(1); }} onkeydown={handleVonNachKeydown}>
+      {#if eintrag.abzweigung.von_nach}
+        {eintrag.abzweigung.von_nach}
+      {:else}
+        <span class="placeholder">von/nach</span>
+      {/if}
+    </button>
+  </div>
+  <div class="abzweigung-field abzweigung-richtung-field hl-wrap">
+    <input
+      type="text"
+      class="abzweigung-richtung"
+      bind:value={eintrag.abzweigung.richtung}
+      oninput={onchange}
+      placeholder="Richtung"
+      autocomplete="off"
+      autocorrect="off"
+      spellcheck="false"
+    />
+  </div>
+  <div class="abzweigung-field abzweigung-arrow-field hl-wrap">
+    <button class="abzweigung-btn" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleArrow('rechts'); }} onkeydown={(e) => handleArrowKeydown(e, 'rechts')}>
+      {#if eintrag.abzweigung.rechts}
+        {eintrag.abzweigung.rechts}
+      {:else}
+        <span class="placeholder">&lt;&gt;</span>
+      {/if}
+    </button>
   </div>
 </div>
 
 <style>
   .abzweigung-cell { background: var(--color-abzweigung); }
-  .abzweigung-inner { display: flex; height: 100%; }
   .abzweigung-field {
     display: flex;
     align-items: center;
@@ -159,13 +156,12 @@
     padding: 0;
     width: 100%;
   }
-  .abzweigung-arrow-field { width: calc(2 * var(--spacing-unit)); flex-shrink: 0; }
+  .abzweigung-arrow-field { width: var(--spacing-unit); flex-shrink: 0; }
   .abzweigung-strecke-field { flex: 1; }
   .abzweigung-vonnach-field { flex: 1; }
   .abzweigung-richtung-field { flex: 1; }
   .placeholder { color: var(--color-text-muted); }
 
-  /* Corner radii for sub-fields */
-  .abzweigung-inner > :first-child { border-radius: calc(var(--radius-card) - 1px) 0 0 calc(var(--radius-card) - 1px); }
-  .abzweigung-inner > :last-child { border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0; }
+  .abzweigung-cell > :first-child { border-radius: calc(var(--radius-card) - 1px) 0 0 calc(var(--radius-card) - 1px); }
+  .abzweigung-cell > :last-child { border-radius: 0 calc(var(--radius-card) - 1px) calc(var(--radius-card) - 1px) 0; }
 </style>

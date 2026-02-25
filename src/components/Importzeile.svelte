@@ -129,19 +129,17 @@
   onclick={hasFile ? () => showPicker = true : undefined}
   onkeydown={hasFile ? (e) => { if (e.key === 'Enter') showPicker = true; } : undefined}
 >
-  <div class="import-inner">
-    <div class="import-name">
-      {#if hasFile}
-        <span class="import-filename file-full">{eintrag.import.datei}</span>
-        <span class="import-filename file-noext">{fileBaseName}</span>
-      {:else}
-        <span class="import-placeholder">Datei auswählen</span>
-      {/if}
-    </div>
-    <button class="import-folder-btn hl" onclick={(e) => { e.stopPropagation(); showPicker = true; }} title="Datei auswählen">
-      <CloudDownload size={16} strokeWidth={1.5} />
-    </button>
+  <div class="import-name">
+    {#if hasFile}
+      <span class="import-filename file-full">{eintrag.import.datei}</span>
+      <span class="import-filename file-noext">{fileBaseName}</span>
+    {:else}
+      <span class="import-placeholder">Datei auswählen</span>
+    {/if}
   </div>
+  <button class="import-folder-btn hl" onclick={(e) => { e.stopPropagation(); showPicker = true; }} title="Datei auswählen">
+    <CloudDownload size={16} strokeWidth={1.5} />
+  </button>
 </div>
 <div class="signal-cell import-cell import-info-cell" class:empty={!hasFile}>
   <div class="import-info">
@@ -172,7 +170,6 @@
 <style>
   .import-cell { background: var(--color-import); }
   .import-file-cell { container-type: inline-size; outline: none; }
-  .import-inner { display: flex; height: 100%; }
   .import-name {
     flex: 1;
     min-width: 0;
@@ -196,9 +193,12 @@
     color: var(--color-text-muted);
     user-select: none;
     pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .import-folder-btn {
-    width: calc(2 * var(--spacing-unit));
+    width: var(--spacing-unit);
     flex-shrink: 0;
     display: flex;
     align-items: center;
