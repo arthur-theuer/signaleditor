@@ -265,7 +265,7 @@
     flex: 1;
     min-width: 0;
   }
-  .import-count { color: var(--color-text-secondary); }
+  .import-count { color: var(--color-text-secondary); flex: 1.5; }
   .import-stitch { color: var(--color-import-text); }
   .import-error { color: var(--color-red); }
 
