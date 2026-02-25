@@ -285,7 +285,7 @@
   }
   .file-date {
     color: var(--color-text-secondary);
-    font-size: var(--text-preview);
+    font-size: var(--text-caption);
     white-space: nowrap;
     margin-left: var(--spacing-xl);
   }

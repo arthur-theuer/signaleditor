@@ -215,14 +215,14 @@
     padding: var(--spacing-xs) 0;
     border: none;
     background: transparent;
-    font-size: var(--text-preview);
+    font-size: var(--text-caption);
     font-family: var(--font-mono);
     color: var(--color-text);
     cursor: pointer;
     text-align: left;
   }
   .dropdown-item .code-col {
-    font-size: var(--text-preview);
+    font-size: var(--text-caption);
   }
   .dropdown-item .name-col {
     display: block;

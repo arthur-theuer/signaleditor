@@ -12,6 +12,6 @@
 <svelte:window bind:innerWidth={w} />
 
 <div class="fixed bottom-2 left-1/2 -translate-x-1/2 z-50 rounded-card bg-bg-raised border border-border
-            px-cell py-xs font-mono text-preview text-text-secondary shadow-sm">
+            px-cell py-xs font-mono text-caption text-text-secondary shadow-sm">
   {w}px · <strong>{label}</strong>
 </div>

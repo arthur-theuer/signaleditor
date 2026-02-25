@@ -309,7 +309,7 @@
   }
   .signal-dropdown-item {
     padding: var(--spacing-xs) var(--spacing-cell);
-    font-size: var(--text-preview);
+    font-size: var(--text-caption);
     font-family: var(--font-mono);
     color: var(--color-text);
     white-space: nowrap;

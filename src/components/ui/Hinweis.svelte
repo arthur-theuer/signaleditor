@@ -16,7 +16,7 @@
     justify-content: center;
     padding: 0 var(--spacing-cell);
     border-radius: var(--radius-container);
-    font-size: var(--text-preview);
+    font-size: var(--text-caption);
     font-family: var(--font-sans);
     font-weight: var(--font-weight-medium);
     white-space: nowrap;

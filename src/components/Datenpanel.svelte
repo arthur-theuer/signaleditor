@@ -110,7 +110,7 @@
     border-radius: var(--radius-card);
   }
   .daten-field label {
-    font-size: var(--text-preview);
+    font-size: var(--text-caption);
     font-weight: var(--font-weight-semibold);
     text-transform: uppercase;
     color: var(--color-text-secondary);

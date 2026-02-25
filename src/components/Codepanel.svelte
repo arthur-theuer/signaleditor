@@ -45,7 +45,7 @@
   pre {
     color: var(--color-code-text);
     padding: var(--spacing-xl);
-    font-size: var(--text-preview);
+    font-size: var(--text-caption);
     white-space: pre-wrap;
     max-height: calc(10 * var(--spacing-unit));
     overflow-y: auto;

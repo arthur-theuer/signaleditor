@@ -204,7 +204,7 @@
   .header.logged-out {
     background-image: linear-gradient(color-mix(in srgb, var(--color-red) 8%, transparent), color-mix(in srgb, var(--color-red) 8%, transparent));
   }
-  .header h1 { font-size: 1.5rem; font-weight: var(--font-weight-bold); }
+  .header h1 { font-size: var(--text-title); font-weight: var(--font-weight-bold); }
 
 
   /* Separator */
@@ -299,7 +299,7 @@
     justify-content: center;
     padding: 0 var(--spacing-cell);
     border-radius: var(--radius-container);
-    font-size: var(--text-preview);
+    font-size: var(--text-caption);
     font-family: var(--font-sans);
     font-weight: var(--font-weight-medium);
     white-space: nowrap;
