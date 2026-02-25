@@ -111,17 +111,6 @@
   --color-meldung-bahnhof-a: #2e7d32;
   --color-meldung-bahnhof-b: #f9a825;
 
-  /* Code panel */
-  --color-code-bg: var(--color-bg-subtle);
-  --color-code-text: var(--color-text);
-  --color-code-border: var(--color-border);
-  --color-code-btn-bg: var(--color-bg);
-  --color-code-btn-text: var(--color-text-secondary);
-  --color-code-btn-border: var(--color-border);
-  --color-code-btn-hover-bg: var(--color-bg-raised);
-  --color-code-btn-hover-text: var(--color-text);
-  --color-code-btn-hover-border: var(--color-text-muted);
-
   /* Composite tokens (not mappable to @theme) */
   --card-border: 1px solid var(--color-border);
 
@@ -220,15 +209,6 @@
   --color-meldung-standard: var(--color-meldung-standard);
   --color-meldung-bahnhof-a: var(--color-meldung-bahnhof-a);
   --color-meldung-bahnhof-b: var(--color-meldung-bahnhof-b);
-  --color-code-bg: var(--color-code-bg);
-  --color-code-text: var(--color-code-text);
-  --color-code-border: var(--color-code-border);
-  --color-code-btn-bg: var(--color-code-btn-bg);
-  --color-code-btn-text: var(--color-code-btn-text);
-  --color-code-btn-border: var(--color-code-btn-border);
-  --color-code-btn-hover-bg: var(--color-code-btn-hover-bg);
-  --color-code-btn-hover-text: var(--color-code-btn-hover-text);
-  --color-code-btn-hover-border: var(--color-code-btn-hover-border);
 }
 
 /* Button base: shared layout, border, and interaction states */

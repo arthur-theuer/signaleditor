@@ -30,20 +30,19 @@
 <div class="yaml-output relative mb-page">
   <pre>{yamlText}</pre>
   <div class="absolute top-card right-card flex gap-card">
-    <button class="yaml-btn" onclick={copyYaml} tabindex={-1}>{copyLabel}</button>
-    <button class="yaml-btn" onclick={downloadYaml} tabindex={-1}>Herunterladen</button>
+    <button class="yaml-btn btn" onclick={copyYaml} tabindex={-1}>{copyLabel}</button>
+    <button class="yaml-btn btn" onclick={downloadYaml} tabindex={-1}>Herunterladen</button>
   </div>
 </div>
 
 <style>
-  /* Appearance only — layout handled by Tailwind classes */
   .yaml-output {
-    background: var(--color-code-bg);
-    border: 1px solid var(--color-code-border);
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-container);
   }
   pre {
-    color: var(--color-code-text);
+    color: var(--color-text);
     padding: var(--spacing-xl);
     font-size: var(--text-caption);
     white-space: pre-wrap;
@@ -51,19 +50,10 @@
     overflow-y: auto;
     margin: 0;
   }
+  /* Extends .btn */
   .yaml-btn {
     padding: var(--spacing-md) var(--spacing-cell);
-    background: var(--color-code-btn-bg);
-    color: var(--color-code-btn-text);
-    border: 1px solid var(--color-code-btn-border);
-    border-radius: var(--radius-card);
-    cursor: pointer;
     font-size: var(--text-input);
     font-weight: var(--font-weight-medium);
-  }
-  .yaml-btn:hover {
-    background: var(--color-code-btn-hover-bg);
-    color: var(--color-code-btn-hover-text);
-    border-color: var(--color-code-btn-hover-border);
   }
 </style>
