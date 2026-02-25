@@ -78,7 +78,7 @@
 </script>
 
 <div class="header" class:logged-out={!loggedIn}>
-  <h1 class="hidden xl:block mr-md">Signaleditor</h1>
+  <h1 class="app-title">Signaleditor</h1>
 
   <!-- Group: History -->
   <div class={btnGroup}>
@@ -121,10 +121,10 @@
     </button>
   </div>
 
-  <div class="separator hidden sm:block"></div>
+  <div class="separator sm-only"></div>
 
   <!-- Group: View toggles (hidden at sm) -->
-  <div class="toggle-group hidden sm:flex lg:gap-md">
+  <div class="toggle-group">
     <button class="tb-btn toggle-btn btn" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
       <Code {...ICON} />
     </button>
@@ -169,12 +169,12 @@
         </span>
       </span>
     {:else}
-      <div class="flex-1"></div>
+      <div class="spacer"></div>
     {/if}
   {/if}
 
   {#if !loggedIn}
-    <div class="flex-1"></div>
+    <div class="spacer"></div>
   {/if}
 
   <!-- Lock with expanding PIN field -->
@@ -215,7 +215,15 @@
   .header.logged-out {
     background-image: linear-gradient(color-mix(in srgb, var(--color-red) 8%, transparent), color-mix(in srgb, var(--color-red) 8%, transparent));
   }
-  .header h1 { font-size: var(--text-title); font-weight: var(--font-weight-bold); }
+  .app-title {
+    display: none;
+    font-size: var(--text-title);
+    font-weight: var(--font-weight-bold);
+    margin-right: var(--spacing-md);
+  }
+  @media (min-width: 1280px) {
+    .app-title { display: block; }
+  }
 
 
   .btn-group {
@@ -231,11 +239,19 @@
     .btn-group { gap: var(--spacing-md); }
   }
   .toggle-group {
+    display: none;
     align-items: center;
     gap: var(--spacing-card);
   }
+  @media (min-width: 640px) {
+    .toggle-group { display: flex; }
+  }
   @media (min-width: 1024px) {
     .toggle-group { gap: var(--spacing-md); }
+  }
+  .sm-only { display: none; }
+  @media (min-width: 640px) {
+    .sm-only { display: block; }
   }
   .separator {
     width: 1px;
@@ -277,6 +293,7 @@
 
 
   /* Cloud buttons */
+  .spacer { flex: 1; }
   .save-btn { color: var(--color-focus); }
   .dateien-btn { color: var(--color-focus); }
 

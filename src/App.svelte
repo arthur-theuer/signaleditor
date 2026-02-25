@@ -305,11 +305,11 @@
   <Dateibrowser onload={handleCloudLoad} onclose={() => showDateien = false} />
 {/if}
 
-<div class="px-cell sm:px-page">
+<div class="content-pad">
   <Datenpanel bind:data={data} ontabout={handleDatenTabOut} />
 </div>
 
-<div class="main-content px-cell sm:px-page">
+<div class="main-content content-pad">
   <div class="signals-container">
     <div class="section-header signale-header">
       Signale
@@ -330,7 +330,7 @@
   </div>
 
   {#if showMeldungen}
-    <div class="meldungen-section ml-cell shrink-0">
+    <div class="meldungen-section">
       <div class="meldungen-panel">
         <div class="section-header">Meldungen</div>
         <Meldungspanel signale={data.signale} onclose={() => wantMeldungen = false} />
@@ -338,10 +338,10 @@
     </div>
   {/if}
 </div>
-<div bind:this={scrollAnchor} class="h-0 mt-page"></div>
+<div bind:this={scrollAnchor} class="scroll-anchor"></div>
 
 {#if showYaml}
-  <div class="px-cell sm:px-page">
+  <div class="content-pad">
     <Codepanel {data} onexport={() => dirty = false} />
   </div>
 {/if}
@@ -349,7 +349,18 @@
 <Breakpoints /> <!-- Remove this line to hide debug overlay -->
 
 <style>
+  .content-pad {
+    padding-left: var(--spacing-cell);
+    padding-right: var(--spacing-cell);
+  }
+  @media (min-width: 640px) {
+    .content-pad {
+      padding-left: var(--spacing-page);
+      padding-right: var(--spacing-page);
+    }
+  }
   .main-content { display: flex; gap: 0; align-items: stretch; }
+  .scroll-anchor { height: 0; margin-top: var(--spacing-page); }
   .signals-container {
     flex: 1;
     min-width: 0;
@@ -365,6 +376,8 @@
     margin-left: auto;
   }
   .meldungen-section {
+    margin-left: var(--spacing-cell);
+    flex-shrink: 0;
     width: 220px;
   }
   @media (min-width: 768px) {

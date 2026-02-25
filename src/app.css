@@ -1,25 +1,8 @@
-@import "tailwindcss";
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; margin: 0; }
 
-/*
- * Theme: map design tokens to Tailwind utility classes.
- *
- * Colors live in :root (with dark overrides) and are pulled in via
- * @theme inline so utilities like bg-raised, text-muted adapt automatically.
- *
- * Static tokens (spacing, radii, font sizes, breakpoints) go directly
- * into @theme since they don't change between light/dark.
- */
-
-@theme {
-  /* Clear Tailwind defaults we don't use */
-  --color-*: initial;
-  --font-*: initial;
-  --text-*: initial;
-  --shadow-*: initial;
-  --radius-*: initial;
-  --spacing: 4px;
-
-  /* Spacing scale */
+:root {
+  /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 6px;
   --spacing-md: 8px;
@@ -34,7 +17,7 @@
 
   /* Border radius */
   --radius-card: 8px;
-  --radius-inner: 7px; /* radius-card - 1px, for sub-fields inside cards */
+  --radius-inner: 7px;
   --radius-container: 12px;
 
   /* Font sizes */
@@ -53,11 +36,7 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* Breakpoints: using Tailwind defaults (sm=640 md=768 lg=1024 xl=1280 2xl=1536) */
-}
-
-/* Colors: defined in :root with dark overrides, then exposed to Tailwind */
-:root {
+  /* Colors */
   /* Surfaces */
   --color-bg: #f5f5f5;
   --color-bg-raised: white;
@@ -111,7 +90,7 @@
   --color-meldung-bahnhof-a: #2e7d32;
   --color-meldung-bahnhof-b: #f9a825;
 
-  /* Composite tokens (not mappable to @theme) */
+  /* Composite tokens */
   --card-border: 1px solid var(--color-border);
 
   /* Inset rails: vertical alignment from viewport edge */
@@ -176,39 +155,6 @@
     --color-meldung-bahnhof-a: #81c784;
     --color-meldung-bahnhof-b: #fdd835;
   }
-}
-
-/* Expose color variables to Tailwind utilities (bg-*, text-*, border-*) */
-@theme inline {
-  --color-bg: var(--color-bg);
-  --color-bg-raised: var(--color-bg-raised);
-  --color-bg-subtle: var(--color-bg-subtle);
-  --color-border: var(--color-border);
-  --color-text: var(--color-text);
-  --color-text-secondary: var(--color-text-secondary);
-  --color-text-muted: var(--color-text-muted);
-  --color-focus: var(--color-focus);
-  --color-focus-bg: var(--color-focus-bg);
-  --color-focus-ring: var(--color-focus-ring);
-  --color-green: var(--color-green);
-  --color-green-bg: var(--color-green-bg);
-  --color-red: var(--color-red);
-  --color-red-bg: var(--color-red-bg);
-  --color-clear: var(--color-clear);
-  --color-highlight: var(--color-highlight);
-  --color-highlight-text: var(--color-highlight-text);
-  --color-abzweigung: var(--color-abzweigung);
-  --color-abzweigung-text: var(--color-abzweigung-text);
-  --color-knoten: var(--color-knoten);
-  --color-knoten-text: var(--color-knoten-text);
-  --color-import: var(--color-import);
-  --color-import-text: var(--color-import-text);
-  --color-meldung-block: var(--color-meldung-block);
-  --color-meldung-ausfahrt: var(--color-meldung-ausfahrt);
-  --color-meldung-wiederholung: var(--color-meldung-wiederholung);
-  --color-meldung-standard: var(--color-meldung-standard);
-  --color-meldung-bahnhof-a: var(--color-meldung-bahnhof-a);
-  --color-meldung-bahnhof-b: var(--color-meldung-bahnhof-b);
 }
 
 /* Button base: shared layout, border, and interaction states */

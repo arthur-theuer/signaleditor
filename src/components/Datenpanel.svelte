@@ -41,8 +41,8 @@
     setter(input.value);
   }
 
-  const primaryClass = 'daten-field flex flex-col flex-1 min-w-0 sm:order-0 sm:flex-none sm:basis-[calc(50%-var(--spacing-card)/2)] lg:flex-1';
-  const secondaryClass = 'daten-field flex flex-col flex-1 min-w-0 sm:order-1 lg:order-none';
+  const primaryClass = 'daten-field daten-primary';
+  const secondaryClass = 'daten-field daten-secondary';
 
   function handleKeydown(e: KeyboardEvent) {
     if (e.key !== 'Tab' || e.shiftKey) return;
@@ -115,9 +115,25 @@
     .daten-fields { flex-direction: row; flex-wrap: wrap; }
   }
   .daten-field {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
     background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--radius-card);
+  }
+  @media (min-width: 640px) {
+    .daten-primary {
+      order: 0;
+      flex: none;
+      flex-basis: calc(50% - var(--spacing-card) / 2);
+    }
+    .daten-secondary { order: 1; }
+  }
+  @media (min-width: 1024px) {
+    .daten-primary { flex: 1; }
+    .daten-secondary { order: unset; }
   }
   .daten-field label {
     font-size: var(--text-caption);

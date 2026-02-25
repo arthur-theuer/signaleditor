@@ -11,7 +11,24 @@
 
 <svelte:window bind:innerWidth={w} />
 
-<div class="fixed bottom-2 left-1/2 -translate-x-1/2 z-50 rounded-card bg-bg-raised border border-border
-            px-cell py-xs font-mono text-caption text-text-secondary shadow-sm">
+<div class="breakpoint-badge">
   {w}px · <strong>{label}</strong>
 </div>
+
+<style>
+  .breakpoint-badge {
+    position: fixed;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    border-radius: var(--radius-card);
+    background: var(--color-bg-raised);
+    border: var(--card-border);
+    padding: var(--spacing-xs) var(--spacing-cell);
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--color-text-secondary);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+</style>
