@@ -16,76 +16,74 @@ function fuzzyMatch(text: string, query: string): boolean {
   return true;
 }
 
-type TypeAheadResult = {
-  readonly buffer: string;
-  readonly dropdownOpen: boolean;
-  readonly dropdownIndex: number;
-  readonly fuzzyMatches: string[];
-  handleKeydown: (e: KeyboardEvent) => string | null;
-  reset: () => void;
-};
+export class TypeAhead {
+  buffer = $state('');
+  dropdownOpen = $state(false);
+  dropdownIndex = $state(0);
+  private timeout: ReturnType<typeof setTimeout> | undefined;
+  private getEnumList: () => readonly string[];
+  private getCurrentBase: () => string;
 
-export function useTypeAhead(
-  getEnumList: () => readonly string[],
-  getCurrentBase: () => string,
-): TypeAheadResult {
-  let buffer = $state('');
-  let dropdownOpen = $state(false);
-  let dropdownIndex = $state(0);
-  let timeout: ReturnType<typeof setTimeout>;
-
-  let fuzzyMatches = $derived(
-    buffer ? getEnumList().filter(s => fuzzyMatch(s, buffer)) : []
+  fuzzyMatches = $derived(
+    this.buffer ? this.getEnumList().filter(s => fuzzyMatch(s, this.buffer)) : []
   );
 
-  function reset() {
-    buffer = '';
-    dropdownOpen = false;
-    dropdownIndex = 0;
-    clearTimeout(timeout);
+  constructor(
+    getEnumList: () => readonly string[],
+    getCurrentBase: () => string,
+  ) {
+    this.getEnumList = getEnumList;
+    this.getCurrentBase = getCurrentBase;
   }
 
-  function startCooldown() {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => reset(), 1000);
+  reset = () => {
+    this.buffer = '';
+    this.dropdownOpen = false;
+    this.dropdownIndex = 0;
+    clearTimeout(this.timeout);
+  };
+
+  private startCooldown() {
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => this.reset(), 1000);
   }
 
   /**
    * Handle a keydown event on the signal input.
    * Returns the new signal base to select, or null if no change.
    */
-  function handleKeydown(e: KeyboardEvent): string | null {
-    const enumList = getEnumList();
-    const currentBase = getCurrentBase();
+  handleKeydown = (e: KeyboardEvent): string | null => {
+    const enumList = this.getEnumList();
+    const currentBase = this.getCurrentBase();
     const currentIdx = currentBase ? enumList.indexOf(currentBase) : -1;
 
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      if (dropdownOpen && fuzzyMatches.length > 0) {
-        dropdownIndex = (dropdownIndex + 1) % fuzzyMatches.length;
-        startCooldown();
-        return fuzzyMatches[dropdownIndex];
+      if (this.dropdownOpen && this.fuzzyMatches.length > 0) {
+        this.dropdownIndex = (this.dropdownIndex + 1) % this.fuzzyMatches.length;
+        this.startCooldown();
+        return this.fuzzyMatches[this.dropdownIndex];
       } else {
-        reset();
+        this.reset();
         return enumList[(currentIdx + 1) % enumList.length];
       }
     }
 
     if (e.key === 'ArrowUp') {
       e.preventDefault();
-      if (dropdownOpen && fuzzyMatches.length > 0) {
-        dropdownIndex = (dropdownIndex - 1 + fuzzyMatches.length) % fuzzyMatches.length;
-        startCooldown();
-        return fuzzyMatches[dropdownIndex];
+      if (this.dropdownOpen && this.fuzzyMatches.length > 0) {
+        this.dropdownIndex = (this.dropdownIndex - 1 + this.fuzzyMatches.length) % this.fuzzyMatches.length;
+        this.startCooldown();
+        return this.fuzzyMatches[this.dropdownIndex];
       } else {
-        reset();
+        this.reset();
         return enumList[(currentIdx - 1 + enumList.length) % enumList.length];
       }
     }
 
     if (e.key === 'Tab' || e.key === 'Enter') {
-      if (dropdownOpen) {
-        reset();
+      if (this.dropdownOpen) {
+        this.reset();
         if (e.key === 'Enter') e.preventDefault();
       }
       return null;
@@ -93,55 +91,45 @@ export function useTypeAhead(
 
     if (e.key === 'Escape') {
       e.preventDefault();
-      if (dropdownOpen) {
-        reset();
+      if (this.dropdownOpen) {
+        this.reset();
         return null;
       }
-      // Return empty string to signal "clear the value"
       return '';
     }
 
     if (e.key === 'Backspace') {
       e.preventDefault();
-      if (buffer.length > 1) {
-        buffer = buffer.slice(0, -1);
-        const matches = enumList.filter(s => fuzzyMatch(s, buffer));
+      if (this.buffer.length > 1) {
+        this.buffer = this.buffer.slice(0, -1);
+        const matches = enumList.filter(s => fuzzyMatch(s, this.buffer));
         if (matches.length > 0) {
-          dropdownIndex = 0;
-          dropdownOpen = matches.length > 1;
-          startCooldown();
+          this.dropdownIndex = 0;
+          this.dropdownOpen = matches.length > 1;
+          this.startCooldown();
           return matches[0];
         }
-        startCooldown();
+        this.startCooldown();
       } else {
-        reset();
+        this.reset();
       }
       return null;
     }
 
     if (e.key.length === 1 && e.key.match(/[a-zA-Z\-]/)) {
       e.preventDefault();
-      buffer += e.key.toLowerCase();
-      const matches = enumList.filter(s => fuzzyMatch(s, buffer));
+      this.buffer += e.key.toLowerCase();
+      const matches = enumList.filter(s => fuzzyMatch(s, this.buffer));
       if (matches.length > 0) {
-        dropdownIndex = 0;
-        dropdownOpen = matches.length > 1;
-        startCooldown();
+        this.dropdownIndex = 0;
+        this.dropdownOpen = matches.length > 1;
+        this.startCooldown();
         return matches[0];
       }
-      startCooldown();
+      this.startCooldown();
       return null;
     }
 
     return null;
-  }
-
-  return {
-    get buffer() { return buffer; },
-    get dropdownOpen() { return dropdownOpen; },
-    get dropdownIndex() { return dropdownIndex; },
-    get fuzzyMatches() { return fuzzyMatches; },
-    handleKeydown,
-    reset,
   };
 }

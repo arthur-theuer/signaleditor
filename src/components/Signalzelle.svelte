@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
-  import { useTypeAhead } from '../lib/useTypeAhead.svelte';
+  import { TypeAhead } from '../lib/useTypeAhead.svelte';
   import { ICON, SIGNAL_ABBREV, SIGNAL_SHORT } from '../lib/constants';
   import Signalname from './Signalname.svelte';
   import type { Eintrag } from '../lib/types';
@@ -41,7 +41,7 @@
   let isAlt = $derived(field.endsWith('b'));
   let placeholder = $derived(isAlt ? `Signal ${fieldNum}` : `Signal ${fieldNum}${isAltActive ? 'a' : ''}`);
 
-  const typeAhead = useTypeAhead(() => enumList, () => base);
+  const typeAhead = new TypeAhead(() => enumList, () => base);
 
   function setSignal(newBase: string) {
     const oldName = extractName(value ?? '');
