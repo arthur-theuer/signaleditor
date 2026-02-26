@@ -142,7 +142,8 @@
     const rowRect = rowEl.getBoundingClientRect();
     const style = getComputedStyle(document.documentElement);
     const pageGap = parseFloat(style.getPropertyValue('--spacing-page'));
-    const padding = rowRect.height + pageGap;
+    const cardGap = parseFloat(style.getPropertyValue('--spacing-card'));
+    const padding = rowRect.height + pageGap + cardGap;
     // Row below viewport: scroll down
     const overflowBottom = rowRect.bottom + padding - window.innerHeight;
     if (overflowBottom > 0) {
@@ -152,7 +153,7 @@
     // Row above viewport: scroll up (account for sticky toolbar)
     const toolbar = document.querySelector<HTMLElement>('.header');
     const toolbarHeight = toolbar ? toolbar.getBoundingClientRect().height : 0;
-    const overflowTop = rowRect.top - toolbarHeight - pageGap;
+    const overflowTop = rowRect.top - toolbarHeight - pageGap - cardGap;
     if (overflowTop < 0) {
       window.scrollBy({ top: overflowTop, behavior: 'smooth' });
     }
