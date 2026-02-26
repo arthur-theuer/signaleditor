@@ -89,7 +89,7 @@
   .name-wrapper {
     display: none;
     flex: 1;
-    min-width: 0;
+    min-width: 4ch;
     border-left: 1px solid var(--color-border);
     background: transparent;
     height: 100%;
