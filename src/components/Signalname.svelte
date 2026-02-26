@@ -89,7 +89,7 @@
   .name-wrapper {
     display: none;
     flex: 1;
-    min-width: 4ch;
+    min-width: 0;
     border-left: 1px solid var(--color-border);
     background: transparent;
     height: 100%;
@@ -107,9 +107,6 @@
     font-size: var(--text-input);
     font-family: var(--font-mono);
     color: var(--color-text-secondary);
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
     outline: none;
     height: 100%;
   }
