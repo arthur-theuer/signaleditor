@@ -1,5 +1,5 @@
-/* Reset (replaces Tailwind preflight) */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; margin: 0; border: 0 solid; }
 ::placeholder { color: var(--color-text-muted); }
 
 :root {
