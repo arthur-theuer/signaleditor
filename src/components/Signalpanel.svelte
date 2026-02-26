@@ -152,7 +152,7 @@
     // Row above viewport: scroll up (account for sticky toolbar)
     const toolbar = document.querySelector<HTMLElement>('.header');
     const toolbarHeight = toolbar ? toolbar.getBoundingClientRect().height : 0;
-    const overflowTop = rowRect.top - toolbarHeight - padding;
+    const overflowTop = rowRect.top - toolbarHeight - pageGap;
     if (overflowTop < 0) {
       window.scrollBy({ top: overflowTop, behavior: 'smooth' });
     }
