@@ -40,6 +40,7 @@
   let fieldNum = $derived(field.replace('signal_', ''));
   let isAlt = $derived(field.endsWith('b'));
   let placeholder = $derived(isAlt ? `Signal ${fieldNum}` : `Signal ${fieldNum}${isAltActive ? 'a' : ''}`);
+  let shortPlaceholder = $derived(isAlt ? `S${fieldNum}` : `S${fieldNum}${isAltActive ? 'a' : ''}`);
 
   const typeAhead = new TypeAhead(() => enumList, () => base);
 
@@ -103,7 +104,7 @@
         autocorrect="off"
         spellcheck="false"
       />
-      <div class="signal-abbrev">{disabled ? '' : shortLabel}</div>
+      <div class="signal-abbrev" class:is-placeholder={!base}>{disabled ? '' : (shortLabel || shortPlaceholder)}</div>
     </div>
     {#if typeAhead.dropdownOpen && typeAhead.fuzzyMatches.length > 1}
       <div class="dropdown">
@@ -226,6 +227,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .signal-abbrev.is-placeholder { color: var(--color-text-muted); }
 
   @container (max-width: 170px) {
     .signal-input { color: transparent; }
