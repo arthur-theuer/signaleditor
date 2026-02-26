@@ -53,7 +53,7 @@
 {#if needsName || stationName}
   <div class="name-wrapper hl-field" class:visible={needsName} class:has-bahnhof={showBahnhof} {onfocusin}>
     {#if useStationSearch}
-      <Stationsfeld mode="name" bind:value={stationName} onchange={handleStationChange} />
+      <Stationsfeld mode="name" bind:value={stationName} onchange={handleStationChange} placeholder="Name" />
     {:else}
       <input
         type="text"
@@ -66,9 +66,7 @@
         spellcheck="false"
       />
     {/if}
-    {#if !stationName}
-      <div class="name-abbrev">N.</div>
-    {/if}
+
   </div>
 {/if}
 
@@ -93,32 +91,13 @@
     display: none;
     flex: 1;
     min-width: 0;
-    position: relative;
     border-left: 1px solid var(--color-border);
     background: transparent;
     height: 100%;
     border-radius: 0 var(--radius-inner) var(--radius-inner) 0;
-    container-type: inline-size;
   }
   .name-wrapper.visible { display: flex; }
   .name-wrapper.has-bahnhof { border-radius: 0; }
-
-  .name-abbrev {
-    position: absolute;
-    inset: 0;
-    display: none;
-    align-items: center;
-    padding: 0 var(--spacing-cell);
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
-    color: var(--color-text-muted);
-    pointer-events: none;
-  }
-  @container (max-width: 60px) {
-    .name-input { color: transparent; }
-    .name-input::placeholder { color: transparent; }
-    .name-abbrev { display: flex; }
-  }
 
   .name-input {
     flex: 1;
