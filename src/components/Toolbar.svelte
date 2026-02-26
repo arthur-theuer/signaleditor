@@ -295,6 +295,7 @@
   /* Cloud buttons */
   .spacer { flex: 1; }
   .save-btn { color: var(--color-focus); }
+  .save-btn:disabled { color: var(--color-text-muted); }
   .dateien-btn { color: var(--color-focus); }
 
   /* Dateien active */
