@@ -1,6 +1,6 @@
 /* Reset (replaces Tailwind preflight) */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-::placeholder { color: var(--color-text-muted); opacity: 1; }
+::placeholder { color: var(--color-border); opacity: 1; }
 
 :root {
   /* Spacing */
