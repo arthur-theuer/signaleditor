@@ -135,20 +135,24 @@
     );
   }
 
-  /** Scroll so the row + one row height of padding is visible in both directions. */
+  /** Scroll so the row + one row of padding is visible. Accounts for sticky toolbar on scroll-up. */
   function scrollRowIntoView(rowIdx: number) {
     const rowEl = getRowEl(rowIdx);
     if (!rowEl) return;
     const rowRect = rowEl.getBoundingClientRect();
-    const padding = rowRect.height + 16;
+    const style = getComputedStyle(document.documentElement);
+    const pageGap = parseFloat(style.getPropertyValue('--spacing-page'));
+    const padding = rowRect.height + pageGap;
     // Row below viewport: scroll down
     const overflowBottom = rowRect.bottom + padding - window.innerHeight;
     if (overflowBottom > 0) {
       window.scrollBy({ top: overflowBottom, behavior: 'smooth' });
       return;
     }
-    // Row above viewport: scroll up
-    const overflowTop = rowRect.top - padding;
+    // Row above viewport: scroll up (account for sticky toolbar)
+    const toolbar = document.querySelector<HTMLElement>('.header');
+    const toolbarHeight = toolbar ? toolbar.getBoundingClientRect().height : 0;
+    const overflowTop = rowRect.top - toolbarHeight - padding;
     if (overflowTop < 0) {
       window.scrollBy({ top: overflowTop, behavior: 'smooth' });
     }

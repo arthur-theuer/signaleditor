@@ -357,7 +357,7 @@
       padding-right: var(--spacing-page);
     }
   }
-  .main-content { display: flex; gap: 0; align-items: stretch; }
+  .main-content { display: flex; gap: 0; align-items: stretch; margin-bottom: var(--spacing-page); }
   .signals-container {
     flex: 1;
     min-width: 0;
