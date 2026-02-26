@@ -143,9 +143,9 @@
     if (!rowEl) return;
     if (last) {
       const fields = getFocusableFields(rowEl);
-      if (fields.length > 0) fields[fields.length - 1].focus();
+      if (fields.length > 0) fields[fields.length - 1].focus({ preventScroll: true });
     } else {
-      getFirstFieldInRow(rowEl)?.focus();
+      getFirstFieldInRow(rowEl)?.focus({ preventScroll: true });
     }
   }
 
@@ -246,7 +246,7 @@
       } else {
         // Tab on middle field → next field in same row
         e.preventDefault();
-        fields[currentFieldIdx + 1].focus();
+        fields[currentFieldIdx + 1].focus({ preventScroll: true });
       }
     } else {
       if (currentFieldIdx === 0) {
@@ -258,7 +258,7 @@
       } else {
         // Shift+Tab on middle field → previous field in same row
         e.preventDefault();
-        fields[currentFieldIdx - 1].focus();
+        fields[currentFieldIdx - 1].focus({ preventScroll: true });
       }
     }
   }
@@ -376,6 +376,7 @@
     padding: var(--spacing-half-card) var(--spacing-card);
     align-items: stretch;
     min-height: calc(var(--spacing-unit) + var(--spacing-card));
+    overflow-anchor: none;
   }
   .signal-id {
     display: flex;
