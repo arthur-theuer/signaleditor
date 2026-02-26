@@ -38,8 +38,6 @@
   let showDateien = $state(false);
   let saveStatus = $state<'saved' | 'saving' | 'dirty' | 'idle'>('idle');
   let autoSaveTimer: ReturnType<typeof setTimeout> | null = null;
-  let scrollAnchor: HTMLDivElement;
-
   function newFile(typ: Dateityp) {
     if (dirty && !confirm('Ungespeicherte Änderungen verwerfen?')) return;
     cancelAutoSave();
@@ -325,7 +323,7 @@
       </Symbolknopf>
     </div>
     <div class="signals-list">
-      <Signalpanel bind:signale={data.signale} {showKm} onchange={markDirty} {scrollAnchor} />
+      <Signalpanel bind:signale={data.signale} {showKm} onchange={markDirty} />
     </div>
   </div>
 
@@ -338,7 +336,7 @@
     </div>
   {/if}
 </div>
-<div bind:this={scrollAnchor} class="scroll-anchor"></div>
+
 
 {#if showYaml}
   <div class="content-pad">
@@ -360,7 +358,6 @@
     }
   }
   .main-content { display: flex; gap: 0; align-items: stretch; }
-  .scroll-anchor { height: 0; margin-top: var(--spacing-page); }
   .signals-container {
     flex: 1;
     min-width: 0;

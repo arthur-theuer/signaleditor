@@ -17,12 +17,10 @@
     signale = $bindable(),
     showKm,
     onchange,
-    scrollAnchor,
   }: {
     signale: Eintrag[];
     showKm: boolean;
     onchange: () => void;
-    scrollAnchor: HTMLDivElement;
   } = $props();
 
   let usedImportFiles = $derived(
@@ -137,6 +135,25 @@
     );
   }
 
+  /** Scroll so the row + one row height of padding is visible in both directions. */
+  function scrollRowIntoView(rowIdx: number) {
+    const rowEl = getRowEl(rowIdx);
+    if (!rowEl) return;
+    const rowRect = rowEl.getBoundingClientRect();
+    const padding = rowRect.height + 16;
+    // Row below viewport: scroll down
+    const overflowBottom = rowRect.bottom + padding - window.innerHeight;
+    if (overflowBottom > 0) {
+      window.scrollBy({ top: overflowBottom, behavior: 'smooth' });
+      return;
+    }
+    // Row above viewport: scroll up
+    const overflowTop = rowRect.top - padding;
+    if (overflowTop < 0) {
+      window.scrollBy({ top: overflowTop, behavior: 'smooth' });
+    }
+  }
+
   async function focusRowField(rowIdx: number, last = false) {
     await tick();
     const rowEl = getRowEl(rowIdx);
@@ -147,6 +164,7 @@
     } else {
       getFirstFieldInRow(rowEl)?.focus({ preventScroll: true });
     }
+    scrollRowIntoView(rowIdx);
   }
 
   async function addSignalWithAutofill() {
@@ -158,7 +176,6 @@
     reindex();
     onchange();
     await focusRowField(signale.length - 1);
-    scrollAnchor?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
   function insertSignalAt(idx: number) {
@@ -247,6 +264,7 @@
         // Tab on middle field → next field in same row
         e.preventDefault();
         fields[currentFieldIdx + 1].focus({ preventScroll: true });
+        scrollRowIntoView(rowIdx);
       }
     } else {
       if (currentFieldIdx === 0) {
@@ -259,6 +277,7 @@
         // Shift+Tab on middle field → previous field in same row
         e.preventDefault();
         fields[currentFieldIdx - 1].focus({ preventScroll: true });
+        scrollRowIntoView(rowIdx);
       }
     }
   }
@@ -285,7 +304,6 @@
     reindex();
     onchange();
     await focusRowField(signale.length - 1);
-    scrollAnchor?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
 
