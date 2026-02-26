@@ -392,14 +392,13 @@
 
 
 <style>
-  .signal-list-inner { position: relative; }
+  .signal-list-inner { position: relative; overflow-anchor: none; }
   .signal-row {
     display: flex;
     gap: var(--spacing-card);
     padding: var(--spacing-half-card) var(--spacing-card);
     align-items: stretch;
     min-height: calc(var(--spacing-unit) + var(--spacing-card));
-    overflow-anchor: none;
   }
   .signal-id {
     display: flex;
