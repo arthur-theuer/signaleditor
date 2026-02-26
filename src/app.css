@@ -1,5 +1,6 @@
-/* Reset */
-*, *::before, *::after { box-sizing: border-box; margin: 0; }
+/* Reset (replaces Tailwind preflight) */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+::placeholder { color: var(--color-text-muted); opacity: 1; }
 
 :root {
   /* Spacing */
@@ -227,10 +228,10 @@ button:hover:not(:disabled) svg { stroke-width: 3 !important; }
 
 body {
   font-family: var(--font-sans);
+  line-height: 1.5;
   background: var(--color-bg);
   color: var(--color-text);
   color-scheme: light dark;
-  padding: 0;
 }
 input, select, textarea, button {
   color: inherit;
