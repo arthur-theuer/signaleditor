@@ -35,14 +35,19 @@
   let needsBahnhof = $derived(signalNeedsBahnhof(base));
   let enumList = $derived(getEnumForField(field, rowIdx, signale));
 
-  function abbrev(s: string): string { return SIGNAL_ABBREV[s] ?? s; }
+  function abbrev(s: string): string {
+    return SIGNAL_ABBREV[s] ?? s;
+  }
 
   let fieldNum = $derived(field.replace('signal_', ''));
   let isAlt = $derived(field.endsWith('b'));
   let placeholder = $derived(isAlt ? `Signal ${fieldNum}` : `Signal ${fieldNum}${isAltActive ? 'a' : ''}`);
   let shortPlaceholder = $derived(isAlt ? `S${fieldNum}` : `S${fieldNum}${isAltActive ? 'a' : ''}`);
 
-  const typeAhead = new TypeAhead(() => enumList, () => base);
+  const typeAhead = new TypeAhead(
+    () => enumList,
+    () => base,
+  );
 
   function setSignal(newBase: string) {
     const oldName = extractName(value ?? '');
@@ -56,7 +61,9 @@
   }
 
   let bahnhofRevealed = $state(false);
-  $effect(() => { if (needsBahnhof && bahnhof) bahnhofRevealed = true; });
+  $effect(() => {
+    if (needsBahnhof && bahnhof) bahnhofRevealed = true;
+  });
   let showBahnhof = $derived(needsBahnhof && bahnhofRevealed);
   let shortLabel = $derived(showBahnhof ? (SIGNAL_SHORT[base] ?? abbrev(base)) : abbrev(base));
 
@@ -87,7 +94,12 @@
   }
 </script>
 
-<div class="row-cell" class:has-name={needsName && !disabled} class:has-bahnhof={showBahnhof && !disabled} class:disabled>
+<div
+  class="row-cell"
+  class:has-name={needsName && !disabled}
+  class:has-bahnhof={showBahnhof && !disabled}
+  class:disabled
+>
   <div class="signal-input-wrapper hl-field">
     <div class="signal-input-slot">
       <input
@@ -104,15 +116,12 @@
         autocorrect="off"
         spellcheck="false"
       />
-      <div class="signal-abbrev" class:is-placeholder={!base}>{disabled ? '' : (shortLabel || shortPlaceholder)}</div>
+      <div class="signal-abbrev" class:is-placeholder={!base}>{disabled ? '' : shortLabel || shortPlaceholder}</div>
     </div>
     {#if typeAhead.dropdownOpen && typeAhead.fuzzyMatches.length > 1}
       <div class="dropdown">
         {#each typeAhead.fuzzyMatches as match, i}
-          <div
-            class="dropdown-item"
-            class:active={i === typeAhead.dropdownIndex}
-          >{match}</div>
+          <div class="dropdown-item" class:active={i === typeAhead.dropdownIndex}>{match}</div>
         {/each}
       </div>
     {/if}
@@ -132,14 +141,16 @@
       class:active={isAltActive}
       onclick={onToggleAlt}
       title="Alternativsignal"
-      tabindex={-1}
-    ><Diff {...ICON} /></button>
+      tabindex={-1}><Diff {...ICON} /></button
+    >
   {/if}
 </div>
 
 <style>
   /* Override overflow: hidden from .row-cell — dropdown needs to overflow */
-  .row-cell { overflow: visible; }
+  .row-cell {
+    overflow: visible;
+  }
   .signal-input-wrapper {
     flex: 1;
     display: flex;
@@ -166,8 +177,12 @@
     user-select: none;
     caret-color: transparent;
   }
-  .signal-input:focus { outline: none; }
-  .signal-input::placeholder { color: var(--color-text-muted); }
+  .signal-input:focus {
+    outline: none;
+  }
+  .signal-input::placeholder {
+    color: var(--color-text-muted);
+  }
 
   /* Dropdown items — container and radius-flattening in app.css (.dropdown) */
   .dropdown-item {
@@ -181,7 +196,9 @@
     -webkit-user-select: none;
     user-select: none;
   }
-  .dropdown-item.active { background: var(--color-focus-bg); }
+  .dropdown-item.active {
+    background: var(--color-focus-bg);
+  }
 
   .alt-toggle-btn {
     position: absolute;
@@ -202,9 +219,16 @@
     cursor: pointer;
     opacity: 0;
   }
-  .row-cell:hover .alt-toggle-btn { opacity: 0.6; }
-  .row-cell:hover .alt-toggle-btn:hover { opacity: 1; }
-  .alt-toggle-btn.active { opacity: 0.4 !important; color: var(--color-text-muted); }
+  .row-cell:hover .alt-toggle-btn {
+    opacity: 0.6;
+  }
+  .row-cell:hover .alt-toggle-btn:hover {
+    opacity: 1;
+  }
+  .alt-toggle-btn.active {
+    opacity: 0.4 !important;
+    color: var(--color-text-muted);
+  }
 
   /* Input + abbreviation overlay share the same flex slot */
   .signal-input-slot {
@@ -227,12 +251,20 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .signal-abbrev.is-placeholder { color: var(--color-text-muted); }
+  .signal-abbrev.is-placeholder {
+    color: var(--color-text-muted);
+  }
 
   @container (max-width: 170px) {
-    .signal-input { color: transparent; }
-    .signal-input::placeholder { color: transparent; }
-    .signal-abbrev { display: flex; }
+    .signal-input {
+      color: transparent;
+    }
+    .signal-input::placeholder {
+      color: transparent;
+    }
+    .signal-abbrev {
+      display: flex;
+    }
   }
 
   /* Collapse signal enum when bahnhof is revealed */
@@ -242,7 +274,13 @@
     font-family: var(--font-mono);
     font-size: var(--text-input);
   }
-  .has-bahnhof .signal-input { color: transparent; }
-  .has-bahnhof .signal-input::placeholder { color: transparent; }
-  .has-bahnhof .signal-abbrev { display: flex; }
+  .has-bahnhof .signal-input {
+    color: transparent;
+  }
+  .has-bahnhof .signal-input::placeholder {
+    color: transparent;
+  }
+  .has-bahnhof .signal-abbrev {
+    display: flex;
+  }
 </style>

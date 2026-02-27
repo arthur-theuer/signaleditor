@@ -2,7 +2,10 @@ import { STATIONEN } from './constants';
 
 // Strip diacritics: ü→u, ö→o, ä→a, é→e etc.
 export function fold(s: string): string {
-  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  return s
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
 }
 
 // Return matched character indices for a substring match, or null
@@ -34,8 +37,13 @@ export function highlight(text: string, indices: number[]): string {
   let result = '';
   let inMark = false;
   for (let i = 0; i < text.length; i++) {
-    if (set.has(i) && !inMark) { result += '<mark>'; inMark = true; }
-    else if (!set.has(i) && inMark) { result += '</mark>'; inMark = false; }
+    if (set.has(i) && !inMark) {
+      result += '<mark>';
+      inMark = true;
+    } else if (!set.has(i) && inMark) {
+      result += '</mark>';
+      inMark = false;
+    }
     result += text[i];
   }
   if (inMark) result += '</mark>';
@@ -99,6 +107,6 @@ export function search(rawQuery: string, max = 6): Result[] {
   });
   const all = [...exact, ...prefix, ...substring, ...fuzzy];
   // Show only train stops; fall back to traffic points if no train results
-  const trainResults = all.filter(r => r.trainStop);
+  const trainResults = all.filter((r) => r.trainStop);
   return (trainResults.length > 0 ? trainResults : all).slice(0, max);
 }

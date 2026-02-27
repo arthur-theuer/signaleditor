@@ -58,7 +58,7 @@
       onchange();
     } else if (e.key.length === 1) {
       e.preventDefault();
-      const match = VON_NACH_ENUM.find(s => s.startsWith(e.key.toLowerCase()));
+      const match = VON_NACH_ENUM.find((s) => s.startsWith(e.key.toLowerCase()));
       if (match) {
         eintrag.abzweigung.von_nach = match;
         onchange();
@@ -69,7 +69,14 @@
 
 <div class="row-cell abzweigung-cell">
   <div class="abzweigung-field abzweigung-arrow-field hl-field">
-    <button class="abzweigung-btn" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleArrow('links'); }} onkeydown={(e) => handleArrowKeydown(e, 'links')}>
+    <button
+      class="abzweigung-btn"
+      onclick={(e) => {
+        (e.currentTarget as HTMLElement).focus();
+        cycleArrow('links');
+      }}
+      onkeydown={(e) => handleArrowKeydown(e, 'links')}
+    >
       {#if eintrag.abzweigung.links}
         {eintrag.abzweigung.links}
       {:else}
@@ -90,7 +97,14 @@
     />
   </div>
   <div class="abzweigung-field abzweigung-vonnach-field hl-field">
-    <button class="abzweigung-btn" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleVonNach(1); }} onkeydown={handleVonNachKeydown}>
+    <button
+      class="abzweigung-btn"
+      onclick={(e) => {
+        (e.currentTarget as HTMLElement).focus();
+        cycleVonNach(1);
+      }}
+      onkeydown={handleVonNachKeydown}
+    >
       {#if eintrag.abzweigung.von_nach}
         {eintrag.abzweigung.von_nach}
       {:else}
@@ -111,7 +125,14 @@
     />
   </div>
   <div class="abzweigung-field abzweigung-arrow-field hl-field">
-    <button class="abzweigung-btn" onclick={(e) => { (e.currentTarget as HTMLElement).focus(); cycleArrow('rechts'); }} onkeydown={(e) => handleArrowKeydown(e, 'rechts')}>
+    <button
+      class="abzweigung-btn"
+      onclick={(e) => {
+        (e.currentTarget as HTMLElement).focus();
+        cycleArrow('rechts');
+      }}
+      onkeydown={(e) => handleArrowKeydown(e, 'rechts')}
+    >
       {#if eintrag.abzweigung.rechts}
         {eintrag.abzweigung.rechts}
       {:else}
@@ -122,14 +143,18 @@
 </div>
 
 <style>
-  .abzweigung-cell { background: var(--color-abzweigung); }
+  .abzweigung-cell {
+    background: var(--color-abzweigung);
+  }
   .abzweigung-field {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
   }
-  .abzweigung-field + .abzweigung-field { border-left: 1px solid var(--color-border); }
+  .abzweigung-field + .abzweigung-field {
+    border-left: 1px solid var(--color-border);
+  }
   .abzweigung-field input,
   .abzweigung-field .abzweigung-btn {
     border: none;
@@ -147,7 +172,9 @@
     width: 100%;
     text-align: center;
   }
-  .abzweigung-field input::placeholder { color: var(--color-text-muted); }
+  .abzweigung-field input::placeholder {
+    color: var(--color-text-muted);
+  }
   .abzweigung-btn {
     cursor: pointer;
     display: flex;
@@ -156,12 +183,27 @@
     padding: 0;
     width: 100%;
   }
-  .abzweigung-arrow-field { width: var(--spacing-unit); flex-shrink: 0; }
-  .abzweigung-strecke-field { flex: 1; }
-  .abzweigung-vonnach-field { flex: 1; }
-  .abzweigung-richtung-field { flex: 1; }
-  .placeholder { color: var(--color-text-muted); }
+  .abzweigung-arrow-field {
+    width: var(--spacing-unit);
+    flex-shrink: 0;
+  }
+  .abzweigung-strecke-field {
+    flex: 1;
+  }
+  .abzweigung-vonnach-field {
+    flex: 1;
+  }
+  .abzweigung-richtung-field {
+    flex: 1;
+  }
+  .placeholder {
+    color: var(--color-text-muted);
+  }
 
-  .abzweigung-cell > :first-child { border-radius: var(--radius-inner) 0 0 var(--radius-inner); }
-  .abzweigung-cell > :last-child { border-radius: 0 var(--radius-inner) var(--radius-inner) 0; }
+  .abzweigung-cell > :first-child {
+    border-radius: var(--radius-inner) 0 0 var(--radius-inner);
+  }
+  .abzweigung-cell > :last-child {
+    border-radius: 0 var(--radius-inner) var(--radius-inner) 0;
+  }
 </style>

@@ -46,7 +46,9 @@ export class History {
     const state = this.undoStack.pop()!;
     const restored = JSON.parse(state.data) as Editordaten;
     restoreFocus(state.focus);
-    setTimeout(() => { this.isUndoingOrRedoing = false; }, 0);
+    setTimeout(() => {
+      this.isUndoingOrRedoing = false;
+    }, 0);
     return restored;
   }
 
@@ -58,7 +60,9 @@ export class History {
     const state = this.redoStack.pop()!;
     const restored = JSON.parse(state.data) as Editordaten;
     restoreFocus(state.focus);
-    setTimeout(() => { this.isUndoingOrRedoing = false; }, 0);
+    setTimeout(() => {
+      this.isUndoingOrRedoing = false;
+    }, 0);
     return restored;
   }
 
@@ -74,23 +78,40 @@ function getFocusInfo(): FocusInfo {
 
   if (el.id && el.id.startsWith('meta')) {
     const input = el as HTMLInputElement;
-    return { metaId: el.id, selectionStart: input.selectionStart ?? undefined, selectionEnd: input.selectionEnd ?? undefined };
+    return {
+      metaId: el.id,
+      selectionStart: input.selectionStart ?? undefined,
+      selectionEnd: input.selectionEnd ?? undefined,
+    };
   }
 
   const row = el.closest<HTMLElement>('[data-row-index]');
   if (!row) return null;
   const rowIndex = parseInt(row.dataset.rowIndex!);
 
-  const classes = ['.signal-input', '.name-input', '.bahnhof-input', '.km-input',
-    '.note-input', '.knoten-input', '.abzweigung-btn', '.import-datei'];
+  const classes = [
+    '.signal-input',
+    '.name-input',
+    '.bahnhof-input',
+    '.km-input',
+    '.note-input',
+    '.knoten-input',
+    '.abzweigung-btn',
+    '.import-datei',
+  ];
   let fieldSelector: string | undefined;
   for (const cls of classes) {
-    if (el.matches(cls)) { fieldSelector = cls; break; }
+    if (el.matches(cls)) {
+      fieldSelector = cls;
+      break;
+    }
   }
   if (!fieldSelector) {
     const parent = el.closest('.abzweigung-field');
     if (parent) {
-      const fieldClass = Array.from(parent.classList).find(c => c.startsWith('abzweigung-') && c !== 'abzweigung-field');
+      const fieldClass = Array.from(parent.classList).find(
+        (c) => c.startsWith('abzweigung-') && c !== 'abzweigung-field',
+      );
       if (fieldClass) fieldSelector = `.${fieldClass} input, .${fieldClass} button`;
     }
   }

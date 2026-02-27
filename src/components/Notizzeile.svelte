@@ -24,7 +24,9 @@
 </div>
 
 <style>
-  .note-cell { background: var(--color-highlight); }
+  .note-cell {
+    background: var(--color-highlight);
+  }
   .note-input {
     flex: 1;
     min-width: 0;
@@ -35,6 +37,10 @@
     font-family: var(--font-mono);
     border-radius: var(--radius-inner);
   }
-  .note-input:focus { outline: none; }
-  .note-input::placeholder { color: var(--color-text-muted); }
+  .note-input:focus {
+    outline: none;
+  }
+  .note-input::placeholder {
+    color: var(--color-text-muted);
+  }
 </style>

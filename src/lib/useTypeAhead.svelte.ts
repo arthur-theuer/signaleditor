@@ -24,14 +24,9 @@ export class TypeAhead {
   private getEnumList: () => readonly string[];
   private getCurrentBase: () => string;
 
-  fuzzyMatches = $derived(
-    this.buffer ? this.getEnumList().filter(s => fuzzyMatch(s, this.buffer)) : []
-  );
+  fuzzyMatches = $derived(this.buffer ? this.getEnumList().filter((s) => fuzzyMatch(s, this.buffer)) : []);
 
-  constructor(
-    getEnumList: () => readonly string[],
-    getCurrentBase: () => string,
-  ) {
+  constructor(getEnumList: () => readonly string[], getCurrentBase: () => string) {
     this.getEnumList = getEnumList;
     this.getCurrentBase = getCurrentBase;
   }
@@ -102,7 +97,7 @@ export class TypeAhead {
       e.preventDefault();
       if (this.buffer.length > 1) {
         this.buffer = this.buffer.slice(0, -1);
-        const matches = enumList.filter(s => fuzzyMatch(s, this.buffer));
+        const matches = enumList.filter((s) => fuzzyMatch(s, this.buffer));
         if (matches.length > 0) {
           this.dropdownIndex = 0;
           this.dropdownOpen = matches.length > 1;
@@ -119,7 +114,7 @@ export class TypeAhead {
     if (e.key.length === 1 && e.key.match(/[a-zA-Z\-]/)) {
       e.preventDefault();
       this.buffer += e.key.toLowerCase();
-      const matches = enumList.filter(s => fuzzyMatch(s, this.buffer));
+      const matches = enumList.filter((s) => fuzzyMatch(s, this.buffer));
       if (matches.length > 0) {
         this.dropdownIndex = 0;
         this.dropdownOpen = matches.length > 1;

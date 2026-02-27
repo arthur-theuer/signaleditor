@@ -1,12 +1,6 @@
 import type { Eintrag, Editordaten } from './types';
 import { dateiId } from './types';
-import {
-  isSignaleintrag,
-  isNotizeintrag,
-  isKnoteneintrag,
-  isAbzweigungseintrag,
-  isImporteintrag,
-} from './types';
+import { isSignaleintrag, isNotizeintrag, isKnoteneintrag, isAbzweigungseintrag, isImporteintrag } from './types';
 import { STATIONEN, MELDUNG_FARBEN, BAHNHOF_FARBEN } from './constants';
 import { meldungAusSignaleintrag } from './signals';
 import { resolveSignaleForMeldungen } from './sources';
@@ -62,9 +56,14 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
   for (const sig of signale) {
     if (isNotizeintrag(sig)) {
       meldungen.push({
-        id: sig.id, km: sig.km, note: sig.notiz,
-        signalname: '', signal_1_display: '', signal_2_display: '',
-        segments: [], error: 'Kein Signal',
+        id: sig.id,
+        km: sig.km,
+        note: sig.notiz,
+        signalname: '',
+        signal_1_display: '',
+        signal_2_display: '',
+        segments: [],
+        error: 'Kein Signal',
       });
       continue;
     }
@@ -73,9 +72,14 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
       const resolved = STATIONEN[sig.knoten]?.[0];
       const name = resolved ? `${resolved} (${sig.knoten})` : sig.knoten;
       meldungen.push({
-        id: sig.id, km: sig.km, knoten: name,
-        signalname: '', signal_1_display: '', signal_2_display: '',
-        segments: [], error: 'Kein Signal',
+        id: sig.id,
+        km: sig.km,
+        knoten: name,
+        signalname: '',
+        signal_1_display: '',
+        signal_2_display: '',
+        segments: [],
+        error: 'Kein Signal',
       });
       continue;
     }
@@ -84,18 +88,28 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
       const abz = sig.abzweigung;
       const label = [abz.links, abz.strecke, abz.von_nach, abz.richtung, abz.rechts].filter(Boolean).join(' ');
       meldungen.push({
-        id: sig.id, km: sig.km, abzweigung: label,
-        signalname: '', signal_1_display: '', signal_2_display: '',
-        segments: [], error: 'Kein Signal',
+        id: sig.id,
+        km: sig.km,
+        abzweigung: label,
+        signalname: '',
+        signal_1_display: '',
+        signal_2_display: '',
+        segments: [],
+        error: 'Kein Signal',
       });
       continue;
     }
 
     if (isImporteintrag(sig)) {
       meldungen.push({
-        id: sig.id, km: sig.km, import: sig.import.datei || '(leer)',
-        signalname: '', signal_1_display: '', signal_2_display: '',
-        segments: [], error: 'Kein Signal',
+        id: sig.id,
+        km: sig.km,
+        import: sig.import.datei || '(leer)',
+        signalname: '',
+        signal_1_display: '',
+        signal_2_display: '',
+        segments: [],
+        error: 'Kein Signal',
       });
       continue;
     }
@@ -108,22 +122,30 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
 
     if (result.error) {
       meldungen.push({
-        id: sig.id, km: sig.km, signalname: result.signalname,
-        signal_1_display: s1Display, signal_2_display: s2Display,
-        segments: [], error: result.error,
+        id: sig.id,
+        km: sig.km,
+        signalname: result.signalname,
+        signal_1_display: s1Display,
+        signal_2_display: s2Display,
+        segments: [],
+        error: result.error,
       });
       continue;
     }
 
-    const coloredSegments = result.segments.map(seg => {
+    const coloredSegments = result.segments.map((seg) => {
       const { farbe, klasse, fett } = colorForSignaltyp(seg.signaltyp);
       return { meldung: seg.meldung, farbe, klasse, fett };
     });
 
     meldungen.push({
-      id: sig.id, km: sig.km, signalname: result.signalname,
-      signal_1_display: s1Display, signal_2_display: s2Display,
-      segments: coloredSegments, error: null,
+      id: sig.id,
+      km: sig.km,
+      signalname: result.signalname,
+      signal_1_display: s1Display,
+      signal_2_display: s2Display,
+      segments: coloredSegments,
+      error: null,
     });
   }
 
@@ -138,7 +160,7 @@ export async function generiereAlleMeldungenResolved(signale: Eintrag[]): Promis
 export async function downloadMeldungenHTML(data: Editordaten, yamlContent: string): Promise<void> {
   const meldungen = await generiereAlleMeldungenResolved(data.signale);
   const streckenName = data.meta.name || dateiId(data) || 'Strecke';
-  const hasKm = meldungen.some(m => m.km !== undefined);
+  const hasKm = meldungen.some((m) => m.km !== undefined);
 
   function esc(text: string): string {
     const div = document.createElement('div');
@@ -146,31 +168,36 @@ export async function downloadMeldungenHTML(data: Editordaten, yamlContent: stri
     return div.innerHTML;
   }
 
-  const rows = meldungen.map(m => {
-    const idCell = `<td class="col-id">${m.id}</td>`;
-    const kmCell = hasKm ? `<td class="col-km">${m.km !== undefined ? m.km : ''}</td>` : '';
+  const rows = meldungen
+    .map((m) => {
+      const idCell = `<td class="col-id">${m.id}</td>`;
+      const kmCell = hasKm ? `<td class="col-km">${m.km !== undefined ? m.km : ''}</td>` : '';
 
-    if (m.note !== undefined) {
-      return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#f57f17;font-style:italic">${esc(m.note)}</td></tr>`;
-    }
-    if (m.knoten) {
-      return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#00695c;font-weight:bold">${esc(m.knoten)}</td></tr>`;
-    }
-    if (m.abzweigung) {
-      return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#7b1fa2;font-style:italic">${esc(m.abzweigung)}</td></tr>`;
-    }
-    if (m.import) {
-      return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#999;font-style:italic">Import: ${esc(m.import)}</td></tr>`;
-    }
+      if (m.note !== undefined) {
+        return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#f57f17;font-style:italic">${esc(m.note)}</td></tr>`;
+      }
+      if (m.knoten) {
+        return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#00695c;font-weight:bold">${esc(m.knoten)}</td></tr>`;
+      }
+      if (m.abzweigung) {
+        return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#7b1fa2;font-style:italic">${esc(m.abzweigung)}</td></tr>`;
+      }
+      if (m.import) {
+        return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#999;font-style:italic">Import: ${esc(m.import)}</td></tr>`;
+      }
 
-    const meldungCell = m.error
-      ? `<em>${esc(m.error)}</em>`
-      : m.segments.map(seg =>
-          `<span style="color:${seg.farbe};${seg.fett ? 'font-weight:bold;' : ''}">${esc(seg.meldung)}</span>`
-        ).join('<br>');
+      const meldungCell = m.error
+        ? `<em>${esc(m.error)}</em>`
+        : m.segments
+            .map(
+              (seg) =>
+                `<span style="color:${seg.farbe};${seg.fett ? 'font-weight:bold;' : ''}">${esc(seg.meldung)}</span>`,
+            )
+            .join('<br>');
 
-    return `<tr>${idCell}${kmCell}<td class="signal">${esc(m.signal_1_display)}</td><td class="signal">${esc(m.signal_2_display)}</td><td class="meldung">${meldungCell}</td></tr>`;
-  }).join('\n');
+      return `<tr>${idCell}${kmCell}<td class="signal">${esc(m.signal_1_display)}</td><td class="signal">${esc(m.signal_2_display)}</td><td class="meldung">${meldungCell}</td></tr>`;
+    })
+    .join('\n');
 
   const html = `<!DOCTYPE html>
 <html lang="de">

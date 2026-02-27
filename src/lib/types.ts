@@ -48,12 +48,7 @@ export type Importeintrag = {
   import: Import;
 };
 
-export type Eintrag =
-  | Signaleintrag
-  | Notizeintrag
-  | Knoteneintrag
-  | Abzweigungseintrag
-  | Importeintrag;
+export type Eintrag = Signaleintrag | Notizeintrag | Knoteneintrag | Abzweigungseintrag | Importeintrag;
 
 // Type guards
 export function isSignaleintrag(e: Eintrag): e is Signaleintrag {

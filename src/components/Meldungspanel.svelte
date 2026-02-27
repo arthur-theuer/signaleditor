@@ -6,7 +6,6 @@
   import type { MeldungRow } from '../lib/reports';
   import { generiereAlleMeldungen } from '../lib/reports';
 
-
   let { signale, onclose }: { signale: Eintrag[]; onclose: () => void } = $props();
 
   let meldungen: MeldungRow[] = $derived(generiereAlleMeldungen(signale));
@@ -17,7 +16,9 @@
     <div class="meldung-row">
       {#if m.note !== undefined || m.knoten || m.abzweigung || m.import}
         <div class="meldung-row-inner muted">
-          <div class="meldung-text muted-text">{m.note !== undefined ? 'NOTIZ' : m.knoten ? 'KNOTEN' : m.abzweigung ? 'ABZWEIGUNG' : 'QUELLE'}</div>
+          <div class="meldung-text muted-text">
+            {m.note !== undefined ? 'NOTIZ' : m.knoten ? 'KNOTEN' : m.abzweigung ? 'ABZWEIGUNG' : 'QUELLE'}
+          </div>
         </div>
       {:else if m.error === 'Kein Signal'}
         <div class="meldung-row-inner muted"></div>
@@ -53,8 +54,12 @@
 </div>
 
 <style>
-  .meldung-list { padding: var(--spacing-half-card) 0; }
-  .meldung-close { margin: var(--spacing-half-card) var(--spacing-card); }
+  .meldung-list {
+    padding: var(--spacing-half-card) 0;
+  }
+  .meldung-close {
+    margin: var(--spacing-half-card) var(--spacing-card);
+  }
   .meldung-row {
     display: flex;
     flex-direction: column;
@@ -84,10 +89,22 @@
     border-color: var(--color-red);
     background: var(--color-red-bg);
   }
-  .meldung-text { font-weight: var(--font-weight-medium); }
-  .muted-text { color: var(--color-text-muted); font-style: italic; }
-  .meldung-error { color: var(--color-red); font-style: italic; }
-  .fett { font-weight: var(--font-weight-bold); }
+  .meldung-text {
+    font-weight: var(--font-weight-medium);
+  }
+  .muted-text {
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+  .meldung-error {
+    color: var(--color-red);
+    font-style: italic;
+  }
+  .fett {
+    font-weight: var(--font-weight-bold);
+  }
 
-  .meldung-colored { border-color: currentColor; }
+  .meldung-colored {
+    border-color: currentColor;
+  }
 </style>

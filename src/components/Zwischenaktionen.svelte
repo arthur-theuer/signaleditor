@@ -19,11 +19,21 @@
 
 <div class="insert-zone">
   <div class="insert-zone-target">
-    <button class="insert-signal btn" onclick={onInsertSignal} tabindex={-1} title="Signal einfügen"><DiamondPlus {...ICON} /></button>
-    <button class="insert-note btn" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen"><SquarePen {...ICON} /></button>
-    <button class="insert-abzweigung btn" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen"><Share2 {...ICON} /></button>
-    <button class="insert-knoten btn" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen"><Crosshair {...ICON} /></button>
-    <button class="insert-import btn" onclick={onInsertImport} tabindex={-1} title="Import einfügen"><FilePlus {...ICON} /></button>
+    <button class="insert-signal btn" onclick={onInsertSignal} tabindex={-1} title="Signal einfügen"
+      ><DiamondPlus {...ICON} /></button
+    >
+    <button class="insert-note btn" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen"
+      ><SquarePen {...ICON} /></button
+    >
+    <button class="insert-abzweigung btn" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen"
+      ><Share2 {...ICON} /></button
+    >
+    <button class="insert-knoten btn" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen"
+      ><Crosshair {...ICON} /></button
+    >
+    <button class="insert-import btn" onclick={onInsertImport} tabindex={-1} title="Import einfügen"
+      ><FilePlus {...ICON} /></button
+    >
   </div>
 </div>
 
@@ -54,10 +64,27 @@
     opacity: 1;
     pointer-events: auto;
   }
-  .insert-zone-target button:focus { outline: none; }
-  .insert-signal { background: var(--color-bg-raised); color: var(--color-text-secondary); }
-  .insert-note { background: var(--color-highlight); color: var(--color-highlight-text); }
-  .insert-abzweigung { background: var(--color-abzweigung); color: var(--color-abzweigung-text); }
-  .insert-knoten { background: var(--color-knoten); color: var(--color-knoten-text); }
-  .insert-import { background: var(--color-import); color: var(--color-import-text); }
+  .insert-zone-target button:focus {
+    outline: none;
+  }
+  .insert-signal {
+    background: var(--color-bg-raised);
+    color: var(--color-text-secondary);
+  }
+  .insert-note {
+    background: var(--color-highlight);
+    color: var(--color-highlight-text);
+  }
+  .insert-abzweigung {
+    background: var(--color-abzweigung);
+    color: var(--color-abzweigung-text);
+  }
+  .insert-knoten {
+    background: var(--color-knoten);
+    color: var(--color-knoten-text);
+  }
+  .insert-import {
+    background: var(--color-import);
+    color: var(--color-import-text);
+  }
 </style>

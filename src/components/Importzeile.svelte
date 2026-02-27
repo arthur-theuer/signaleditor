@@ -42,16 +42,16 @@
     return parts.join(join);
   }
 
-  let countFull = $derived(buildCount([
-    signalCount === 1 ? 'Signal' : 'Signale',
-    notizCount === 1 ? 'Notiz' : 'Notizen',
-    abzCount === 1 ? 'Abzweigung' : 'Abzweigungen',
-    'Knoten',
-  ]));
+  let countFull = $derived(
+    buildCount([
+      signalCount === 1 ? 'Signal' : 'Signale',
+      notizCount === 1 ? 'Notiz' : 'Notizen',
+      abzCount === 1 ? 'Abzweigung' : 'Abzweigungen',
+      'Knoten',
+    ]),
+  );
   let countMedium = $derived(buildCount(['Sig.', 'Not.', 'Abzw.', 'Kn.']));
   let countShort = $derived(buildCount(['S', 'N', 'A', 'K'], '', ' '));
-
-
 
   // Derive start/end knoten from resolved signals
   let firstKnoten = $derived.by(() => {
@@ -81,13 +81,17 @@
   }
 
   // Three tiers: "Bern (BN) → Rothrist (RTR)", "Bern → Rothrist", "BN → RTR"
-  let stitchFull = $derived(formatStitch(vonCode, bisCode, (c) => {
-    const name = STATIONEN[c]?.[0];
-    return name ? `${name} (${c})` : c;
-  }));
-  let stitchMedium = $derived(formatStitch(vonCode, bisCode, (c) => {
-    return STATIONEN[c]?.[0] ?? c;
-  }));
+  let stitchFull = $derived(
+    formatStitch(vonCode, bisCode, (c) => {
+      const name = STATIONEN[c]?.[0];
+      return name ? `${name} (${c})` : c;
+    }),
+  );
+  let stitchMedium = $derived(
+    formatStitch(vonCode, bisCode, (c) => {
+      return STATIONEN[c]?.[0] ?? c;
+    }),
+  );
   let stitchCompact = $derived(formatStitch(vonCode, bisCode, (c) => c));
 
   let otherUsedFiles = $derived.by(() => {
@@ -105,11 +109,13 @@
       resolveResult = null;
       return;
     }
-    resolveImport(eintrag.import).then(res => {
-      if (seq === resolveSeq) resolveResult = res;
-    }).catch(err => {
-      if (seq === resolveSeq) resolveResult = { signale: [], error: (err as Error).message };
-    });
+    resolveImport(eintrag.import)
+      .then((res) => {
+        if (seq === resolveSeq) resolveResult = res;
+      })
+      .catch((err) => {
+        if (seq === resolveSeq) resolveResult = { signale: [], error: (err as Error).message };
+      });
   });
 
   async function handleFileSelect(content: string, fileName: string) {
@@ -126,8 +132,12 @@
   class:has-file={hasFile}
   role={hasFile ? 'button' : undefined}
   tabindex={hasFile ? 0 : undefined}
-  onclick={hasFile ? () => showPicker = true : undefined}
-  onkeydown={hasFile ? (e) => { if (e.key === 'Enter') showPicker = true; } : undefined}
+  onclick={hasFile ? () => (showPicker = true) : undefined}
+  onkeydown={hasFile
+    ? (e) => {
+        if (e.key === 'Enter') showPicker = true;
+      }
+    : undefined}
 >
   <div class="import-name">
     {#if hasFile}
@@ -137,7 +147,14 @@
       <span class="import-placeholder">Datei auswählen</span>
     {/if}
   </div>
-  <button class="import-folder-btn" onclick={(e) => { e.stopPropagation(); showPicker = true; }} title="Datei auswählen">
+  <button
+    class="import-folder-btn"
+    onclick={(e) => {
+      e.stopPropagation();
+      showPicker = true;
+    }}
+    title="Datei auswählen"
+  >
     <CloudDownload {...ICON} />
   </button>
 </div>
@@ -163,13 +180,18 @@
     lockedTab="strecken"
     usedFiles={otherUsedFiles}
     onload={handleFileSelect}
-    onclose={() => showPicker = false}
+    onclose={() => (showPicker = false)}
   />
 {/if}
 
 <style>
-  .import-cell { background: var(--color-import); }
-  .import-file-cell { container-type: inline-size; outline: none; }
+  .import-cell {
+    background: var(--color-import);
+  }
+  .import-file-cell {
+    container-type: inline-size;
+    outline: none;
+  }
   .import-name {
     flex: 1;
     min-width: 0;
@@ -214,31 +236,49 @@
   .import-folder-btn:hover {
     background: color-mix(in srgb, currentColor 8%, transparent);
   }
-  .file-noext { display: none; }
+  .file-noext {
+    display: none;
+  }
 
   /* Narrow: < 200px */
   @container (max-width: 199px) {
     /* No file: hide name, button fills cell */
-    .has-file .import-folder-btn { display: none; }
-    .has-file { cursor: pointer; }
-    .has-file .import-name { justify-content: center; }
+    .has-file .import-folder-btn {
+      display: none;
+    }
+    .has-file {
+      cursor: pointer;
+    }
+    .has-file .import-name {
+      justify-content: center;
+    }
     .has-file .import-filename {
       color: var(--color-focus);
     }
-    .import-file-cell:not(.has-file) .import-name { display: none; }
+    .import-file-cell:not(.has-file) .import-name {
+      display: none;
+    }
     .import-file-cell:not(.has-file) .import-folder-btn {
       width: 100%;
       border-left: none;
       border-radius: var(--radius-inner);
     }
-    .file-full { display: none; }
-    .file-noext { display: inline; }
+    .file-full {
+      display: none;
+    }
+    .file-noext {
+      display: inline;
+    }
   }
 
   /* Medium: 200–299px — name without extension + button */
   @container (min-width: 200px) and (max-width: 299px) {
-    .file-full { display: none; }
-    .file-noext { display: inline; }
+    .file-full {
+      display: none;
+    }
+    .file-noext {
+      display: inline;
+    }
   }
 
   /* Wide: >= 300px — full filename + full button (default) */
@@ -261,7 +301,9 @@
     border-left: 1px solid var(--color-border);
     align-self: stretch;
   }
-  .import-count, .import-stitch, .import-error {
+  .import-count,
+  .import-stitch,
+  .import-error {
     font-size: var(--text-input);
     font-family: var(--font-mono);
     white-space: nowrap;
@@ -270,21 +312,41 @@
     flex: 1;
     min-width: 0;
   }
-  .import-count { color: var(--color-text-secondary); flex: 1.5; }
-  .import-stitch { color: var(--color-import-text); }
-  .import-error { color: var(--color-red); }
+  .import-count {
+    color: var(--color-text-secondary);
+    flex: 1.5;
+  }
+  .import-stitch {
+    color: var(--color-import-text);
+  }
+  .import-error {
+    color: var(--color-red);
+  }
 
   /* Tier visibility: compact shown by default, wider tiers override */
-  .tier-full, .tier-medium { display: none; }
-  .tier-compact { display: block; }
+  .tier-full,
+  .tier-medium {
+    display: none;
+  }
+  .tier-compact {
+    display: block;
+  }
 
   @container (min-width: 300px) {
-    .tier-medium { display: block; }
-    .tier-compact { display: none; }
+    .tier-medium {
+      display: block;
+    }
+    .tier-compact {
+      display: none;
+    }
   }
 
   @container (min-width: 420px) {
-    .tier-full { display: block; }
-    .tier-medium { display: none; }
+    .tier-full {
+      display: block;
+    }
+    .tier-medium {
+      display: none;
+    }
   }
 </style>

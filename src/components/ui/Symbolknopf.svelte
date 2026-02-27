@@ -78,13 +78,25 @@
   }
 
   /* Color variants (icon color only) */
-  .symbolknopf.red { color: var(--color-red); }
-  .symbolknopf.clear { color: var(--color-clear); }
-  .symbolknopf.green { color: var(--color-green); }
+  .symbolknopf.red {
+    color: var(--color-red);
+  }
+  .symbolknopf.clear {
+    color: var(--color-clear);
+  }
+  .symbolknopf.green {
+    color: var(--color-green);
+  }
 
   /* Colored border + background when explicitly requested */
-  .symbolknopf.bordered.red { border-color: var(--color-red); background: var(--color-red-bg); }
-  .symbolknopf.bordered.green { border-color: var(--color-green); background: var(--color-green-bg); }
+  .symbolknopf.bordered.red {
+    border-color: var(--color-red);
+    background: var(--color-red-bg);
+  }
+  .symbolknopf.bordered.green {
+    border-color: var(--color-green);
+    background: var(--color-green-bg);
+  }
 
   /* Active state for toggles */
   .symbolknopf.bordered.active {

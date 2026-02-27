@@ -11,7 +11,7 @@
   function copyYaml() {
     navigator.clipboard.writeText(yamlText).then(() => {
       copyLabel = 'Kopiert!';
-      setTimeout(() => copyLabel = 'Kopieren', 1500);
+      setTimeout(() => (copyLabel = 'Kopieren'), 1500);
     });
   }
 

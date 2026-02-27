@@ -97,15 +97,15 @@ export function extractName(signal: string): string {
 }
 
 export function signalNeedsName(signal: string): boolean {
-  return REQUIRES_NAME.some(s => signal.startsWith(s));
+  return REQUIRES_NAME.some((s) => signal.startsWith(s));
 }
 
 export function signalNeedsStationSearch(signal: string): boolean {
-  return REQUIRES_STATION_SEARCH.some(s => signal.startsWith(s));
+  return REQUIRES_STATION_SEARCH.some((s) => signal.startsWith(s));
 }
 
 export function signalNeedsBahnhof(signal: string): boolean {
-  return REQUIRES_BAHNHOF.some(s => signal.startsWith(s));
+  return REQUIRES_BAHNHOF.some((s) => signal.startsWith(s));
 }
 
 export function isWiederholungssignal(signal: string | undefined): boolean {
@@ -165,11 +165,7 @@ export function predictNextSignal(prevSignals: Signaleintrag): SignalPrediction 
   return null;
 }
 
-export function getEnumForField(
-  field: string,
-  rowIdx: number | undefined,
-  signale: Eintrag[],
-): readonly string[] {
+export function getEnumForField(field: string, rowIdx: number | undefined, signale: Eintrag[]): readonly string[] {
   if (field === 'signal_2' || field === 'signal_2b') return VORSIGNAL_ENUM;
 
   let lastSignal: string | null = null;
@@ -191,12 +187,7 @@ export function getEnumForField(
   return SIGNAL_ENUM;
 }
 
-export function autofillRow(
-  sig: Signaleintrag,
-  sourceIdx: number,
-  signale: Eintrag[],
-  showKm: boolean,
-): void {
+export function autofillRow(sig: Signaleintrag, sourceIdx: number, signale: Eintrag[], showKm: boolean): void {
   let predictionSource: Signaleintrag | null = null;
   for (let i = sourceIdx; i >= 0; i--) {
     const s = signale[i];
@@ -209,16 +200,12 @@ export function autofillRow(
   if (predictionSource) {
     const prediction = predictNextSignal(predictionSource);
     if (prediction) {
-      sig.signal_1 = prediction.name
-        ? `${prediction.signal} ${prediction.name}`
-        : prediction.signal;
+      sig.signal_1 = prediction.name ? `${prediction.signal} ${prediction.name}` : prediction.signal;
       if (signalNeedsBahnhof(prediction.signal)) {
         sig.bahnhof = prediction.name;
       }
       if (prediction.alt) {
-        sig.signal_1b = prediction.alt.name
-          ? `${prediction.alt.signal} ${prediction.alt.name}`
-          : prediction.alt.signal;
+        sig.signal_1b = prediction.alt.name ? `${prediction.alt.signal} ${prediction.alt.name}` : prediction.alt.signal;
         if (signalNeedsBahnhof(prediction.alt.signal) && prediction.alt.name) {
           sig.bahnhof = sig.bahnhof || prediction.alt.name;
         }

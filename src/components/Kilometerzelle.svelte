@@ -14,9 +14,7 @@
   } = $props();
 
   let kmVal = $derived(eintrag.km !== undefined ? String(eintrag.km) : '');
-  let prevKm = $derived(
-    prevEintrag?.km !== undefined ? (prevEintrag.km + 0.1).toFixed(1) : 'km'
-  );
+  let prevKm = $derived(prevEintrag?.km !== undefined ? (prevEintrag.km + 0.1).toFixed(1) : 'km');
 
   function handleInput(e: Event) {
     const val = (e.target as HTMLInputElement).value;
@@ -77,7 +75,9 @@
     width: calc(1.5 * var(--spacing-unit));
     flex-shrink: 0;
   }
-  .km-cell.visible { display: flex; }
+  .km-cell.visible {
+    display: flex;
+  }
   .km-cell-inner {
     display: flex;
     height: 100%;
@@ -94,5 +94,7 @@
     width: 100%;
     box-sizing: border-box;
   }
-  .km-input:focus { outline: none; }
+  .km-input:focus {
+    outline: none;
+  }
 </style>

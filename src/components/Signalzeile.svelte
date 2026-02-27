@@ -71,7 +71,7 @@
     {rowIdx}
     {signale}
     bind:bahnhof={eintrag.bahnhof}
-    onchange={onchange}
+    {onchange}
   />
 {/if}
 
@@ -86,7 +86,7 @@
   isAltActive={has2b}
   disabled={signal2Disabled}
   onToggleAlt={() => toggleAlt(2)}
-  onchange={onchange}
+  {onchange}
 />
 
 <!-- signal_2b (alt) -->
@@ -97,6 +97,6 @@
     {rowIdx}
     {signale}
     bind:bahnhof={eintrag.bahnhof}
-    onchange={onchange}
+    {onchange}
   />
 {/if}

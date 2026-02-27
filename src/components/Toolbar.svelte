@@ -1,7 +1,18 @@
 <script lang="ts">
   import {
-    Undo2, Redo2, Upload, Download, Save, Lock, LockOpen,
-    Milestone, Route, FolderOpen, FolderClosed, Code, Megaphone,
+    Undo2,
+    Redo2,
+    Upload,
+    Download,
+    Save,
+    Lock,
+    LockOpen,
+    Milestone,
+    Route,
+    FolderOpen,
+    FolderClosed,
+    Code,
+    Megaphone,
   } from 'lucide-svelte';
   import { ICON } from '../lib/constants';
   import Passwortfeld from './ui/Passwortfeld.svelte';
@@ -106,13 +117,7 @@
 
   <!-- Group: Local I/O -->
   <div class={btnGroup}>
-    <input
-      type="file"
-      accept=".yaml,.yml,.html"
-      style="display:none"
-      bind:this={fileInput}
-      onchange={onFileLoad}
-    />
+    <input type="file" accept=".yaml,.yml,.html" style="display:none" bind:this={fileInput} onchange={onFileLoad} />
     <button class="tb-btn btn" onclick={() => fileInput.click()} title="Datei laden">
       <Upload {...ICON} />
     </button>
@@ -128,7 +133,13 @@
     <button class="tb-btn toggle-btn btn" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
       <Code {...ICON} />
     </button>
-    <button class="tb-btn toggle-btn btn" class:active={showMeldungen} disabled={!meldungenAllowed} onclick={onToggleMeldungen} title="Meldungen">
+    <button
+      class="tb-btn toggle-btn btn"
+      class:active={showMeldungen}
+      disabled={!meldungenAllowed}
+      onclick={onToggleMeldungen}
+      title="Meldungen"
+    >
       <Megaphone {...ICON} />
     </button>
   </div>
@@ -138,30 +149,25 @@
     <div class="separator"></div>
 
     <div class={btnGroup}>
-      <button
-        class="tb-btn dateien-btn btn"
-        class:active={showDateien}
-        onclick={onToggleDateien}
-        title="Dateien"
-      >
+      <button class="tb-btn dateien-btn btn" class:active={showDateien} onclick={onToggleDateien} title="Dateien">
         {#if currentFileName}
           <FolderOpen {...ICON} />
         {:else}
           <FolderClosed {...ICON} />
         {/if}
       </button>
-      <button
-        class="tb-btn save-btn btn"
-        onclick={onSave}
-        disabled={saving || !dirty}
-        title="Speichern (Ctrl+S)"
-      >
+      <button class="tb-btn save-btn btn" onclick={onSave} disabled={saving || !dirty} title="Speichern (Ctrl+S)">
         <Save {...ICON} />
       </button>
     </div>
 
     {#if currentFileName}
-      <span class="file-indicator" class:dirty={saveStatus === 'dirty'} class:saving={saveStatus === 'saving'} class:saved={saveStatus === 'saved'}>
+      <span
+        class="file-indicator"
+        class:dirty={saveStatus === 'dirty'}
+        class:saving={saveStatus === 'saving'}
+        class:saved={saveStatus === 'saved'}
+      >
         <span class="status-dot"></span>
         <span class="file-name">{currentFileName}</span>
         <span class="status-label">
@@ -210,10 +216,15 @@
     }
   }
   @media (min-width: 1024px) {
-    .header { gap: var(--spacing-md); }
+    .header {
+      gap: var(--spacing-md);
+    }
   }
   .header.logged-out {
-    background-image: linear-gradient(color-mix(in srgb, var(--color-red) 8%, transparent), color-mix(in srgb, var(--color-red) 8%, transparent));
+    background-image: linear-gradient(
+      color-mix(in srgb, var(--color-red) 8%, transparent),
+      color-mix(in srgb, var(--color-red) 8%, transparent)
+    );
   }
   .app-title {
     display: none;
@@ -222,9 +233,10 @@
     margin-right: var(--spacing-md);
   }
   @media (min-width: 1280px) {
-    .app-title { display: block; }
+    .app-title {
+      display: block;
+    }
   }
-
 
   .btn-group {
     display: flex;
@@ -233,10 +245,14 @@
     gap: var(--spacing-card);
   }
   @media (min-width: 640px) {
-    .btn-group { flex-direction: row; }
+    .btn-group {
+      flex-direction: row;
+    }
   }
   @media (min-width: 1024px) {
-    .btn-group { gap: var(--spacing-md); }
+    .btn-group {
+      gap: var(--spacing-md);
+    }
   }
   .toggle-group {
     display: none;
@@ -244,14 +260,22 @@
     gap: var(--spacing-card);
   }
   @media (min-width: 640px) {
-    .toggle-group { display: flex; }
+    .toggle-group {
+      display: flex;
+    }
   }
   @media (min-width: 1024px) {
-    .toggle-group { gap: var(--spacing-md); }
+    .toggle-group {
+      gap: var(--spacing-md);
+    }
   }
-  .sm-only { display: none; }
+  .sm-only {
+    display: none;
+  }
   @media (min-width: 640px) {
-    .sm-only { display: block; }
+    .sm-only {
+      display: block;
+    }
   }
   .separator {
     width: 1px;
@@ -290,13 +314,19 @@
     border-color: var(--color-green);
   }
 
-
-
   /* Cloud buttons */
-  .spacer { flex: 1; }
-  .save-btn { color: var(--color-focus); }
-  .save-btn:disabled { color: var(--color-text-muted); }
-  .dateien-btn { color: var(--color-focus); }
+  .spacer {
+    flex: 1;
+  }
+  .save-btn {
+    color: var(--color-focus);
+  }
+  .save-btn:disabled {
+    color: var(--color-text-muted);
+  }
+  .dateien-btn {
+    color: var(--color-focus);
+  }
 
   /* Dateien active */
   .dateien-btn.active {
@@ -304,7 +334,6 @@
     color: var(--color-bg-raised);
     border-color: var(--color-focus);
   }
-
 
   /* File status indicator */
   .file-indicator {
@@ -322,7 +351,9 @@
     color: var(--color-text-secondary);
   }
   @media (min-width: 640px) {
-    .file-indicator { justify-content: flex-start; }
+    .file-indicator {
+      justify-content: flex-start;
+    }
   }
   .file-name {
     overflow: hidden;
@@ -335,9 +366,15 @@
     border-radius: 50%;
     flex-shrink: 0;
   }
-  .file-indicator.dirty .status-dot { background: var(--color-red); }
-  .file-indicator.saving .status-dot { background: var(--color-clear); }
-  .file-indicator.saved .status-dot { background: var(--color-green); }
+  .file-indicator.dirty .status-dot {
+    background: var(--color-red);
+  }
+  .file-indicator.saving .status-dot {
+    background: var(--color-clear);
+  }
+  .file-indicator.saved .status-dot {
+    background: var(--color-green);
+  }
   .status-label {
     display: none;
     position: absolute;
@@ -356,7 +393,9 @@
     pointer-events: none;
     z-index: 1;
   }
-  .file-indicator:hover .status-label { display: flex; }
+  .file-indicator:hover .status-label {
+    display: flex;
+  }
   .file-indicator.dirty .status-label {
     background: var(--color-red-bg);
     color: var(--color-red);

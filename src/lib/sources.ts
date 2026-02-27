@@ -46,13 +46,13 @@ export async function resolveImport(imp: Import): Promise<ResolveResult> {
     let signale = parsed.signale;
 
     if (imp.von) {
-      const idx = signale.findIndex(s => isKnoteneintrag(s) && s.knoten === imp.von);
+      const idx = signale.findIndex((s) => isKnoteneintrag(s) && s.knoten === imp.von);
       if (idx === -1) return { error: `Knoten "${imp.von}" nicht gefunden`, signale: [] };
       signale = signale.slice(idx);
     }
 
     if (imp.bis) {
-      const idx = signale.findIndex(s => isKnoteneintrag(s) && s.knoten === imp.bis);
+      const idx = signale.findIndex((s) => isKnoteneintrag(s) && s.knoten === imp.bis);
       if (idx === -1) return { error: `Knoten "${imp.bis}" nicht gefunden`, signale: [] };
       signale = signale.slice(0, idx + 1);
     }
@@ -69,9 +69,7 @@ export function cacheImport(datei: string, data: Editordaten): void {
 }
 
 export async function autoStitchImporte(signale: Eintrag[]): Promise<void> {
-  const importIndices = signale
-    .map((s, i) => (isImporteintrag(s) ? i : -1))
-    .filter(i => i !== -1);
+  const importIndices = signale.map((s, i) => (isImporteintrag(s) ? i : -1)).filter((i) => i !== -1);
 
   // Clear existing stitch points before recalculating
   for (const i of importIndices) {
@@ -94,20 +92,13 @@ export async function autoStitchImporte(signale: Eintrag[]): Promise<void> {
 
     if (!qA.datei || !qB.datei) continue;
 
-    const [resA, resB] = await Promise.all([
-      resolveImport({ datei: qA.datei }),
-      resolveImport({ datei: qB.datei }),
-    ]);
+    const [resA, resB] = await Promise.all([resolveImport({ datei: qA.datei }), resolveImport({ datei: qB.datei })]);
 
     if (resA.error || resB.error) continue;
 
-    const knotenA = resA.signale
-      .filter(s => isKnoteneintrag(s))
-      .map(s => (s as { knoten: string }).knoten);
+    const knotenA = resA.signale.filter((s) => isKnoteneintrag(s)).map((s) => (s as { knoten: string }).knoten);
     const knotenB = new Set(
-      resB.signale
-        .filter(s => isKnoteneintrag(s))
-        .map(s => (s as { knoten: string }).knoten),
+      resB.signale.filter((s) => isKnoteneintrag(s)).map((s) => (s as { knoten: string }).knoten),
     );
 
     for (let i = knotenA.length - 1; i >= 0; i--) {

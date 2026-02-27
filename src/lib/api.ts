@@ -15,7 +15,7 @@ let pin: string | null = typeof sessionStorage !== 'undefined' ? sessionStorage.
 
 function headers(): HeadersInit {
   if (!pin) throw new Error('Not authenticated');
-  return { 'Authorization': `Bearer ${pin}`, 'Content-Type': 'application/json' };
+  return { Authorization: `Bearer ${pin}`, 'Content-Type': 'application/json' };
 }
 
 async function handleResponse(res: Response): Promise<any> {

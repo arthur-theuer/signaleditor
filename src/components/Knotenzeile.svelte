@@ -13,12 +13,15 @@
 
 <div class="row-cell knoten-cell">
   <div class="knoten-search-wrapper hl-field">
-    <Stationsfeld mode="code" bind:value={eintrag.knoten} placeholder="z.B. Zürich" onchange={onchange} />
+    <Stationsfeld mode="code" bind:value={eintrag.knoten} placeholder="z.B. Zürich" {onchange} />
   </div>
 </div>
 
 <style>
-  .knoten-cell { background: var(--color-knoten); overflow: visible; }
+  .knoten-cell {
+    background: var(--color-knoten);
+    overflow: visible;
+  }
   .knoten-search-wrapper {
     flex: 1;
     min-width: 0;

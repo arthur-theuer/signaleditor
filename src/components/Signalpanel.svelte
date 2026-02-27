@@ -1,7 +1,20 @@
 <script lang="ts">
   import { tick } from 'svelte';
-  import type { Eintrag, Signaleintrag, Notizeintrag, Knoteneintrag, Abzweigungseintrag, Importeintrag } from '../lib/types';
-  import { isSignaleintrag, isNotizeintrag, isKnoteneintrag, isAbzweigungseintrag, isImporteintrag } from '../lib/types';
+  import type {
+    Eintrag,
+    Signaleintrag,
+    Notizeintrag,
+    Knoteneintrag,
+    Abzweigungseintrag,
+    Importeintrag,
+  } from '../lib/types';
+  import {
+    isSignaleintrag,
+    isNotizeintrag,
+    isKnoteneintrag,
+    isAbzweigungseintrag,
+    isImporteintrag,
+  } from '../lib/types';
   import { autofillRow, isRowEmpty } from '../lib/signals';
   import Signalzeile from './Signalzeile.svelte';
   import Notizzeile from './Notizzeile.svelte';
@@ -24,7 +37,12 @@
   } = $props();
 
   let usedImportFiles = $derived(
-    new Set(signale.filter(isImporteintrag).map(s => s.import.datei).filter(Boolean))
+    new Set(
+      signale
+        .filter(isImporteintrag)
+        .map((s) => s.import.datei)
+        .filter(Boolean),
+    ),
   );
 
   // Per-field-type tier tracking: each row reports a tier (0=full, 1=medium, 2=compact),
@@ -39,7 +57,9 @@
   function handleDragStart(e: DragEvent, idx: number) {
     e.dataTransfer!.effectAllowed = 'move';
     e.dataTransfer!.setData('text/plain', String(idx));
-    requestAnimationFrame(() => { dragIdx = idx; });
+    requestAnimationFrame(() => {
+      dragIdx = idx;
+    });
   }
 
   function handleDragOver(e: DragEvent, idx: number) {
@@ -79,7 +99,10 @@
     if (dragIdx === null || dropTargetIdx === null) return;
     let targetIdx = dropTargetIdx;
     if (targetIdx > dragIdx) targetIdx--;
-    if (targetIdx === dragIdx) { resetDrag(); return; }
+    if (targetIdx === dragIdx) {
+      resetDrag();
+      return;
+    }
     const [moved] = signale.splice(dragIdx, 1);
     signale.splice(targetIdx, 0, moved);
     signale = [...signale];
@@ -119,7 +142,7 @@
   }
 
   function getFocusableFields(rowEl: HTMLElement): HTMLElement[] {
-    return Array.from(rowEl.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(el => {
+    return Array.from(rowEl.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter((el) => {
       const cell = el.closest('.row-cell');
       return !cell || !cell.classList.contains('disabled');
     });
@@ -131,7 +154,7 @@
       if (kmInput) return kmInput;
     }
     return rowEl.querySelector<HTMLElement>(
-      '.signal-input, .note-input, .abzweigung-btn, .search-field, .import-folder-btn'
+      '.signal-input, .note-input, .abzweigung-btn, .search-field, .import-folder-btn',
     );
   }
 
@@ -230,7 +253,7 @@
   }
 
   function reindex() {
-    signale.forEach((s, i) => s.id = i);
+    signale.forEach((s, i) => (s.id = i));
   }
 
   // Tab navigation handler — delegated at list level
@@ -310,8 +333,6 @@
     onchange();
     await focusRowField(signale.length - 1);
   }
-
-
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -336,11 +357,7 @@
       ondrop={handleDrop}
     >
       <!-- svelte-ignore a11y_no_static_element_interactions -->
-      <div
-        class="signal-id"
-        onmousedown={() => dragHandle = idx}
-        onmouseup={() => dragHandle = null}
-      >{idx}</div>
+      <div class="signal-id" onmousedown={() => (dragHandle = idx)} onmouseup={() => (dragHandle = null)}>{idx}</div>
 
       {#if !isImporteintrag(eintrag)}
         <Kilometerzelle
@@ -352,12 +369,7 @@
       {/if}
 
       {#if isSignaleintrag(eintrag)}
-        <Signalzeile
-          bind:eintrag={signale[idx] as Signaleintrag}
-          {signale}
-          rowIdx={idx}
-          {onchange}
-        />
+        <Signalzeile bind:eintrag={signale[idx] as Signaleintrag} {signale} rowIdx={idx} {onchange} />
       {:else if isNotizeintrag(eintrag)}
         <Notizzeile bind:eintrag={signale[idx] as Notizeintrag} {onchange} />
       {:else if isKnoteneintrag(eintrag)}
@@ -365,17 +377,10 @@
       {:else if isAbzweigungseintrag(eintrag)}
         <Abzweigungszeile bind:eintrag={signale[idx] as Abzweigungseintrag} {onchange} />
       {:else if isImporteintrag(eintrag)}
-        <Importzeile
-          bind:eintrag={signale[idx] as Importeintrag}
-          usedFiles={usedImportFiles}
-          {onchange}
-        />
+        <Importzeile bind:eintrag={signale[idx] as Importeintrag} usedFiles={usedImportFiles} {onchange} />
       {/if}
 
-      <Zeilenaktionen
-        ondelete={() => deleteRow(idx)}
-        onclear={() => clearRow(idx)}
-      />
+      <Zeilenaktionen ondelete={() => deleteRow(idx)} onclear={() => clearRow(idx)} />
     </div>
   {/each}
   {#if indicatorY !== null}
@@ -390,9 +395,11 @@
   onAddImport={() => appendEntry(makeImport(signale.length))}
 />
 
-
 <style>
-  .signal-list-inner { position: relative; overflow-anchor: none; }
+  .signal-list-inner {
+    position: relative;
+    overflow-anchor: none;
+  }
   .signal-row {
     display: flex;
     gap: var(--spacing-card);
@@ -416,9 +423,13 @@
     border-radius: var(--radius-card);
     cursor: grab;
   }
-  .signal-id:active { cursor: grabbing; }
+  .signal-id:active {
+    cursor: grabbing;
+  }
 
-  .signal-row.drag-ready :global(.signal-actions) { visibility: hidden; }
+  .signal-row.drag-ready :global(.signal-actions) {
+    visibility: hidden;
+  }
   .drop-indicator {
     position: absolute;
     left: var(--spacing-card);

@@ -42,7 +42,7 @@
       <Trash2 {...ICON} />
     </Symbolknopf>
   {/if}
-  <Symbolknopf onclick={() => menuOpen = !menuOpen} title="Aktionen" tabindex={-1} class="ellipsis-btn">
+  <Symbolknopf onclick={() => (menuOpen = !menuOpen)} title="Aktionen" tabindex={-1} class="ellipsis-btn">
     <EllipsisVertical {...ICON} />
   </Symbolknopf>
   <Symbolknopf onclick={onclear} title="Leeren" color="clear" tabindex={-1} class="wide-btn">
@@ -62,12 +62,22 @@
   }
 
   /* Wide: show inline buttons, hide ellipsis and expandable actions */
-  :global(.ellipsis-btn) { display: none !important; }
-  :global(.action-btn) { display: none !important; }
+  :global(.ellipsis-btn) {
+    display: none !important;
+  }
+  :global(.action-btn) {
+    display: none !important;
+  }
 
   @media (max-width: 639px) {
-    :global(.wide-btn) { display: none !important; }
-    :global(.ellipsis-btn) { display: flex !important; }
-    :global(.action-btn) { display: flex !important; }
+    :global(.wide-btn) {
+      display: none !important;
+    }
+    :global(.ellipsis-btn) {
+      display: flex !important;
+    }
+    :global(.action-btn) {
+      display: flex !important;
+    }
   }
 </style>

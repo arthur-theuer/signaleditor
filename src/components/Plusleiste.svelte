@@ -18,11 +18,21 @@
 </script>
 
 <div class="add-bar">
-  <button class="add-signal btn" onclick={onAddSignal}><DiamondPlus {...ICON} /><span class="tier-full">Signal</span><span class="tier-medium">Sig.</span></button>
-  <button class="add-note btn" onclick={onAddNotiz}><SquarePen {...ICON} /><span class="tier-full">Notiz</span><span class="tier-medium">Not.</span></button>
-  <button class="add-abzweigung btn" onclick={onAddAbzweigung}><Share2 {...ICON} /><span class="tier-full">Abzweigung</span><span class="tier-medium">Abzw.</span></button>
-  <button class="add-knoten btn" onclick={onAddKnoten}><Crosshair {...ICON} /><span class="tier-full">Knoten</span><span class="tier-medium">Kn.</span></button>
-  <button class="add-import btn" onclick={onAddImport}><FilePlus {...ICON} /><span class="tier-full">Import</span><span class="tier-medium">Imp.</span></button>
+  <button class="add-signal btn" onclick={onAddSignal}
+    ><DiamondPlus {...ICON} /><span class="tier-full">Signal</span><span class="tier-medium">Sig.</span></button
+  >
+  <button class="add-note btn" onclick={onAddNotiz}
+    ><SquarePen {...ICON} /><span class="tier-full">Notiz</span><span class="tier-medium">Not.</span></button
+  >
+  <button class="add-abzweigung btn" onclick={onAddAbzweigung}
+    ><Share2 {...ICON} /><span class="tier-full">Abzweigung</span><span class="tier-medium">Abzw.</span></button
+  >
+  <button class="add-knoten btn" onclick={onAddKnoten}
+    ><Crosshair {...ICON} /><span class="tier-full">Knoten</span><span class="tier-medium">Kn.</span></button
+  >
+  <button class="add-import btn" onclick={onAddImport}
+    ><FilePlus {...ICON} /><span class="tier-full">Import</span><span class="tier-medium">Imp.</span></button
+  >
 </div>
 
 <style>
@@ -66,14 +76,23 @@
     color: var(--color-import-text);
   }
   /* Tier visibility: narrow (icon only) by default, wider tiers override */
-  .tier-full, .tier-medium { display: none; }
+  .tier-full,
+  .tier-medium {
+    display: none;
+  }
 
   @container (min-width: 60px) {
-    .tier-medium { display: inline; }
+    .tier-medium {
+      display: inline;
+    }
   }
 
   @container (min-width: 100px) {
-    .tier-full { display: inline; }
-    .tier-medium { display: none; }
+    .tier-full {
+      display: inline;
+    }
+    .tier-medium {
+      display: none;
+    }
   }
 </style>

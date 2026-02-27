@@ -64,7 +64,7 @@
     currentFileName = null;
     saveStatus = 'idle';
     history.clear();
-    if (data.signale.some(s => s.km !== undefined)) {
+    if (data.signale.some((s) => s.km !== undefined)) {
       showKm = true;
     }
   }
@@ -116,13 +116,17 @@
   function handleUndo() {
     flashUndoRedoBtn('undoBtn');
     const restored = history.undo(data);
-    if (restored) { data = restored; }
+    if (restored) {
+      data = restored;
+    }
   }
 
   function handleRedo() {
     flashUndoRedoBtn('redoBtn');
     const restored = history.redo(data);
-    if (restored) { data = restored; }
+    if (restored) {
+      data = restored;
+    }
   }
 
   async function handleLogin(pin: string): Promise<boolean> {
@@ -189,7 +193,7 @@
     saveStatus = 'saved';
     history.clear();
     showDateien = false;
-    if (data.signale.some(s => s.km !== undefined)) {
+    if (data.signale.some((s) => s.km !== undefined)) {
       showKm = true;
     }
   }
@@ -203,7 +207,7 @@
     const firstRow = document.querySelector<HTMLElement>('[data-row-index="0"]');
     if (!firstRow) return;
     const target = firstRow.querySelector<HTMLElement>(
-      showKm ? '.km-input' : '.signal-input, .note-input, .abzweigung-btn, .knoten-input, .import-folder-btn'
+      showKm ? '.km-input' : '.signal-input, .note-input, .abzweigung-btn, .knoten-input, .import-folder-btn',
     );
     if (target) target.focus();
   }
@@ -241,7 +245,7 @@
   $effect(() => {
     const importeDateien = data.signale
       .filter(isImporteintrag)
-      .map(s => s.import.datei)
+      .map((s) => s.import.datei)
       .join(',');
     if (importeDateien) {
       autoStitchImporte(data.signale);
@@ -281,8 +285,8 @@
   undoEnabled={history.canUndo}
   redoEnabled={history.canRedo}
   loggedIn={isLoggedIn()}
-  onToggleYaml={() => wantYaml = !wantYaml}
-  onToggleMeldungen={() => wantMeldungen = !wantMeldungen}
+  onToggleYaml={() => (wantYaml = !wantYaml)}
+  onToggleMeldungen={() => (wantMeldungen = !wantMeldungen)}
   onNew={newFile}
   onFileLoad={handleFileLoad}
   onUndo={handleUndo}
@@ -291,7 +295,7 @@
   onLogin={handleLogin}
   onLogout={handleLogout}
   onSave={handleSave}
-  onToggleDateien={() => showDateien = !showDateien}
+  onToggleDateien={() => (showDateien = !showDateien)}
   {showDateien}
   {saving}
   {dirty}
@@ -300,11 +304,11 @@
 />
 
 {#if showDateien}
-  <Dateibrowser onload={handleCloudLoad} onclose={() => showDateien = false} />
+  <Dateibrowser onload={handleCloudLoad} onclose={() => (showDateien = false)} />
 {/if}
 
 <div class="content-pad">
-  <Datenpanel bind:data={data} ontabout={handleDatenTabOut} />
+  <Datenpanel bind:data ontabout={handleDatenTabOut} />
 </div>
 
 <div class="main-content content-pad">
@@ -316,7 +320,7 @@
         color="red"
         bordered
         active={showKm}
-        onclick={() => showKm = !showKm}
+        onclick={() => (showKm = !showKm)}
         title="Kilometer ein-/ausblenden"
       >
         <RulerDimensionLine {...ICON} />
@@ -331,20 +335,21 @@
     <div class="meldungen-section">
       <div class="meldungen-panel">
         <div class="section-header">Meldungen</div>
-        <Meldungspanel signale={data.signale} onclose={() => wantMeldungen = false} />
+        <Meldungspanel signale={data.signale} onclose={() => (wantMeldungen = false)} />
       </div>
     </div>
   {/if}
 </div>
 
-
 {#if showYaml}
   <div class="content-pad">
-    <Codepanel {data} onexport={() => dirty = false} />
+    <Codepanel {data} onexport={() => (dirty = false)} />
   </div>
 {/if}
 
-<Breakpoints /> <!-- Remove this line to hide debug overlay -->
+<Breakpoints />
+
+<!-- Remove this line to hide debug overlay -->
 
 <style>
   .content-pad {
@@ -357,7 +362,12 @@
       padding-right: var(--spacing-page);
     }
   }
-  .main-content { display: flex; gap: 0; align-items: stretch; margin-bottom: var(--spacing-page); }
+  .main-content {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+    margin-bottom: var(--spacing-page);
+  }
   .signals-container {
     flex: 1;
     min-width: 0;
@@ -366,8 +376,12 @@
     border-radius: var(--radius-container);
     container-type: inline-size;
   }
-  .signale-header { padding-right: var(--spacing-card); }
-  .signals-list { padding: var(--spacing-half-card) 0; }
+  .signale-header {
+    padding-right: var(--spacing-card);
+  }
+  .signals-list {
+    padding: var(--spacing-half-card) 0;
+  }
 
   .signale-header :global(.km-toggle) {
     margin-left: auto;
@@ -378,7 +392,9 @@
     width: 220px;
   }
   @media (min-width: 768px) {
-    .meldungen-section { width: 280px; }
+    .meldungen-section {
+      width: 280px;
+    }
   }
   .meldungen-panel {
     background: var(--color-bg);

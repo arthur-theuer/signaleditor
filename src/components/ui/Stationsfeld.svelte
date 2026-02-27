@@ -20,7 +20,7 @@
   let activeIndex = $state(0);
   let searchInput: HTMLInputElement | undefined = $state();
 
-  let resolvedName = $derived(mode === 'code' ? (STATIONEN[value]?.[0] || '') : '');
+  let resolvedName = $derived(mode === 'code' ? STATIONEN[value]?.[0] || '' : '');
   let valid = $derived(mode === 'code' ? !!resolvedName : !!codeForName(value));
   let results: Result[] = $derived(search(query));
 
@@ -44,7 +44,10 @@
   }
 
   function handleBlur() {
-    setTimeout(() => { open = false; query = ''; }, 150);
+    setTimeout(() => {
+      open = false;
+      query = '';
+    }, 150);
   }
 
   function handleInput() {
@@ -56,9 +59,9 @@
     if (!searchInput) return;
     const all = Array.from(
       document.querySelectorAll<HTMLElement>(
-        'input:not([tabindex="-1"]):not([disabled]), button:not([tabindex="-1"]):not([disabled]), select:not([tabindex="-1"]):not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])'
-      )
-    ).filter(el => el.offsetParent !== null);
+        'input:not([tabindex="-1"]):not([disabled]), button:not([tabindex="-1"]):not([disabled]), select:not([tabindex="-1"]):not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])',
+      ),
+    ).filter((el) => el.offsetParent !== null);
     const idx = all.indexOf(searchInput);
     if (idx >= 0 && idx < all.length - 1) all[idx + 1].focus();
   }
@@ -100,12 +103,15 @@
         type="text"
         class="search-field"
         class:has-value={valid && !open}
-        value={open ? query : (resolvedName || '')}
-        oninput={(e) => { query = (e.target as HTMLInputElement).value; handleInput(); }}
+        value={open ? query : resolvedName || ''}
+        oninput={(e) => {
+          query = (e.target as HTMLInputElement).value;
+          handleInput();
+        }}
         onfocus={handleFocus}
         onblur={handleBlur}
         onkeydown={handleKeydown}
-        placeholder={placeholder}
+        {placeholder}
         autocomplete="none"
         autocorrect="off"
         spellcheck="false"
@@ -121,12 +127,15 @@
     type="text"
     class="search-field name-input"
     class:has-value={valid && !open}
-    value={open ? query : (value || '')}
-    oninput={(e) => { query = (e.target as HTMLInputElement).value; handleInput(); }}
+    value={open ? query : value || ''}
+    oninput={(e) => {
+      query = (e.target as HTMLInputElement).value;
+      handleInput();
+    }}
     onfocus={handleFocus}
     onblur={handleBlur}
     onkeydown={handleKeydown}
-    placeholder={placeholder}
+    {placeholder}
     autocomplete="none"
     autocorrect="off"
     spellcheck="false"
@@ -139,7 +148,7 @@
         class="dropdown-item"
         class:active={i === activeIndex}
         onmousedown={() => select(entry)}
-        onmouseenter={() => activeIndex = i}
+        onmouseenter={() => (activeIndex = i)}
         tabindex={-1}
       >
         {#if mode === 'code'}
@@ -231,7 +240,9 @@
     cursor: pointer;
     text-align: left;
   }
-  .dropdown-item.active { background: var(--color-focus-bg); }
+  .dropdown-item.active {
+    background: var(--color-focus-bg);
+  }
   .dropdown-item .code-col {
     font-size: var(--text-caption);
   }

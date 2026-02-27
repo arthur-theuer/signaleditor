@@ -1,6 +1,14 @@
 /* Reset */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-::placeholder { color: var(--color-text-muted); }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+::placeholder {
+  color: var(--color-text-muted);
+}
 
 :root {
   /* Spacing */
@@ -53,7 +61,7 @@
 
   /* Blue (focus, primary actions) */
   --color-focus: #1976d2;
-  --color-focus-bg: rgba(25,118,210,0.08);
+  --color-focus-bg: rgba(25, 118, 210, 0.08);
   --color-focus-ring: #0d47a1;
 
   /* Green (toggle on, insert) */
@@ -95,11 +103,10 @@
   --card-border: 1px solid var(--color-border);
 
   /* Inset rails: vertical alignment from viewport edge */
-  --inset-page: var(--spacing-page);                                   /* 20px — container borders */
-  --inset-container: calc(var(--spacing-page) + 1px);                  /* 21px — inside bordered containers */
+  --inset-page: var(--spacing-page); /* 20px — container borders */
+  --inset-container: calc(var(--spacing-page) + 1px); /* 21px — inside bordered containers */
   --inset-card: calc(var(--spacing-page) + 1px + var(--spacing-card)); /* 25px — signal rows, toolbar buttons */
   --inset-cell: calc(var(--spacing-page) + 1px + var(--spacing-cell)); /* 33px — section headers, plusleiste */
-
 }
 
 @media (prefers-color-scheme: dark) {
@@ -119,7 +126,7 @@
 
     /* Blue */
     --color-focus: #90caf9;
-    --color-focus-bg: rgba(144,202,249,0.08);
+    --color-focus-bg: rgba(144, 202, 249, 0.08);
     --color-focus-ring: #bbdefb;
 
     /* Green */
@@ -171,13 +178,28 @@
   cursor: pointer;
   position: relative;
 }
-.btn:hover:not(:disabled) { outline: 2px solid currentColor; outline-offset: -2px; }
-.btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
-.btn:disabled { cursor: default; color: var(--color-text-muted); }
-.btn.btn-flash { outline: 2px solid currentColor; outline-offset: -2px; }
+.btn:hover:not(:disabled) {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+.btn:disabled {
+  cursor: default;
+  color: var(--color-text-muted);
+}
+.btn.btn-flash {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
 
 /* Field focus: ::after ring in focus color */
-.hl-field { position: relative; cursor: pointer; }
+.hl-field {
+  position: relative;
+  cursor: pointer;
+}
 .hl-field::after {
   content: '';
   position: absolute;
@@ -188,8 +210,13 @@
   opacity: 0;
   z-index: 2;
 }
-.hl-field:focus-within::after { opacity: 1; }
-.hl-field > input, .hl-field > select { outline: none; }
+.hl-field:focus-within::after {
+  opacity: 1;
+}
+.hl-field > input,
+.hl-field > select {
+  outline: none;
+}
 
 /* Dropdown: positioned below parent, flattens parent's bottom corners */
 .dropdown {
@@ -215,16 +242,30 @@
 }
 
 /* Lucide icons: thicken stroke on hover (1px → 2px effective at 16px/24 viewBox) */
-button:hover:not(:disabled) svg { stroke-width: 3 !important; }
+button:hover:not(:disabled) svg {
+  stroke-width: 3 !important;
+}
 
 /* Meldung signal-type colors (applied dynamically via class={seg.klasse}) */
 .meldung-block,
-.meldung-spurwechsel { color: var(--color-meldung-block); }
-.meldung-ausfahrt { color: var(--color-meldung-ausfahrt); }
-.meldung-wiederholung { color: var(--color-meldung-wiederholung); }
-.meldung-standard { color: var(--color-meldung-standard); }
-.meldung-bahnhof-a { color: var(--color-meldung-bahnhof-a); }
-.meldung-bahnhof-b { color: var(--color-meldung-bahnhof-b); }
+.meldung-spurwechsel {
+  color: var(--color-meldung-block);
+}
+.meldung-ausfahrt {
+  color: var(--color-meldung-ausfahrt);
+}
+.meldung-wiederholung {
+  color: var(--color-meldung-wiederholung);
+}
+.meldung-standard {
+  color: var(--color-meldung-standard);
+}
+.meldung-bahnhof-a {
+  color: var(--color-meldung-bahnhof-a);
+}
+.meldung-bahnhof-b {
+  color: var(--color-meldung-bahnhof-b);
+}
 
 body {
   font-family: var(--font-sans);
@@ -233,7 +274,10 @@ body {
   color: var(--color-text);
   color-scheme: light dark;
 }
-input, select, textarea, button {
+input,
+select,
+textarea,
+button {
   color: inherit;
   font: inherit;
 }
@@ -251,8 +295,14 @@ input, select, textarea, button {
   overflow: hidden;
 }
 
-.row-cell.disabled { background: var(--color-bg); pointer-events: none; }
-.row-cell.disabled .signal-input { color: var(--color-text-muted); cursor: default; }
+.row-cell.disabled {
+  background: var(--color-bg);
+  pointer-events: none;
+}
+.row-cell.disabled .signal-input {
+  color: var(--color-text-muted);
+  cursor: default;
+}
 
 .section-header {
   display: flex;

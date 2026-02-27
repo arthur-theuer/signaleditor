@@ -50,7 +50,7 @@
 </script>
 
 <div class="pill" class:open class:error class:unlocked>
-  <button class="icon" onclick={onclick}>
+  <button class="icon" {onclick}>
     {@render children()}
   </button>
   <div class="field">
@@ -60,7 +60,10 @@
       type="password"
       placeholder="PIN"
       tabindex={open ? 0 : -1}
-      onkeydown={(e) => { if (e.key === 'Enter') submit(); if (e.key === 'Escape') cancel(); }}
+      onkeydown={(e) => {
+        if (e.key === 'Enter') submit();
+        if (e.key === 'Escape') cancel();
+      }}
       onblur={cancel}
       autocomplete="none"
       autocorrect="off"
@@ -78,7 +81,9 @@
     border-radius: var(--radius-container);
     background: var(--color-bg-raised);
     flex-shrink: 0;
-    transition: box-shadow 200ms ease, border-color 200ms ease;
+    transition:
+      box-shadow 200ms ease,
+      border-color 200ms ease;
   }
   .pill:not(.unlocked) {
     color: var(--color-red);

@@ -24,7 +24,9 @@
   let useStationSearch = $derived(signalNeedsStationSearch(base));
 
   let stationName = $state('');
-  $effect(() => { stationName = extractName(value); });
+  $effect(() => {
+    stationName = extractName(value);
+  });
 
   function handleNameInput(e: Event) {
     stationName = (e.target as HTMLInputElement).value;
@@ -66,7 +68,6 @@
         spellcheck="false"
       />
     {/if}
-
   </div>
 {/if}
 
@@ -96,8 +97,12 @@
     height: 100%;
     border-radius: 0 var(--radius-inner) var(--radius-inner) 0;
   }
-  .name-wrapper.visible { display: flex; }
-  .name-wrapper.has-bahnhof { border-radius: 0; }
+  .name-wrapper.visible {
+    display: flex;
+  }
+  .name-wrapper.has-bahnhof {
+    border-radius: 0;
+  }
 
   .name-input {
     flex: 1;
@@ -114,7 +119,9 @@
     outline: none;
     height: 100%;
   }
-  .name-input::placeholder { color: var(--color-text-muted); }
+  .name-input::placeholder {
+    color: var(--color-text-muted);
+  }
 
   .bahnhof-wrapper {
     display: none;
@@ -122,7 +129,9 @@
     flex: 1;
     border-radius: 0 var(--radius-inner) var(--radius-inner) 0;
   }
-  .bahnhof-wrapper.visible { display: flex; }
+  .bahnhof-wrapper.visible {
+    display: flex;
+  }
   .bahnhof-input {
     width: 100%;
     flex: 1;
@@ -134,6 +143,10 @@
     box-sizing: border-box;
     border-radius: inherit;
   }
-  .bahnhof-input:focus { outline: none; }
-  .bahnhof-input::placeholder { color: var(--color-text-muted); }
+  .bahnhof-input:focus {
+    outline: none;
+  }
+  .bahnhof-input::placeholder {
+    color: var(--color-text-muted);
+  }
 </style>

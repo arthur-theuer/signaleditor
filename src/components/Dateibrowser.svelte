@@ -94,8 +94,10 @@
 
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'Escape') {
-      if (renamingFile) { cancelRename(); e.stopPropagation(); }
-      else onclose();
+      if (renamingFile) {
+        cancelRename();
+        e.stopPropagation();
+      } else onclose();
     }
   }
 
@@ -111,8 +113,11 @@
 
   function formatDate(dateStr: string): string {
     const d = new Date(dateStr);
-    return d.toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit', year: 'numeric' })
-      + ' ' + d.toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' });
+    return (
+      d.toLocaleDateString('de-CH', { day: '2-digit', month: '2-digit', year: 'numeric' }) +
+      ' ' +
+      d.toLocaleTimeString('de-CH', { hour: '2-digit', minute: '2-digit' })
+    );
   }
 </script>
 
@@ -126,15 +131,15 @@
         class:active={activeTab === 'strecken'}
         class:disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
         disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
-        onclick={() => activeTab = 'strecken'}
-      >Strecken</button>
+        onclick={() => (activeTab = 'strecken')}>Strecken</button
+      >
       <button
         class="tab-btn btn"
         class:active={activeTab === 'routen'}
         class:disabled={lockedTab !== undefined && lockedTab !== 'routen'}
         disabled={lockedTab !== undefined && lockedTab !== 'routen'}
-        onclick={() => activeTab = 'routen'}
-      >Routen</button>
+        onclick={() => (activeTab = 'routen')}>Routen</button
+      >
     </div>
 
     <div class="file-list">
@@ -154,9 +159,17 @@
                   class="rename-input"
                   type="text"
                   bind:value={renameValue}
-                  onkeydown={(e) => { if (e.key === 'Enter') submitRename(file); if (e.key === 'Escape') { cancelRename(); e.stopPropagation(); } }}
+                  onkeydown={(e) => {
+                    if (e.key === 'Enter') submitRename(file);
+                    if (e.key === 'Escape') {
+                      cancelRename();
+                      e.stopPropagation();
+                    }
+                  }}
                   autofocus
-                  autocomplete="none" autocorrect="off" spellcheck="false"
+                  autocomplete="none"
+                  autocorrect="off"
+                  spellcheck="false"
                 />
                 <span class="rename-ext">{file.name.match(/\.ya?ml$/)?.[0] || '.yaml'}</span>
               </div>
@@ -164,12 +177,7 @@
                 <Check {...ICON} />
               </button>
             {:else}
-              <button
-                class="file-card btn"
-                class:used
-                disabled={used}
-                onclick={() => handleLoad(file)}
-              >
+              <button class="file-card btn" class:used disabled={used} onclick={() => handleLoad(file)}>
                 <span class="file-name">{file.name}</span>
                 <span class="file-date">{formatDate(file.uploadedAt)}</span>
               </button>
@@ -290,9 +298,15 @@
     height: var(--spacing-unit);
     flex-shrink: 0;
   }
-  .delete-btn { color: var(--color-red); }
-  .rename-btn { color: var(--color-text-secondary); }
-  .confirm-btn { color: var(--color-green); }
+  .delete-btn {
+    color: var(--color-red);
+  }
+  .rename-btn {
+    color: var(--color-text-secondary);
+  }
+  .confirm-btn {
+    color: var(--color-green);
+  }
   .rename-card {
     cursor: default;
   }

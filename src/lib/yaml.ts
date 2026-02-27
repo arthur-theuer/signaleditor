@@ -1,11 +1,4 @@
-import type {
-  Editordaten,
-  Eintrag,
-  Import,
-  Abzweigung,
-  AbzweigungPfeil,
-  Dateityp,
-} from './types';
+import type { Editordaten, Eintrag, Import, Abzweigung, AbzweigungPfeil, Dateityp } from './types';
 import {
   isSignaleintrag,
   isNotizeintrag,
@@ -102,7 +95,10 @@ export function parseYAMLContent(content: string): Editordaten {
   for (let i = 0; i < lines.length; i++) {
     const trimmed = lines[i].trim();
     if (trimmed === '' || trimmed.startsWith('#')) continue;
-    if (trimmed === 'signale:') { signaleStartIdx = i + 1; break; }
+    if (trimmed === 'signale:') {
+      signaleStartIdx = i + 1;
+      break;
+    }
 
     const match = trimmed.match(/^(\w+):\s*(.*)$/);
     if (match) {
@@ -117,29 +113,30 @@ export function parseYAMLContent(content: string): Editordaten {
     return parseLegacyYAML(content);
   }
 
-  const result: Editordaten = typ === 'strecke'
-    ? {
-        typ: 'strecke',
-        meta: {
-          strecke: meta['strecke'] || '',
-          von: meta['von'] || '',
-          nach: meta['nach'] || '',
-          via: meta['via'] || '',
-          name: meta['name'] || '',
-        },
-        signale: [],
-      }
-    : {
-        typ: 'route',
-        meta: {
-          linie: meta['linie'] || '',
-          von: meta['von'] || '',
-          nach: meta['nach'] || '',
-          via: meta['via'] || '',
-          name: meta['name'] || '',
-        },
-        signale: [],
-      };
+  const result: Editordaten =
+    typ === 'strecke'
+      ? {
+          typ: 'strecke',
+          meta: {
+            strecke: meta['strecke'] || '',
+            von: meta['von'] || '',
+            nach: meta['nach'] || '',
+            via: meta['via'] || '',
+            name: meta['name'] || '',
+          },
+          signale: [],
+        }
+      : {
+          typ: 'route',
+          meta: {
+            linie: meta['linie'] || '',
+            von: meta['von'] || '',
+            nach: meta['nach'] || '',
+            via: meta['via'] || '',
+            name: meta['name'] || '',
+          },
+          signale: [],
+        };
 
   let currentSignal: Record<string, any> | null = null;
 
@@ -193,7 +190,7 @@ function parseSignalField(trimmed: string, currentSignal: Record<string, any>): 
     const abzweigung: Abzweigung = {
       strecke: getVal('strecke'),
       richtung: vonVal || nachVal,
-      von_nach: vonVal ? 'von' : (nachVal ? 'nach' : ''),
+      von_nach: vonVal ? 'von' : nachVal ? 'nach' : '',
       links,
       rechts,
     };
@@ -228,8 +225,16 @@ function parseLegacyYAML(content: string): Editordaten {
     const trimmed = line.trim();
     if (trimmed === '' || trimmed.startsWith('#')) continue;
 
-    if (trimmed === 'strecke:') { inStrecke = true; inSignale = false; continue; }
-    if (trimmed === 'signale:') { inSignale = true; inStrecke = false; continue; }
+    if (trimmed === 'strecke:') {
+      inStrecke = true;
+      inSignale = false;
+      continue;
+    }
+    if (trimmed === 'signale:') {
+      inSignale = true;
+      inStrecke = false;
+      continue;
+    }
 
     if (inStrecke) {
       const match = trimmed.match(/^(\w+):\s*(.*)$/);
@@ -243,8 +248,7 @@ function parseLegacyYAML(content: string): Editordaten {
             result.meta.von = parts[1].toUpperCase();
             result.meta.nach = parts[parts.length - 1].toUpperCase();
           }
-        }
-        else if (key === 'name') result.meta.name = value;
+        } else if (key === 'name') result.meta.name = value;
         else if (key === 'linie') result.meta.linie = value;
       }
     }

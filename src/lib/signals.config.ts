@@ -137,44 +137,31 @@ const REGISTRY: SignalDef[] = [
 
 // --- Derived exports (preserve existing API) ---
 
-export const HAUPTSIGNAL_ENUM = REGISTRY
-  .filter(s => s.kind === 'haupt')
-  .map(s => s.name) as readonly string[];
+export const HAUPTSIGNAL_ENUM = REGISTRY.filter((s) => s.kind === 'haupt').map((s) => s.name) as readonly string[];
 
-export const VORSIGNAL_ENUM = REGISTRY
-  .filter(s => s.kind === 'vor')
-  .map(s => s.name) as readonly string[];
+export const VORSIGNAL_ENUM = REGISTRY.filter((s) => s.kind === 'vor').map((s) => s.name) as readonly string[];
 
 export const SIGNAL_ENUM = [
   ...VORSIGNAL_ENUM,
-  ...REGISTRY.filter(s => s.kind === 'wdh').map(s => s.name),
+  ...REGISTRY.filter((s) => s.kind === 'wdh').map((s) => s.name),
   ...HAUPTSIGNAL_ENUM,
 ] as readonly string[];
 
-export const SIGNAL_ABBREV: Record<string, string> = Object.fromEntries(
-  REGISTRY.map(s => [s.name, s.abbrev])
-);
+export const SIGNAL_ABBREV: Record<string, string> = Object.fromEntries(REGISTRY.map((s) => [s.name, s.abbrev]));
 
 export const SIGNAL_SHORT: Record<string, string> = Object.fromEntries(
-  REGISTRY.filter(s => s.short).map(s => [s.name, s.short!])
+  REGISTRY.filter((s) => s.short).map((s) => [s.name, s.short!]),
 );
 
-export const REQUIRES_NAME: string[] = REGISTRY
-  .filter(s => s.needsName)
-  .map(s => s.name);
+export const REQUIRES_NAME: string[] = REGISTRY.filter((s) => s.needsName).map((s) => s.name);
 
-export const REQUIRES_STATION_SEARCH: string[] = REGISTRY
-  .filter(s => s.needsStationSearch)
-  .map(s => s.name);
+export const REQUIRES_STATION_SEARCH: string[] = REGISTRY.filter((s) => s.needsStationSearch).map((s) => s.name);
 
-export const REQUIRES_BAHNHOF: string[] = REGISTRY
-  .filter(s => s.needsBahnhof)
-  .map(s => s.name);
+export const REQUIRES_BAHNHOF: string[] = REGISTRY.filter((s) => s.needsBahnhof).map((s) => s.name);
 
-export const VORSIGNAL_TO_HAUPTSIGNAL: Record<string, { signal: string; keepName: boolean }> =
-  Object.fromEntries(
-    REGISTRY.filter(s => s.hauptsignal).map(s => [s.name, s.hauptsignal!])
-  );
+export const VORSIGNAL_TO_HAUPTSIGNAL: Record<string, { signal: string; keepName: boolean }> = Object.fromEntries(
+  REGISTRY.filter((s) => s.hauptsignal).map((s) => [s.name, s.hauptsignal!]),
+);
 
 /**
  * Ordered keyword→typ pairs for substring matching in erkenneSignaltyp.
@@ -195,5 +182,5 @@ export const SIGNALTYPEN: [string, string][] = (() => {
 })();
 
 export const MELDUNGEN: Record<string, string> = Object.fromEntries(
-  REGISTRY.map(s => [s.meldung.typ, s.meldung.text])
+  REGISTRY.map((s) => [s.meldung.typ, s.meldung.text]),
 );
