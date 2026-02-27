@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { CirclePlus } from 'lucide-svelte';
+  import { ICON } from '../lib/constants';
   import Plusleiste from './Plusleiste.svelte';
 
   let {
@@ -46,7 +48,10 @@
       onAddImport={onInsertImport}
     />
   {:else}
-    <div class="insert-line" onclick={() => (open = true)}></div>
+    <div class="insert-trigger" onclick={() => (open = true)}>
+      <div class="insert-line"></div>
+      <div class="insert-btn"><CirclePlus {...ICON} /></div>
+    </div>
   {/if}
 </div>
 
@@ -59,19 +64,37 @@
   .insert-zone.open {
     height: auto;
   }
+  .insert-trigger {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -10px;
+    height: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
   .insert-line {
     position: absolute;
     left: var(--spacing-card);
     right: var(--spacing-card);
-    top: -1px;
     height: 2px;
     border-radius: 1px;
-    cursor: pointer;
-    opacity: 0;
     background: var(--color-focus);
+    opacity: 0;
     transition: opacity 0.15s;
   }
-  .insert-zone:hover .insert-line {
+  .insert-btn {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-focus);
+    opacity: 0;
+    transition: opacity 0.15s;
+    line-height: 0;
+  }
+  .insert-trigger:hover .insert-line,
+  .insert-trigger:hover .insert-btn {
     opacity: 1;
   }
 </style>
