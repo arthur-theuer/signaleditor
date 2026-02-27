@@ -70,12 +70,9 @@
     position: absolute;
     left: 0;
     right: 0;
-    top: -10px;
-    height: 20px;
+    top: calc(-1 * var(--spacing-half-card));
+    height: var(--spacing-card);
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    outline: 1px solid red;
   }
   @media (max-width: 639px) {
     .insert-trigger {
@@ -86,22 +83,26 @@
     position: absolute;
     left: var(--inset-left);
     right: var(--inset-right);
+    top: 50%;
+    transform: translateY(-50%);
     height: 2px;
     border-radius: 1px;
     background: var(--color-focus);
     opacity: 0;
     transition: opacity 0.15s;
-    outline: 1px solid red;
   }
   .insert-btn {
     position: absolute;
     left: calc(var(--inset-left) + (100% - var(--inset-left) - var(--inset-right)) / 2);
-    transform: translateX(-50%);
+    top: 50%;
+    transform: translate(-50%, -50%);
     color: var(--color-focus);
+    background: var(--color-bg);
+    border-radius: 50%;
     opacity: 0;
     transition: opacity 0.15s;
     line-height: 0;
-    outline: 1px solid red;
+    padding: 1px;
   }
   .insert-trigger:hover .insert-line,
   .insert-trigger:hover .insert-btn {
