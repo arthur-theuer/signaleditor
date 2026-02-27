@@ -67,10 +67,16 @@
   let showBahnhof = $derived(needsBahnhof && bahnhofRevealed);
   let shortLabel = $derived(showBahnhof ? (SIGNAL_SHORT[base] ?? abbrev(base)) : abbrev(base));
 
+  let suppressBlur = false;
+
   function handleKeydown(e: KeyboardEvent) {
     const result = typeAhead.handleKeydown(e);
     if (result === null) return;
-    const scrollY = window.scrollY;
+    // Blur before state change so the browser has no focused element to scroll to
+    const input = e.target as HTMLInputElement;
+    suppressBlur = true;
+    input.blur();
+    suppressBlur = false;
     if (result === '') {
       value = '';
       bahnhofRevealed = false;
@@ -78,12 +84,14 @@
     } else {
       setSignal(result);
     }
-    // Restore scroll after browser processes layout changes from the reactive update
+    // Re-focus after DOM update without scrolling
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        window.scrollTo({ top: scrollY });
-      });
+      input.focus({ preventScroll: true });
     });
+  }
+
+  function handleBlur() {
+    if (!suppressBlur) typeAhead.reset();
   }
 
   function handleNameChange(newName: string) {
@@ -117,7 +125,7 @@
         placeholder={disabled ? '' : placeholder}
         onkeydown={handleKeydown}
         onfocus={handleSignalFocus}
-        onblur={typeAhead.reset}
+        onblur={handleBlur}
         tabindex={disabled ? -1 : 0}
         autocomplete="none"
         autocorrect="off"
