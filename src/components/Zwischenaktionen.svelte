@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { DiamondPlus, SquarePen, Share2, Crosshair, FilePlus } from 'lucide-svelte';
-  import { ICON } from '../lib/constants';
+  import Plusleiste from './Plusleiste.svelte';
 
   let {
     onInsertSignal,
@@ -15,26 +14,40 @@
     onInsertKnoten: () => void;
     onInsertImport: () => void;
   } = $props();
+
+  let open = $state(false);
+  let zoneEl: HTMLDivElement;
+
+  $effect(() => {
+    if (!open) return;
+    function handleClick(e: MouseEvent) {
+      if (!zoneEl.contains(e.target as Node)) open = false;
+    }
+    function handleKeydown(e: KeyboardEvent) {
+      if (e.key === 'Escape') open = false;
+    }
+    document.addEventListener('click', handleClick, true);
+    document.addEventListener('keydown', handleKeydown);
+    return () => {
+      document.removeEventListener('click', handleClick, true);
+      document.removeEventListener('keydown', handleKeydown);
+    };
+  });
 </script>
 
-<div class="insert-zone">
-  <div class="insert-zone-target">
-    <button class="insert-signal btn" onclick={onInsertSignal} tabindex={-1} title="Signal einfügen"
-      ><DiamondPlus {...ICON} /></button
-    >
-    <button class="insert-note btn" onclick={onInsertNotiz} tabindex={-1} title="Notiz einfügen"
-      ><SquarePen {...ICON} /></button
-    >
-    <button class="insert-abzweigung btn" onclick={onInsertAbzweigung} tabindex={-1} title="Abzweigung einfügen"
-      ><Share2 {...ICON} /></button
-    >
-    <button class="insert-knoten btn" onclick={onInsertKnoten} tabindex={-1} title="Knoten einfügen"
-      ><Crosshair {...ICON} /></button
-    >
-    <button class="insert-import btn" onclick={onInsertImport} tabindex={-1} title="Import einfügen"
-      ><FilePlus {...ICON} /></button
-    >
-  </div>
+<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+<div class="insert-zone" class:open bind:this={zoneEl}>
+  {#if open}
+    <Plusleiste
+      onAddSignal={onInsertSignal}
+      onAddNotiz={onInsertNotiz}
+      onAddAbzweigung={onInsertAbzweigung}
+      onAddKnoten={onInsertKnoten}
+      onAddImport={onInsertImport}
+    />
+  {:else}
+    <div class="insert-line" onclick={() => (open = true)}></div>
+  {/if}
 </div>
 
 <style>
@@ -43,48 +56,22 @@
     height: 0;
     z-index: 4;
   }
-  .insert-zone-target {
+  .insert-zone.open {
+    height: auto;
+  }
+  .insert-line {
     position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: var(--spacing-unit);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-card);
-  }
-  /* Extends .btn — hidden until parent hover */
-  .insert-zone-target button {
+    left: var(--spacing-card);
+    right: var(--spacing-card);
+    top: -1px;
+    height: 2px;
+    border-radius: 1px;
+    cursor: pointer;
     opacity: 0;
-    pointer-events: none;
-    width: var(--spacing-unit);
-    height: var(--spacing-unit);
+    background: var(--color-focus);
+    transition: opacity 0.15s;
   }
-  .insert-zone-target:hover button {
+  .insert-zone:hover .insert-line {
     opacity: 1;
-    pointer-events: auto;
-  }
-  .insert-zone-target button:focus {
-    outline: none;
-  }
-  .insert-signal {
-    background: var(--color-bg-raised);
-    color: var(--color-text-secondary);
-  }
-  .insert-note {
-    background: var(--color-highlight);
-    color: var(--color-highlight-text);
-  }
-  .insert-abzweigung {
-    background: var(--color-abzweigung);
-    color: var(--color-abzweigung-text);
-  }
-  .insert-knoten {
-    background: var(--color-knoten);
-    color: var(--color-knoten-text);
-  }
-  .insert-import {
-    background: var(--color-import);
-    color: var(--color-import-text);
   }
 </style>
