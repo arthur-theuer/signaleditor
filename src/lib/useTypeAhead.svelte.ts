@@ -40,7 +40,7 @@ export class TypeAhead {
 
   private startCooldown() {
     clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => this.reset(), 1000);
+    this.timeout = setTimeout(() => this.reset(), 2000);
   }
 
   /**
