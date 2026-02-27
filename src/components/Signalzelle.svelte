@@ -127,7 +127,7 @@
         onfocus={handleSignalFocus}
         onblur={handleBlur}
         tabindex={disabled ? -1 : 0}
-        autocomplete="none"
+        autocomplete="off"
         autocorrect="off"
         spellcheck="false"
       />

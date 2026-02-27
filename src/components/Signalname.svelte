@@ -63,7 +63,7 @@
         value={stationName}
         oninput={handleNameInput}
         placeholder="Name"
-        autocomplete="none"
+        autocomplete="off"
         autocorrect="off"
         spellcheck="false"
       />
@@ -80,7 +80,7 @@
       oninput={handleBahnhofInput}
       onfocus={handleBahnhofFocus}
       placeholder="Kurzname"
-      autocomplete="none"
+      autocomplete="off"
       autocorrect="off"
       spellcheck="false"
     />

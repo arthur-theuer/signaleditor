@@ -137,7 +137,7 @@ function restoreFocus(info: FocusInfo): void {
       if (row) el = row.querySelector<HTMLElement>(info.fieldSelector);
     }
     if (el) {
-      el.focus();
+      el.focus({ preventScroll: true });
       if (info.selectionStart !== undefined && 'setSelectionRange' in el) {
         (el as HTMLInputElement).setSelectionRange(info.selectionStart, info.selectionEnd ?? info.selectionStart);
       }

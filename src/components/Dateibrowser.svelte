@@ -18,7 +18,8 @@
     usedFiles?: Set<string>;
   } = $props();
 
-  let activeTab: StoragePrefix = $state(lockedTab ?? 'strecken');
+  const initialTab = lockedTab ?? 'strecken';
+  let activeTab: StoragePrefix = $state(initialTab);
   let files: FileInfo[] = $state([]);
   let loading = $state(false);
   let error: string | null = $state(null);
@@ -123,6 +124,7 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
+<!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
 <div class="dateibrowser-overlay" onclick={handleBackdropClick}>
   <div class="dateibrowser">
     <div class="tab-header">
@@ -155,6 +157,7 @@
           <div class="file-row">
             {#if renamingFile === file.name}
               <div class="file-card rename-card">
+                <!-- svelte-ignore a11y_autofocus -->
                 <input
                   class="rename-input"
                   type="text"
@@ -167,7 +170,7 @@
                     }
                   }}
                   autofocus
-                  autocomplete="none"
+                  autocomplete="off"
                   autocorrect="off"
                   spellcheck="false"
                 />

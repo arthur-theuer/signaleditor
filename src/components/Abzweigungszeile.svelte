@@ -72,7 +72,7 @@
     <button
       class="abzweigung-btn"
       onclick={(e) => {
-        (e.currentTarget as HTMLElement).focus();
+        (e.currentTarget as HTMLElement).focus({ preventScroll: true });
         cycleArrow('links');
       }}
       onkeydown={(e) => handleArrowKeydown(e, 'links')}
@@ -91,7 +91,7 @@
       bind:value={eintrag.abzweigung.strecke}
       oninput={onchange}
       placeholder="Nummer"
-      autocomplete="none"
+      autocomplete="off"
       autocorrect="off"
       spellcheck="false"
     />
@@ -100,7 +100,7 @@
     <button
       class="abzweigung-btn"
       onclick={(e) => {
-        (e.currentTarget as HTMLElement).focus();
+        (e.currentTarget as HTMLElement).focus({ preventScroll: true });
         cycleVonNach(1);
       }}
       onkeydown={handleVonNachKeydown}
@@ -119,7 +119,7 @@
       bind:value={eintrag.abzweigung.richtung}
       oninput={onchange}
       placeholder="Richtung"
-      autocomplete="none"
+      autocomplete="off"
       autocorrect="off"
       spellcheck="false"
     />
@@ -128,7 +128,7 @@
     <button
       class="abzweigung-btn"
       onclick={(e) => {
-        (e.currentTarget as HTMLElement).focus();
+        (e.currentTarget as HTMLElement).focus({ preventScroll: true });
         cycleArrow('rechts');
       }}
       onkeydown={(e) => handleArrowKeydown(e, 'rechts')}

@@ -63,7 +63,7 @@
       ),
     ).filter((el) => el.offsetParent !== null);
     const idx = all.indexOf(searchInput);
-    if (idx >= 0 && idx < all.length - 1) all[idx + 1].focus();
+    if (idx >= 0 && idx < all.length - 1) all[idx + 1].focus({ preventScroll: true });
   }
 
   function handleKeydown(e: KeyboardEvent) {
@@ -112,7 +112,7 @@
         onblur={handleBlur}
         onkeydown={handleKeydown}
         {placeholder}
-        autocomplete="none"
+        autocomplete="off"
         autocorrect="off"
         spellcheck="false"
       />
@@ -136,7 +136,7 @@
     onblur={handleBlur}
     onkeydown={handleKeydown}
     {placeholder}
-    autocomplete="none"
+    autocomplete="off"
     autocorrect="off"
     spellcheck="false"
   />

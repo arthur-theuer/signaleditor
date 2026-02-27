@@ -9,7 +9,7 @@
     onclick,
     children,
   }: {
-    open: boolean;
+    open?: boolean;
     unlocked?: boolean;
     onsubmit: (value: string) => void;
     onclick: () => void;
@@ -25,13 +25,13 @@
     value = '';
     open = true;
     await tick();
-    inputEl?.focus();
+    inputEl?.focus({ preventScroll: true });
   }
 
   export function showError() {
     error = true;
     value = '';
-    inputEl?.focus();
+    inputEl?.focus({ preventScroll: true });
   }
 
   export function hide() {
@@ -65,7 +65,7 @@
         if (e.key === 'Escape') cancel();
       }}
       onblur={cancel}
-      autocomplete="none"
+      autocomplete="off"
       autocorrect="off"
       spellcheck="false"
     />

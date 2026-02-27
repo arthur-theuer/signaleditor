@@ -127,6 +127,7 @@
   }
 </script>
 
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
   class="row-cell import-cell import-file-cell"
   class:has-file={hasFile}

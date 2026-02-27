@@ -209,7 +209,7 @@
     const target = firstRow.querySelector<HTMLElement>(
       showKm ? '.km-input' : '.signal-input, .note-input, .abzweigung-btn, .knoten-input, .import-folder-btn',
     );
-    if (target) target.focus();
+    if (target) target.focus({ preventScroll: true });
   }
 
   function handleExportMeldungen() {

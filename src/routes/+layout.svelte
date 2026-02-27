@@ -18,7 +18,7 @@
       const wrapper = target.closest('.hl-field');
       if (!wrapper) return;
       const input = wrapper.querySelector<HTMLElement>('input, select, textarea, button');
-      if (input) input.focus();
+      if (input) input.focus({ preventScroll: true });
     }
     document.addEventListener('click', handleClick);
     return () => document.removeEventListener('click', handleClick);
