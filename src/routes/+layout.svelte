@@ -4,6 +4,7 @@
   import type { Snippet } from 'svelte';
   import { inject } from '@vercel/analytics';
   import { injectSpeedInsights } from '@vercel/speed-insights';
+  import { focusWithoutScroll } from '../lib/focus';
 
   inject();
   injectSpeedInsights();
@@ -18,7 +19,7 @@
       const wrapper = target.closest('.hl-field');
       if (!wrapper) return;
       const input = wrapper.querySelector<HTMLElement>('input, select, textarea, button');
-      if (input) input.focus({ preventScroll: true });
+      focusWithoutScroll(input);
     }
     document.addEventListener('click', handleClick);
     return () => document.removeEventListener('click', handleClick);

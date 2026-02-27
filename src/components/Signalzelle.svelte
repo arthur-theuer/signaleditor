@@ -3,6 +3,7 @@
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
   import { TypeAhead } from '../lib/useTypeAhead.svelte';
   import { ICON, SIGNAL_ABBREV, SIGNAL_SHORT } from '../lib/constants';
+  import { withStableScroll } from '../lib/focus';
   import Signalname from './Signalname.svelte';
   import type { Eintrag } from '../lib/types';
 
@@ -67,31 +68,18 @@
   let showBahnhof = $derived(needsBahnhof && bahnhofRevealed);
   let shortLabel = $derived(showBahnhof ? (SIGNAL_SHORT[base] ?? abbrev(base)) : abbrev(base));
 
-  let suppressBlur = false;
-
   function handleKeydown(e: KeyboardEvent) {
     const result = typeAhead.handleKeydown(e);
     if (result === null) return;
-    // Blur before state change so the browser has no focused element to scroll to
-    const input = e.target as HTMLInputElement;
-    suppressBlur = true;
-    input.blur();
-    suppressBlur = false;
-    if (result === '') {
-      value = '';
-      bahnhofRevealed = false;
-      onchange();
-    } else {
-      setSignal(result);
-    }
-    // Re-focus after DOM update without scrolling
-    requestAnimationFrame(() => {
-      input.focus({ preventScroll: true });
+    withStableScroll(() => {
+      if (result === '') {
+        value = '';
+        bahnhofRevealed = false;
+        onchange();
+      } else {
+        setSignal(result);
+      }
     });
-  }
-
-  function handleBlur() {
-    if (!suppressBlur) typeAhead.reset();
   }
 
   function handleNameChange(newName: string) {
@@ -125,7 +113,7 @@
         placeholder={disabled ? '' : placeholder}
         onkeydown={handleKeydown}
         onfocus={handleSignalFocus}
-        onblur={handleBlur}
+        onblur={typeAhead.reset}
         tabindex={disabled ? -1 : 0}
         autocomplete="off"
         autocorrect="off"

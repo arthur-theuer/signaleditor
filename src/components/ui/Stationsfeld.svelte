@@ -2,6 +2,7 @@
   import { Search } from 'lucide-svelte';
   import { ICON, STATIONEN } from '../../lib/constants';
   import { search, highlight, codeForName, type Result } from '../../lib/station-search';
+  import { focusWithoutScroll } from '../../lib/focus';
 
   let {
     mode,
@@ -63,7 +64,7 @@
       ),
     ).filter((el) => el.offsetParent !== null);
     const idx = all.indexOf(searchInput);
-    if (idx >= 0 && idx < all.length - 1) all[idx + 1].focus({ preventScroll: true });
+    if (idx >= 0 && idx < all.length - 1) focusWithoutScroll(all[idx + 1]);
   }
 
   function handleKeydown(e: KeyboardEvent) {

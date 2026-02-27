@@ -16,6 +16,7 @@
     isImporteintrag,
   } from '../lib/types';
   import { autofillRow, isRowEmpty } from '../lib/signals';
+  import { focusWithoutScroll } from '../lib/focus';
   import Signalzeile from './Signalzeile.svelte';
   import Notizzeile from './Notizzeile.svelte';
   import Knotenzeile from './Knotenzeile.svelte';
@@ -188,9 +189,9 @@
     if (!rowEl) return;
     if (last) {
       const fields = getFocusableFields(rowEl);
-      if (fields.length > 0) fields[fields.length - 1].focus({ preventScroll: true });
+      if (fields.length > 0) focusWithoutScroll(fields[fields.length - 1]);
     } else {
-      getFirstFieldInRow(rowEl)?.focus({ preventScroll: true });
+      focusWithoutScroll(getFirstFieldInRow(rowEl));
     }
     scrollRowIntoView(rowIdx);
   }
@@ -291,7 +292,7 @@
       } else {
         // Tab on middle field → next field in same row
         e.preventDefault();
-        fields[currentFieldIdx + 1].focus({ preventScroll: true });
+        focusWithoutScroll(fields[currentFieldIdx + 1]);
         scrollRowIntoView(rowIdx);
       }
     } else {
@@ -304,7 +305,7 @@
       } else {
         // Shift+Tab on middle field → previous field in same row
         e.preventDefault();
-        fields[currentFieldIdx - 1].focus({ preventScroll: true });
+        focusWithoutScroll(fields[currentFieldIdx - 1]);
         scrollRowIntoView(rowIdx);
       }
     }

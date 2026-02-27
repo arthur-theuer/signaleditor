@@ -8,6 +8,7 @@
   import { generateYAML } from './lib/yaml';
   import { downloadMeldungenHTML } from './lib/reports';
   import { isLoggedIn, login, logout } from './lib/auth.svelte';
+  import { focusWithoutScroll } from './lib/focus';
   import { dateiId, isStreckendaten } from './lib/types';
   import { saveFile, createFile, type StoragePrefix } from './lib/api';
   import { RulerDimensionLine } from 'lucide-svelte';
@@ -209,7 +210,7 @@
     const target = firstRow.querySelector<HTMLElement>(
       showKm ? '.km-input' : '.signal-input, .note-input, .abzweigung-btn, .knoten-input, .import-folder-btn',
     );
-    if (target) target.focus({ preventScroll: true });
+    focusWithoutScroll(target);
   }
 
   function handleExportMeldungen() {

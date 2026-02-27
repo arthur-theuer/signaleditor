@@ -1,4 +1,5 @@
 import type { Editordaten } from './types';
+import { focusWithoutScroll } from './focus';
 
 const MAX_UNDO = 50;
 
@@ -137,7 +138,7 @@ function restoreFocus(info: FocusInfo): void {
       if (row) el = row.querySelector<HTMLElement>(info.fieldSelector);
     }
     if (el) {
-      el.focus({ preventScroll: true });
+      focusWithoutScroll(el);
       if (info.selectionStart !== undefined && 'setSelectionRange' in el) {
         (el as HTMLInputElement).setSelectionRange(info.selectionStart, info.selectionEnd ?? info.selectionStart);
       }

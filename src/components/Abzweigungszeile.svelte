@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Abzweigungseintrag, AbzweigungPfeil } from '../lib/types';
+  import { focusWithoutScroll } from '../lib/focus';
 
   let {
     eintrag = $bindable(),
@@ -72,7 +73,7 @@
     <button
       class="abzweigung-btn"
       onclick={(e) => {
-        (e.currentTarget as HTMLElement).focus({ preventScroll: true });
+        focusWithoutScroll(e.currentTarget as HTMLElement);
         cycleArrow('links');
       }}
       onkeydown={(e) => handleArrowKeydown(e, 'links')}
@@ -100,7 +101,7 @@
     <button
       class="abzweigung-btn"
       onclick={(e) => {
-        (e.currentTarget as HTMLElement).focus({ preventScroll: true });
+        focusWithoutScroll(e.currentTarget as HTMLElement);
         cycleVonNach(1);
       }}
       onkeydown={handleVonNachKeydown}
@@ -128,7 +129,7 @@
     <button
       class="abzweigung-btn"
       onclick={(e) => {
-        (e.currentTarget as HTMLElement).focus({ preventScroll: true });
+        focusWithoutScroll(e.currentTarget as HTMLElement);
         cycleArrow('rechts');
       }}
       onkeydown={(e) => handleArrowKeydown(e, 'rechts')}

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { tick } from 'svelte';
   import type { Snippet } from 'svelte';
+  import { focusWithoutScroll } from '../../lib/focus';
 
   let {
     open = $bindable(false),
@@ -25,13 +26,13 @@
     value = '';
     open = true;
     await tick();
-    inputEl?.focus({ preventScroll: true });
+    focusWithoutScroll(inputEl);
   }
 
   export function showError() {
     error = true;
     value = '';
-    inputEl?.focus({ preventScroll: true });
+    focusWithoutScroll(inputEl);
   }
 
   export function hide() {
