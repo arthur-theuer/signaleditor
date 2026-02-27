@@ -50,7 +50,7 @@
   {:else}
     <div class="insert-trigger" onclick={() => (open = true)}>
       <div class="insert-line"></div>
-      <div class="insert-btn"><CirclePlus {...ICON} /></div>
+      <div class="insert-btn"><CirclePlus size={ICON.size} strokeWidth={3} /></div>
     </div>
   {/if}
 </div>
@@ -65,6 +65,7 @@
     height: auto;
   }
   .insert-trigger {
+    --field-inset: calc(2 * var(--spacing-card) + var(--spacing-unit));
     position: absolute;
     left: 0;
     right: 0;
@@ -76,8 +77,8 @@
   }
   .insert-line {
     position: absolute;
-    left: var(--spacing-card);
-    right: var(--spacing-card);
+    left: var(--field-inset);
+    right: var(--field-inset);
     height: 2px;
     border-radius: 1px;
     background: var(--color-focus);
@@ -89,6 +90,8 @@
     left: 50%;
     transform: translateX(-50%);
     color: var(--color-focus);
+    background: var(--color-bg);
+    border-radius: 50%;
     opacity: 0;
     transition: opacity 0.15s;
     line-height: 0;
