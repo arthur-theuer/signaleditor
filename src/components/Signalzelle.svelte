@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { tick } from 'svelte';
   import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
   import { TypeAhead } from '../lib/useTypeAhead.svelte';
@@ -68,7 +67,7 @@
   let showBahnhof = $derived(needsBahnhof && bahnhofRevealed);
   let shortLabel = $derived(showBahnhof ? (SIGNAL_SHORT[base] ?? abbrev(base)) : abbrev(base));
 
-  async function handleKeydown(e: KeyboardEvent) {
+  function handleKeydown(e: KeyboardEvent) {
     const result = typeAhead.handleKeydown(e);
     if (result === null) return;
     const scrollY = window.scrollY;
@@ -79,8 +78,12 @@
     } else {
       setSignal(result);
     }
-    await tick();
-    window.scrollTo({ top: scrollY });
+    // Restore scroll after browser processes layout changes from the reactive update
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: scrollY });
+      });
+    });
   }
 
   function handleNameChange(newName: string) {
