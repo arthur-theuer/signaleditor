@@ -30,7 +30,7 @@
         {@const seg = m.segments[0]}
         <div class="meldung-row-inner meldung-colored {seg.klasse}">
           <div class="meldung-text">
-            <span class:fett={seg.fett}>{seg.meldung}</span>
+            <span class={{ fett: seg.fett }}>{seg.meldung}</span>
           </div>
         </div>
       {:else}
@@ -39,7 +39,7 @@
           <div class="meldung-text">
             {#each m.segments as seg, si}
               {#if si > 0}<br />{/if}
-              <span class={seg.klasse} class:fett={seg.fett}>{seg.meldung}</span>
+              <span class={[seg.klasse, { fett: seg.fett }]}>{seg.meldung}</span>
             {/each}
           </div>
         </div>

@@ -98,10 +98,7 @@
 </script>
 
 <div
-  class="row-cell"
-  class:has-name={needsName && !disabled}
-  class:has-bahnhof={showBahnhof && !disabled}
-  class:disabled
+  class={['row-cell', { 'has-name': needsName && !disabled, 'has-bahnhof': showBahnhof && !disabled, disabled }]}
 >
   <div class="signal-input-wrapper hl-field">
     <div class="signal-input-slot">
@@ -119,12 +116,12 @@
         autocorrect="off"
         spellcheck="false"
       />
-      <div class="signal-abbrev" class:is-placeholder={!base}>{disabled ? '' : shortLabel || shortPlaceholder}</div>
+      <div class={['signal-abbrev', { 'is-placeholder': !base }]}>{disabled ? '' : shortLabel || shortPlaceholder}</div>
     </div>
     {#if typeAhead.dropdownOpen && typeAhead.fuzzyMatches.length > 1}
       <div class="dropdown">
         {#each typeAhead.fuzzyMatches as match, i}
-          <div class="dropdown-item" class:active={i === typeAhead.dropdownIndex}>{match}</div>
+          <div class={['dropdown-item', { active: i === typeAhead.dropdownIndex }]}>{match}</div>
         {/each}
       </div>
     {/if}
@@ -140,8 +137,7 @@
   />
   {#if isMainSignal && onToggleAlt}
     <button
-      class="alt-toggle-btn"
-      class:active={isAltActive}
+      class={['alt-toggle-btn', { active: isAltActive }]}
       onclick={onToggleAlt}
       title="Alternativsignal"
       tabindex={-1}><Diff {...ICON} /></button

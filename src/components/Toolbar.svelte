@@ -88,7 +88,7 @@
   const btnGroup = 'btn-group';
 </script>
 
-<div class="header" class:logged-out={!loggedIn}>
+<div class={['header', { 'logged-out': !loggedIn }]}>
   <h1 class="app-title">Signaleditor</h1>
 
   <!-- Group: History -->
@@ -130,12 +130,11 @@
 
   <!-- Group: View toggles (hidden at sm) -->
   <div class="toggle-group">
-    <button class="tb-btn toggle-btn btn" class:active={showYaml} onclick={onToggleYaml} title="Signaldatei">
+    <button class={['tb-btn toggle-btn btn', { active: showYaml }]} onclick={onToggleYaml} title="Signaldatei">
       <Code {...ICON} />
     </button>
     <button
-      class="tb-btn toggle-btn btn"
-      class:active={showMeldungen}
+      class={['tb-btn toggle-btn btn', { active: showMeldungen }]}
       disabled={!meldungenAllowed}
       onclick={onToggleMeldungen}
       title="Meldungen"
@@ -149,7 +148,7 @@
     <div class="separator"></div>
 
     <div class={btnGroup}>
-      <button class="tb-btn dateien-btn btn" class:active={showDateien} onclick={onToggleDateien} title="Dateien">
+      <button class={['tb-btn dateien-btn btn', { active: showDateien }]} onclick={onToggleDateien} title="Dateien">
         {#if currentFileName}
           <FolderOpen {...ICON} />
         {:else}
@@ -163,10 +162,7 @@
 
     {#if currentFileName}
       <span
-        class="file-indicator"
-        class:dirty={saveStatus === 'dirty'}
-        class:saving={saveStatus === 'saving'}
-        class:saved={saveStatus === 'saved'}
+        class={['file-indicator', { dirty: saveStatus === 'dirty', saving: saveStatus === 'saving', saved: saveStatus === 'saved' }]}
       >
         <span class="status-dot"></span>
         <span class="file-name">{currentFileName}</span>

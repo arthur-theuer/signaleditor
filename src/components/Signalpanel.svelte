@@ -347,8 +347,7 @@
       onInsertImport={() => insertAt(idx, makeImport(idx))}
     />
     <div
-      class="signal-row"
-      class:drag-ready={dragHandle === idx}
+      class={['signal-row', { 'drag-ready': dragHandle === idx }]}
       data-row-index={idx}
       draggable={dragHandle === idx}
       ondragstart={(e: DragEvent) => handleDragStart(e, idx)}

@@ -129,16 +129,12 @@
   <div class="dateibrowser">
     <div class="tab-header">
       <button
-        class="tab-btn btn"
-        class:active={activeTab === 'strecken'}
-        class:disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
+        class={['tab-btn btn', { active: activeTab === 'strecken', disabled: lockedTab !== undefined && lockedTab !== 'strecken' }]}
         disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
         onclick={() => (activeTab = 'strecken')}>Strecken</button
       >
       <button
-        class="tab-btn btn"
-        class:active={activeTab === 'routen'}
-        class:disabled={lockedTab !== undefined && lockedTab !== 'routen'}
+        class={['tab-btn btn', { active: activeTab === 'routen', disabled: lockedTab !== undefined && lockedTab !== 'routen' }]}
         disabled={lockedTab !== undefined && lockedTab !== 'routen'}
         onclick={() => (activeTab = 'routen')}>Routen</button
       >
@@ -180,7 +176,7 @@
                 <Check {...ICON} />
               </button>
             {:else}
-              <button class="file-card btn" class:used disabled={used} onclick={() => handleLoad(file)}>
+              <button class={['file-card btn', { used }]} disabled={used} onclick={() => handleLoad(file)}>
                 <span class="file-name">{file.name}</span>
                 <span class="file-date">{formatDate(file.uploadedAt)}</span>
               </button>

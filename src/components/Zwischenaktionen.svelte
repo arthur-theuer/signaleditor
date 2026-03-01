@@ -1,5 +1,6 @@
 <script lang="ts">
   import { CirclePlus } from 'lucide-svelte';
+  import { on } from 'svelte/events';
   import { ICON } from '../lib/constants';
   import Plusleiste from './Plusleiste.svelte';
 
@@ -22,18 +23,13 @@
 
   $effect(() => {
     if (!open) return;
-    function handleClick(e: MouseEvent) {
+    const offClick = on(document, 'click', (e) => {
       if (!zoneEl.contains(e.target as Node)) open = false;
-    }
-    function handleKeydown(e: KeyboardEvent) {
+    }, { capture: true });
+    const offKey = on(document, 'keydown', (e) => {
       if (e.key === 'Escape') open = false;
-    }
-    document.addEventListener('click', handleClick, true);
-    document.addEventListener('keydown', handleKeydown);
-    return () => {
-      document.removeEventListener('click', handleClick, true);
-      document.removeEventListener('keydown', handleKeydown);
-    };
+    });
+    return () => { offClick(); offKey(); };
   });
 </script>
 

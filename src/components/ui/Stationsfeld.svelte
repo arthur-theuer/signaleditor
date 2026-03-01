@@ -97,13 +97,12 @@
 
 {#if mode === 'code'}
   <div class="station-field">
-    <span class="code-col" class:has-code={valid}>{value || 'Code'}</span>
+    <span class={['code-col', { 'has-code': valid }]}>{value || 'Code'}</span>
     <div class="name-col">
       <input
         bind:this={searchInput}
         type="text"
-        class="search-field"
-        class:has-value={valid && !open}
+        class={['search-field', { 'has-value': valid && !open }]}
         value={open ? query : resolvedName || ''}
         oninput={(e) => {
           query = (e.target as HTMLInputElement).value;
@@ -126,8 +125,7 @@
   <input
     bind:this={searchInput}
     type="text"
-    class="search-field name-input"
-    class:has-value={valid && !open}
+    class={['search-field name-input', { 'has-value': valid && !open }]}
     value={open ? query : value || ''}
     oninput={(e) => {
       query = (e.target as HTMLInputElement).value;
@@ -146,8 +144,7 @@
   <div class="dropdown">
     {#each results as entry, i}
       <button
-        class="dropdown-item"
-        class:active={i === activeIndex}
+        class={['dropdown-item', { active: i === activeIndex }]}
         onmousedown={() => select(entry)}
         onmouseenter={() => (activeIndex = i)}
         tabindex={-1}

@@ -2,6 +2,7 @@
   import type { Editordaten, Dateityp, Knoteneintrag } from './lib/types';
   import { emptyStreckendaten, emptyRoutendaten, isImporteintrag } from './lib/types';
   import { tick } from 'svelte';
+  import { on } from 'svelte/events';
   import { parseYAMLContent, extractYAMLFromHTML } from './lib/yaml';
   import { History } from './lib/history.svelte';
   import { autoStitchImporte, invalidateImportCache } from './lib/sources';
@@ -109,9 +110,7 @@
 
   // Save undo state when any input receives focus (captures "before edit" state)
   $effect(() => {
-    const handler = () => history.save(data);
-    document.addEventListener('focusin', handler);
-    return () => document.removeEventListener('focusin', handler);
+    return on(document, 'focusin', () => history.save(data));
   });
 
   function handleUndo() {
@@ -221,25 +220,19 @@
 
   // Warn before leaving with unsaved changes
   $effect(() => {
-    const handler = (e: BeforeUnloadEvent) => {
-      if (dirty) {
-        e.preventDefault();
-      }
-    };
-    window.addEventListener('beforeunload', handler);
-    return () => window.removeEventListener('beforeunload', handler);
+    return on(window, 'beforeunload', (e) => {
+      if (dirty) e.preventDefault();
+    });
   });
 
   // Disable side panels when viewport is too narrow for toggles
   $effect(() => {
     const bp = getComputedStyle(document.documentElement).getPropertyValue('--breakpoint-sm').trim() || '640px';
     const mq = window.matchMedia(`(max-width: ${bp})`);
-    function handle(e: MediaQueryListEvent | MediaQueryList) {
+    panelsAllowed = !mq.matches;
+    return on(mq, 'change', (e) => {
       panelsAllowed = !e.matches;
-    }
-    handle(mq);
-    mq.addEventListener('change', handle);
-    return () => mq.removeEventListener('change', handle);
+    });
   });
 
   // Auto-stitch importe when datei values change
@@ -261,23 +254,21 @@
   }
 
   // Keyboard shortcuts
-  $effect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        if (isLoggedIn()) handleSave();
-      } else if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
-        e.preventDefault();
-        handleUndo();
-      } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
-        e.preventDefault();
-        handleRedo();
-      }
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  });
+  function handleGlobalKeydown(e: KeyboardEvent) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      if (isLoggedIn()) handleSave();
+    } else if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+      e.preventDefault();
+      handleUndo();
+    } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+      e.preventDefault();
+      handleRedo();
+    }
+  }
 </script>
+
+<svelte:window onkeydown={handleGlobalKeydown} />
 
 <Toolbar
   {showYaml}

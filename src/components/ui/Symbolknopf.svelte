@@ -32,11 +32,7 @@
 
 <button
   type="button"
-  class="symbolknopf btn {color} {extraClass}"
-  class:bordered
-  class:active
-  class:wide
-  class:has-label={!!label}
+  class={['symbolknopf btn', color, extraClass, { bordered, active, wide, 'has-label': !!label }]}
   {onclick}
   {title}
   {disabled}

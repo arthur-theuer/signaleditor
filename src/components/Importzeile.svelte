@@ -129,8 +129,7 @@
 
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
-  class="row-cell import-cell import-file-cell"
-  class:has-file={hasFile}
+  class={['row-cell import-cell import-file-cell', { 'has-file': hasFile }]}
   role={hasFile ? 'button' : undefined}
   tabindex={hasFile ? 0 : undefined}
   onclick={hasFile ? () => (showPicker = true) : undefined}
@@ -159,7 +158,7 @@
     <CloudDownload {...ICON} />
   </button>
 </div>
-<div class="row-cell import-cell import-info-cell" class:empty={!hasFile}>
+<div class={['row-cell import-cell import-info-cell', { empty: !hasFile }]}>
   <div class="import-info">
     {#if resolveResult?.error}
       <span class="import-error">{resolveResult.error}</span>

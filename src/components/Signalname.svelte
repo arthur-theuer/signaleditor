@@ -53,7 +53,7 @@
 </script>
 
 {#if needsName || stationName}
-  <div class="name-wrapper hl-field" class:visible={needsName} class:has-bahnhof={showBahnhof} {onfocusin}>
+  <div class={['name-wrapper hl-field', { visible: needsName, 'has-bahnhof': showBahnhof }]} {onfocusin}>
     {#if useStationSearch}
       <Stationsfeld mode="name" bind:value={stationName} onchange={handleStationChange} placeholder="Name" />
     {:else}

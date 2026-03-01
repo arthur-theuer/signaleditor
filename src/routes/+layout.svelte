@@ -1,6 +1,5 @@
 <script lang="ts">
   import '../app.css';
-  import { onMount } from 'svelte';
   import type { Snippet } from 'svelte';
   import { inject } from '@vercel/analytics';
   import { injectSpeedInsights } from '@vercel/speed-insights';
@@ -12,7 +11,7 @@
   let { children }: { children: Snippet } = $props();
 
   // Click anywhere on an .hl-field to focus its contained input
-  onMount(() => {
+  $effect(() => {
     function handleClick(e: MouseEvent) {
       const target = e.target as HTMLElement;
       if (target.matches('input, select, button, textarea')) return;
