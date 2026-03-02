@@ -172,7 +172,6 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    -webkit-user-select: none;
     user-select: none;
     caret-color: transparent;
   }
@@ -192,7 +191,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    -webkit-user-select: none;
     user-select: none;
   }
   .dropdown-item.active {

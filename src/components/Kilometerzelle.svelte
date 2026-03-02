@@ -4,12 +4,10 @@
   let {
     eintrag = $bindable(),
     prevEintrag,
-    showKm,
     onchange,
   }: {
     eintrag: Eintrag;
     prevEintrag: Eintrag | undefined;
-    showKm: boolean;
     onchange: () => void;
   } = $props();
 
@@ -49,7 +47,7 @@
   }
 </script>
 
-<div class="km-cell" class:visible={showKm}>
+<div class="km-cell">
   <div class="km-cell-inner hl-field">
     <input
       type="text"
@@ -67,16 +65,13 @@
 
 <style>
   .km-cell {
-    display: none;
+    display: flex;
     flex-direction: column;
     background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--radius-card);
     width: calc(1.5 * var(--spacing-unit));
     flex-shrink: 0;
-  }
-  .km-cell.visible {
-    display: flex;
   }
   .km-cell-inner {
     display: flex;

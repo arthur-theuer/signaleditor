@@ -17,6 +17,7 @@
   } from '../lib/types';
   import { autofillRow, isRowEmpty } from '../lib/signals';
   import { focusWithoutScroll } from '../lib/focus';
+  import { DragDrop } from '../lib/useDragDrop.svelte';
   import Signalzeile from './Signalzeile.svelte';
   import Notizzeile from './Notizzeile.svelte';
   import Knotenzeile from './Knotenzeile.svelte';
@@ -49,187 +50,24 @@
   // Per-field-type tier tracking: each row reports a tier (0=full, 1=medium, 2=compact),
   let listEl: HTMLDivElement;
 
-  // Drag-and-drop state
-  let dragIdx: number | null = $state(null);
-  let dropTargetIdx: number | null = $state(null); // insertion index (drop before this row)
-  let indicatorY: number | null = $state(null); // px offset from listEl top
-  let dragHandle: number | null = $state(null);
-
-  function handleDragStart(e: DragEvent, idx: number) {
-    e.dataTransfer!.effectAllowed = 'move';
-    e.dataTransfer!.setData('text/plain', String(idx));
-    requestAnimationFrame(() => {
-      dragIdx = idx;
-    });
-  }
-
-  function handleDragOver(e: DragEvent, idx: number) {
-    if (dragIdx === null || dragIdx === idx) {
-      dropTargetIdx = null;
-      indicatorY = null;
-      return;
-    }
-    e.preventDefault();
-    e.dataTransfer!.dropEffect = 'move';
-    const row = getRowEl(idx);
-    if (!row || !listEl) return;
-    const rowRect = row.getBoundingClientRect();
-    const listRect = listEl.getBoundingClientRect();
-    const midY = rowRect.top + rowRect.height / 2;
-    if (e.clientY < midY) {
-      // Insert before this row — line at top edge of row
-      dropTargetIdx = idx;
-      indicatorY = rowRect.top - listRect.top;
-    } else {
-      // Insert after this row — line at bottom edge of row
-      dropTargetIdx = idx + 1;
-      indicatorY = rowRect.bottom - listRect.top;
-    }
-  }
-
-  function handleDragLeave(e: DragEvent, idx: number) {
-    const row = getRowEl(idx);
-    if (row && !row.contains(e.relatedTarget as Node)) {
-      dropTargetIdx = null;
-      indicatorY = null;
-    }
-  }
-
-  function handleDrop(e: DragEvent) {
-    e.preventDefault();
-    if (dragIdx === null || dropTargetIdx === null) return;
-    let targetIdx = dropTargetIdx;
-    if (targetIdx > dragIdx) targetIdx--;
-    if (targetIdx === dragIdx) {
-      resetDrag();
-      return;
-    }
-    const [moved] = signale.splice(dragIdx, 1);
-    signale.splice(targetIdx, 0, moved);
-    signale = [...signale];
-    reindex();
-    onchange();
-    resetDrag();
-  }
-
-  function handleDragEnd() {
-    resetDrag();
-  }
-
-  function resetDrag() {
-    dragIdx = null;
-    dropTargetIdx = null;
-    indicatorY = null;
-    dragHandle = null;
-    if (touchScrollRAF) cancelAnimationFrame(touchScrollRAF);
-    touchScrollRAF = null;
-  }
-
-  // --- Touch drag-and-drop ---
-  let touchScrollRAF: number | null = null;
-
-  function handleTouchStart(e: TouchEvent, idx: number) {
-    // Long-press not needed — the handle is explicit
-    e.preventDefault();
-    dragIdx = idx;
-    dragHandle = idx;
-  }
-
-  function updateDropTarget(clientY: number) {
-    if (dragIdx === null || !listEl) return;
-    const listRect = listEl.getBoundingClientRect();
-    const rows = listEl.querySelectorAll<HTMLElement>('[data-row-index]');
-    let bestIdx: number | null = null;
-    let bestY: number | null = null;
-
-    for (const row of rows) {
-      const idx = parseInt(row.dataset.rowIndex!);
-      if (idx === dragIdx) continue;
-      const rect = row.getBoundingClientRect();
-      const midY = rect.top + rect.height / 2;
-      if (clientY < midY) {
-        bestIdx = idx;
-        bestY = rect.top - listRect.top;
-        break;
-      }
-      // After this row
-      bestIdx = idx + 1;
-      bestY = rect.bottom - listRect.top;
-    }
-
-    if (bestIdx !== null) {
-      dropTargetIdx = bestIdx;
-      indicatorY = bestY;
-    }
-  }
-
-  function handleTouchMove(e: TouchEvent) {
-    if (dragIdx === null) return;
-    e.preventDefault();
-    const touch = e.touches[0];
-    updateDropTarget(touch.clientY);
-
-    // Auto-scroll when finger is near viewport edges
-    const edgeZone = 48;
-    const speed = 8;
-    if (touchScrollRAF) cancelAnimationFrame(touchScrollRAF);
-
-    const scrollStep = () => {
-      if (dragIdx === null) return;
-      if (touch.clientY < edgeZone) {
-        window.scrollBy(0, -speed);
-        updateDropTarget(touch.clientY);
-        touchScrollRAF = requestAnimationFrame(scrollStep);
-      } else if (touch.clientY > window.innerHeight - edgeZone) {
-        window.scrollBy(0, speed);
-        updateDropTarget(touch.clientY);
-        touchScrollRAF = requestAnimationFrame(scrollStep);
-      }
-    };
-    if (touch.clientY < edgeZone || touch.clientY > window.innerHeight - edgeZone) {
-      touchScrollRAF = requestAnimationFrame(scrollStep);
-    }
-  }
-
-  function handleTouchEnd() {
-    if (dragIdx === null || dropTargetIdx === null) {
-      resetDrag();
-      return;
-    }
-    let targetIdx = dropTargetIdx;
-    if (targetIdx > dragIdx) targetIdx--;
-    if (targetIdx !== dragIdx) {
-      const [moved] = signale.splice(dragIdx, 1);
-      signale.splice(targetIdx, 0, moved);
+  // Drag-and-drop (mouse + touch)
+  const drag = new DragDrop(
+    () => listEl,
+    (fromIdx, toIdx) => {
+      const [moved] = signale.splice(fromIdx, 1);
+      signale.splice(toIdx, 0, moved);
       signale = [...signale];
       reindex();
       onchange();
-    }
-    resetDrag();
-  }
-
-  // Attach document-level touch listeners while dragging
-  $effect(() => {
-    if (dragIdx === null) return;
-    // Only attach if this was a touch-initiated drag (dragHandle set synchronously)
-    const isTouchDrag = 'ontouchstart' in window;
-    if (!isTouchDrag) return;
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-    document.addEventListener('touchend', handleTouchEnd);
-    document.addEventListener('touchcancel', resetDrag);
-    return () => {
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleTouchEnd);
-      document.removeEventListener('touchcancel', resetDrag);
-    };
-  });
+    },
+  );
 
   // Focusable field selector matching the original
   const FOCUSABLE_SELECTOR = [
     '.signal-input',
-    '.name-wrapper.visible .name-input',
-    '.bahnhof-wrapper.visible .bahnhof-input',
-    '.km-cell.visible .km-input',
+    '.name-wrapper .name-input',
+    '.bahnhof-wrapper .bahnhof-input',
+    '.km-cell .km-input',
     '.note-input',
     '.abzweigung-arrow:not([tabindex="-1"])',
     '.abzweigung-strecke',
@@ -448,28 +286,27 @@
       onInsertImport={() => insertAt(idx, makeImport(idx))}
     />
     <div
-      class={['signal-row', { 'drag-ready': dragHandle === idx, dragging: dragIdx === idx }]}
+      class={['signal-row', { 'drag-ready': drag.dragHandle === idx, dragging: drag.dragIdx === idx }]}
       data-row-index={idx}
-      draggable={dragHandle === idx}
-      ondragstart={(e: DragEvent) => handleDragStart(e, idx)}
-      ondragend={handleDragEnd}
-      ondragover={(e: DragEvent) => handleDragOver(e, idx)}
-      ondragleave={(e: DragEvent) => handleDragLeave(e, idx)}
-      ondrop={handleDrop}
+      draggable={drag.dragHandle === idx}
+      ondragstart={(e: DragEvent) => drag.handleDragStart(e, idx)}
+      ondragend={() => drag.handleDragEnd()}
+      ondragover={(e: DragEvent) => drag.handleDragOver(e, idx)}
+      ondragleave={(e: DragEvent) => drag.handleDragLeave(e, idx)}
+      ondrop={(e: DragEvent) => drag.handleDrop(e)}
     >
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <div
         class="signal-id"
-        onmousedown={() => (dragHandle = idx)}
-        onmouseup={() => (dragHandle = null)}
-        ontouchstart={(e) => handleTouchStart(e, idx)}
+        onmousedown={() => (drag.dragHandle = idx)}
+        onmouseup={() => (drag.dragHandle = null)}
+        ontouchstart={(e) => drag.handleTouchStart(e, idx)}
       >{idx}</div>
 
-      {#if !isImporteintrag(eintrag)}
+      {#if showKm && !isImporteintrag(eintrag)}
         <Kilometerzelle
           bind:eintrag={signale[idx]}
           prevEintrag={idx > 0 ? signale[idx - 1] : undefined}
-          {showKm}
           {onchange}
         />
       {/if}
@@ -489,8 +326,8 @@
       <Zeilenaktionen ondelete={() => deleteRow(idx)} onclear={() => clearRow(idx)} />
     </div>
   {/each}
-  {#if indicatorY !== null}
-    <div class="drop-indicator" style="top: {indicatorY}px;"></div>
+  {#if drag.indicatorY !== null}
+    <div class="drop-indicator" style="top: {drag.indicatorY}px;"></div>
   {/if}
 </div>
 <Plusleiste

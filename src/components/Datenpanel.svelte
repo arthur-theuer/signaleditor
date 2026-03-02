@@ -128,7 +128,6 @@
 </div>
 
 <style>
-  /* Appearance only — layout is handled by Tailwind classes */
   .daten-section {
     margin-bottom: var(--spacing-page);
     background: var(--color-bg);

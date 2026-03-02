@@ -53,7 +53,7 @@
 </script>
 
 {#if needsName || stationName}
-  <div class={['name-wrapper hl-field', { visible: needsName, 'has-bahnhof': showBahnhof }]} {onfocusin}>
+  <div class={['name-wrapper hl-field', { 'has-bahnhof': showBahnhof }]} {onfocusin}>
     {#if useStationSearch}
       <Stationsfeld mode="name" bind:value={stationName} onchange={handleStationChange} placeholder="Name" />
     {:else}
@@ -72,7 +72,7 @@
 {/if}
 
 {#if showBahnhof}
-  <div class="bahnhof-wrapper hl-field visible">
+  <div class="bahnhof-wrapper hl-field">
     <input
       type="text"
       class="bahnhof-input"
@@ -89,16 +89,13 @@
 
 <style>
   .name-wrapper {
-    display: none;
+    display: flex;
     flex: 1;
     min-width: 0;
     border-left: 1px solid var(--color-border);
     background: transparent;
     height: 100%;
     border-radius: 0 var(--radius-inner) var(--radius-inner) 0;
-  }
-  .name-wrapper.visible {
-    display: flex;
   }
   .name-wrapper.has-bahnhof {
     border-radius: 0;
@@ -124,13 +121,10 @@
   }
 
   .bahnhof-wrapper {
-    display: none;
+    display: flex;
     border-left: 1px solid var(--color-border);
     flex: 1;
     border-radius: 0 var(--radius-inner) var(--radius-inner) 0;
-  }
-  .bahnhof-wrapper.visible {
-    display: flex;
   }
   .bahnhof-input {
     width: 100%;
