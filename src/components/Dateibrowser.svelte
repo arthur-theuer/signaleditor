@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Trash2, Check, Pencil, Milestone, Route } from 'lucide-svelte';
+  import { Trash2, Check, Pencil, Milestone, Route, LoaderCircle } from 'lucide-svelte';
   import { ICON } from '../lib/constants';
   import { listFiles, loadFile, deleteFile, renameFile, type FileInfo, type StoragePrefix } from '../lib/api';
   import { invalidateImportCache } from '../lib/sources';
@@ -20,27 +20,15 @@
 
   const initialTab = lockedTab ?? 'strecken';
   let activeTab: StoragePrefix = $state(initialTab);
-  let files: FileInfo[] = $state([]);
-  let loading = $state(false);
-  let error: string | null = $state(null);
-
-  async function refresh() {
-    loading = true;
-    error = null;
-    try {
-      files = await listFiles(activeTab);
-    } catch (e: any) {
-      error = e.message;
-      files = [];
-    } finally {
-      loading = false;
-    }
-  }
+  let filesPromise: Promise<FileInfo[]> = $state(listFiles(activeTab));
 
   $effect(() => {
-    activeTab;
-    refresh();
+    filesPromise = listFiles(activeTab);
   });
+
+  function refresh() {
+    filesPromise = listFiles(activeTab);
+  }
 
   async function handleLoad(file: FileInfo) {
     try {
@@ -56,7 +44,7 @@
     try {
       await deleteFile(activeTab, file.name);
       invalidateImportCache(file.name);
-      await refresh();
+      refresh();
     } catch (e: any) {
       alert(`Löschen fehlgeschlagen: ${e.message}`);
     }
@@ -83,7 +71,7 @@
       await renameFile(activeTab, file.name, fullNewName);
       invalidateImportCache(file.name);
       renamingFile = null;
-      await refresh();
+      refresh();
     } catch (e: any) {
       alert(`Umbenennen fehlgeschlagen: ${e.message}`);
     }
@@ -141,61 +129,63 @@
     </div>
 
     <div class="file-list">
-      {#if loading}
-        <div class="status">Laden...</div>
-      {:else if error}
-        <div class="status error">{error}</div>
-      {:else if files.length === 0}
-        <div class="status">Keine Dateien</div>
-      {:else}
-        {#each files as file}
-          {@const used = mode === 'select' && isFileUsed(file)}
-          <div class="file-row">
-            {#if renamingFile === file.name}
-              <div class="file-card rename-card">
-                <!-- svelte-ignore a11y_autofocus -->
-                <input
-                  class="rename-input"
-                  type="text"
-                  bind:value={renameValue}
-                  onkeydown={(e) => {
-                    if (e.key === 'Enter') submitRename(file);
-                    if (e.key === 'Escape') {
-                      cancelRename();
-                      e.stopPropagation();
-                    }
-                  }}
-                  autofocus
-                  autocomplete="off"
-                  autocorrect="off"
-                  spellcheck="false"
-                />
-                <span class="rename-ext">{file.name.match(/\.ya?ml$/)?.[0] || '.yaml'}</span>
-              </div>
-              <button class="action-btn confirm-btn btn" onclick={() => submitRename(file)} title="Bestätigen">
-                <Check {...ICON} />
-              </button>
-            {:else}
-              <button class={['file-card btn', { used }]} disabled={used} onclick={() => handleLoad(file)}>
-                <span class="file-name">{file.name}</span>
-                <span class="file-date">{formatDate(file.uploadedAt)}</span>
-              </button>
-              {#if mode === 'manage'}
-                <button class="action-btn rename-btn btn" onclick={() => startRename(file)} title="Umbenennen">
-                  <Pencil {...ICON} />
-                </button>
-                <button class="action-btn delete-btn btn" onclick={() => handleDelete(file)} title="Löschen">
-                  <Trash2 {...ICON} />
-                </button>
-              {:else if used}
-                <div class="used-indicator">
-                  <Check {...ICON} />
+      {#await filesPromise}
+        <div class="status"><LoaderCircle {...ICON} class="spinner" /></div>
+      {:then files}
+        {#if files.length === 0}
+          <div class="status">Keine Dateien</div>
+        {:else}
+          {#each files as file}
+            {@const used = mode === 'select' && isFileUsed(file)}
+            <div class="file-row">
+              {#if renamingFile === file.name}
+                <div class="file-card rename-card">
+                  <!-- svelte-ignore a11y_autofocus -->
+                  <input
+                    class="rename-input"
+                    type="text"
+                    bind:value={renameValue}
+                    onkeydown={(e) => {
+                      if (e.key === 'Enter') submitRename(file);
+                      if (e.key === 'Escape') {
+                        cancelRename();
+                        e.stopPropagation();
+                      }
+                    }}
+                    autofocus
+                    autocomplete="off"
+                    autocorrect="off"
+                    spellcheck="false"
+                  />
+                  <span class="rename-ext">{file.name.match(/\.ya?ml$/)?.[0] || '.yaml'}</span>
                 </div>
+                <button class="action-btn confirm-btn btn" onclick={() => submitRename(file)} title="Bestätigen">
+                  <Check {...ICON} />
+                </button>
+              {:else}
+                <button class={['file-card btn', { used }]} disabled={used} onclick={() => handleLoad(file)}>
+                  <span class="file-name">{file.name}</span>
+                  <span class="file-date">{formatDate(file.uploadedAt)}</span>
+                </button>
+                {#if mode === 'manage'}
+                  <button class="action-btn rename-btn btn" onclick={() => startRename(file)} title="Umbenennen">
+                    <Pencil {...ICON} />
+                  </button>
+                  <button class="action-btn delete-btn btn" onclick={() => handleDelete(file)} title="Löschen">
+                    <Trash2 {...ICON} />
+                  </button>
+                {:else if used}
+                  <div class="used-indicator">
+                    <Check {...ICON} />
+                  </div>
+                {/if}
               {/if}
-            {/if}
-          </div>
-        {/each}
-      {/if}
+            </div>
+          {/each}
+        {/if}
+      {:catch error}
+        <div class="status error">{error.message}</div>
+      {/await}
     </div>
   </div>
 </div>
@@ -343,6 +333,14 @@
     text-align: center;
     color: var(--color-text-secondary);
     font-size: var(--text-input);
+  }
+  .status :global(.spinner) {
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
   .status.error {
     color: var(--color-red);
