@@ -130,7 +130,7 @@
 
     <div class="file-list">
       {#await filesPromise}
-        <div class="status"><LoaderCircle {...ICON} class="spinner" /></div>
+        <div class="status loading"><LoaderCircle size={32} strokeWidth={2} class="spinner" /></div>
       {:then files}
         {#if files.length === 0}
           <div class="status">Keine Dateien</div>
@@ -333,6 +333,14 @@
     text-align: center;
     color: var(--color-text-secondary);
     font-size: var(--text-input);
+  }
+  .status.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0;
+    box-sizing: border-box;
   }
   .status :global(.spinner) {
     animation: spin 1s linear infinite;
