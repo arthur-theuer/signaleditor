@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Trash2, Check, Pencil } from 'lucide-svelte';
+  import { Trash2, Check, Pencil, Milestone, Route } from 'lucide-svelte';
   import { ICON } from '../lib/constants';
   import { listFiles, loadFile, deleteFile, renameFile, type FileInfo, type StoragePrefix } from '../lib/api';
   import { invalidateImportCache } from '../lib/sources';
@@ -131,12 +131,12 @@
       <button
         class={['tab-btn btn', { active: activeTab === 'strecken', disabled: lockedTab !== undefined && lockedTab !== 'strecken' }]}
         disabled={lockedTab !== undefined && lockedTab !== 'strecken'}
-        onclick={() => (activeTab = 'strecken')}>Strecken</button
+        onclick={() => (activeTab = 'strecken')}><Milestone {...ICON} /> Strecken</button
       >
       <button
         class={['tab-btn btn', { active: activeTab === 'routen', disabled: lockedTab !== undefined && lockedTab !== 'routen' }]}
         disabled={lockedTab !== undefined && lockedTab !== 'routen'}
-        onclick={() => (activeTab = 'routen')}>Routen</button
+        onclick={() => (activeTab = 'routen')}><Route {...ICON} /> Routen</button
       >
     </div>
 
@@ -230,6 +230,7 @@
   /* Extends .btn — tab-specific overrides */
   .tab-btn {
     flex: 1;
+    gap: var(--spacing-card);
     padding: var(--spacing-cell);
     font-size: var(--text-input);
     font-weight: var(--font-weight-semibold);

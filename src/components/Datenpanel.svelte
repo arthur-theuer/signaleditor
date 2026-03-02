@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { Editordaten, Streckenmeta, Routenmeta } from '../lib/types';
   import { isStreckendaten, dateiId } from '../lib/types';
+  import { Milestone, Route } from 'lucide-svelte';
+  import { ICON } from '../lib/constants';
   import Stationsfeld from './ui/Stationsfeld.svelte';
 
   let {
@@ -58,6 +60,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="daten-section" onkeydown={handleKeydown}>
   <div class="section-header">
+    {#if isStrecke}<Milestone {...ICON} />{:else}<Route {...ICON} />{/if}
     {isStrecke ? 'Streckendaten' : 'Routendaten'}
     {#if id}
       <span class="header-id">{id}</span>

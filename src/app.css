@@ -307,6 +307,7 @@ button {
 .section-header {
   display: flex;
   align-items: center;
+  gap: var(--spacing-card);
   height: calc(var(--spacing-unit) + 2 * var(--spacing-card));
   padding: 0 var(--spacing-cell);
   font-weight: var(--font-weight-semibold);
