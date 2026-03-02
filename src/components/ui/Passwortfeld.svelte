@@ -54,15 +54,15 @@
   <button class="icon" {onclick}>
     {@render children()}
   </button>
-  <div class="field">
+  <form class="field" onsubmit={(e) => { e.preventDefault(); submit(); }}>
     <input
       bind:this={inputEl}
       bind:value
       type="password"
       placeholder="PIN"
+      enterkeyhint="go"
       tabindex={open ? 0 : -1}
       onkeydown={(e) => {
-        if (e.key === 'Enter') submit();
         if (e.key === 'Escape') cancel();
       }}
       onblur={cancel}
@@ -70,7 +70,7 @@
       autocorrect="off"
       spellcheck="false"
     />
-  </div>
+  </form>
 </div>
 
 <style>
