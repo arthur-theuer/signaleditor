@@ -195,23 +195,16 @@
   outline-offset: -2px;
 }
 
-/* Field focus: ::after ring in focus color */
+/* Field focus ring — outline follows border-radius natively.
+   z-index lifts the focused field above adjacent sibling borders. */
 .hl-field {
   position: relative;
   cursor: pointer;
 }
-.hl-field::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border: 2px solid var(--color-focus);
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  z-index: 2;
-}
-.hl-field:focus-within::after {
-  opacity: 1;
+.hl-field:focus-within {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+  z-index: 1;
 }
 .hl-field > input,
 .hl-field > select {
@@ -233,10 +226,6 @@
 /* .dropdown-item.active is in each component's scoped CSS — global rule
    can't override scoped background due to equal specificity + CSS order. */
 :has(> .dropdown) {
-  border-bottom-left-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
-}
-:has(> .dropdown)::after {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
