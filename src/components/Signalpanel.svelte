@@ -121,7 +121,108 @@
     dropTargetIdx = null;
     indicatorY = null;
     dragHandle = null;
+    if (touchScrollRAF) cancelAnimationFrame(touchScrollRAF);
+    touchScrollRAF = null;
   }
+
+  // --- Touch drag-and-drop ---
+  let touchScrollRAF: number | null = null;
+
+  function handleTouchStart(e: TouchEvent, idx: number) {
+    // Long-press not needed — the handle is explicit
+    e.preventDefault();
+    dragIdx = idx;
+    dragHandle = idx;
+  }
+
+  function updateDropTarget(clientY: number) {
+    if (dragIdx === null || !listEl) return;
+    const listRect = listEl.getBoundingClientRect();
+    const rows = listEl.querySelectorAll<HTMLElement>('[data-row-index]');
+    let bestIdx: number | null = null;
+    let bestY: number | null = null;
+
+    for (const row of rows) {
+      const idx = parseInt(row.dataset.rowIndex!);
+      if (idx === dragIdx) continue;
+      const rect = row.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      if (clientY < midY) {
+        bestIdx = idx;
+        bestY = rect.top - listRect.top;
+        break;
+      }
+      // After this row
+      bestIdx = idx + 1;
+      bestY = rect.bottom - listRect.top;
+    }
+
+    if (bestIdx !== null) {
+      dropTargetIdx = bestIdx;
+      indicatorY = bestY;
+    }
+  }
+
+  function handleTouchMove(e: TouchEvent) {
+    if (dragIdx === null) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    updateDropTarget(touch.clientY);
+
+    // Auto-scroll when finger is near viewport edges
+    const edgeZone = 48;
+    const speed = 8;
+    if (touchScrollRAF) cancelAnimationFrame(touchScrollRAF);
+
+    const scrollStep = () => {
+      if (dragIdx === null) return;
+      if (touch.clientY < edgeZone) {
+        window.scrollBy(0, -speed);
+        updateDropTarget(touch.clientY);
+        touchScrollRAF = requestAnimationFrame(scrollStep);
+      } else if (touch.clientY > window.innerHeight - edgeZone) {
+        window.scrollBy(0, speed);
+        updateDropTarget(touch.clientY);
+        touchScrollRAF = requestAnimationFrame(scrollStep);
+      }
+    };
+    if (touch.clientY < edgeZone || touch.clientY > window.innerHeight - edgeZone) {
+      touchScrollRAF = requestAnimationFrame(scrollStep);
+    }
+  }
+
+  function handleTouchEnd() {
+    if (dragIdx === null || dropTargetIdx === null) {
+      resetDrag();
+      return;
+    }
+    let targetIdx = dropTargetIdx;
+    if (targetIdx > dragIdx) targetIdx--;
+    if (targetIdx !== dragIdx) {
+      const [moved] = signale.splice(dragIdx, 1);
+      signale.splice(targetIdx, 0, moved);
+      signale = [...signale];
+      reindex();
+      onchange();
+    }
+    resetDrag();
+  }
+
+  // Attach document-level touch listeners while dragging
+  $effect(() => {
+    if (dragIdx === null) return;
+    // Only attach if this was a touch-initiated drag (dragHandle set synchronously)
+    const isTouchDrag = 'ontouchstart' in window;
+    if (!isTouchDrag) return;
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd);
+    document.addEventListener('touchcancel', resetDrag);
+    return () => {
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('touchcancel', resetDrag);
+    };
+  });
 
   // Focusable field selector matching the original
   const FOCUSABLE_SELECTOR = [
@@ -347,7 +448,7 @@
       onInsertImport={() => insertAt(idx, makeImport(idx))}
     />
     <div
-      class={['signal-row', { 'drag-ready': dragHandle === idx }]}
+      class={['signal-row', { 'drag-ready': dragHandle === idx, dragging: dragIdx === idx }]}
       data-row-index={idx}
       draggable={dragHandle === idx}
       ondragstart={(e: DragEvent) => handleDragStart(e, idx)}
@@ -357,7 +458,12 @@
       ondrop={handleDrop}
     >
       <!-- svelte-ignore a11y_no_static_element_interactions -->
-      <div class="signal-id" onmousedown={() => (dragHandle = idx)} onmouseup={() => (dragHandle = null)}>{idx}</div>
+      <div
+        class="signal-id"
+        onmousedown={() => (dragHandle = idx)}
+        onmouseup={() => (dragHandle = null)}
+        ontouchstart={(e) => handleTouchStart(e, idx)}
+      >{idx}</div>
 
       {#if !isImporteintrag(eintrag)}
         <Kilometerzelle
@@ -414,6 +520,7 @@
     width: var(--spacing-unit);
     flex-shrink: 0;
     user-select: none;
+    touch-action: none;
     font-size: var(--text-input);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-secondary);
@@ -427,6 +534,9 @@
     cursor: grabbing;
   }
 
+  .signal-row.dragging {
+    opacity: 0.4;
+  }
   .signal-row.drag-ready :global(.signal-actions) {
     visibility: hidden;
   }
