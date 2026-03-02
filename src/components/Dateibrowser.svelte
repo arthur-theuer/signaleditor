@@ -130,7 +130,7 @@
 
     <div class="file-list">
       {#await filesPromise}
-        <div class="status loading"><LoaderCircle size={32} strokeWidth={2} class="spinner" /></div>
+        <div class="status loading"><LoaderCircle size={32} strokeWidth={1.5} class="spinner" /></div>
       {:then files}
         {#if files.length === 0}
           <div class="status">Keine Dateien</div>
