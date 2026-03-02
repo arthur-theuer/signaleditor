@@ -146,10 +146,6 @@
 </div>
 
 <style>
-  /* Override overflow: hidden from .row-cell — dropdown needs to overflow */
-  .row-cell {
-    overflow: visible;
-  }
   .signal-input-wrapper {
     flex: 1;
     display: flex;
