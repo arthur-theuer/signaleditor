@@ -1,0 +1,128 @@
+/* Button base: shared layout, border, and interaction states */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: var(--card-border);
+  border-radius: var(--radius-card);
+  background: var(--color-bg-raised);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  position: relative;
+}
+.btn:hover:not(:disabled) {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+.btn:disabled {
+  cursor: default;
+  color: var(--color-text-muted);
+}
+.btn.btn-flash {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+/* Field focus ring — outline follows border-radius natively.
+   z-index lifts the focused field above adjacent sibling borders. */
+.hl-field {
+  position: relative;
+  cursor: pointer;
+}
+.hl-field:focus-within {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+  z-index: 1;
+}
+.hl-field > input,
+.hl-field > select {
+  outline: none;
+}
+
+/* Dropdown: positioned below parent, flattens parent's bottom corners */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: -1px;
+  right: -1px;
+  z-index: 2;
+  background: var(--color-bg-raised);
+  border: var(--card-border);
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+  overflow: hidden;
+}
+/* .dropdown-item.active is in each component's scoped CSS — global rule
+   can't override scoped background due to equal specificity + CSS order. */
+:has(> .dropdown) {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.row-cell:has(.dropdown) {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Lucide icons: thicken stroke on hover (1px → 2px effective at 16px/24 viewBox) */
+button:hover:not(:disabled) svg {
+  stroke-width: 3 !important;
+}
+
+/* Meldung signal-type colors (applied dynamically via class={seg.klasse}) */
+.meldung-block,
+.meldung-spurwechsel {
+  color: var(--color-meldung-block);
+}
+.meldung-ausfahrt {
+  color: var(--color-meldung-ausfahrt);
+}
+.meldung-wiederholung {
+  color: var(--color-meldung-wiederholung);
+}
+.meldung-standard {
+  color: var(--color-meldung-standard);
+}
+.meldung-bahnhof-a {
+  color: var(--color-meldung-bahnhof-a);
+}
+.meldung-bahnhof-b {
+  color: var(--color-meldung-bahnhof-b);
+}
+
+/* Base row-cell: shared by all row type components */
+.row-cell {
+  display: flex;
+  background: var(--color-bg-raised);
+  border: var(--card-border);
+  border-radius: var(--radius-card);
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: var(--spacing-unit);
+}
+
+.row-cell.disabled {
+  background: var(--color-bg);
+  pointer-events: none;
+}
+.row-cell.disabled .signal-input {
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-card);
+  height: calc(var(--spacing-unit) + 2 * var(--spacing-card));
+  padding: 0 var(--spacing-cell);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-header);
+  background: var(--color-bg-subtle);
+  border-bottom: 1px solid var(--color-border);
+  border-radius: var(--radius-container) var(--radius-container) 0 0;
+}

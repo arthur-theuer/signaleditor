@@ -1,0 +1,25 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+::placeholder {
+  color: var(--color-text-muted);
+}
+
+body {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  background: var(--color-bg);
+  color: var(--color-text);
+  color-scheme: light dark;
+}
+input,
+select,
+textarea,
+button {
+  color: inherit;
+  font: inherit;
+}

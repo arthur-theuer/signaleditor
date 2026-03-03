@@ -1,0 +1,154 @@
+:root {
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 6px;
+  --spacing-md: 8px;
+  --spacing-lg: 12px;
+  --spacing-xl: 16px;
+  --spacing-2xl: 24px;
+  --spacing-page: 20px;
+  --spacing-cell: 12px;
+  --spacing-card: 4px;
+  --spacing-half-card: 2px;
+  --spacing-unit: 40px;
+
+  /* Border radius */
+  --radius-card: 8px;
+  --radius-inner: 7px;
+  --radius-container: 12px;
+
+  /* Font sizes */
+  --text-title: 24px;
+  --text-header: 16px;
+  --text-input: 14px;
+  --text-caption: 12px;
+
+  /* Font families */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Font weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Colors */
+  /* Surfaces */
+  --color-bg: #f5f5f5;
+  --color-bg-raised: white;
+  --color-bg-subtle: #fafafa;
+
+  /* Borders */
+  --color-border: #e0e0e0;
+
+  /* Text */
+  --color-text: #424242;
+  --color-text-secondary: #616161;
+  --color-text-muted: #9e9e9e;
+
+  /* Blue (focus, primary actions) */
+  --color-focus: #1976d2;
+  --color-focus-bg: rgba(25, 118, 210, 0.08);
+  --color-focus-ring: #0d47a1;
+
+  /* Green (toggle on, insert) */
+  --color-green: #4caf50;
+  --color-green-bg: #e8f5e9;
+
+  /* Red (toggle off, delete, error) */
+  --color-red: #c62828;
+  --color-red-bg: #ffebee;
+
+  /* Orange (clear action) */
+  --color-clear: #ff9800;
+
+  /* Highlight (note/bahnhof) */
+  --color-highlight: #fff9c4;
+  --color-highlight-text: #f57f17;
+
+  /* Row type: Abzweigung (purple) */
+  --color-abzweigung: #f3e5f5;
+  --color-abzweigung-text: #7b1fa2;
+
+  /* Row type: Knoten (teal) */
+  --color-knoten: #e0f2f1;
+  --color-knoten-text: #00695c;
+
+  /* Row type: Import (blue) */
+  --color-import: #e3f2fd;
+  --color-import-text: #1565c0;
+
+  /* Meldung signal type colors */
+  --color-meldung-block: #7b1fa2;
+  --color-meldung-ausfahrt: #c62828;
+  --color-meldung-wiederholung: #1565c0;
+  --color-meldung-standard: var(--color-text);
+  --color-meldung-bahnhof-a: #2e7d32;
+  --color-meldung-bahnhof-b: #f9a825;
+
+  /* Composite tokens */
+  --card-border: 1px solid var(--color-border);
+
+  /* Inset rails: vertical alignment from viewport edge */
+  --inset-page: var(--spacing-page); /* 20px — container borders */
+  --inset-container: calc(var(--spacing-page) + 1px); /* 21px — inside bordered containers */
+  --inset-card: calc(var(--spacing-page) + 1px + var(--spacing-card)); /* 25px — signal rows, toolbar buttons */
+  --inset-cell: calc(var(--spacing-page) + 1px + var(--spacing-cell)); /* 33px — section headers, plusleiste */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Surfaces */
+    --color-bg: #121212;
+    --color-bg-raised: #1e1e1e;
+    --color-bg-subtle: #2c2c2c;
+
+    /* Borders */
+    --color-border: #424242;
+
+    /* Text */
+    --color-text: #e0e0e0;
+    --color-text-secondary: #bdbdbd;
+    --color-text-muted: #757575;
+
+    /* Blue */
+    --color-focus: #90caf9;
+    --color-focus-bg: rgba(144, 202, 249, 0.08);
+    --color-focus-ring: #bbdefb;
+
+    /* Green */
+    --color-green: #81c784;
+    --color-green-bg: #1a2e1c;
+
+    /* Red */
+    --color-red: #e57373;
+    --color-red-bg: #2e1a1a;
+
+    /* Orange */
+    --color-clear: #ffb74d;
+
+    /* Highlight */
+    --color-highlight: #2e2a1a;
+    --color-highlight-text: #ffd54f;
+
+    /* Abzweigung */
+    --color-abzweigung: #2a1a2e;
+    --color-abzweigung-text: #ce93d8;
+
+    /* Knoten */
+    --color-knoten: #1a2e2a;
+    --color-knoten-text: #80cbc4;
+
+    /* Import */
+    --color-import: #1a222e;
+    --color-import-text: #90caf9;
+
+    /* Meldung */
+    --color-meldung-block: #ce93d8;
+    --color-meldung-ausfahrt: #e57373;
+    --color-meldung-wiederholung: #90caf9;
+    --color-meldung-bahnhof-a: #81c784;
+    --color-meldung-bahnhof-b: #fdd835;
+  }
+}
