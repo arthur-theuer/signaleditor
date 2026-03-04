@@ -1,10 +1,17 @@
 // Swiss railway stations and traffic points
 // Source: https://data.sbb.ch/explore/dataset/dienststellen-gemass-opentransportdataswiss/
-// Filters:
-//   1. TRAIN stops (meansoftransport=TRAIN)
-//   2. Traffic points (trafficpoint=true)
-//   3. Branch points (operatingpointtechnicaltimetabletype=BRANCH)
-// Letter-only codes, isocountrycode=CH
+// Dataset: dienststellen-gemass-opentransportdataswiss
+// Base: /api/explore/v2.1/catalog/datasets/{dataset}/exports/json?select=abbreviation,designationofficial&limit=-1
+// Common: abbreviation IS NOT NULL AND isocountrycode="CH" AND letter-only codes (filtered client-side)
+//
+// Filter 1 — TRAIN stops:
+//   &where=meansoftransport="TRAIN" [isTrainStop=true]
+//
+// Filter 2 — Traffic points (non-train):
+//   &where=meansoftransport IS NULL AND trafficpoint="true" [isTrainStop=false]
+//
+// Filter 3 — Branch points (junctions, divergence points):
+//   &where=operatingpointtechnicaltimetabletype="BRANCH" [isTrainStop=false]
 
 // Stations: [name, isTrainStop]
 export const STATIONEN: Record<string, [string, boolean]> = {
