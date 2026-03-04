@@ -68,7 +68,10 @@ export function cacheImport(datei: string, data: Editordaten): void {
   importCache[datei] = data;
 }
 
-export async function autoStitchImporte(signale: Eintrag[]): Promise<void> {
+export async function autoStitchImporte(
+  signale: Eintrag[],
+  meta?: { von: string; nach: string },
+): Promise<void> {
   const importIndices = signale.map((s, i) => (isImporteintrag(s) ? i : -1)).filter((i) => i !== -1);
 
   // Clear existing stitch points before recalculating
@@ -80,6 +83,7 @@ export async function autoStitchImporte(signale: Eintrag[]): Promise<void> {
     }
   }
 
+  // Stitch consecutive import pairs
   for (let k = 0; k < importIndices.length - 1; k++) {
     const idxA = importIndices[k];
     const idxB = importIndices[k + 1];
@@ -109,6 +113,32 @@ export async function autoStitchImporte(signale: Eintrag[]): Promise<void> {
         qA.bis = k;
         qB.von = k;
         break;
+      }
+    }
+  }
+
+  // Trim first import to meta.von, last import to meta.nach
+  if (meta && importIndices.length > 0) {
+    const firstE = signale[importIndices[0]];
+    const lastE = signale[importIndices[importIndices.length - 1]];
+
+    if (meta.von && isImporteintrag(firstE) && firstE.import.datei && !firstE.import.von) {
+      const res = await resolveImport({ datei: firstE.import.datei });
+      if (!res.error) {
+        const knoten = res.signale.filter((s) => isKnoteneintrag(s)).map((s) => (s as { knoten: string }).knoten);
+        if (knoten.includes(meta.von)) {
+          firstE.import.von = meta.von;
+        }
+      }
+    }
+
+    if (meta.nach && isImporteintrag(lastE) && lastE.import.datei && !lastE.import.bis) {
+      const res = await resolveImport({ datei: lastE.import.datei });
+      if (!res.error) {
+        const knoten = res.signale.filter((s) => isKnoteneintrag(s)).map((s) => (s as { knoten: string }).knoten);
+        if (knoten.includes(meta.nach)) {
+          lastE.import.bis = meta.nach;
+        }
       }
     }
   }

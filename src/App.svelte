@@ -43,14 +43,15 @@
     });
   });
 
-  // Auto-stitch importe when datei values change
+  // Auto-stitch importe when datei values or route endpoints change
   $effect(() => {
     const importeDateien = ed.data.signale
       .filter(isImporteintrag)
       .map((s) => s.import.datei)
       .join(',');
+    const { von, nach } = ed.data.meta;
     if (importeDateien) {
-      autoStitchImporte(ed.data.signale);
+      autoStitchImporte(ed.data.signale, { von, nach });
     }
   });
 
