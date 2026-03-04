@@ -21,14 +21,7 @@ type SignalDef = {
 };
 
 const REGISTRY: SignalDef[] = [
-  // --- Vorsignale (alphabetical for enum order) ---
-  {
-    name: 'Abschnitt-Vorsignal',
-    kind: 'vor',
-    abbrev: 'Abschnitt-VS',
-    hauptsignal: { signal: 'Abschnittsignal', keepName: false },
-    meldung: { typ: 'abschnitt', keyword: 'Abschnitt', text: 'Abschnitt offen/zu!' },
-  },
+  // --- Vorsignale ---
   {
     name: 'Abschnitteinfahr-Vorsignal',
     kind: 'vor',
@@ -42,6 +35,13 @@ const REGISTRY: SignalDef[] = [
     abbrev: 'Abschnittausfahr-VS',
     hauptsignal: { signal: 'Abschnittausfahrsignal', keepName: false },
     meldung: { typ: 'ausfahrabschnitt', keyword: 'Abschnittausfahr', text: 'Ausfahrabschnitt offen/zu!' },
+  },
+  {
+    name: 'Abschnitt-Vorsignal',
+    kind: 'vor',
+    abbrev: 'Abschnitt-VS',
+    hauptsignal: { signal: 'Abschnittsignal', keepName: false },
+    meldung: { typ: 'abschnitt', keyword: 'Abschnitt', text: 'Abschnitt offen/zu!' },
   },
   {
     name: 'Ausfahr-Vorsignal',
@@ -86,13 +86,7 @@ const REGISTRY: SignalDef[] = [
     meldung: { typ: 'wiederholung', keyword: 'Wiederholungs', text: 'Wiederholung offen/zu!' },
   },
 
-  // --- Hauptsignale (order matches original enum) ---
-  {
-    name: 'Abschnittsignal',
-    kind: 'haupt',
-    abbrev: 'Abschnitts.',
-    meldung: { typ: 'abschnitt', keyword: 'Abschnitt', text: 'Abschnitt offen/zu!' },
-  },
+  // --- Hauptsignale ---
   {
     name: 'Abschnitteinfahrsignal',
     kind: 'haupt',
@@ -104,6 +98,12 @@ const REGISTRY: SignalDef[] = [
     kind: 'haupt',
     abbrev: 'Abschnittausfahrs.',
     meldung: { typ: 'ausfahrabschnitt', keyword: 'Abschnittausfahr', text: 'Ausfahrabschnitt offen/zu!' },
+  },
+  {
+    name: 'Abschnittsignal',
+    kind: 'haupt',
+    abbrev: 'Abschnitts.',
+    meldung: { typ: 'abschnitt', keyword: 'Abschnitt', text: 'Abschnitt offen/zu!' },
   },
   {
     name: 'Ausfahrsignal',

@@ -13,11 +13,14 @@ export function focusWithoutScroll(el: HTMLElement | null | undefined): void {
  */
 export function withStableScroll(fn: () => void): void {
   const html = document.documentElement;
+  const body = document.body;
   const scrollY = window.scrollY;
   html.style.overflow = 'hidden';
+  body.style.overflow = 'hidden';
   fn();
   requestAnimationFrame(() => {
     html.style.overflow = '';
+    body.style.overflow = '';
     window.scrollTo(0, scrollY);
   });
 }

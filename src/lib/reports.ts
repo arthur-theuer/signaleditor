@@ -176,14 +176,8 @@ export async function downloadMeldungenHTML(data: Editordaten, yamlContent: stri
       if (m.note !== undefined) {
         return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#f57f17;font-style:italic">${esc(m.note)}</td></tr>`;
       }
-      if (m.knoten) {
-        return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#00695c;font-weight:bold">${esc(m.knoten)}</td></tr>`;
-      }
-      if (m.abzweigung) {
-        return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#7b1fa2;font-style:italic">${esc(m.abzweigung)}</td></tr>`;
-      }
-      if (m.import) {
-        return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#999;font-style:italic">Import: ${esc(m.import)}</td></tr>`;
+      if (m.knoten || m.abzweigung || m.import) {
+        return null;
       }
 
       const meldungCell = m.error
@@ -197,6 +191,7 @@ export async function downloadMeldungenHTML(data: Editordaten, yamlContent: stri
 
       return `<tr>${idCell}${kmCell}<td class="signal">${esc(m.signal_1_display)}</td><td class="signal">${esc(m.signal_2_display)}</td><td class="meldung">${meldungCell}</td></tr>`;
     })
+    .filter(Boolean)
     .join('\n');
 
   const html = `<!DOCTYPE html>
