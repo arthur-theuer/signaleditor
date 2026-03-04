@@ -34,31 +34,41 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-<div class="insert-zone" class:open bind:this={zoneEl}>
-  {#if open}
-    <Plusleiste
-      onAddSignal={onInsertSignal}
-      onAddNotiz={onInsertNotiz}
-      onAddAbzweigung={onInsertAbzweigung}
-      onAddKnoten={onInsertKnoten}
-      onAddImport={onInsertImport}
-    />
-  {:else}
+<div class="insert-wrapper" bind:this={zoneEl}>
+  {#if !open}
     <div class="insert-trigger" onclick={() => (open = true)}>
       <div class="insert-line"></div>
       <div class="insert-btn"><CirclePlus size={ICON.size} strokeWidth={3} /></div>
     </div>
   {/if}
+  <div class={['insert-zone', { open }]}>
+    <div class="insert-content">
+      <Plusleiste
+        onAddSignal={onInsertSignal}
+        onAddNotiz={onInsertNotiz}
+        onAddAbzweigung={onInsertAbzweigung}
+        onAddKnoten={onInsertKnoten}
+        onAddImport={onInsertImport}
+      />
+    </div>
+  </div>
 </div>
 
 <style>
-  .insert-zone {
+  .insert-wrapper {
     position: relative;
-    height: 0;
     z-index: 4;
   }
+  .insert-zone {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 150ms ease;
+  }
   .insert-zone.open {
-    height: auto;
+    grid-template-rows: 1fr;
+  }
+  .insert-content {
+    overflow: hidden;
   }
   .insert-trigger {
     --inset-left: calc(2 * var(--spacing-card) + var(--spacing-unit));
