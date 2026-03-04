@@ -29,11 +29,8 @@ export class Editor {
     return this.wantMeldungen && this.panelsAllowed;
   }
 
-  private autoSaveTimer: ReturnType<typeof setTimeout> | null = null;
-
   newFile(typ: Dateityp) {
     if (this.dirty && !confirm('Ungespeicherte Änderungen verwerfen?')) return;
-    this.cancelAutoSave();
     this.data = typ === 'strecke' ? emptyStreckendaten() : emptyRoutendaten();
     this.dirty = false;
     this.currentFileName = null;
@@ -51,7 +48,6 @@ export class Editor {
         return;
       }
     }
-    this.cancelAutoSave();
     this.data = parseYAMLContent(content);
     this.dirty = false;
     this.currentFileName = null;
@@ -76,27 +72,7 @@ export class Editor {
 
   markDirty() {
     this.dirty = true;
-    this.scheduleAutoSave();
-  }
-
-  private scheduleAutoSave() {
-    if (this.autoSaveTimer) clearTimeout(this.autoSaveTimer);
-    if (!isLoggedIn() || !this.currentFileName) {
-      this.saveStatus = this.dirty ? 'dirty' : 'idle';
-      return;
-    }
     this.saveStatus = 'dirty';
-    this.autoSaveTimer = setTimeout(() => {
-      this.autoSaveTimer = null;
-      this.handleSave();
-    }, 3000);
-  }
-
-  cancelAutoSave() {
-    if (this.autoSaveTimer) {
-      clearTimeout(this.autoSaveTimer);
-      this.autoSaveTimer = null;
-    }
   }
 
   handleUndo() {
@@ -128,7 +104,6 @@ export class Editor {
 
     this.saving = true;
     this.saveStatus = 'saving';
-    this.cancelAutoSave();
     try {
       if (this.currentFileName) {
         await saveFile(typ, this.currentFileName, content);
@@ -162,7 +137,6 @@ export class Editor {
 
   handleCloudLoad(content: string, fileName: string, _typ: StoragePrefix) {
     if (this.dirty && !confirm('Ungespeicherte Änderungen verwerfen?')) return;
-    this.cancelAutoSave();
     this.data = parseYAMLContent(content);
     this.currentFileName = fileName;
     this.dirty = false;
