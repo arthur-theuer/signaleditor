@@ -192,8 +192,8 @@ export async function downloadMeldungenHTML(data: Editordaten, yamlContent: stri
       }
       if (m.knoten) {
         // Keep knoten that are stitch points or route endpoints
-        const code = m.knoten.match(/\(([A-Za-z]+)\)$/)?.[1] ?? m.knoten;
-        if (!knotenToKeep.has(code)) return null;
+        const code = m.knoten.match(/\(([A-Za-z]+)\)$/)?.[1];
+        if (!code || !knotenToKeep.has(code)) return null;
         return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#00695c;font-weight:bold">${esc(m.knoten)}</td></tr>`;
       }
 
