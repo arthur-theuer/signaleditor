@@ -2,7 +2,7 @@ import type { Eintrag, Editordaten } from './types';
 import { dateiId } from './types';
 import { isSignaleintrag, isNotizeintrag, isKnoteneintrag, isAbzweigungseintrag, isImporteintrag } from './types';
 import { STATIONEN, MELDUNG_FARBEN, BAHNHOF_FARBEN } from './constants';
-import { meldungAusSignaleintrag } from './signals';
+import { meldungAusSignaleintrag } from './meldungen';
 import { resolveSignaleForMeldungen } from './sources';
 
 export type ColoredSegment = {
