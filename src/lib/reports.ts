@@ -162,6 +162,17 @@ export async function downloadMeldungenHTML(data: Editordaten, yamlContent: stri
   const streckenName = data.meta.name || dateiId(data) || 'Strecke';
   const hasKm = meldungen.some((m) => m.km !== undefined);
 
+  // Collect knoten that should appear in the export: stitch points + route endpoints
+  const knotenToKeep = new Set<string>();
+  for (const s of data.signale) {
+    if (isImporteintrag(s)) {
+      if (s.import.von) knotenToKeep.add(s.import.von);
+      if (s.import.bis) knotenToKeep.add(s.import.bis);
+    }
+  }
+  if (data.meta.von) knotenToKeep.add(data.meta.von);
+  if (data.meta.nach) knotenToKeep.add(data.meta.nach);
+
   function esc(text: string): string {
     const div = document.createElement('div');
     div.textContent = text;
@@ -176,8 +187,14 @@ export async function downloadMeldungenHTML(data: Editordaten, yamlContent: stri
       if (m.note !== undefined) {
         return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#f57f17;font-style:italic">${esc(m.note)}</td></tr>`;
       }
-      if (m.knoten || m.abzweigung || m.import) {
+      if (m.abzweigung || m.import) {
         return null;
+      }
+      if (m.knoten) {
+        // Keep knoten that are stitch points or route endpoints
+        const code = m.knoten.match(/\(([A-Za-z]+)\)$/)?.[1] ?? m.knoten;
+        if (!knotenToKeep.has(code)) return null;
+        return `<tr>${idCell}${kmCell}<td colspan="3" style="color:#00695c;font-weight:bold">${esc(m.knoten)}</td></tr>`;
       }
 
       const meldungCell = m.error
