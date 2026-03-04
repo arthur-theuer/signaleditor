@@ -107,11 +107,13 @@
   /* Extends .btn */
   .file-card {
     flex: 1;
+    min-width: 0;
     height: var(--spacing-unit);
     justify-content: space-between;
     padding: 0 var(--spacing-xl);
     font-size: var(--text-input);
     text-align: left;
+    overflow: hidden;
   }
   .file-card.used {
     opacity: 0.4;
@@ -121,6 +123,9 @@
   .file-name {
     font-weight: var(--font-weight-medium);
     font-family: var(--font-mono);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .file-date {
     color: var(--color-text-secondary);
