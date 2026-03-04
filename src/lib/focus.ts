@@ -8,16 +8,26 @@ export function focusWithoutScroll(el: HTMLElement | null | undefined): void {
 
 /**
  * Run a callback that may cause layout shifts without the browser
- * scrolling the focused element. Restores scroll position across
- * several frames to handle Safari's native scroll reset.
+ * scrolling the focused element. Freezes the viewport with position:fixed
+ * during the update to prevent Safari's native scroll reset.
  */
 export function withStableScroll(fn: () => void): void {
+  const body = document.body;
   const scrollY = window.scrollY;
+
+  // Freeze viewport: position:fixed prevents any scroll change
+  body.style.position = 'fixed';
+  body.style.top = `-${scrollY}px`;
+  body.style.left = '0';
+  body.style.right = '0';
+
   fn();
-  let frames = 0;
-  const restore = () => {
-    if (window.scrollY !== scrollY) window.scrollTo(0, scrollY);
-    if (++frames < 5) requestAnimationFrame(restore);
-  };
-  requestAnimationFrame(restore);
+
+  requestAnimationFrame(() => {
+    body.style.position = '';
+    body.style.top = '';
+    body.style.left = '';
+    body.style.right = '';
+    window.scrollTo(0, scrollY);
+  });
 }
