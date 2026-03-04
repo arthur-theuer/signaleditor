@@ -96,15 +96,18 @@ export async function autoStitchImporte(signale: Eintrag[]): Promise<void> {
 
     if (resA.error || resB.error) continue;
 
-    const knotenA = resA.signale.filter((s) => isKnoteneintrag(s)).map((s) => (s as { knoten: string }).knoten);
-    const knotenB = new Set(
-      resB.signale.filter((s) => isKnoteneintrag(s)).map((s) => (s as { knoten: string }).knoten),
+    const knotenASet = new Set(
+      resA.signale.filter((s) => isKnoteneintrag(s)).map((s) => (s as { knoten: string }).knoten),
     );
+    const knotenBList = resB.signale
+      .filter((s) => isKnoteneintrag(s))
+      .map((s) => (s as { knoten: string }).knoten);
 
-    for (let i = knotenA.length - 1; i >= 0; i--) {
-      if (knotenB.has(knotenA[i])) {
-        qA.bis = knotenA[i];
-        qB.von = knotenA[i];
+    // Pick the earliest knoten in B that also exists in A (the divergence point)
+    for (const k of knotenBList) {
+      if (knotenASet.has(k)) {
+        qA.bis = k;
+        qB.von = k;
         break;
       }
     }
