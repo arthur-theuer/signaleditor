@@ -16,7 +16,7 @@
   import Symbolknopf from './components/ui/Symbolknopf.svelte';
   import Codepanel from './components/Codepanel.svelte';
   import Dateibrowser from './components/Dateibrowser.svelte';
-  import Breakpoints from './components/debug/Breakpoints.svelte';
+  // import Breakpoints from './components/debug/Breakpoints.svelte';
 
   const ed = new Editor();
   let meldungen = $derived(ed.showMeldungen ? generiereAlleMeldungen(ed.data.signale) : undefined);
@@ -185,9 +185,7 @@
   </div>
 {/if}
 
-<Breakpoints />
-
-<!-- Remove this line to hide debug overlay -->
+<!-- <Breakpoints /> -->
 
 <style>
   .content-pad {

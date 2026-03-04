@@ -208,6 +208,5 @@
     font-size: var(--text-input);
     margin-left: auto;
     font-family: var(--font-mono);
-    text-transform: uppercase;
   }
 </style>

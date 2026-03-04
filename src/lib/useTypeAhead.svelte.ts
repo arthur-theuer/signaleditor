@@ -16,6 +16,14 @@ function fuzzyMatch(text: string, query: string): boolean {
   return true;
 }
 
+/** Sort matches so prefix hits come before fuzzy-only hits */
+function prefixFirst(matches: string[], query: string): string[] {
+  const q = query.toLowerCase();
+  const prefix = matches.filter((s) => s.toLowerCase().startsWith(q));
+  const rest = matches.filter((s) => !s.toLowerCase().startsWith(q));
+  return [...prefix, ...rest];
+}
+
 export class TypeAhead {
   buffer = $state('');
   dropdownOpen = $state(false);
@@ -24,7 +32,7 @@ export class TypeAhead {
   private getEnumList: () => readonly string[];
   private getCurrentBase: () => string;
 
-  fuzzyMatches = $derived(this.buffer ? this.getEnumList().filter((s) => fuzzyMatch(s, this.buffer)) : []);
+  fuzzyMatches = $derived(this.buffer ? prefixFirst(this.getEnumList().filter((s) => fuzzyMatch(s, this.buffer)), this.buffer) : []);
 
   constructor(getEnumList: () => readonly string[], getCurrentBase: () => string) {
     this.getEnumList = getEnumList;
@@ -97,7 +105,7 @@ export class TypeAhead {
       e.preventDefault();
       if (this.buffer.length > 1) {
         this.buffer = this.buffer.slice(0, -1);
-        const matches = enumList.filter((s) => fuzzyMatch(s, this.buffer));
+        const matches = prefixFirst(enumList.filter((s) => fuzzyMatch(s, this.buffer)), this.buffer);
         if (matches.length > 0) {
           this.dropdownIndex = 0;
           this.dropdownOpen = matches.length > 1;
@@ -114,7 +122,7 @@ export class TypeAhead {
     if (e.key.length === 1 && e.key.match(/[a-zA-Z\-]/)) {
       e.preventDefault();
       this.buffer += e.key.toLowerCase();
-      const matches = enumList.filter((s) => fuzzyMatch(s, this.buffer));
+      const matches = prefixFirst(enumList.filter((s) => fuzzyMatch(s, this.buffer)), this.buffer);
       if (matches.length > 0) {
         this.dropdownIndex = 0;
         this.dropdownOpen = matches.length > 1;

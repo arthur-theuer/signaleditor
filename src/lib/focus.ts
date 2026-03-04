@@ -16,8 +16,11 @@ export function withStableScroll(fn: () => void): void {
   const scrollY = window.scrollY;
   html.style.overflow = 'hidden';
   fn();
+  // Two rAFs: Svelte 5 may flush reactive DOM updates after the first frame
   requestAnimationFrame(() => {
-    html.style.overflow = '';
-    window.scrollTo(0, scrollY);
+    requestAnimationFrame(() => {
+      html.style.overflow = '';
+      window.scrollTo(0, scrollY);
+    });
   });
 }
