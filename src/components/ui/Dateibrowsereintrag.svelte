@@ -74,7 +74,7 @@
       />
       <span class="rename-ext">{file.name.match(/\.ya?ml$/)?.[0] || '.yaml'}</span>
     </div>
-    <button class="action-btn confirm-btn btn" onclick={submitRename} title="Bestätigen">
+    <button class="file-action-btn confirm-btn btn" onclick={submitRename} title="Bestätigen">
       <Check {...ICON} />
     </button>
   {:else}
@@ -83,10 +83,10 @@
       <span class="file-date">{formatDate(file.uploadedAt)}</span>
     </button>
     {#if mode === 'manage'}
-      <button class="action-btn rename-btn btn" onclick={startRename} title="Umbenennen">
+      <button class="file-action-btn rename-btn btn" onclick={startRename} title="Umbenennen">
         <Pencil {...ICON} />
       </button>
-      <button class="action-btn delete-btn btn" onclick={ondelete} title="Löschen">
+      <button class="file-action-btn delete-btn btn" onclick={ondelete} title="Löschen">
         <Trash2 {...ICON} />
       </button>
     {:else if used}
@@ -134,7 +134,7 @@
     margin-left: var(--spacing-xl);
   }
   /* Extends .btn */
-  .action-btn {
+  .file-action-btn {
     width: var(--spacing-unit);
     height: var(--spacing-unit);
     flex-shrink: 0;
