@@ -27,14 +27,18 @@
   import Zeilenaktionen from './Zeilenaktionen.svelte';
   import Zwischenaktionen from './Zwischenaktionen.svelte';
   import Plusleiste from './Plusleiste.svelte';
+  import Meldungzelle from './ui/Meldungzelle.svelte';
+  import type { MeldungRow } from '../lib/reports';
 
   let {
     signale = $bindable(),
     showKm,
+    meldungen,
     onchange,
   }: {
     signale: Eintrag[];
     showKm: boolean;
+    meldungen?: MeldungRow[];
     onchange: () => void;
   } = $props();
 
@@ -285,45 +289,52 @@
       onInsertKnoten={() => insertAt(idx, makeKnoten(idx))}
       onInsertImport={() => insertAt(idx, makeImport(idx))}
     />
-    <div
-      class={['signal-row', { 'drag-ready': drag.dragHandle === idx, dragging: drag.dragIdx === idx }]}
-      data-row-index={idx}
-      draggable={drag.dragHandle === idx}
-      ondragstart={(e: DragEvent) => drag.handleDragStart(e, idx)}
-      ondragend={() => drag.handleDragEnd()}
-      ondragover={(e: DragEvent) => drag.handleDragOver(e, idx)}
-      ondragleave={(e: DragEvent) => drag.handleDragLeave(e, idx)}
-      ondrop={(e: DragEvent) => drag.handleDrop(e)}
-    >
-      <!-- svelte-ignore a11y_no_static_element_interactions -->
+    <div class="combined-row">
       <div
-        class="signal-id"
-        onmousedown={() => (drag.dragHandle = idx)}
-        onmouseup={() => (drag.dragHandle = null)}
-        ontouchstart={(e) => drag.handleTouchStart(e, idx)}
-      >{idx}</div>
+        class={['signal-row', { 'drag-ready': drag.dragHandle === idx, dragging: drag.dragIdx === idx }]}
+        data-row-index={idx}
+        draggable={drag.dragHandle === idx}
+        ondragstart={(e: DragEvent) => drag.handleDragStart(e, idx)}
+        ondragend={() => drag.handleDragEnd()}
+        ondragover={(e: DragEvent) => drag.handleDragOver(e, idx)}
+        ondragleave={(e: DragEvent) => drag.handleDragLeave(e, idx)}
+        ondrop={(e: DragEvent) => drag.handleDrop(e)}
+      >
+        <!-- svelte-ignore a11y_no_static_element_interactions -->
+        <div
+          class="signal-id"
+          onmousedown={() => (drag.dragHandle = idx)}
+          onmouseup={() => (drag.dragHandle = null)}
+          ontouchstart={(e) => drag.handleTouchStart(e, idx)}
+        >{idx}</div>
 
-      {#if showKm && !isImporteintrag(eintrag)}
-        <Kilometerzelle
-          bind:eintrag={signale[idx]}
-          prevEintrag={idx > 0 ? signale[idx - 1] : undefined}
-          {onchange}
-        />
+        {#if showKm && !isImporteintrag(eintrag)}
+          <Kilometerzelle
+            bind:eintrag={signale[idx]}
+            prevEintrag={idx > 0 ? signale[idx - 1] : undefined}
+            {onchange}
+          />
+        {/if}
+
+        {#if isSignaleintrag(eintrag)}
+          <Signalzeile bind:eintrag={signale[idx] as Signaleintrag} {signale} rowIdx={idx} {onchange} />
+        {:else if isNotizeintrag(eintrag)}
+          <Notizzeile bind:eintrag={signale[idx] as Notizeintrag} {onchange} />
+        {:else if isKnoteneintrag(eintrag)}
+          <Knotenzeile bind:eintrag={signale[idx] as Knoteneintrag} {onchange} />
+        {:else if isAbzweigungseintrag(eintrag)}
+          <Abzweigungszeile bind:eintrag={signale[idx] as Abzweigungseintrag} {onchange} />
+        {:else if isImporteintrag(eintrag)}
+          <Importzeile bind:eintrag={signale[idx] as Importeintrag} usedFiles={usedImportFiles} {onchange} />
+        {/if}
+
+        <Zeilenaktionen ondelete={() => deleteRow(idx)} onclear={() => clearRow(idx)} />
+      </div>
+      {#if meldungen && meldungen[idx]}
+        <div class="meldung-col">
+          <Meldungzelle meldung={meldungen[idx]} />
+        </div>
       {/if}
-
-      {#if isSignaleintrag(eintrag)}
-        <Signalzeile bind:eintrag={signale[idx] as Signaleintrag} {signale} rowIdx={idx} {onchange} />
-      {:else if isNotizeintrag(eintrag)}
-        <Notizzeile bind:eintrag={signale[idx] as Notizeintrag} {onchange} />
-      {:else if isKnoteneintrag(eintrag)}
-        <Knotenzeile bind:eintrag={signale[idx] as Knoteneintrag} {onchange} />
-      {:else if isAbzweigungseintrag(eintrag)}
-        <Abzweigungszeile bind:eintrag={signale[idx] as Abzweigungseintrag} {onchange} />
-      {:else if isImporteintrag(eintrag)}
-        <Importzeile bind:eintrag={signale[idx] as Importeintrag} usedFiles={usedImportFiles} {onchange} />
-      {/if}
-
-      <Zeilenaktionen ondelete={() => deleteRow(idx)} onclear={() => clearRow(idx)} />
     </div>
   {/each}
   {#if drag.indicatorY !== null}
@@ -343,8 +354,26 @@
     position: relative;
     overflow-anchor: none;
   }
+  .combined-row {
+    display: flex;
+    gap: var(--spacing-cell);
+    align-items: stretch;
+  }
+  .meldung-col {
+    flex-shrink: 0;
+    width: 220px;
+    display: flex;
+    padding: var(--spacing-half-card) var(--spacing-card);
+  }
+  @media (min-width: 768px) {
+    .meldung-col {
+      width: 280px;
+    }
+  }
   .signal-row {
     display: flex;
+    flex: 1;
+    min-width: 0;
     gap: var(--spacing-card);
     padding: var(--spacing-half-card) var(--spacing-card);
     align-items: stretch;

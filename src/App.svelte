@@ -6,19 +6,20 @@
   import { autoStitchImporte } from './lib/sources';
   import { isLoggedIn, login, logout } from './lib/auth.svelte';
   import { focusWithoutScroll } from './lib/focus';
-  import { RulerDimensionLine } from 'lucide-svelte';
+  import { RulerDimensionLine, X } from 'lucide-svelte';
   import { ICON } from './lib/constants';
   import { Editor } from './lib/useEditor.svelte';
+  import { generiereAlleMeldungen } from './lib/reports';
   import Toolbar from './components/Toolbar.svelte';
   import Datenpanel from './components/Datenpanel.svelte';
   import Signalpanel from './components/Signalpanel.svelte';
   import Symbolknopf from './components/ui/Symbolknopf.svelte';
   import Codepanel from './components/Codepanel.svelte';
-  import Meldungspanel from './components/Meldungspanel.svelte';
   import Dateibrowser from './components/Dateibrowser.svelte';
   import Breakpoints from './components/debug/Breakpoints.svelte';
 
   const ed = new Editor();
+  let meldungen = $derived(ed.showMeldungen ? generiereAlleMeldungen(ed.data.signale) : undefined);
 
   // Save undo state when any input receives focus (captures "before edit" state)
   $effect(() => {
@@ -143,32 +144,39 @@
 
 <div class="main-content content-pad">
   <div class="signals-container">
-    <div class="section-header signale-header">
-      Signale
-      <Symbolknopf
-        class="km-toggle"
-        color="red"
-        bordered
-        active={ed.showKm}
-        onclick={() => (ed.showKm = !ed.showKm)}
-        title="Kilometer ein-/ausblenden"
-      >
-        <RulerDimensionLine {...ICON} />
-      </Symbolknopf>
+    <div class="header-row">
+      <div class="section-header signale-header">
+        Signale
+        <Symbolknopf
+          class="km-toggle"
+          color="red"
+          bordered
+          active={ed.showKm}
+          onclick={() => (ed.showKm = !ed.showKm)}
+          title="Kilometer ein-/ausblenden"
+        >
+          <RulerDimensionLine {...ICON} />
+        </Symbolknopf>
+      </div>
+      {#if ed.showMeldungen}
+        <div class="section-header meldungen-header">
+          Meldungen
+          <Symbolknopf
+            color="red"
+            bordered
+            active={false}
+            onclick={() => (ed.wantMeldungen = false)}
+            title="Meldungen schliessen"
+          >
+            <X {...ICON} />
+          </Symbolknopf>
+        </div>
+      {/if}
     </div>
     <div class="signals-list">
-      <Signalpanel bind:signale={ed.data.signale} showKm={ed.showKm} onchange={() => ed.markDirty()} />
+      <Signalpanel bind:signale={ed.data.signale} showKm={ed.showKm} {meldungen} onchange={() => ed.markDirty()} />
     </div>
   </div>
-
-  {#if ed.showMeldungen}
-    <div class="meldungen-section">
-      <div class="meldungen-panel">
-        <div class="section-header">Meldungen</div>
-        <Meldungspanel signale={ed.data.signale} onclose={() => (ed.wantMeldungen = false)} />
-      </div>
-    </div>
-  {/if}
 </div>
 
 {#if ed.showYaml}
@@ -193,45 +201,45 @@
     }
   }
   .main-content {
-    display: flex;
-    gap: 0;
-    align-items: stretch;
     margin-bottom: var(--spacing-page);
   }
   .signals-container {
-    flex: 1;
-    min-width: 0;
     background: var(--color-bg);
     border: var(--card-border);
     border-radius: var(--radius-container);
     container-type: inline-size;
   }
+  .header-row {
+    display: flex;
+    gap: var(--spacing-cell);
+  }
   .signale-header {
+    flex: 1;
+    min-width: 0;
     padding-right: var(--spacing-card);
+    border-radius: var(--radius-container) var(--radius-container) 0 0;
   }
-  .signals-list {
-    padding: var(--spacing-half-card) 0;
+  .signale-header:not(:last-child) {
+    border-radius: var(--radius-container) 0 0 0;
   }
-
   .signale-header :global(.km-toggle) {
     margin-left: auto;
   }
-  .meldungen-section {
-    margin-left: var(--spacing-cell);
+  .meldungen-header {
     flex-shrink: 0;
     width: 220px;
+    border-radius: 0 var(--radius-container) 0 0;
+    border-left: none;
+  }
+  .meldungen-header :global(button) {
+    margin-left: auto;
   }
   @media (min-width: 768px) {
-    .meldungen-section {
+    .meldungen-header {
       width: 280px;
     }
   }
-  .meldungen-panel {
-    background: var(--color-bg);
-    border: var(--card-border);
-    border-radius: var(--radius-container);
-    overflow: hidden;
-    height: 100%;
-    box-sizing: border-box;
+  .signals-list {
+    padding: var(--spacing-half-card) 0;
   }
 </style>
