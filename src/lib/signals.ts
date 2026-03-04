@@ -21,7 +21,9 @@ export function extractSignalBase(signal: string | undefined): string | null {
 export function extractName(signal: string): string {
   const base = extractSignalBase(signal);
   if (!base || !signalNeedsName(base)) return '';
-  return signal.slice(base.length).trim();
+  // Keep trailing whitespace so the $effect in Signalname doesn't eat spaces while typing.
+  // Leading space (separator between base and name) is always stripped.
+  return signal.slice(base.length).replace(/^ /, '');
 }
 
 export function signalNeedsName(signal: string): boolean {

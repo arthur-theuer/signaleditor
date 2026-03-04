@@ -8,19 +8,16 @@ export function focusWithoutScroll(el: HTMLElement | null | undefined): void {
 
 /**
  * Run a callback that may cause layout shifts without the browser
- * scrolling the focused element. Locks the scroll position by
- * temporarily setting overflow:hidden on <html>, then restores it.
+ * scrolling the focused element. Restores scroll position across
+ * several frames to handle Safari's native scroll reset.
  */
 export function withStableScroll(fn: () => void): void {
-  const html = document.documentElement;
-  const body = document.body;
   const scrollY = window.scrollY;
-  html.style.overflow = 'hidden';
-  body.style.overflow = 'hidden';
   fn();
-  requestAnimationFrame(() => {
-    html.style.overflow = '';
-    body.style.overflow = '';
-    window.scrollTo(0, scrollY);
-  });
+  let frames = 0;
+  const restore = () => {
+    if (window.scrollY !== scrollY) window.scrollTo(0, scrollY);
+    if (++frames < 5) requestAnimationFrame(restore);
+  };
+  requestAnimationFrame(restore);
 }
