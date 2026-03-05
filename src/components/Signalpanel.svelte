@@ -354,6 +354,7 @@
     overflow-anchor: none;
     display: grid;
     padding: 0 var(--spacing-card);
+    column-gap: var(--spacing-card);
     grid-template-columns:
       [id] var(--spacing-unit)
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
@@ -413,7 +414,6 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-    gap: var(--spacing-card);
     padding: var(--spacing-half-card) 0;
     align-items: stretch;
     min-height: calc(var(--spacing-unit) + var(--spacing-card));
