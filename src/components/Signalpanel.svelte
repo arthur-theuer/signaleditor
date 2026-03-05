@@ -353,7 +353,6 @@
     position: relative;
     overflow-anchor: none;
     display: grid;
-    padding: 0 var(--spacing-card);
     column-gap: var(--spacing-card);
     grid-template-columns:
       [id] var(--spacing-unit)

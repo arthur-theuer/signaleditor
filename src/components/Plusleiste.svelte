@@ -39,7 +39,7 @@
   .add-bar {
     display: flex;
     gap: var(--spacing-card);
-    margin: var(--spacing-half-card) var(--spacing-card);
+    margin: var(--spacing-card) var(--spacing-card);
   }
   /* Extends .btn — plusleiste-specific overrides */
   .add-bar button {

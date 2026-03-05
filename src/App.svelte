@@ -226,6 +226,6 @@
     }
   }
   .signals-list {
-    padding: var(--spacing-half-card) 0;
+    padding: 0;
   }
 </style>
