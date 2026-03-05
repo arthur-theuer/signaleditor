@@ -9,7 +9,10 @@
     onchange: () => void;
   } = $props();
 
+  // Click cycles with wrapping: '' → >> → << → ''
   const PFEIL_CYCLE: AbzweigungPfeil[] = ['', '>>', '<<'];
+  // Arrow keys use directional order, clamped at ends: << → '' → >>
+  const PFEIL_ORDER: AbzweigungPfeil[] = ['<<', '', '>>'];
   const VON_NACH_ENUM: Array<'von' | 'nach'> = ['von', 'nach'];
 
   function cycleArrow(side: 'links' | 'rechts') {
@@ -22,16 +25,18 @@
   function handleArrowKeydown(e: KeyboardEvent, side: 'links' | 'rechts') {
     if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
       e.preventDefault();
-      const current = eintrag.abzweigung[side];
-      const idx = PFEIL_CYCLE.indexOf(current);
-      eintrag.abzweigung[side] = PFEIL_CYCLE[(idx + 1) % PFEIL_CYCLE.length];
-      onchange();
+      const idx = PFEIL_ORDER.indexOf(eintrag.abzweigung[side]);
+      if (idx < PFEIL_ORDER.length - 1) {
+        eintrag.abzweigung[side] = PFEIL_ORDER[idx + 1];
+        onchange();
+      }
     } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
       e.preventDefault();
-      const current = eintrag.abzweigung[side];
-      const idx = PFEIL_CYCLE.indexOf(current);
-      eintrag.abzweigung[side] = PFEIL_CYCLE[(idx - 1 + PFEIL_CYCLE.length) % PFEIL_CYCLE.length];
-      onchange();
+      const idx = PFEIL_ORDER.indexOf(eintrag.abzweigung[side]);
+      if (idx > 0) {
+        eintrag.abzweigung[side] = PFEIL_ORDER[idx - 1];
+        onchange();
+      }
     } else if (e.key === 'Escape') {
       e.preventDefault();
       eintrag.abzweigung[side] = '';
