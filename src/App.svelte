@@ -165,9 +165,7 @@
         </div>
       {/if}
     </div>
-    <div class="signals-list">
-      <Signalpanel bind:signale={ed.data.signale} showKm={ed.showKm} {meldungen} onchange={() => ed.markDirty()} />
-    </div>
+    <Signalpanel bind:signale={ed.data.signale} showKm={ed.showKm} {meldungen} onchange={() => ed.markDirty()} />
   </div>
 </div>
 
@@ -225,7 +223,5 @@
       width: 280px;
     }
   }
-  .signals-list {
-    padding: 0;
-  }
+
 </style>

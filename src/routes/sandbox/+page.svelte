@@ -9,7 +9,6 @@
   let show = $state({
     container: true,
     header: true,
-    signalList: true,
     listInner: true,
     insertWrapper: true,
     signalRow: true,
@@ -19,6 +18,7 @@
     actions: true,
     meldungCol: true,
     plusleiste: true,
+    gridOverlay: false,
   });
 
   type ShowKey = keyof typeof show;
@@ -26,7 +26,6 @@
   const labels: Record<ShowKey, string> = {
     container: '.signals-container',
     header: '.header-row',
-    signalList: '.signals-list',
     listInner: '.signal-list-inner',
     insertWrapper: '.insert-wrapper',
     signalRow: '.signal-row',
@@ -36,12 +35,12 @@
     actions: '.signal-actions',
     meldungCol: '.meldung-col',
     plusleiste: 'Plusleiste',
+    gridOverlay: 'grid columns',
   };
 
   const colors: Record<ShowKey, string> = {
     container: '#ef444440',
     header: '#f9731640',
-    signalList: '#eab30840',
     listInner: '#22c55e40',
     insertWrapper: '#06b6d440',
     signalRow: '#3b82f640',
@@ -51,6 +50,7 @@
     actions: '#64748b40',
     meldungCol: '#14b8a640',
     plusleiste: '#a855f740',
+    gridOverlay: '#ff00ff40',
   };
 </script>
 
@@ -89,15 +89,26 @@
         {/if}
       </div>
 
-      <!-- .signals-list -->
-      <div class="signals-list" class:debug-signalList={show.signalList}>
-
-        <!-- .signal-list-inner (grid container) -->
+      <!-- .signal-list-inner (grid container) -->
         <div class="signal-list-inner"
           class:has-km={showKm}
           class:has-mel={showMel}
           class:debug-listInner={show.listInner}
         >
+          <!-- Grid column overlay -->
+          {#if show.gridOverlay}
+            <div class="grid-overlay">
+              <div class="grid-col" style="grid-column: id;">id</div>
+              {#if showKm}<div class="grid-col" style="grid-column: km;">km</div>{/if}
+              <div class="grid-col" style="grid-column: s1;">s1</div>
+              <div class="grid-col" style="grid-column: s1b;">s1b</div>
+              <div class="grid-col" style="grid-column: s2;">s2</div>
+              <div class="grid-col" style="grid-column: s2b;">s2b</div>
+              <div class="grid-col" style="grid-column: act;">act</div>
+              {#if showMel}<div class="grid-col" style="grid-column: mel;">mel</div>{/if}
+            </div>
+          {/if}
+
           <!-- Zwischenaktionen (row 0) -->
           <div class="insert-wrapper" class:debug-insertWrapper={show.insertWrapper}>
             <div class="insert-trigger-placeholder">Zwischenaktionen (0 height when closed)</div>
@@ -230,7 +241,6 @@
       </div>
     </div>
   </div>
-</div>
 
 <style>
   /* ── Layout ── */
@@ -319,10 +329,6 @@
     border-radius: 0 12px 0 0;
     border-left: 1px solid #e0e0e0;
   }
-  .signals-list {
-    padding: 0;
-  }
-
   /* Grid container */
   .signal-list-inner {
     position: relative;
@@ -492,10 +498,31 @@
     font-size: 12px;
   }
 
+  /* ── Grid overlay ── */
+  .grid-overlay {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    pointer-events: none;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .grid-col {
+    background: #ff00ff10;
+    border-left: 1px dashed #ff00ff80;
+    border-right: 1px dashed #ff00ff80;
+    font-size: 9px;
+    font-weight: 700;
+    color: #ff00ff;
+    text-align: center;
+    padding: 2px 0;
+    font-family: ui-monospace, monospace;
+  }
+
   /* ── Debug outlines ── */
   .debug              { outline: 2px dashed #ef4444; outline-offset: -2px; }
   .debug-header       { outline: 2px dashed #f97316; outline-offset: -2px; }
-  .debug-signalList   { outline: 2px dashed #eab308; outline-offset: -2px; }
   .debug-listInner    { outline: 2px dashed #22c55e; outline-offset: -2px; }
   .debug-insertWrapper { background: #06b6d420; outline: 1px dashed #06b6d4; min-height: 2px; }
   .debug-insertWrapper .insert-trigger-placeholder { height: auto; }
