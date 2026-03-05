@@ -6,11 +6,13 @@
   let {
     mode,
     value = $bindable(),
+    inputEl = $bindable(undefined),
     placeholder = '',
     onchange,
   }: {
     mode: 'code' | 'name';
     value: string;
+    inputEl?: HTMLInputElement;
     placeholder?: string;
     onchange?: () => void;
   } = $props();
@@ -18,7 +20,6 @@
   let query = $state('');
   let open = $state(false);
   let activeIndex = $state(0);
-  let searchInput: HTMLInputElement | undefined = $state();
 
   let resolvedName = $derived(mode === 'code' ? stationName(value) : '');
   let valid = $derived(mode === 'code' ? !!resolvedName : !!codeForName(value));
@@ -37,10 +38,10 @@
   function handleFocus() {
     if (mode === 'code' && valid) {
       query = resolvedName;
-      searchInput?.select();
+      inputEl?.select();
     } else if (mode === 'name' && value) {
       query = value;
-      searchInput?.select();
+      inputEl?.select();
     }
     open = true;
     activeIndex = 0;
@@ -85,7 +86,7 @@
 </script>
 
 <input
-  bind:this={searchInput}
+  bind:this={inputEl}
   type="text"
   class={['search-field', { 'name-input': mode === 'name', 'has-value': valid && !open }]}
   value={displayValue}
