@@ -3,6 +3,7 @@
   import { isStreckendaten, dateiId } from '../lib/types';
   import { Milestone, Route } from 'lucide-svelte';
   import { ICON } from '../lib/constants';
+  import { stationName } from '../lib/station-search';
   import Stationsfeld from './ui/Stationsfeld.svelte';
 
   let {
@@ -86,13 +87,15 @@
     </div>
     <div class={secondaryClass}>
       <label for="meta-von">Von</label>
-      <span class="hl-field">
+      <span class="hl-field station-code-field">
+        <span class={['station-code', { valid: !!stationName(data.meta.von) }]}>{data.meta.von || 'Code'}</span>
         <Stationsfeld mode="code" bind:value={data.meta.von} placeholder="z.B. Olten" />
       </span>
     </div>
     <div class={secondaryClass}>
       <label for="meta-nach">Nach</label>
-      <span class="hl-field">
+      <span class="hl-field station-code-field">
+        <span class={['station-code', { valid: !!stationName(data.meta.nach) }]}>{data.meta.nach || 'Code'}</span>
         <Stationsfeld mode="code" bind:value={data.meta.nach} placeholder="z.B. Aarau" />
       </span>
     </div>
@@ -203,6 +206,23 @@
   }
   .daten-field input:focus {
     outline: none;
+  }
+  .station-code-field {
+    position: relative;
+  }
+  .station-code {
+    width: calc(2 * var(--spacing-unit));
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-input);
+    font-family: var(--font-mono);
+    color: var(--color-text-muted);
+    border-right: 1px solid var(--color-border);
+  }
+  .station-code.valid {
+    color: var(--color-text);
   }
   .header-id {
     font-weight: var(--font-weight-normal);

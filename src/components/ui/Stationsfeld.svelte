@@ -1,8 +1,7 @@
 <script lang="ts">
   import { Search } from 'lucide-svelte';
-  import { ICON, STATIONEN } from '../../lib/constants';
-  import { search, highlight, codeForName, type Result } from '../../lib/station-search';
-  import { focusWithoutScroll } from '../../lib/focus';
+  import { ICON } from '../../lib/constants';
+  import { search, highlight, codeForName, stationName, type Result } from '../../lib/station-search';
 
   let {
     mode,
@@ -21,9 +20,12 @@
   let activeIndex = $state(0);
   let searchInput: HTMLInputElement | undefined = $state();
 
-  let resolvedName = $derived(mode === 'code' ? STATIONEN[value]?.[0] || '' : '');
+  let resolvedName = $derived(mode === 'code' ? stationName(value) : '');
   let valid = $derived(mode === 'code' ? !!resolvedName : !!codeForName(value));
   let results: Result[] = $derived(search(query));
+  let displayValue = $derived(
+    open ? query : mode === 'code' ? resolvedName || '' : value || '',
+  );
 
   function select(entry: Result) {
     value = mode === 'code' ? entry.code : entry.name;
@@ -56,17 +58,6 @@
     activeIndex = 0;
   }
 
-  function focusNextTabbable() {
-    if (!searchInput) return;
-    const all = Array.from(
-      document.querySelectorAll<HTMLElement>(
-        'input:not([tabindex="-1"]):not([disabled]), button:not([tabindex="-1"]):not([disabled]), select:not([tabindex="-1"]):not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled])',
-      ),
-    ).filter((el) => el.offsetParent !== null);
-    const idx = all.indexOf(searchInput);
-    if (idx >= 0 && idx < all.length - 1) focusWithoutScroll(all[idx + 1]);
-  }
-
   function handleKeydown(e: KeyboardEvent) {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -76,9 +67,7 @@
       if (results.length) activeIndex = (activeIndex - 1 + results.length) % results.length;
     } else if (e.key === 'Tab' && !e.shiftKey) {
       if (open && results.length) {
-        e.preventDefault();
         select(results[activeIndex]);
-        focusNextTabbable();
       }
     } else if (e.key === 'Enter') {
       if (open && results.length) {
@@ -95,50 +84,25 @@
   }
 </script>
 
-{#if mode === 'code'}
-  <div class="station-field">
-    <span class={['code-col', { 'has-code': valid }]}>{value || 'Code'}</span>
-    <div class="name-col">
-      <input
-        bind:this={searchInput}
-        type="text"
-        class={['search-field', { 'has-value': valid && !open }]}
-        value={open ? query : resolvedName || ''}
-        oninput={(e) => {
-          query = (e.target as HTMLInputElement).value;
-          handleInput();
-        }}
-        onfocus={handleFocus}
-        onblur={handleBlur}
-        onkeydown={handleKeydown}
-        {placeholder}
-        autocomplete="none"
-        autocorrect="off"
-        spellcheck="false"
-      />
-      {#if !valid}
-        <span class="search-icon"><Search {...ICON} /></span>
-      {/if}
-    </div>
-  </div>
-{:else}
-  <input
-    bind:this={searchInput}
-    type="text"
-    class={['search-field name-input', { 'has-value': valid && !open }]}
-    value={open ? query : value || ''}
-    oninput={(e) => {
-      query = (e.target as HTMLInputElement).value;
-      handleInput();
-    }}
-    onfocus={handleFocus}
-    onblur={handleBlur}
-    onkeydown={handleKeydown}
-    {placeholder}
-    autocomplete="none"
-    autocorrect="off"
-    spellcheck="false"
-  />
+<input
+  bind:this={searchInput}
+  type="text"
+  class={['search-field', { 'name-input': mode === 'name', 'has-value': valid && !open }]}
+  value={displayValue}
+  oninput={(e) => {
+    query = (e.target as HTMLInputElement).value;
+    handleInput();
+  }}
+  onfocus={handleFocus}
+  onblur={handleBlur}
+  onkeydown={handleKeydown}
+  {placeholder}
+  autocomplete="none"
+  autocorrect="off"
+  spellcheck="false"
+/>
+{#if mode === 'code' && !valid}
+  <span class="search-icon"><Search {...ICON} /></span>
 {/if}
 {#if open && results.length > 0}
   <div class="dropdown">
@@ -162,36 +126,6 @@
 {/if}
 
 <style>
-  /* Code mode: two-column layout */
-  .station-field {
-    display: flex;
-    height: 100%;
-    width: 100%;
-  }
-
-  .code-col {
-    width: calc(2 * var(--spacing-unit));
-    flex: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
-    color: var(--color-text-muted);
-  }
-  .code-col.has-code {
-    color: var(--color-text);
-  }
-  .name-col {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    position: relative;
-    border-left: 1px solid var(--color-border);
-  }
-
-  /* Shared input style */
   .search-field {
     flex: 1;
     min-width: 0;
@@ -220,11 +154,8 @@
     color: var(--color-text-muted);
     pointer-events: none;
   }
-  .station-field:focus-within .search-icon :global(svg) {
-    stroke-width: 3;
-  }
 
-  /* Dropdown items — container styles in app.css (.dropdown) */
+  /* Dropdown items — container styles in components.css (.dropdown) */
   .dropdown-item {
     display: flex;
     align-items: center;
@@ -242,6 +173,11 @@
     background: var(--color-focus-bg);
   }
   .dropdown-item .code-col {
+    width: calc(2 * var(--spacing-unit));
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: var(--text-caption);
   }
   .dropdown-item .name-col {

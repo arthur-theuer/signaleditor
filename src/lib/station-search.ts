@@ -69,6 +69,10 @@ export function codeForName(name: string): string | undefined {
   return nameToCode[fold(name)];
 }
 
+export function stationName(code: string): string {
+  return STATIONEN[code]?.[0] || '';
+}
+
 // Four-tier search: exact → prefix → substring → fuzzy
 export function search(rawQuery: string, max = 6): Result[] {
   const q = fold(rawQuery.trim());
