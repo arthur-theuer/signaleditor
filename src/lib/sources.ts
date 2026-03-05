@@ -100,19 +100,47 @@ export async function autoStitchImporte(
 
     if (resA.error || resB.error) continue;
 
-    const knotenASet = new Set(
-      resA.signale.filter((s) => isKnoteneintrag(s)).map((s) => (s as { knoten: string }).knoten),
-    );
+    const knotenAList = resA.signale
+      .filter((s) => isKnoteneintrag(s))
+      .map((s) => (s as { knoten: string }).knoten);
     const knotenBList = resB.signale
       .filter((s) => isKnoteneintrag(s))
       .map((s) => (s as { knoten: string }).knoten);
+    const knotenASet = new Set(knotenAList);
+    const knotenBSet = new Set(knotenBList);
 
-    // Pick the earliest knoten in B that also exists in A (the divergence point)
+    // Candidate 1: last shared knoten in A
+    let candidate1: string | undefined;
+    for (let i = knotenAList.length - 1; i >= 0; i--) {
+      if (knotenBSet.has(knotenAList[i])) {
+        candidate1 = knotenAList[i];
+        break;
+      }
+    }
+
+    // Candidate 2: earliest shared knoten in B
+    let candidate2: string | undefined;
     for (const k of knotenBList) {
       if (knotenASet.has(k)) {
-        qA.bis = k;
-        qB.von = k;
+        candidate2 = k;
         break;
+      }
+    }
+
+    // Pick the candidate that doesn't collapse either segment to a single knoten.
+    // A collapses when the stitch point equals A's start; B collapses when it equals B's end.
+    if (candidate1 || candidate2) {
+      const effectiveAStart = qA.von || knotenAList[0];
+      const bEnd = knotenBList[knotenBList.length - 1];
+
+      const c1Ok = candidate1 && candidate1 !== effectiveAStart && candidate1 !== bEnd;
+      const c2Ok = candidate2 && candidate2 !== effectiveAStart && candidate2 !== bEnd;
+
+      const stitch = c1Ok ? candidate1 : c2Ok ? candidate2 : (candidate2 ?? candidate1);
+
+      if (stitch) {
+        qA.bis = stitch;
+        qB.von = stitch;
       }
     }
   }
