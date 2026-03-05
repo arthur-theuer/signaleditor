@@ -198,6 +198,7 @@
     border: var(--card-border);
     border-radius: var(--radius-container);
     container-type: inline-size;
+    overflow: hidden;
   }
   .header-row {
     display: flex;
@@ -226,6 +227,6 @@
     }
   }
   .signals-list {
-    padding: var(--spacing-half-card) 0;
+    padding: 0;
   }
 </style>

@@ -49,8 +49,8 @@
 .dropdown {
   position: absolute;
   top: 100%;
-  left: -1px;
-  right: -1px;
+  left: 0;
+  right: 0;
   z-index: 2;
   background: var(--color-bg-raised);
   border: var(--card-border);
@@ -98,7 +98,6 @@ button:hover:not(:disabled) svg {
 .row-cell {
   display: flex;
   background: var(--color-bg-raised);
-  border: var(--card-border);
   border-radius: var(--radius-card);
   position: relative;
   flex: 1;
