@@ -113,13 +113,8 @@
         onmouseenter={() => (activeIndex = i)}
         tabindex={-1}
       >
-        {#if mode === 'code'}
-          <span class="code-col">{@html highlight(entry.code, entry.codeIndices)}</span>
-          <span class="name-col">{@html highlight(entry.name, entry.nameIndices)}</span>
-        {:else}
-          <span class="item-name">{@html highlight(entry.name, entry.nameIndices)}</span>
-          <span class="item-code">{@html highlight(entry.code, entry.codeIndices)}</span>
-        {/if}
+        <span class="item-name">{@html highlight(entry.name, entry.nameIndices)}</span>
+        <span class="item-code">{@html highlight(entry.code, entry.codeIndices)}</span>
       </button>
     {/each}
   </div>
@@ -165,7 +160,8 @@
     display: flex;
     align-items: center;
     width: 100%;
-    padding: var(--spacing-xs) 0;
+    padding: var(--spacing-xs) var(--spacing-cell);
+    gap: var(--spacing-cell);
     border: none;
     background: transparent;
     font-size: var(--text-caption);
@@ -177,22 +173,6 @@
   .dropdown-item.active {
     background: var(--color-focus-bg);
   }
-  .dropdown-item .code-col {
-    width: calc(2 * var(--spacing-unit));
-    flex: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--text-caption);
-  }
-  .dropdown-item .name-col {
-    display: block;
-    padding: 0 var(--spacing-cell);
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-  /* Name mode dropdown items */
   .item-name {
     flex: 1;
     min-width: 0;
@@ -204,10 +184,6 @@
     flex: none;
     color: var(--color-text-muted);
     text-align: right;
-  }
-  .dropdown-item:has(.item-name) {
-    padding: var(--spacing-xs) var(--spacing-cell);
-    gap: var(--spacing-cell);
   }
 
   .dropdown-item :global(mark) {
