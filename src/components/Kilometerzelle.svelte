@@ -47,36 +47,28 @@
   }
 </script>
 
-<div class="km-cell">
-  <div class="km-cell-inner hl-field">
-    <input
-      type="text"
-      class="km-input"
-      value={kmVal}
-      oninput={handleInput}
-      onkeydown={handleKeydown}
-      placeholder={prevKm}
-      autocomplete="off"
-      autocorrect="off"
-      spellcheck="false"
-    />
-  </div>
+<div class="km-cell hl-field">
+  <input
+    type="text"
+    class="km-input"
+    value={kmVal}
+    oninput={handleInput}
+    onkeydown={handleKeydown}
+    placeholder={prevKm}
+    autocomplete="off"
+    autocorrect="off"
+    spellcheck="false"
+  />
 </div>
 
 <style>
   .km-cell {
     display: flex;
-    flex-direction: column;
     background: var(--color-bg-raised);
     border: var(--card-border);
     border-radius: var(--radius-card);
     width: calc(1.5 * var(--spacing-unit));
     flex-shrink: 0;
-  }
-  .km-cell-inner {
-    display: flex;
-    height: 100%;
-    border-radius: var(--radius-inner);
   }
   .km-input {
     flex: 1;

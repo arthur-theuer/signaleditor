@@ -11,22 +11,13 @@
   } = $props();
 </script>
 
-<div class="row-cell knoten-cell">
-  <div class="knoten-search-wrapper hl-field">
-    <Stationsfeld mode="code" bind:value={eintrag.knoten} placeholder="z.B. Zürich" {onchange} />
-  </div>
+<div class="row-cell knoten-cell hl-field">
+  <Stationsfeld mode="code" bind:value={eintrag.knoten} placeholder="z.B. Zürich" {onchange} />
 </div>
 
 <style>
   .knoten-cell {
     background: var(--color-knoten);
     overflow: visible;
-  }
-  .knoten-search-wrapper {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    height: 100%;
-    border-radius: var(--radius-inner);
   }
 </style>
