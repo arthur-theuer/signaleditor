@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { Abzweigungseintrag, AbzweigungPfeil } from '../lib/types';
-  import { focusWithoutScroll } from '../lib/focus';
 
   let {
     eintrag = $bindable(),
@@ -68,143 +67,119 @@
   }
 </script>
 
-<div class="row-cell abzweigung-cell">
-  <div class="abzweigung-field abzweigung-arrow-field hl-field">
-    <button
-      class="abzweigung-btn"
-      onclick={(e) => {
-        focusWithoutScroll(e.currentTarget as HTMLElement);
-        cycleArrow('links');
-      }}
-      onkeydown={(e) => handleArrowKeydown(e, 'links')}
-    >
-      {#if eintrag.abzweigung.links}
-        {eintrag.abzweigung.links}
-      {:else}
-        <span class="placeholder">&lt;&gt;</span>
-      {/if}
-    </button>
-  </div>
-  <div class="abzweigung-field abzweigung-strecke-field hl-field">
-    <input
-      type="text"
-      class="abzweigung-strecke"
-      bind:value={eintrag.abzweigung.strecke}
-      oninput={onchange}
-      placeholder="Nummer"
-      autocomplete="none"
-      autocorrect="off"
-      spellcheck="false"
-    />
-  </div>
-  <div class="abzweigung-field abzweigung-vonnach-field hl-field">
-    <button
-      class="abzweigung-btn"
-      onclick={(e) => {
-        focusWithoutScroll(e.currentTarget as HTMLElement);
-        cycleVonNach(1);
-      }}
-      onkeydown={handleVonNachKeydown}
-    >
-      {#if eintrag.abzweigung.von_nach}
-        {eintrag.abzweigung.von_nach}
-      {:else}
-        <span class="placeholder">von/nach</span>
-      {/if}
-    </button>
-  </div>
-  <div class="abzweigung-field abzweigung-richtung-field hl-field">
-    <input
-      type="text"
-      class="abzweigung-richtung"
-      bind:value={eintrag.abzweigung.richtung}
-      oninput={onchange}
-      placeholder="Richtung"
-      autocomplete="none"
-      autocorrect="off"
-      spellcheck="false"
-    />
-  </div>
-  <div class="abzweigung-field abzweigung-arrow-field hl-field">
-    <button
-      class="abzweigung-btn"
-      onclick={(e) => {
-        focusWithoutScroll(e.currentTarget as HTMLElement);
-        cycleArrow('rechts');
-      }}
-      onkeydown={(e) => handleArrowKeydown(e, 'rechts')}
-    >
-      {#if eintrag.abzweigung.rechts}
-        {eintrag.abzweigung.rechts}
-      {:else}
-        <span class="placeholder">&lt;&gt;</span>
-      {/if}
-    </button>
-  </div>
+<div class="row-cell abzweigung-cell abzweigung-arrow-cell hl-field">
+  <button
+    class="abzweigung-btn"
+    onclick={() => cycleArrow('links')}
+    onkeydown={(e) => handleArrowKeydown(e, 'links')}
+  >
+    {#if eintrag.abzweigung.links}
+      {eintrag.abzweigung.links}
+    {:else}
+      <span class="placeholder">&lt;&gt;</span>
+    {/if}
+  </button>
+</div>
+<div class="row-cell abzweigung-cell abzweigung-text-cell hl-field">
+  <input
+    type="text"
+    class="abzweigung-strecke"
+    bind:value={eintrag.abzweigung.strecke}
+    oninput={onchange}
+    placeholder="Nummer"
+    autocomplete="none"
+    autocorrect="off"
+    spellcheck="false"
+  />
+</div>
+<div class="row-cell abzweigung-cell abzweigung-btn-cell hl-field">
+  <button
+    class="abzweigung-btn"
+    onclick={() => cycleVonNach(1)}
+    onkeydown={handleVonNachKeydown}
+  >
+    {#if eintrag.abzweigung.von_nach}
+      {eintrag.abzweigung.von_nach}
+    {:else}
+      <span class="placeholder">von/nach</span>
+    {/if}
+  </button>
+</div>
+<div class="row-cell abzweigung-cell abzweigung-text-cell hl-field">
+  <input
+    type="text"
+    class="abzweigung-richtung"
+    bind:value={eintrag.abzweigung.richtung}
+    oninput={onchange}
+    placeholder="Richtung"
+    autocomplete="none"
+    autocorrect="off"
+    spellcheck="false"
+  />
+</div>
+<div class="row-cell abzweigung-cell abzweigung-arrow-cell hl-field">
+  <button
+    class="abzweigung-btn"
+    onclick={() => cycleArrow('rechts')}
+    onkeydown={(e) => handleArrowKeydown(e, 'rechts')}
+  >
+    {#if eintrag.abzweigung.rechts}
+      {eintrag.abzweigung.rechts}
+    {:else}
+      <span class="placeholder">&lt;&gt;</span>
+    {/if}
+  </button>
 </div>
 
 <style>
   .abzweigung-cell {
     background: var(--color-abzweigung);
   }
-  .abzweigung-field {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .abzweigung-arrow-cell {
+    width: var(--spacing-unit);
+    flex: none;
+  }
+  .abzweigung-text-cell {
+    flex: 1;
+  }
+  .abzweigung-btn-cell {
+    flex: 1;
+  }
+  .abzweigung-btn {
+    width: 100%;
     height: 100%;
-  }
-  .abzweigung-field + .abzweigung-field {
-    border-left: 1px solid var(--color-border);
-  }
-  .abzweigung-field input,
-  .abzweigung-field .abzweigung-btn {
     border: none;
     background: transparent;
     font-size: var(--text-input);
     font-family: var(--font-mono);
-    height: 100%;
-    outline: none;
     color: var(--color-text);
-    font-weight: var(--font-weight-normal);
-  }
-  .abzweigung-field input {
-    padding: 0 var(--spacing-cell);
-    min-width: 0;
-    width: 100%;
-    text-align: center;
-  }
-  .abzweigung-field input::placeholder {
-    color: var(--color-text-muted);
-  }
-  .abzweigung-btn {
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
+    outline: none;
+  }
+  .abzweigung-strecke,
+  .abzweigung-richtung {
+    flex: 1;
+    min-width: 0;
+    padding: 0 var(--spacing-cell);
+    border: none;
+    background: transparent;
+    font-size: var(--text-input);
+    font-family: var(--font-mono);
+    color: var(--color-text);
+    text-align: center;
     width: 100%;
+    height: 100%;
+    outline: none;
   }
-  .abzweigung-arrow-field {
-    width: var(--spacing-unit);
-    flex-shrink: 0;
-  }
-  .abzweigung-strecke-field {
-    flex: 1;
-  }
-  .abzweigung-vonnach-field {
-    flex: 1;
-  }
-  .abzweigung-richtung-field {
-    flex: 1;
+  .abzweigung-strecke::placeholder,
+  .abzweigung-richtung::placeholder {
+    color: var(--color-text-muted);
   }
   .placeholder {
     color: var(--color-text-muted);
-  }
-
-  .abzweigung-cell > :first-child {
-    border-radius: var(--radius-inner) 0 0 var(--radius-inner);
-  }
-  .abzweigung-cell > :last-child {
-    border-radius: 0 var(--radius-inner) var(--radius-inner) 0;
   }
 </style>
