@@ -417,7 +417,6 @@
     padding: var(--spacing-half-card) 0;
     align-items: stretch;
     min-height: calc(var(--spacing-unit) + var(--spacing-card));
-    border-bottom: 1px solid var(--color-border);
   }
 
   /* ── Cell placement ── */
@@ -432,6 +431,7 @@
     color: var(--color-text-secondary);
     font-family: var(--font-mono);
     background: var(--color-bg-raised);
+    border: var(--card-border);
     border-radius: var(--radius-card);
     cursor: grab;
   }

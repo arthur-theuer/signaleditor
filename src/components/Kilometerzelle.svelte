@@ -65,6 +65,7 @@
   .km-cell {
     display: flex;
     background: var(--color-bg-raised);
+    border: var(--card-border);
     border-radius: var(--radius-card);
     width: calc(1.5 * var(--spacing-unit));
     flex-shrink: 0;
