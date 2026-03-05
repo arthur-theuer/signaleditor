@@ -36,9 +36,6 @@
     font-size: var(--text-input);
     font-family: var(--font-mono);
   }
-  .note-input:focus {
-    outline: none;
-  }
   .note-input::placeholder {
     color: var(--color-text-muted);
   }
