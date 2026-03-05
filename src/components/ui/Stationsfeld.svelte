@@ -112,7 +112,7 @@
         onblur={handleBlur}
         onkeydown={handleKeydown}
         {placeholder}
-        autocomplete="off"
+        autocomplete="none"
         autocorrect="off"
         spellcheck="false"
       />
@@ -135,7 +135,7 @@
     onblur={handleBlur}
     onkeydown={handleKeydown}
     {placeholder}
-    autocomplete="off"
+    autocomplete="none"
     autocorrect="off"
     spellcheck="false"
   />

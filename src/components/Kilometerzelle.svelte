@@ -55,7 +55,7 @@
     oninput={handleInput}
     onkeydown={handleKeydown}
     placeholder={prevKm}
-    autocomplete="off"
+    autocomplete="none"
     autocorrect="off"
     spellcheck="false"
   />

@@ -66,7 +66,7 @@
         if (e.key === 'Escape') cancel();
       }}
       onblur={cancel}
-      autocomplete="off"
+      autocomplete="none"
       autocorrect="off"
       spellcheck="false"
     />

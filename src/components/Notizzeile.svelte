@@ -17,7 +17,7 @@
     bind:value={eintrag.notiz}
     oninput={onchange}
     placeholder="Notiz"
-    autocomplete="off"
+    autocomplete="none"
     autocorrect="off"
     spellcheck="false"
   />

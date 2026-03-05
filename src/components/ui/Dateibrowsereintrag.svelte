@@ -68,7 +68,7 @@
           }
         }}
         autofocus
-        autocomplete="off"
+        autocomplete="none"
         autocorrect="off"
         spellcheck="false"
       />

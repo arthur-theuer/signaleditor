@@ -78,7 +78,7 @@
           value={primaryValue}
           oninput={handlePrimaryInput}
           placeholder={primaryPlaceholder}
-          autocomplete="off"
+          autocomplete="none"
           autocorrect="off"
           spellcheck="false"
         />
@@ -105,7 +105,7 @@
           bind:value={data.meta.via}
           oninput={(e) => autoArrow(e, (v) => (data.meta.via = v))}
           placeholder="z.B. VL, NBS"
-          autocomplete="off"
+          autocomplete="none"
           autocorrect="off"
           spellcheck="false"
         />
@@ -120,7 +120,7 @@
           bind:value={data.meta.name}
           oninput={(e) => autoArrow(e, (v) => (data.meta.name = v))}
           placeholder="z.B. Olten → Aarau"
-          autocomplete="off"
+          autocomplete="none"
           autocorrect="off"
           spellcheck="false"
         />

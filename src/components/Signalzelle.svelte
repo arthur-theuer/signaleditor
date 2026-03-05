@@ -112,7 +112,7 @@
         onfocus={handleSignalFocus}
         onblur={typeAhead.reset}
         tabindex={disabled ? -1 : 0}
-        autocomplete="off"
+        autocomplete="none"
         autocorrect="off"
         spellcheck="false"
       />

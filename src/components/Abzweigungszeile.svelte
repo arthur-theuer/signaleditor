@@ -92,7 +92,7 @@
       bind:value={eintrag.abzweigung.strecke}
       oninput={onchange}
       placeholder="Nummer"
-      autocomplete="off"
+      autocomplete="none"
       autocorrect="off"
       spellcheck="false"
     />
@@ -120,7 +120,7 @@
       bind:value={eintrag.abzweigung.richtung}
       oninput={onchange}
       placeholder="Richtung"
-      autocomplete="off"
+      autocomplete="none"
       autocorrect="off"
       spellcheck="false"
     />
