@@ -68,71 +68,78 @@
   }
 </script>
 
-<div class="row-cell abzweigung-cell abzweigung-arrow-cell hl-field">
-  <button
-    class="abzweigung-btn"
-    onclick={() => cycleArrow('links')}
-    onkeydown={(e) => handleArrowKeydown(e, 'links')}
-  >
-    {#if eintrag.abzweigung.links}
-      {eintrag.abzweigung.links}
-    {:else}
-      <span class="placeholder">&lt;&gt;</span>
-    {/if}
-  </button>
-</div>
-<div class="row-cell abzweigung-cell abzweigung-text-cell hl-field">
-  <input
-    type="text"
-    class="abzweigung-strecke"
-    bind:value={eintrag.abzweigung.strecke}
-    oninput={onchange}
-    placeholder="Nummer"
-    autocomplete="none"
-    autocorrect="off"
-    spellcheck="false"
-  />
-</div>
-<div class="row-cell abzweigung-cell abzweigung-btn-cell hl-field">
-  <button
-    class="abzweigung-btn"
-    onclick={() => cycleVonNach(1)}
-    onkeydown={handleVonNachKeydown}
-  >
-    {#if eintrag.abzweigung.von_nach}
-      {eintrag.abzweigung.von_nach}
-    {:else}
-      <span class="placeholder">von/nach</span>
-    {/if}
-  </button>
-</div>
-<div class="row-cell abzweigung-cell abzweigung-text-cell hl-field">
-  <input
-    type="text"
-    class="abzweigung-richtung"
-    bind:value={eintrag.abzweigung.richtung}
-    oninput={onchange}
-    placeholder="Richtung"
-    autocomplete="none"
-    autocorrect="off"
-    spellcheck="false"
-  />
-</div>
-<div class="row-cell abzweigung-cell abzweigung-arrow-cell hl-field">
-  <button
-    class="abzweigung-btn"
-    onclick={() => cycleArrow('rechts')}
-    onkeydown={(e) => handleArrowKeydown(e, 'rechts')}
-  >
-    {#if eintrag.abzweigung.rechts}
-      {eintrag.abzweigung.rechts}
-    {:else}
-      <span class="placeholder">&lt;&gt;</span>
-    {/if}
-  </button>
+<div class="abzw-group">
+  <div class="row-cell abzweigung-cell abzweigung-arrow-cell hl-field">
+    <button
+      class="abzweigung-btn"
+      onclick={() => cycleArrow('links')}
+      onkeydown={(e) => handleArrowKeydown(e, 'links')}
+    >
+      {#if eintrag.abzweigung.links}
+        {eintrag.abzweigung.links}
+      {:else}
+        <span class="placeholder">&lt;&gt;</span>
+      {/if}
+    </button>
+  </div>
+  <div class="row-cell abzweigung-cell abzweigung-text-cell hl-field">
+    <input
+      type="text"
+      class="abzweigung-strecke"
+      bind:value={eintrag.abzweigung.strecke}
+      oninput={onchange}
+      placeholder="Nummer"
+      autocomplete="none"
+      autocorrect="off"
+      spellcheck="false"
+    />
+  </div>
+  <div class="row-cell abzweigung-cell abzweigung-btn-cell hl-field">
+    <button
+      class="abzweigung-btn"
+      onclick={() => cycleVonNach(1)}
+      onkeydown={handleVonNachKeydown}
+    >
+      {#if eintrag.abzweigung.von_nach}
+        {eintrag.abzweigung.von_nach}
+      {:else}
+        <span class="placeholder">von/nach</span>
+      {/if}
+    </button>
+  </div>
+  <div class="row-cell abzweigung-cell abzweigung-text-cell hl-field">
+    <input
+      type="text"
+      class="abzweigung-richtung"
+      bind:value={eintrag.abzweigung.richtung}
+      oninput={onchange}
+      placeholder="Richtung"
+      autocomplete="none"
+      autocorrect="off"
+      spellcheck="false"
+    />
+  </div>
+  <div class="row-cell abzweigung-cell abzweigung-arrow-cell hl-field">
+    <button
+      class="abzweigung-btn"
+      onclick={() => cycleArrow('rechts')}
+      onkeydown={(e) => handleArrowKeydown(e, 'rechts')}
+    >
+      {#if eintrag.abzweigung.rechts}
+        {eintrag.abzweigung.rechts}
+      {:else}
+        <span class="placeholder">&lt;&gt;</span>
+      {/if}
+    </button>
+  </div>
 </div>
 
 <style>
+  .abzw-group {
+    display: flex;
+    gap: var(--spacing-card);
+    min-width: 0;
+  }
   .abzweigung-cell {
     background: var(--color-abzweigung);
   }

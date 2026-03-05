@@ -279,7 +279,7 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div bind:this={listEl} onkeydown={handleKeydown} class="signal-list-inner">
+<div bind:this={listEl} onkeydown={handleKeydown} class={['signal-list-inner', { 'has-km': showKm, 'has-mel': !!meldungen }]}>
   {#each signale as eintrag, idx (eintrag.id)}
     <Zwischenaktionen
       onInsertSignal={() => insertSignalAt(idx)}
@@ -288,47 +288,46 @@
       onInsertKnoten={() => insertAt(idx, makeKnoten(idx))}
       onInsertImport={() => insertAt(idx, makeImport(idx))}
     />
-    <div class="combined-row">
+    <div
+      class={['signal-row', { 'drag-ready': drag.dragHandle === idx, dragging: drag.dragIdx === idx }]}
+      data-row-index={idx}
+      draggable={drag.dragHandle === idx}
+      ondragstart={(e: DragEvent) => drag.handleDragStart(e, idx)}
+      ondragend={() => drag.handleDragEnd()}
+      ondragover={(e: DragEvent) => drag.handleDragOver(e, idx)}
+      ondragleave={(e: DragEvent) => drag.handleDragLeave(e, idx)}
+      ondrop={(e: DragEvent) => drag.handleDrop(e)}
+    >
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
       <div
-        class={['signal-row', { 'drag-ready': drag.dragHandle === idx, dragging: drag.dragIdx === idx }]}
-        data-row-index={idx}
-        draggable={drag.dragHandle === idx}
-        ondragstart={(e: DragEvent) => drag.handleDragStart(e, idx)}
-        ondragend={() => drag.handleDragEnd()}
-        ondragover={(e: DragEvent) => drag.handleDragOver(e, idx)}
-        ondragleave={(e: DragEvent) => drag.handleDragLeave(e, idx)}
-        ondrop={(e: DragEvent) => drag.handleDrop(e)}
-      >
-        <!-- svelte-ignore a11y_no_static_element_interactions -->
-        <div
-          class="signal-id"
-          onmousedown={() => (drag.dragHandle = idx)}
-          onmouseup={() => (drag.dragHandle = null)}
-          ontouchstart={(e) => drag.handleTouchStart(e, idx)}
-        >{idx}</div>
+        class="signal-id"
+        onmousedown={() => (drag.dragHandle = idx)}
+        onmouseup={() => (drag.dragHandle = null)}
+        ontouchstart={(e) => drag.handleTouchStart(e, idx)}
+      >{idx}</div>
 
-        {#if showKm && !isImporteintrag(eintrag)}
-          <Kilometerzelle
-            bind:eintrag={signale[idx]}
-            prevEintrag={idx > 0 ? signale[idx - 1] : undefined}
-            {onchange}
-          />
-        {/if}
+      {#if showKm && !isImporteintrag(eintrag)}
+        <Kilometerzelle
+          bind:eintrag={signale[idx]}
+          prevEintrag={idx > 0 ? signale[idx - 1] : undefined}
+          {onchange}
+        />
+      {/if}
 
-        {#if isSignaleintrag(eintrag)}
-          <Signalzeile bind:eintrag={signale[idx] as Signaleintrag} {signale} rowIdx={idx} {onchange} />
-        {:else if isNotizeintrag(eintrag)}
-          <Notizzeile bind:eintrag={signale[idx] as Notizeintrag} {onchange} />
-        {:else if isKnoteneintrag(eintrag)}
-          <Knotenzeile bind:eintrag={signale[idx] as Knoteneintrag} {onchange} />
-        {:else if isAbzweigungseintrag(eintrag)}
-          <Abzweigungszeile bind:eintrag={signale[idx] as Abzweigungseintrag} {onchange} />
-        {:else if isImporteintrag(eintrag)}
-          <Importzeile bind:eintrag={signale[idx] as Importeintrag} usedFiles={usedImportFiles} {onchange} />
-        {/if}
+      {#if isSignaleintrag(eintrag)}
+        <Signalzeile bind:eintrag={signale[idx] as Signaleintrag} {signale} rowIdx={idx} {onchange} />
+      {:else if isNotizeintrag(eintrag)}
+        <Notizzeile bind:eintrag={signale[idx] as Notizeintrag} {onchange} />
+      {:else if isKnoteneintrag(eintrag)}
+        <Knotenzeile bind:eintrag={signale[idx] as Knoteneintrag} {onchange} />
+      {:else if isAbzweigungseintrag(eintrag)}
+        <Abzweigungszeile bind:eintrag={signale[idx] as Abzweigungseintrag} {onchange} />
+      {:else if isImporteintrag(eintrag)}
+        <Importzeile bind:eintrag={signale[idx] as Importeintrag} usedFiles={usedImportFiles} {onchange} />
+      {/if}
 
-        <Zeilenaktionen ondelete={() => deleteRow(idx)} onclear={() => clearRow(idx)} />
-      </div>
+      <Zeilenaktionen ondelete={() => deleteRow(idx)} onclear={() => clearRow(idx)} />
+
       {#if meldungen && meldungen[idx]}
         <div class="meldung-col">
           <Meldungzelle meldung={meldungen[idx]} />
@@ -349,41 +348,82 @@
 />
 
 <style>
+  /* ── Grid container ── */
   .signal-list-inner {
     position: relative;
     overflow-anchor: none;
+    display: grid;
+    padding: 0 var(--spacing-card);
+    grid-template-columns:
+      [id] var(--spacing-unit)
+      [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
+      [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
+      [act] auto;
   }
-  .combined-row {
-    display: flex;
-    gap: var(--spacing-cell);
-    align-items: stretch;
+  .signal-list-inner.has-km {
+    grid-template-columns:
+      [id] var(--spacing-unit)
+      [km] calc(1.5 * var(--spacing-unit))
+      [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
+      [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
+      [act] auto;
   }
-  .meldung-col {
-    flex-shrink: 0;
-    width: 220px;
-    display: flex;
-    padding: var(--spacing-half-card) var(--spacing-card);
+  .signal-list-inner.has-mel {
+    grid-template-columns:
+      [id] var(--spacing-unit)
+      [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
+      [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
+      [act] auto
+      [mel] 220px;
+  }
+  .signal-list-inner.has-km.has-mel {
+    grid-template-columns:
+      [id] var(--spacing-unit)
+      [km] calc(1.5 * var(--spacing-unit))
+      [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
+      [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
+      [act] auto
+      [mel] 220px;
   }
   @media (min-width: 768px) {
-    .meldung-col {
-      width: 280px;
+    .signal-list-inner.has-mel {
+      grid-template-columns:
+        [id] var(--spacing-unit)
+        [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
+        [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
+        [act] auto
+        [mel] 280px;
+    }
+    .signal-list-inner.has-km.has-mel {
+      grid-template-columns:
+        [id] var(--spacing-unit)
+        [km] calc(1.5 * var(--spacing-unit))
+        [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
+        [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
+        [act] auto
+        [mel] 280px;
     }
   }
+
+  /* Zwischenaktionen + drop indicator span all columns */
+  .signal-list-inner :global(.insert-wrapper) { grid-column: 1 / -1; }
+
+  /* ── Subgrid rows ── */
   .signal-row {
-    display: flex;
-    flex: 1;
-    min-width: 0;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
     gap: var(--spacing-card);
-    padding: var(--spacing-half-card) var(--spacing-card);
+    padding: var(--spacing-half-card) 0;
     align-items: stretch;
     min-height: calc(var(--spacing-unit) + var(--spacing-card));
   }
+
+  /* ── Cell placement ── */
   .signal-id {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--spacing-unit);
-    flex-shrink: 0;
     user-select: none;
     touch-action: none;
     font-size: var(--text-input);
@@ -399,6 +439,32 @@
     cursor: grabbing;
   }
 
+  /* Signal cells: main signals span 2 cols, shrink to 1 when alt present */
+  .signal-row :global([data-field='signal_1'])  { grid-column: s1 / span 2; }
+  .signal-row :global([data-field='signal_2'])  { grid-column: s2 / span 2; }
+  .signal-row:has(:global([data-field='signal_1b'])) :global([data-field='signal_1']) { grid-column: s1 / span 1; }
+  .signal-row :global([data-field='signal_1b']) { grid-column: s1b / span 1; }
+  .signal-row:has(:global([data-field='signal_2b'])) :global([data-field='signal_2']) { grid-column: s2 / span 1; }
+  .signal-row :global([data-field='signal_2b']) { grid-column: s2b / span 1; }
+
+  /* Non-signal rows: span all signal columns */
+  .signal-row :global(.note-cell)      { grid-column: s1 / act; }
+  .signal-row :global(.knoten-group)   { grid-column: s1 / act; }
+  .signal-row :global(.import-group)   { grid-column: s1 / act; }
+  .signal-row :global(.abzw-group)     { grid-column: s1 / act; }
+
+  /* Actions always in the last signal column */
+  .signal-row :global(.signal-actions) { grid-column: act; }
+
+  /* Meldung column */
+  .meldung-col {
+    grid-column: mel;
+    display: flex;
+    padding: var(--spacing-half-card) var(--spacing-card);
+    border-left: 1px solid var(--color-border);
+  }
+
+  /* ── Drag state ── */
   .signal-row.dragging {
     opacity: 0.4;
   }
@@ -406,6 +472,7 @@
     visibility: hidden;
   }
   .drop-indicator {
+    grid-column: 1 / -1;
     position: absolute;
     left: var(--spacing-card);
     right: var(--spacing-card);

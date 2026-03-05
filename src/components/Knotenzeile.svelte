@@ -15,14 +15,21 @@
   let inputEl: HTMLInputElement | undefined = $state();
 </script>
 
-<div class="row-cell knoten-code-cell" onclick={() => inputEl?.focus()}>
-  <span class={['knoten-code', { valid: !!name }]}>{eintrag.knoten || 'Code'}</span>
-</div>
-<div class="row-cell knoten-search-cell hl-field">
-  <Stationsfeld mode="code" bind:value={eintrag.knoten} bind:inputEl placeholder="z.B. Zürich" {onchange} />
+<div class="knoten-group">
+  <div class="row-cell knoten-code-cell" onclick={() => inputEl?.focus()}>
+    <span class={['knoten-code', { valid: !!name }]}>{eintrag.knoten || 'Code'}</span>
+  </div>
+  <div class="row-cell knoten-search-cell hl-field">
+    <Stationsfeld mode="code" bind:value={eintrag.knoten} bind:inputEl placeholder="z.B. Zürich" {onchange} />
+  </div>
 </div>
 
 <style>
+  .knoten-group {
+    display: flex;
+    gap: var(--spacing-card);
+    min-width: 0;
+  }
   .knoten-code-cell {
     background: var(--color-knoten);
     width: calc(2 * var(--spacing-unit));

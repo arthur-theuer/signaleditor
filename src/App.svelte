@@ -6,7 +6,7 @@
   import { autoStitchImporte } from './lib/sources';
   import { isLoggedIn, login, logout } from './lib/auth.svelte';
   import { focusWithoutScroll } from './lib/focus';
-  import { RulerDimensionLine, X } from 'lucide-svelte';
+  import { RulerDimensionLine } from 'lucide-svelte';
   import { ICON } from './lib/constants';
   import { Editor } from './lib/useEditor.svelte';
   import { generiereAlleMeldungen } from './lib/reports';
@@ -162,15 +162,6 @@
       {#if ed.showMeldungen}
         <div class="section-header meldungen-header">
           Meldungen
-          <Symbolknopf
-            color="red"
-            bordered
-            active={false}
-            onclick={() => (ed.wantMeldungen = false)}
-            title="Meldungen schliessen"
-          >
-            <X {...ICON} />
-          </Symbolknopf>
         </div>
       {/if}
     </div>
@@ -210,7 +201,6 @@
   }
   .header-row {
     display: flex;
-    gap: var(--spacing-cell);
   }
   .signale-header {
     flex: 1;
@@ -228,10 +218,7 @@
     flex-shrink: 0;
     width: 220px;
     border-radius: 0 var(--radius-container) 0 0;
-    border-left: none;
-  }
-  .meldungen-header :global(button) {
-    margin-left: auto;
+    border-left: 1px solid var(--color-border);
   }
   @media (min-width: 768px) {
     .meldungen-header {

@@ -128,47 +128,49 @@
   }
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-<div
-  class={['row-cell import-cell import-file-cell', { 'has-file': hasFile }]}
-  role={hasFile ? 'button' : undefined}
-  tabindex={hasFile ? 0 : undefined}
-  onclick={hasFile ? () => (showPicker = true) : undefined}
-  onkeydown={hasFile
-    ? (e) => {
-        if (e.key === 'Enter') showPicker = true;
-      }
-    : undefined}
->
-  <div class="import-name">
-    {#if hasFile}
-      <span class="import-filename file-full">{eintrag.import.datei}</span>
-      <span class="import-filename file-noext">{fileBaseName}</span>
-    {:else}
-      <span class="import-placeholder">Datei auswählen</span>
-    {/if}
-  </div>
-  <button
-    class="import-folder-btn"
-    onclick={(e) => {
-      e.stopPropagation();
-      showPicker = true;
-    }}
-    title="Datei auswählen"
+<div class="import-group">
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+  <div
+    class={['row-cell import-cell import-file-cell', { 'has-file': hasFile }]}
+    role={hasFile ? 'button' : undefined}
+    tabindex={hasFile ? 0 : undefined}
+    onclick={hasFile ? () => (showPicker = true) : undefined}
+    onkeydown={hasFile
+      ? (e) => {
+          if (e.key === 'Enter') showPicker = true;
+        }
+      : undefined}
   >
-    <CloudDownload {...ICON} />
-  </button>
+    <div class="import-name">
+      {#if hasFile}
+        <span class="import-filename file-full">{eintrag.import.datei}</span>
+        <span class="import-filename file-noext">{fileBaseName}</span>
+      {:else}
+        <span class="import-placeholder">Datei auswählen</span>
+      {/if}
+    </div>
+    <button
+      class="import-folder-btn"
+      onclick={(e) => {
+        e.stopPropagation();
+        showPicker = true;
+      }}
+      title="Datei auswählen"
+    >
+      <CloudDownload {...ICON} />
+    </button>
+  </div>
+  <Importinfo
+    {hasFile}
+    error={resolveResult?.error ?? null}
+    {stitchFull}
+    {stitchMedium}
+    {stitchCompact}
+    {countFull}
+    {countMedium}
+    {countShort}
+  />
 </div>
-<Importinfo
-  {hasFile}
-  error={resolveResult?.error ?? null}
-  {stitchFull}
-  {stitchMedium}
-  {stitchCompact}
-  {countFull}
-  {countMedium}
-  {countShort}
-/>
 
 {#if showPicker}
   <Dateibrowser
@@ -181,6 +183,11 @@
 {/if}
 
 <style>
+  .import-group {
+    display: flex;
+    gap: var(--spacing-card);
+    min-width: 0;
+  }
   .import-cell {
     background: var(--color-import);
   }
