@@ -140,7 +140,7 @@
 {/if}
 
 <div class="content-pad">
-  <Datenpanel bind:data={ed.data} ontabout={handleDatenTabOut} />
+  <Datenpanel bind:data={ed.data} onchange={() => ed.markDirty()} ontabout={handleDatenTabOut} />
 </div>
 
 <div class="main-content content-pad">

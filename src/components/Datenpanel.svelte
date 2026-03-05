@@ -7,9 +7,11 @@
 
   let {
     data = $bindable(),
+    onchange,
     ontabout,
   }: {
     data: Editordaten;
+    onchange: () => void;
     ontabout: () => void;
   } = $props();
 
@@ -58,7 +60,7 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="daten-section" onkeydown={handleKeydown}>
+<div class="daten-section" onkeydown={handleKeydown} oninput={onchange}>
   <div class="section-header">
     {#if isStrecke}<Milestone {...ICON} />{:else}<Route {...ICON} />{/if}
     {isStrecke ? 'Streckendaten' : 'Routendaten'}
