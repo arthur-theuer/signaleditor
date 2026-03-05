@@ -40,6 +40,5 @@
   }
   .knoten-search-cell {
     background: var(--color-knoten);
-    overflow: visible;
   }
 </style>
