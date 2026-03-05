@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Knoteneintrag } from './lib/types';
   import { isImporteintrag } from './lib/types';
-  import { tick } from 'svelte';
+  import { tick, untrack } from 'svelte';
   import { on } from 'svelte/events';
   import { autoStitchImporte } from './lib/sources';
   import { isLoggedIn, login, logout } from './lib/auth.svelte';
@@ -51,7 +51,7 @@
       .join(',');
     const { von, nach } = ed.data.meta;
     if (importeDateien) {
-      autoStitchImporte(ed.data.signale, { von, nach });
+      untrack(() => autoStitchImporte(ed.data.signale, { von, nach }));
     }
   });
 
