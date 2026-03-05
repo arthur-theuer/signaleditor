@@ -40,7 +40,8 @@
   z-index: 1;
 }
 .hl-field > input,
-.hl-field > select {
+.hl-field > select,
+.hl-field > button {
   outline: none;
 }
 

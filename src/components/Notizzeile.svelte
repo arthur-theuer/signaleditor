@@ -35,7 +35,6 @@
     background: transparent;
     font-size: var(--text-input);
     font-family: var(--font-mono);
-    border-radius: var(--radius-inner);
   }
   .note-input:focus {
     outline: none;

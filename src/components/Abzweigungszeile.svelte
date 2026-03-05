@@ -159,7 +159,6 @@
     align-items: center;
     justify-content: center;
     padding: 0;
-    outline: none;
   }
   .abzweigung-strecke,
   .abzweigung-richtung {
@@ -174,7 +173,6 @@
     text-align: center;
     width: 100%;
     height: 100%;
-    outline: none;
   }
   .abzweigung-strecke::placeholder,
   .abzweigung-richtung::placeholder {
