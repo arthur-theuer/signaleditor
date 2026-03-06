@@ -459,7 +459,7 @@
   .meldung-col {
     grid-column: mel;
     display: flex;
-    padding: var(--spacing-half-card) var(--spacing-card);
+    padding-left: var(--spacing-card);
     border-left: 1px solid var(--color-border);
   }
 
