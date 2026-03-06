@@ -145,28 +145,27 @@
 
 <div class="main-content content-pad">
   <div class="signals-container">
-    <Signalpanel bind:signale={ed.data.signale} showKm={ed.showKm} {meldungen} onchange={() => ed.markDirty()}>
-      {#snippet header()}
-        <div class="section-header signale-header">
-          Signale
-          <Symbolknopf
-            class="km-toggle"
-            color="red"
-            bordered
-            active={ed.showKm}
-            onclick={() => (ed.showKm = !ed.showKm)}
-            title="Kilometer ein-/ausblenden"
-          >
-            <RulerDimensionLine {...ICON} />
-          </Symbolknopf>
+    <div class="header-row">
+      <div class="section-header signale-header">
+        Signale
+        <Symbolknopf
+          class="km-toggle"
+          color="red"
+          bordered
+          active={ed.showKm}
+          onclick={() => (ed.showKm = !ed.showKm)}
+          title="Kilometer ein-/ausblenden"
+        >
+          <RulerDimensionLine {...ICON} />
+        </Symbolknopf>
+      </div>
+      {#if ed.showMeldungen}
+        <div class="section-header meldungen-header">
+          Meldungen
         </div>
-        {#if ed.showMeldungen}
-          <div class="section-header meldungen-header">
-            Meldungen
-          </div>
-        {/if}
-      {/snippet}
-    </Signalpanel>
+      {/if}
+    </div>
+    <Signalpanel bind:signale={ed.data.signale} showKm={ed.showKm} {meldungen} onchange={() => ed.markDirty()} />
   </div>
 </div>
 
@@ -193,13 +192,24 @@
     margin-bottom: var(--spacing-page);
   }
   .signals-container {
+    --mel-width: 220px;
     background: var(--color-bg);
     border: var(--card-border);
     border-radius: var(--radius-container);
     container-type: inline-size;
     overflow: hidden;
   }
+  @media (min-width: 768px) {
+    .signals-container {
+      --mel-width: 280px;
+    }
+  }
+  .header-row {
+    display: flex;
+  }
   .signale-header {
+    flex: 1;
+    min-width: 0;
     border-radius: var(--radius-container) var(--radius-container) 0 0;
   }
   .signale-header:not(:last-child) {
@@ -209,6 +219,8 @@
     margin-left: auto;
   }
   .meldungen-header {
+    flex-shrink: 0;
+    width: calc(var(--mel-width) + 3 * var(--spacing-card));
     border-radius: 0 var(--radius-container) 0 0;
     border-left: 1px solid var(--color-border);
   }

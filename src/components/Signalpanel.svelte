@@ -29,20 +29,17 @@
   import Plusleiste from './Plusleiste.svelte';
   import Meldungzelle from './ui/Meldungzelle.svelte';
   import type { MeldungRow } from '../lib/reports';
-  import type { Snippet } from 'svelte';
 
   let {
     signale = $bindable(),
     showKm,
     meldungen,
     onchange,
-    header,
   }: {
     signale: Eintrag[];
     showKm: boolean;
     meldungen?: MeldungRow[];
     onchange: () => void;
-    header?: Snippet;
   } = $props();
 
   let usedImportFiles = $derived(
@@ -282,12 +279,7 @@
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div bind:this={listEl} onkeydown={handleKeydown} class={['signal-list-inner', { 'has-km': showKm, 'has-mel': !!meldungen }]}>
-  {#if header}
-    <div class="header-row">
-      {@render header()}
-    </div>
-  {/if}
+<div bind:this={listEl} onkeydown={handleKeydown} class="signal-list-inner" class:has-km={showKm} class:has-mel={!!meldungen}>
   {#each signale as eintrag, idx (eintrag.id)}
     <Zwischenaktionen
       onInsertSignal={() => insertSignalAt(idx)}
@@ -297,7 +289,9 @@
       onInsertImport={() => insertAt(idx, makeImport(idx))}
     />
     <div
-      class={['signal-row', { 'drag-ready': drag.dragHandle === idx, dragging: drag.dragIdx === idx }]}
+      class="signal-row"
+      class:drag-ready={drag.dragHandle === idx}
+      class:dragging={drag.dragIdx === idx}
       data-row-index={idx}
       draggable={drag.dragHandle === idx}
       ondragstart={(e: DragEvent) => drag.handleDragStart(e, idx)}
@@ -359,7 +353,6 @@
   /* ── Grid container ── */
   .signal-list-inner {
     --km-width: calc(1.5 * var(--spacing-unit));
-    --mel-width: 220px;
     position: relative;
     overflow-anchor: none;
     display: grid;
@@ -408,24 +401,7 @@
       [mel] var(--mel-width)
       [pad-r] var(--spacing-card);
   }
-  @media (min-width: 768px) {
-    .signal-list-inner {
-      --mel-width: 280px;
-    }
-  }
 
-  /* ── Header row ── */
-  .header-row {
-    display: grid;
-    grid-template-columns: subgrid;
-    grid-column: 1 / -1;
-  }
-  .header-row :global(.signale-header) { grid-column: 1 / -1; }
-  .signal-list-inner.has-mel .header-row :global(.signale-header) {
-    grid-column: 1 / g-mel;
-    padding-right: var(--spacing-card);
-  }
-  .header-row :global(.meldungen-header) { grid-column: g-mel / -1; }
 
   /* Zwischenaktionen + drop indicator span all columns */
   .signal-list-inner :global(.insert-wrapper) { grid-column: 1 / -1; }
