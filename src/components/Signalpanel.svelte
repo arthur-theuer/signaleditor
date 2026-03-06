@@ -396,6 +396,14 @@
     border-bottom: 1px solid var(--color-border);
   }
 
+  /* Cell borders inside signal rows use a stronger color than --card-border */
+  .signal-row :global(.row-cell),
+  .signal-row :global(.km-cell),
+  .signal-row :global(.meldung-inner),
+  .signal-id {
+    border-color: var(--color-text-secondary);
+  }
+
   /* ── Cell placement ── */
   .signal-id {
     grid-column: id;
