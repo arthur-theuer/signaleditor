@@ -443,14 +443,12 @@
   /* Bottom row: Plusleiste + close button share a grid row */
   .signal-list-inner :global(.add-bar) {
     grid-column: id / g-mel;
-    margin-left: 0;
-    margin-right: 0;
-    margin-bottom: 0;
+    margin: var(--spacing-card) 0;
   }
   .close-mel-btn {
     grid-column: mel;
     height: var(--spacing-unit);
-    margin-top: var(--spacing-card);
+    margin-block: var(--spacing-card);
     padding: 0 var(--spacing-cell);
     gap: var(--spacing-sm);
     border: var(--border-subtle);
