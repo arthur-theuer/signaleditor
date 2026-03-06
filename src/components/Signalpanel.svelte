@@ -17,8 +17,9 @@
   } from '../lib/types';
   import { autofillRow, isRowEmpty } from '../lib/signals';
   import { focusWithoutScroll } from '../lib/focus';
-  import { X } from 'lucide-svelte';
+  import { X, RulerDimensionLine } from 'lucide-svelte';
   import { ICON } from '../lib/constants';
+  import Symbolknopf from './ui/Symbolknopf.svelte';
   import { DragDrop } from '../lib/useDragDrop.svelte';
   import Signalzeile from './Signalzeile.svelte';
   import Notizzeile from './Notizzeile.svelte';
@@ -36,12 +37,14 @@
     showKm,
     meldungen,
     onchange,
+    onToggleKm,
     onCloseMeldungen,
   }: {
     signale: Eintrag[];
     showKm: boolean;
     meldungen?: MeldungRow[];
     onchange: () => void;
+    onToggleKm: () => void;
     onCloseMeldungen?: () => void;
   } = $props();
 
@@ -282,6 +285,24 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div bind:this={listEl} onkeydown={handleKeydown} class="signal-list-inner" class:has-km={showKm} class:has-mel={!!meldungen}>
+  <div class="header-row">
+    <div class="section-header signale-header">
+      <span>Signale</span>
+      <Symbolknopf
+        class="km-toggle"
+        color="red"
+        bordered
+        active={showKm}
+        onclick={onToggleKm}
+        title="Kilometer ein-/ausblenden"
+      >
+        <RulerDimensionLine {...ICON} />
+      </Symbolknopf>
+    </div>
+    {#if meldungen}
+      <div class="section-header meldungen-header">Meldungen</div>
+    {/if}
+  </div>
   {#each signale as eintrag, idx (eintrag.id)}
     <div
       class="entry-row"
@@ -384,6 +405,30 @@
   }
 
   /* Drop indicator spans all columns */
+
+  /* ── Header row ── */
+  .header-row {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+  }
+  .signale-header {
+    grid-column: pad-l / g-mel;
+    padding-inline: var(--spacing-card);
+    border-radius: var(--radius-container) 0 0 0;
+  }
+  .signale-header:last-child {
+    grid-column: pad-l / pad-r;
+    border-radius: var(--radius-container) var(--radius-container) 0 0;
+  }
+  .signale-header :global(.km-toggle) {
+    margin-left: auto;
+  }
+  .meldungen-header {
+    grid-column: mel / -1;
+    padding-inline: var(--spacing-card);
+    border-radius: 0 var(--radius-container) 0 0;
+  }
 
   /* ── Subgrid rows ── */
   .entry-row {

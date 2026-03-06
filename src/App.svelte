@@ -6,14 +6,11 @@
   import { autoStitchImporte } from './lib/sources';
   import { isLoggedIn, login, logout } from './lib/auth.svelte';
   import { focusWithoutScroll } from './lib/focus';
-  import { RulerDimensionLine } from 'lucide-svelte';
-  import { ICON } from './lib/constants';
   import { Editor } from './lib/useEditor.svelte';
   import { generiereAlleMeldungen } from './lib/reports';
   import Toolbar from './components/Toolbar.svelte';
   import Datenpanel from './components/Datenpanel.svelte';
   import Signalpanel from './components/Signalpanel.svelte';
-  import Symbolknopf from './components/ui/Symbolknopf.svelte';
   import Codepanel from './components/Codepanel.svelte';
   import Dateibrowser from './components/Dateibrowser.svelte';
   // import Breakpoints from './components/debug/Breakpoints.svelte';
@@ -145,27 +142,7 @@
 
 <div class="main-content content-pad">
   <div class="signals-container">
-    <div class="header-row">
-      <div class="section-header signale-header">
-        Signale
-        <Symbolknopf
-          class="km-toggle"
-          color="red"
-          bordered
-          active={ed.showKm}
-          onclick={() => (ed.showKm = !ed.showKm)}
-          title="Kilometer ein-/ausblenden"
-        >
-          <RulerDimensionLine {...ICON} />
-        </Symbolknopf>
-      </div>
-      {#if ed.showMeldungen}
-        <div class="section-header meldungen-header">
-          Meldungen
-        </div>
-      {/if}
-    </div>
-    <Signalpanel bind:signale={ed.data.signale} showKm={ed.showKm} {meldungen} onchange={() => ed.markDirty()} onCloseMeldungen={() => (ed.wantMeldungen = false)} />
+    <Signalpanel bind:signale={ed.data.signale} showKm={ed.showKm} {meldungen} onchange={() => ed.markDirty()} onToggleKm={() => (ed.showKm = !ed.showKm)} onCloseMeldungen={() => (ed.wantMeldungen = false)} />
   </div>
 </div>
 
@@ -203,25 +180,5 @@
     .signals-container {
       --mel-width: 280px;
     }
-  }
-  .header-row {
-    display: flex;
-  }
-  .signale-header {
-    flex: 1;
-    min-width: 0;
-    border-radius: var(--radius-container) var(--radius-container) 0 0;
-  }
-  .signale-header:not(:last-child) {
-    border-radius: var(--radius-container) 0 0 0;
-  }
-  .signale-header :global(.km-toggle) {
-    margin-left: auto;
-    margin-right: calc(-1 * (var(--spacing-cell) - var(--spacing-card)));
-  }
-  .meldungen-header {
-    flex-shrink: 0;
-    width: calc(var(--mel-width) + 2 * var(--spacing-card));
-    border-radius: 0 var(--radius-container) 0 0;
   }
 </style>
