@@ -5,10 +5,10 @@
 </script>
 
 <div class="meldung-cell">
-  {#if meldung.note !== undefined || meldung.knoten || meldung.abzweigung || meldung.import}
+  {#if meldung.note !== undefined || meldung.knoten !== undefined || meldung.abzweigung !== undefined || meldung.import !== undefined}
     <div class="meldung-inner muted">
       <div class="meldung-text muted-text">
-        {meldung.note !== undefined ? 'NOTIZ' : meldung.knoten ? 'KNOTEN' : meldung.abzweigung ? 'ABZWEIGUNG' : 'QUELLE'}
+        {meldung.note !== undefined ? 'NOTIZ' : meldung.knoten !== undefined ? 'KNOTEN' : meldung.abzweigung !== undefined ? 'ABZWEIGUNG' : 'QUELLE'}
       </div>
     </div>
   {:else if meldung.error === 'Kein Signal'}

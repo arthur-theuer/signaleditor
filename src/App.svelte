@@ -165,7 +165,7 @@
         </div>
       {/if}
     </div>
-    <Signalpanel bind:signale={ed.data.signale} showKm={ed.showKm} {meldungen} onchange={() => ed.markDirty()} />
+    <Signalpanel bind:signale={ed.data.signale} showKm={ed.showKm} {meldungen} onchange={() => ed.markDirty()} onCloseMeldungen={() => (ed.wantMeldungen = false)} />
   </div>
 </div>
 
@@ -217,11 +217,11 @@
   }
   .signale-header :global(.km-toggle) {
     margin-left: auto;
+    margin-right: calc(-1 * (var(--spacing-cell) - var(--spacing-card)));
   }
   .meldungen-header {
     flex-shrink: 0;
     width: calc(var(--mel-width) + 2 * var(--spacing-card));
     border-radius: 0 var(--radius-container) 0 0;
-    border-left: 1px solid var(--color-border);
   }
 </style>

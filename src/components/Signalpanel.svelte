@@ -34,11 +34,13 @@
     showKm,
     meldungen,
     onchange,
+    onCloseMeldungen,
   }: {
     signale: Eintrag[];
     showKm: boolean;
     meldungen?: MeldungRow[];
     onchange: () => void;
+    onCloseMeldungen?: () => void;
   } = $props();
 
   let usedImportFiles = $derived(
@@ -331,6 +333,9 @@
   {#if drag.indicatorY !== null}
     <div class="drop-indicator" style="top: {drag.indicatorY}px;"></div>
   {/if}
+  {#if meldungen && onCloseMeldungen}
+    <button class="close-mel-btn" onclick={onCloseMeldungen}>Schliessen</button>
+  {/if}
 </div>
 <Plusleiste
   onAddSignal={addSignalWithAutofill}
@@ -431,6 +436,27 @@
   .meldung-col {
     grid-column: mel;
     display: flex;
+  }
+
+  /* Close meldungen button */
+  .close-mel-btn {
+    grid-column: mel;
+    padding: var(--spacing-cell);
+    margin-block: var(--spacing-card);
+    border: var(--border-subtle);
+    border-radius: var(--radius-card);
+    cursor: pointer;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--text-input);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-red-bg);
+    color: var(--color-red);
+  }
+  .close-mel-btn:hover {
+    outline: 2px solid var(--color-red);
+    outline-offset: -2px;
   }
 
   /* ── Drag state ── */
