@@ -220,7 +220,7 @@
   }
   .meldungen-header {
     flex-shrink: 0;
-    width: calc(var(--mel-width) + 3 * var(--spacing-card));
+    width: calc(var(--mel-width) + 2 * var(--spacing-card));
     border-radius: 0 var(--radius-container) 0 0;
     border-left: 1px solid var(--color-border);
   }

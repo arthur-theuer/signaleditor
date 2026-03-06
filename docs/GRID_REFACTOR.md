@@ -39,8 +39,8 @@ No `column-gap` — spacing is handled by explicit gap columns.
 ### Full template (all columns)
 
 ```
-[pad-l] [id] [g-id] [km] [g-km] [s1] [g-s1] [s1b] [g-s1b] [g-s2] [s2] [g-s2b] [s2b] [g-act] [act] [g-act-end] [g-mel] [mel] [pad-r]
- 4px    unit  4px   _km  _km-gap 1fr   4px    1fr    4px     4px   1fr    4px    1fr    4px    auto   _mel-gap    _mel-gap _mel   4px
+[pad-l] [id] [g-id] [km] [g-km] [s1] [g-s1] [s1b] [g-s1b] [s2] [g-s2] [s2b] [g-act] [act] [g-mel] [mel] [pad-r]
+ 4px    unit  4px   _km  _km-gap 1fr   4px    1fr    4px    1fr   4px    1fr    4px    auto  _mel-gap _mel   4px
 ```
 
 - `_km` / `_km-gap`: `0px` by default, `var(--km-width)` / `var(--spacing-card)` when `.has-km`
@@ -50,8 +50,6 @@ No `column-gap` — spacing is handled by explicit gap columns.
 
 - `pad-l`, `pad-r` — edge padding (same width as gaps)
 - `g-{col}` — gap after column `{col}` (e.g., `g-id`, `g-s1`, `g-km`)
-- Double gaps at divider boundaries: `g-s1b` + `g-s2` between signal groups,
-  `g-act-end` + `g-mel` before meldung column
 
 ### Cell placement
 
@@ -91,7 +89,7 @@ Removed individual cell borders. Added `border-bottom` on `.signal-row`.
 - `--mel-width` defined on `.signals-container` (shared with header)
 - `padding-block` on `.signal-row` for vertical spacing
 - Header is a flex row outside the grid (in App.svelte)
-- Double gap columns at divider boundaries for future vertical separators
+- Single gap columns between all sections
 
 ## Remaining steps
 
