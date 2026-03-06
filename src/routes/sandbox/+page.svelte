@@ -331,6 +331,8 @@
   }
   /* Grid container */
   .signal-list-inner {
+    --km-width: 60px;
+    --mel-width: 220px;
     position: relative;
     display: grid;
     column-gap: 4px;
@@ -343,7 +345,7 @@
   .signal-list-inner.has-km {
     grid-template-columns:
       [id] 40px
-      [km] 60px
+      [km] var(--km-width)
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
       [act] auto;
@@ -354,16 +356,16 @@
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
       [act] auto
-      [mel] 220px;
+      [mel] var(--mel-width);
   }
   .signal-list-inner.has-km.has-mel {
     grid-template-columns:
       [id] 40px
-      [km] 60px
+      [km] var(--km-width)
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
       [act] auto
-      [mel] 220px;
+      [mel] var(--mel-width);
   }
 
   .insert-wrapper {
@@ -383,7 +385,7 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-    padding: 4px 0;
+    padding: 4px;
     align-items: stretch;
     min-height: 48px;
     border-bottom: 1px solid #e0e0e0;

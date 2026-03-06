@@ -350,6 +350,8 @@
 <style>
   /* ── Grid container ── */
   .signal-list-inner {
+    --km-width: calc(1.5 * var(--spacing-unit));
+    --mel-width: 220px;
     position: relative;
     overflow-anchor: none;
     display: grid;
@@ -363,7 +365,7 @@
   .signal-list-inner.has-km {
     grid-template-columns:
       [id] var(--spacing-unit)
-      [km] calc(1.5 * var(--spacing-unit))
+      [km] var(--km-width)
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
       [act] auto;
@@ -374,34 +376,20 @@
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
       [act] auto
-      [mel] 220px;
+      [mel] var(--mel-width);
   }
   .signal-list-inner.has-km.has-mel {
     grid-template-columns:
       [id] var(--spacing-unit)
-      [km] calc(1.5 * var(--spacing-unit))
+      [km] var(--km-width)
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
       [act] auto
-      [mel] 220px;
+      [mel] var(--mel-width);
   }
   @media (min-width: 768px) {
-    .signal-list-inner.has-mel {
-      grid-template-columns:
-        [id] var(--spacing-unit)
-        [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
-        [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-        [act] auto
-        [mel] 280px;
-    }
-    .signal-list-inner.has-km.has-mel {
-      grid-template-columns:
-        [id] var(--spacing-unit)
-        [km] calc(1.5 * var(--spacing-unit))
-        [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
-        [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-        [act] auto
-        [mel] 280px;
+    .signal-list-inner {
+      --mel-width: 280px;
     }
   }
 
@@ -413,7 +401,7 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-    padding: var(--spacing-card) 0;
+    padding: var(--spacing-card);
     align-items: stretch;
     min-height: calc(var(--spacing-unit) + 2 * var(--spacing-card));
     border-bottom: 1px solid var(--color-border);
