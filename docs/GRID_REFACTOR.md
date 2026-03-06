@@ -37,30 +37,30 @@ No `column-gap` — spacing is handled by explicit gap columns.
 ### Base (no km, no mel)
 
 ```
-[pad-l]  [id]   [g-id]  [s1]  [g-s1]  [s1b]  [g-s1b] [g-s2]  [s2]  [g-s2b]  [s2b]  [g-act]  [act]   [pad-r]
- 4px     unit    4px     1fr    4px     1fr     4px     4px     1fr    4px      1fr     4px     auto     4px
+[pad-l] [id] [g-id] [s1] [g-s1] [s1b] [g-s1b] [g-s2] [s2] [g-s2b] [s2b] [g-act] [act] [pad-r]
+ 4px    unit  4px    1fr   4px    1fr    4px     4px    1fr   4px     1fr    4px    auto   4px
 ```
 
 ### +km
 
 ```
-[pad-l]  [id]  [g-id]  [km]     [g-km]  [s1] ... [act]  [pad-r]
- 4px     unit   4px    km-width  4px     ...              4px
+[pad-l] [id] [g-id] [km]     [g-km] [s1] ... [act] [pad-r]
+ 4px    unit  4px   km-width  4px    ...             4px
 ```
 
 ### +mel
 
 ```
-... [act]  [g-mel]  [mel]       [pad-r]
-     auto   4px     mel-width    4px
+... [act] [g-act-end] [g-mel] [mel]      [pad-r]
+    auto   4px         4px    mel-width    4px
 ```
 
-### Gap column naming
+### Column naming
 
 - `pad-l`, `pad-r` — edge padding (same width as gaps)
 - `g-{col}` — gap after column `{col}` (e.g., `g-id`, `g-s1`, `g-km`)
 - Double gaps at divider boundaries: `g-s1b` + `g-s2` between signal groups,
-  `g-mel` before meldung column
+  `g-act-end` + `g-mel` before meldung column
 
 ### Cell placement
 
@@ -78,8 +78,8 @@ No `column-gap` — spacing is handled by explicit gap columns.
 | `.signal-actions` | `act` |
 | `.meldung-col` | `mel` |
 | Header signale (no mel) | `1 / -1` |
-| Header signale (with mel) | `1 / g-mel` (padding-right: 0) |
-| Header meldungen | `mel / -1` |
+| Header signale (with mel) | `1 / g-mel` (padding-right: --spacing-card) |
+| Header meldungen | `g-mel / -1` |
 
 ## Completed steps
 
@@ -101,18 +101,18 @@ Removed individual cell borders. Added `border-bottom` on `.signal-row`.
 - `--km-width` and `--mel-width` CSS variables reduce template duplication
 - `padding-block` on `.signal-row` for vertical spacing
 - Header row moved into grid via Svelte snippet (App.svelte → Signalpanel)
-- `.meldung-col` vertical border extended through row padding via negative margin
+- Double gap columns at divider boundaries for future vertical separators
 
 ## Remaining steps
 
 ### Step 3: Signal 1/2 divider
 
-Add a visual separator between signal_1 group and signal_2 group.
-The double gap `g-s1b` + `g-s2` is already in place. Add a border at the
-boundary (e.g., `border-left` on the s2 cell or a pseudo-element in the gap).
-Non-signal rows span across the divider without showing it.
+Add visual separators at the double-gap boundaries (`g-s1b`/`g-s2` and
+`g-act-end`/`g-mel`). Approach TBD — pseudo-elements on 0-width columns
+caused layout issues in subgrid context. Consider dedicated divider `<div>`
+elements in the template instead.
 
-**Files:** Signalpanel.svelte (CSS)
+**Files:** Signalpanel.svelte
 
 ### Step 4: Split Signalzelle sub-fields
 
@@ -134,8 +134,8 @@ components.css
 ## Risks
 
 - **Vertical border continuity:** `padding-block` on `.signal-row` creates gaps
-  in vertical borders. Current fix: negative `margin-block` + `padding-block`
-  on bordered cells (`.meldung-col`). Same pattern needed for Step 3 divider.
+  in vertical borders. Divider approach TBD — 0-width columns with pseudo-elements
+  caused subgrid layout issues.
 - **Drag-and-drop:** Rows are subgrid elements. Tested and working.
 - **Container queries:** `.signals-container` uses `container-type: inline-size`.
   No conflict with grid.

@@ -391,7 +391,8 @@
       [g-s1b] var(--spacing-card) [g-s2] var(--spacing-card)
       [s2] minmax(0, 1fr) [g-s2b] var(--spacing-card) [s2b] minmax(0, 1fr)
       [g-act] var(--spacing-card) [act] auto
-      [g-mel] var(--spacing-card) [mel] var(--mel-width)
+      [g-act-end] var(--spacing-card) [g-mel] var(--spacing-card)
+      [mel] var(--mel-width)
       [pad-r] var(--spacing-card);
   }
   .signal-list-inner.has-km.has-mel {
@@ -403,7 +404,8 @@
       [g-s1b] var(--spacing-card) [g-s2] var(--spacing-card)
       [s2] minmax(0, 1fr) [g-s2b] var(--spacing-card) [s2b] minmax(0, 1fr)
       [g-act] var(--spacing-card) [act] auto
-      [g-mel] var(--spacing-card) [mel] var(--mel-width)
+      [g-act-end] var(--spacing-card) [g-mel] var(--spacing-card)
+      [mel] var(--mel-width)
       [pad-r] var(--spacing-card);
   }
   @media (min-width: 768px) {
@@ -421,9 +423,9 @@
   .header-row :global(.signale-header) { grid-column: 1 / -1; }
   .signal-list-inner.has-mel .header-row :global(.signale-header) {
     grid-column: 1 / g-mel;
-    padding-right: 0;
+    padding-right: var(--spacing-card);
   }
-  .header-row :global(.meldungen-header) { grid-column: mel / -1; }
+  .header-row :global(.meldungen-header) { grid-column: g-mel / -1; }
 
   /* Zwischenaktionen + drop indicator span all columns */
   .signal-list-inner :global(.insert-wrapper) { grid-column: 1 / -1; }
@@ -483,9 +485,6 @@
   .meldung-col {
     grid-column: mel;
     display: flex;
-    border-left: 1px solid var(--color-border);
-    margin-block: calc(-1 * var(--spacing-card));
-    padding-block: var(--spacing-card);
   }
 
   /* ── Drag state ── */
