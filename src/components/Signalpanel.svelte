@@ -363,45 +363,48 @@
     position: relative;
     overflow-anchor: none;
     display: grid;
-    column-gap: var(--spacing-card);
     grid-template-columns:
-      [pad-l] 0
-      [id] var(--spacing-unit)
-      [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
-      [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-      [act] auto
-      [pad-r] 0;
+      [pad-l] var(--spacing-card)
+      [id] var(--spacing-unit) [g-id] var(--spacing-card)
+      [s1] minmax(0, 1fr) [g-s1] var(--spacing-card) [s1b] minmax(0, 1fr)
+      [g-s1b] var(--spacing-card) [g-s2] var(--spacing-card)
+      [s2] minmax(0, 1fr) [g-s2b] var(--spacing-card) [s2b] minmax(0, 1fr)
+      [g-act] var(--spacing-card) [act] auto
+      [pad-r] var(--spacing-card);
   }
   .signal-list-inner.has-km {
     grid-template-columns:
-      [pad-l] 0
-      [id] var(--spacing-unit)
-      [km] var(--km-width)
-      [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
-      [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-      [act] auto
-      [pad-r] 0;
+      [pad-l] var(--spacing-card)
+      [id] var(--spacing-unit) [g-id] var(--spacing-card)
+      [km] var(--km-width) [g-km] var(--spacing-card)
+      [s1] minmax(0, 1fr) [g-s1] var(--spacing-card) [s1b] minmax(0, 1fr)
+      [g-s1b] var(--spacing-card) [g-s2] var(--spacing-card)
+      [s2] minmax(0, 1fr) [g-s2b] var(--spacing-card) [s2b] minmax(0, 1fr)
+      [g-act] var(--spacing-card) [act] auto
+      [pad-r] var(--spacing-card);
   }
   .signal-list-inner.has-mel {
     grid-template-columns:
-      [pad-l] 0
-      [id] var(--spacing-unit)
-      [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
-      [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-      [act] auto
-      [mel] var(--mel-width)
-      [pad-r] 0;
+      [pad-l] var(--spacing-card)
+      [id] var(--spacing-unit) [g-id] var(--spacing-card)
+      [s1] minmax(0, 1fr) [g-s1] var(--spacing-card) [s1b] minmax(0, 1fr)
+      [g-s1b] var(--spacing-card) [g-s2] var(--spacing-card)
+      [s2] minmax(0, 1fr) [g-s2b] var(--spacing-card) [s2b] minmax(0, 1fr)
+      [g-act] var(--spacing-card) [act] auto
+      [g-mel] var(--spacing-card) [mel] var(--mel-width)
+      [pad-r] var(--spacing-card);
   }
   .signal-list-inner.has-km.has-mel {
     grid-template-columns:
-      [pad-l] 0
-      [id] var(--spacing-unit)
-      [km] var(--km-width)
-      [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
-      [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-      [act] auto
-      [mel] var(--mel-width)
-      [pad-r] 0;
+      [pad-l] var(--spacing-card)
+      [id] var(--spacing-unit) [g-id] var(--spacing-card)
+      [km] var(--km-width) [g-km] var(--spacing-card)
+      [s1] minmax(0, 1fr) [g-s1] var(--spacing-card) [s1b] minmax(0, 1fr)
+      [g-s1b] var(--spacing-card) [g-s2] var(--spacing-card)
+      [s2] minmax(0, 1fr) [g-s2b] var(--spacing-card) [s2b] minmax(0, 1fr)
+      [g-act] var(--spacing-card) [act] auto
+      [g-mel] var(--spacing-card) [mel] var(--mel-width)
+      [pad-r] var(--spacing-card);
   }
   @media (min-width: 768px) {
     .signal-list-inner {
@@ -416,12 +419,8 @@
     grid-column: 1 / -1;
   }
   .header-row :global(.signale-header) { grid-column: 1 / -1; }
-  .signal-list-inner.has-mel .header-row :global(.signale-header) { grid-column: 1 / mel; }
-  .header-row :global(.meldungen-header) {
-    grid-column: mel / -1;
-    margin-left: calc(-1 * var(--spacing-card));
-    padding-left: var(--spacing-card);
-  }
+  .signal-list-inner.has-mel .header-row :global(.signale-header) { grid-column: 1 / g-mel; }
+  .header-row :global(.meldungen-header) { grid-column: g-mel / -1; }
 
   /* Zwischenaktionen + drop indicator span all columns */
   .signal-list-inner :global(.insert-wrapper) { grid-column: 1 / -1; }
@@ -460,13 +459,13 @@
 
   .signal-row :global(.km-cell) { grid-column: km; }
 
-  /* Signal cells: main signals span 2 cols, shrink to 1 when alt present */
-  .signal-row :global([data-field='signal_1'])  { grid-column: s1 / span 2; }
-  .signal-row :global([data-field='signal_2'])  { grid-column: s2 / span 2; }
-  .signal-row:has(:global([data-field='signal_1b'])) :global([data-field='signal_1']) { grid-column: s1 / span 1; }
-  .signal-row :global([data-field='signal_1b']) { grid-column: s1b / span 1; }
-  .signal-row:has(:global([data-field='signal_2b'])) :global([data-field='signal_2']) { grid-column: s2 / span 1; }
-  .signal-row :global([data-field='signal_2b']) { grid-column: s2b / span 1; }
+  /* Signal cells: main signals span s+gap+sb, shrink to 1 when alt present */
+  .signal-row :global([data-field='signal_1'])  { grid-column: s1 / g-s1b; }
+  .signal-row :global([data-field='signal_2'])  { grid-column: s2 / g-act; }
+  .signal-row:has(:global([data-field='signal_1b'])) :global([data-field='signal_1']) { grid-column: s1; }
+  .signal-row :global([data-field='signal_1b']) { grid-column: s1b; }
+  .signal-row:has(:global([data-field='signal_2b'])) :global([data-field='signal_2']) { grid-column: s2; }
+  .signal-row :global([data-field='signal_2b']) { grid-column: s2b; }
 
   /* Non-signal rows: span all signal columns */
   .signal-row :global(.note-cell)      { grid-column: s1 / act; }
@@ -479,9 +478,8 @@
 
   /* Meldung column */
   .meldung-col {
-    grid-column: mel;
+    grid-column: mel / -1;
     display: flex;
-    padding-left: var(--spacing-card);
     border-left: 1px solid var(--color-border);
     margin-block: calc(-1 * var(--spacing-card));
     padding-block: var(--spacing-card);

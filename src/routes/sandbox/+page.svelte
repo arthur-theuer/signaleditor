@@ -97,16 +97,28 @@
           <!-- Grid column overlay -->
           {#if show.gridOverlay}
             <div class="grid-overlay">
-              <div class="grid-col grid-col-pad" style="grid-column: pad-l;"></div>
+              <div class="grid-col grid-col-gap" style="grid-column: pad-l;"></div>
               <div class="grid-col" style="grid-column: id;">id</div>
-              {#if showKm}<div class="grid-col" style="grid-column: km;">km</div>{/if}
+              <div class="grid-col grid-col-gap" style="grid-column: g-id;"></div>
+              {#if showKm}
+                <div class="grid-col" style="grid-column: km;">km</div>
+                <div class="grid-col grid-col-gap" style="grid-column: g-km;"></div>
+              {/if}
               <div class="grid-col" style="grid-column: s1;">s1</div>
+              <div class="grid-col grid-col-gap" style="grid-column: g-s1;"></div>
               <div class="grid-col" style="grid-column: s1b;">s1b</div>
+              <div class="grid-col grid-col-gap" style="grid-column: g-s1b;"></div>
+              <div class="grid-col grid-col-gap" style="grid-column: g-s2;"></div>
               <div class="grid-col" style="grid-column: s2;">s2</div>
+              <div class="grid-col grid-col-gap" style="grid-column: g-s2b;"></div>
               <div class="grid-col" style="grid-column: s2b;">s2b</div>
+              <div class="grid-col grid-col-gap" style="grid-column: g-act;"></div>
               <div class="grid-col" style="grid-column: act;">act</div>
-              {#if showMel}<div class="grid-col" style="grid-column: mel;">mel</div>{/if}
-              <div class="grid-col grid-col-pad" style="grid-column: pad-r;"></div>
+              {#if showMel}
+                <div class="grid-col grid-col-gap" style="grid-column: g-mel;"></div>
+                <div class="grid-col" style="grid-column: mel;">mel</div>
+              {/if}
+              <div class="grid-col grid-col-gap" style="grid-column: pad-r;"></div>
             </div>
           {/if}
 
@@ -323,61 +335,63 @@
     grid-column: 1 / -1;
   }
   .signal-list-inner.has-mel .signale-header {
-    grid-column: 1 / mel;
+    grid-column: 1 / g-mel;
     border-radius: 12px 0 0 0;
   }
   .meldungen-header {
-    grid-column: mel / -1;
+    grid-column: g-mel / -1;
     border-radius: 0 12px 0 0;
     border-left: 1px solid #e0e0e0;
-    margin-left: -4px;
-    padding-left: 4px;
   }
   /* Grid container */
   .signal-list-inner {
+    
     --km-width: 60px;
     --mel-width: 220px;
     position: relative;
     display: grid;
-    column-gap: 4px;
     grid-template-columns:
-      [pad-l] 0
-      [id] 40px
-      [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
-      [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-      [act] auto
-      [pad-r] 0;
+      [pad-l] 4px
+      [id] 40px [g-id] 4px
+      [s1] minmax(0, 1fr) [g-s1] 4px [s1b] minmax(0, 1fr)
+      [g-s1b] 4px [g-s2] 4px
+      [s2] minmax(0, 1fr) [g-s2b] 4px [s2b] minmax(0, 1fr)
+      [g-act] 4px [act] auto
+      [pad-r] 4px;
   }
   .signal-list-inner.has-km {
     grid-template-columns:
-      [pad-l] 0
-      [id] 40px
-      [km] var(--km-width)
-      [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
-      [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-      [act] auto
-      [pad-r] 0;
+      [pad-l] 4px
+      [id] 40px [g-id] 4px
+      [km] var(--km-width) [g-km] 4px
+      [s1] minmax(0, 1fr) [g-s1] 4px [s1b] minmax(0, 1fr)
+      [g-s1b] 4px [g-s2] 4px
+      [s2] minmax(0, 1fr) [g-s2b] 4px [s2b] minmax(0, 1fr)
+      [g-act] 4px [act] auto
+      [pad-r] 4px;
   }
   .signal-list-inner.has-mel {
     grid-template-columns:
-      [pad-l] 0
-      [id] 40px
-      [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
-      [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-      [act] auto
-      [mel] var(--mel-width)
-      [pad-r] 0;
+      [pad-l] 4px
+      [id] 40px [g-id] 4px
+      [s1] minmax(0, 1fr) [g-s1] 4px [s1b] minmax(0, 1fr)
+      [g-s1b] 4px [g-s2] 4px
+      [s2] minmax(0, 1fr) [g-s2b] 4px [s2b] minmax(0, 1fr)
+      [g-act] 4px [act] auto
+      [g-mel] 4px [mel] var(--mel-width)
+      [pad-r] 4px;
   }
   .signal-list-inner.has-km.has-mel {
     grid-template-columns:
-      [pad-l] 0
-      [id] 40px
-      [km] var(--km-width)
-      [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
-      [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-      [act] auto
-      [mel] var(--mel-width)
-      [pad-r] 0;
+      [pad-l] 4px
+      [id] 40px [g-id] 4px
+      [km] var(--km-width) [g-km] 4px
+      [s1] minmax(0, 1fr) [g-s1] 4px [s1b] minmax(0, 1fr)
+      [g-s1b] 4px [g-s2] 4px
+      [s2] minmax(0, 1fr) [g-s2b] 4px [s2b] minmax(0, 1fr)
+      [g-act] 4px [act] auto
+      [g-mel] 4px [mel] var(--mel-width)
+      [pad-r] 4px;
   }
 
   .insert-wrapper {
@@ -439,12 +453,12 @@
   }
 
   /* Signal cell placement */
-  [data-field='signal_1']       { grid-column: s1 / span 1; }
-  [data-field='signal_1'].span2 { grid-column: s1 / span 2; }
-  [data-field='signal_1b']      { grid-column: s1b / span 1; }
-  [data-field='signal_2']       { grid-column: s2 / span 1; }
-  [data-field='signal_2'].span2 { grid-column: s2 / span 2; }
-  [data-field='signal_2b']      { grid-column: s2b / span 1; }
+  [data-field='signal_1']       { grid-column: s1; }
+  [data-field='signal_1'].span2 { grid-column: s1 / g-s1b; }
+  [data-field='signal_1b']      { grid-column: s1b; }
+  [data-field='signal_2']       { grid-column: s2; }
+  [data-field='signal_2'].span2 { grid-column: s2 / g-act; }
+  [data-field='signal_2b']      { grid-column: s2b; }
 
   /* Non-signal rows */
   .note-cell       { grid-column: s1 / act; background: #fff9c4; }
@@ -481,11 +495,10 @@
 
   /* Meldung */
   .meldung-col {
-    grid-column: mel;
+    grid-column: mel / -1;
     display: flex;
-    padding-left: 4px;
     border-left: 1px solid #e0e0e0;
-    margin-block: -4px;
+    margin-block: calc(-1 * 4px);
     padding-block: 4px;
   }
   .meldung-inner {
@@ -537,9 +550,10 @@
     padding: 2px 0;
     font-family: ui-monospace, monospace;
   }
-  .grid-col-pad {
-    background: none;
-    border: none;
+  .grid-col-gap {
+    background: #ff00ff08;
+    border-left: 1px dotted #ff00ff40;
+    border-right: 1px dotted #ff00ff40;
   }
 
   /* ── Debug outlines ── */
