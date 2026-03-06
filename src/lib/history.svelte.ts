@@ -20,6 +20,7 @@ export class History {
   undoStack = $state<HistoryEntry[]>([]);
   redoStack = $state<HistoryEntry[]>([]);
   private isUndoingOrRedoing = false;
+  private dirty = false;
 
   get canUndo(): boolean {
     return this.undoStack.length > 0;
@@ -29,8 +30,14 @@ export class History {
     return this.redoStack.length > 0;
   }
 
+  /** Mark data as changed so the next save() will snapshot. */
+  markDirty(): void {
+    this.dirty = true;
+  }
+
   save(data: Editordaten): void {
-    if (this.isUndoingOrRedoing) return;
+    if (this.isUndoingOrRedoing || !this.dirty) return;
+    this.dirty = false;
     const dataStr = JSON.stringify(data);
     if (this.undoStack.length > 0 && this.undoStack[this.undoStack.length - 1].data === dataStr) return;
     const focus = getFocusInfo();

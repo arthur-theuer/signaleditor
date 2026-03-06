@@ -80,7 +80,7 @@ All styling uses scoped `<style>` blocks in components plus shared classes in `c
 | Component | Role | Notes |
 |---|---|---|
 | Toolbar | Sticky header, icon buttons, PIN auth, toggles | |
-| Datenpanel | Meta fields form (streckennummer/linie, von, via, nach, name, video) | 3-tier responsive |
+| Datenpanel | Meta fields form (strecke/linie, von, via, nach, name) | 3-tier responsive |
 | Signalpanel | Signal list grid container, drag-and-drop, keyboard nav | CSS grid + subgrid |
 | Signalzeile | Signal row: renders 2-4 Signalzelle components | No own styles |
 | Signalzelle | Signal cell: type-ahead input, abbreviation overlays, dropdown | Container queries for abbreviation |

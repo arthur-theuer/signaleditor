@@ -48,14 +48,14 @@ After setting variables, redeploy for them to take effect. Either push a new com
 Files are stored in Vercel Blob with a prefix-based directory structure:
 
 ```
-videos/          — Video signal data files
-  s1_zh_be.yaml
-  s9_uster_zg.yaml
-strecken/        — Strecke signal data files
-  s5_pf_zg.yaml
+strecken/        — Strecke signal data files (single video segments)
+  500_OL_AA.yaml
+  112b_ZUE_WI.yaml
+routen/          — Route signal data files (combined strecken)
+  s9_US_ZUE.yaml
 ```
 
-The file name is derived from the metadata fields (e.g. streckennummer, von, nach).
+The file name is derived from the metadata fields (e.g. strecke/linie, von, nach).
 
 ### Authentication Flow
 
@@ -72,11 +72,11 @@ All file endpoints require authentication (PIN in Authorization header).
 | Method | Endpoint | Description |
 |---|---|---|
 | `POST` | `/api/auth` | Verify PIN, returns `{ ok: true }` or 401 |
-| `GET` | `/api/files?typ=videos\|strecken` | List all files of a type |
-| `POST` | `/api/files?typ=videos\|strecken` | Create a new file (409 if exists) |
-| `GET` | `/api/files/:name?typ=videos\|strecken` | Read file content |
-| `PUT` | `/api/files/:name?typ=videos\|strecken` | Update file content |
-| `DELETE` | `/api/files/:name?typ=videos\|strecken` | Delete a file |
+| `GET` | `/api/files?typ=strecken\|routen` | List all files of a type |
+| `POST` | `/api/files?typ=strecken\|routen` | Create a new file (409 if exists) |
+| `GET` | `/api/files/:name?typ=strecken\|routen` | Read file content |
+| `PUT` | `/api/files/:name?typ=strecken\|routen` | Update file content |
+| `DELETE` | `/api/files/:name?typ=strecken\|routen` | Delete a file |
 
 ### Auto-Save
 

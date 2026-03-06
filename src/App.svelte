@@ -194,7 +194,7 @@
   .signals-container {
     --mel-width: 220px;
     background: var(--color-bg);
-    border: var(--card-border);
+    border: var(--border-subtle);
     border-radius: var(--radius-container);
     container-type: inline-size;
     overflow: hidden;

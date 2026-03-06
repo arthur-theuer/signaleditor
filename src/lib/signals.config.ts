@@ -16,7 +16,7 @@ type SignalDef = {
   needsBahnhof?: boolean;
   /** Vorsignal → Hauptsignal prediction mapping */
   hauptsignal?: { signal: string; keepName: boolean };
-  /** Meldung type key and substring for erkenneSignaltyp matching */
+  /** Meldung type key and substring for detectSignaltyp matching */
   meldung: { typ: string; keyword: string; text: string };
 };
 
@@ -164,7 +164,7 @@ export const VORSIGNAL_TO_HAUPTSIGNAL: Record<string, { signal: string; keepName
 );
 
 /**
- * Ordered keyword→typ pairs for substring matching in erkenneSignaltyp.
+ * Ordered keyword→typ pairs for substring matching in detectSignaltyp.
  * Sorted by keyword length descending so longer/more-specific keywords
  * match first (e.g. 'Abschnitteinfahr' before 'Abschnitt').
  */

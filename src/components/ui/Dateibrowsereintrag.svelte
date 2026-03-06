@@ -19,27 +19,27 @@
     onrename: (newName: string) => void;
   } = $props();
 
-  let renaming = $state(false);
+  let entryMode: 'idle' | 'renaming' = $state('idle');
   let renameValue = $state('');
 
   function startRename() {
-    renaming = true;
+    entryMode = 'renaming';
     renameValue = file.name.replace(/\.ya?ml$/, '');
   }
 
   function submitRename() {
     const newName = renameValue.trim();
     if (!newName || newName === file.name.replace(/\.ya?ml$/, '')) {
-      renaming = false;
+      entryMode = 'idle';
       return;
     }
     const ext = file.name.match(/\.ya?ml$/)?.[0] || '.yaml';
     onrename(newName + ext);
-    renaming = false;
+    entryMode = 'idle';
   }
 
   function cancelRename() {
-    renaming = false;
+    entryMode = 'idle';
   }
 
   function formatDate(dateStr: string): string {
@@ -53,7 +53,7 @@
 </script>
 
 <div class="file-row">
-  {#if renaming}
+  {#if entryMode === 'renaming'}
     <div class="file-card rename-card">
       <!-- svelte-ignore a11y_autofocus -->
       <input

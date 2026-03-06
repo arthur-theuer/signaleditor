@@ -47,7 +47,7 @@
   }
 </script>
 
-<div class="km-cell hl-field">
+<div class="row-cell km-cell hl-field">
   <input
     type="text"
     class="km-input"
@@ -62,12 +62,7 @@
 </div>
 
 <style>
-  .km-cell {
-    display: flex;
-    background: var(--color-bg-raised);
-    border: var(--card-border);
-    border-radius: var(--radius-card);
-  }
+  /* Extends .row-cell — km-specific overrides only */
   .km-input {
     flex: 1;
     padding: 0 var(--spacing-md);

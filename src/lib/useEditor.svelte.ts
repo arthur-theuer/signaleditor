@@ -73,6 +73,7 @@ export class Editor {
   markDirty() {
     this.dirty = true;
     this.saveStatus = 'dirty';
+    this.history.markDirty();
   }
 
   handleUndo() {

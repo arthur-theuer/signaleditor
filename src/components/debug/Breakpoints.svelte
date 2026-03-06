@@ -20,7 +20,7 @@
     z-index: 50;
     border-radius: var(--radius-card);
     background: var(--color-bg-raised);
-    border: var(--card-border);
+    border: var(--border-subtle);
     padding: var(--spacing-xs) var(--spacing-cell);
     font-family: var(--font-mono);
     font-size: var(--text-caption);

@@ -140,7 +140,7 @@
     display: flex;
     flex-direction: column;
     background: var(--color-bg);
-    border: var(--card-border);
+    border: var(--border-subtle);
     border-radius: var(--radius-container);
   }
   .tab-header {

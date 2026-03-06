@@ -2,7 +2,7 @@ import type { Eintrag, Editordaten } from './types';
 import { dateiId } from './types';
 import { isSignaleintrag, isNotizeintrag, isKnoteneintrag, isAbzweigungseintrag, isImporteintrag } from './types';
 import { STATIONEN, MELDUNG_FARBEN, BAHNHOF_FARBEN } from './constants';
-import { meldungAusSignaleintrag } from './meldungen';
+import { buildMeldung } from './meldungen';
 import { resolveSignaleForMeldungen } from './sources';
 
 export type ColoredSegment = {
@@ -116,7 +116,7 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
 
     if (!isSignaleintrag(sig)) continue;
 
-    const result = meldungAusSignaleintrag(sig);
+    const result = buildMeldung(sig);
     const s1Display = [sig.signal_1, sig.signal_1b].filter(Boolean).join(' / ');
     const s2Display = [sig.signal_2, sig.signal_2b].filter(Boolean).join(' / ');
 

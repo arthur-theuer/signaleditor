@@ -42,7 +42,7 @@
     container-type: inline-size;
     overflow: hidden;
     display: flex;
-    border: var(--card-border);
+    border: var(--cell-border);
     border-radius: var(--radius-card);
     position: relative;
     flex: 1;

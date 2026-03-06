@@ -61,6 +61,9 @@
     onchange();
   }
 
+  // Deferred reveal: the bahnhof field only appears once a bahnhof value exists
+  // or the name field is focused (see handleNameFocus). Prevents layout shift
+  // during type-ahead signal selection where needsBahnhof flickers.
   let bahnhofRevealed = $state(false);
   $effect(() => {
     if (needsBahnhof && bahnhof) bahnhofRevealed = true;

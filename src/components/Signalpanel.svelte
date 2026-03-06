@@ -25,7 +25,6 @@
   import Importzeile from './Importzeile.svelte';
   import Kilometerzelle from './Kilometerzelle.svelte';
   import Zeilenaktionen from './Zeilenaktionen.svelte';
-  import Zwischenaktionen from './Zwischenaktionen.svelte';
   import Plusleiste from './Plusleiste.svelte';
   import Meldungzelle from './ui/Meldungzelle.svelte';
   import type { MeldungRow } from '../lib/reports';
@@ -280,13 +279,6 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div bind:this={listEl} onkeydown={handleKeydown} class="signal-list-inner" class:has-km={showKm} class:has-mel={!!meldungen}>
   {#each signale as eintrag, idx (eintrag.id)}
-    <Zwischenaktionen
-      onInsertSignal={() => insertSignalAt(idx)}
-      onInsertNotiz={() => insertAt(idx, makeNotiz(idx))}
-      onInsertAbzweigung={() => insertAt(idx, makeAbzweigung(idx))}
-      onInsertKnoten={() => insertAt(idx, makeKnoten(idx))}
-      onInsertImport={() => insertAt(idx, makeImport(idx))}
-    />
     <div
       class="signal-row"
       class:drag-ready={drag.dragHandle === idx}
@@ -382,8 +374,7 @@
     --_mel-gap: var(--spacing-card);
   }
 
-  /* Zwischenaktionen + drop indicator span all columns */
-  .signal-list-inner :global(.insert-wrapper) { grid-column: 1 / -1; }
+  /* Drop indicator spans all columns */
 
   /* ── Subgrid rows ── */
   .signal-row {
@@ -394,14 +385,6 @@
     align-items: stretch;
     min-height: var(--spacing-unit);
     border-bottom: 1px solid var(--color-border);
-  }
-
-  /* Cell borders inside signal rows use a stronger color than --card-border */
-  .signal-row :global(.row-cell),
-  .signal-row :global(.km-cell),
-  .signal-row :global(.meldung-inner),
-  .signal-id {
-    border-color: var(--color-text-secondary);
   }
 
   /* ── Cell placement ── */
@@ -417,7 +400,7 @@
     color: var(--color-text-secondary);
     font-family: var(--font-mono);
     background: var(--color-bg-raised);
-    border: var(--card-border);
+    border: var(--cell-border);
     border-radius: var(--radius-card);
     cursor: grab;
   }

@@ -1,5 +1,8 @@
 # Signal Editor — Migration to Svelte 5
 
+> **Historical document.** References to "Video" in this file reflect the original terminology.
+> The current codebase uses **Strecke** (single video segment) and **Route** (combined strecken).
+
 Migrate `editor.html` (single-file, ~2400 lines) to a Svelte 5 + TypeScript + Vite project.
 
 ## Goals

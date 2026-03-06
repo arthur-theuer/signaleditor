@@ -1,98 +1,96 @@
 # Datenmodell
 
+> **Terminologie-Änderung**: Was früher "Video" hiess, heisst jetzt **Strecke** (ein einzelnes
+> Videosegment mit eigenen Signalen). Was früher "Strecke" hiess, heisst jetzt **Route**
+> (zusammengesetzt aus Strecken-Importen + optionalen manuellen Signalen).
+
 ## Dateitypen
 
 Zwei Dateitypen, festgelegt bei Erstellung:
 
-- **Video** — ein einzelnes Videosegment mit eigenen Signalen. Gespeichert unter `videos/`.
-- **Strecke** — zusammengesetzt aus Video-Importen + optionalen manuellen Signalen. Gespeichert unter `strecken/`.
+- **Strecke** — ein einzelnes Videosegment mit eigenen Signalen. Gespeichert unter `strecken/`.
+- **Route** — zusammengesetzt aus Strecken-Importen + optionalen manuellen Signalen. Gespeichert unter `routen/`.
 
 ## Typen
 
 ```typescript
-type Dateityp = 'video' | 'strecke';
-
-type Videodaten = {
-  typ: 'video';
-  meta: Videometa;
-  signale: Eintrag[];
-};
+type Dateityp = 'strecke' | 'route';
 
 type Streckendaten = {
   typ: 'strecke';
   meta: Streckenmeta;
+  signale: Eintrag[];
+};
+
+type Routendaten = {
+  typ: 'route';
+  meta: Routenmeta;
   signale: Eintrag[];  // hauptsächlich Importeinträge, kann manuelle Einträge enthalten
 };
 
-type Editordaten = Videodaten | Streckendaten;
+type Editordaten = Streckendaten | Routendaten;
 ```
-
-### Videometa
-
-```typescript
-type Videometa = {
-  streckennummer: string;  // z.B. "500", "112b" — Ziffern + Kleinbuchstaben a-z
-  von: string;             // Stationscode, z.B. "OL"
-  nach: string;            // Stationscode, z.B. "AA"
-  via: string;             // z.B. "OL, LB" — Zwischenstationen, vom Benutzer eingetragen
-  name: string;            // Anzeigename, z.B. "Olten → Aarau" — autogeneriert, überschreibbar
-  video: string;           // URL zum externen Video
-};
-```
-
-- **ID**: `${streckennummer}_${von}_${nach}` → `500_OL_AA`
-- **Dateiname**: `videos/500_OL_AA.yaml`
-- **`name`**: Wird aus `KNOTEN[von]` und `KNOTEN[nach]` abgeleitet (z.B. "Olten → Aarau"). Vom Benutzer überschreibbar.
 
 ### Streckenmeta
 
 ```typescript
 type Streckenmeta = {
-  linie: string;           // z.B. "s9" — Kleinbuchstaben
-  von: string;             // Stationscode für Routenanfang
-  nach: string;            // Stationscode für Routenende
-  via: string;             // z.B. "OL, LB" — Zwischenstationen, autogeneriert, überschreibbar
-  name: string;            // z.B. "Uster → Zürich HB" — autogeneriert, überschreibbar
-  // streckenvideos: zur Laufzeit aus Importeinträgen abgeleitet, nicht gespeichert
+  strecke: string;       // z.B. "500", "112b" — Ziffern + Kleinbuchstaben a-z
+  von: string;           // Stationscode, z.B. "OL"
+  nach: string;          // Stationscode, z.B. "AA"
+  via: string;           // z.B. "OL, LB" — Zwischenstationen, vom Benutzer eingetragen
+  name: string;          // Anzeigename, z.B. "Olten → Aarau" — autogeneriert, überschreibbar
+};
+```
+
+- **ID**: `${strecke}_${von}_${nach}` → `500_OL_AA`
+- **Dateiname**: `strecken/500_OL_AA.yaml`
+- **`name`**: Wird aus Stationsnamen von `von` und `nach` abgeleitet. Vom Benutzer überschreibbar.
+
+### Routenmeta
+
+```typescript
+type Routenmeta = {
+  linie: string;         // z.B. "s9" — Kleinbuchstaben
+  von: string;           // Stationscode für Routenanfang
+  nach: string;          // Stationscode für Routenende
+  via: string;           // z.B. "OL, LB" — Zwischenstationen, vom Benutzer eingetragen
+  name: string;          // z.B. "Uster → Zürich HB" — autogeneriert, überschreibbar
 };
 ```
 
 - **ID**: `${linie}_${von}_${nach}` → `s9_US_ZUE`
-- **Dateiname**: `strecken/s9_US_ZUE.yaml`
-- **`name`**: Wird aus `KNOTEN[von]`, `via`-Stationen und `KNOTEN[nach]` abgeleitet. Vom Benutzer überschreibbar.
-- **`via`**: Vom Benutzer eingetragen (Zwischenstationen der Route).
-- **`streckenvideos`**: Nicht gespeichert. Wird zur Laufzeit aus `Importeintrag.import.datei`-Werten abgeleitet.
+- **Dateiname**: `routen/s9_US_ZUE.yaml`
+- **`name`**: Wird aus Stationsnamen von `von`, `via`-Stationen und `nach` abgeleitet. Vom Benutzer überschreibbar.
 
 ## Validierung
 
 | Feld | Regel |
 |------|-------|
-| `streckennummer` | Nur Ziffern + Kleinbuchstaben a-z (`/^[0-9a-z]+$/`) |
-| `von`, `nach`, `via`-Codes | Validiert gegen `KNOTEN`-Liste (wird auf 600+ Schweizer Stationen erweitert) |
+| `strecke` | Nur Ziffern + Kleinbuchstaben a-z (`/^[0-9a-z]+$/`) |
+| `von`, `nach`, `via`-Codes | Validiert gegen Stationsliste |
 | `name` | `->` wird automatisch zu `→` korrigiert |
-| `video` | Keine Validierung, freies URL-Feld |
 | `linie` | Kleinbuchstaben |
 
 ## YAML-Format
-
-### Video
-
-```yaml
-typ: video
-streckennummer: "500"
-von: OL
-nach: AA
-name: "Olten → Aarau"
-video: "https://example.com/video/500_OL_AA"
-signale:
-  - signal_1: Einfahrsignal A
-    ...
-```
 
 ### Strecke
 
 ```yaml
 typ: strecke
+strecke: "500"
+von: OL
+nach: AA
+name: "Olten → Aarau"
+signale:
+  - signal_1: Einfahrsignal A
+    ...
+```
+
+### Route
+
+```yaml
+typ: route
 linie: s9
 von: US
 nach: ZUE
@@ -106,11 +104,11 @@ signale:
 
 ## Backend-Speicherung
 
-- Vercel Blob mit Präfixen `videos/` und `strecken/` (ersetzt `signals/`)
-- Datei-Browser zeigt zwei Tabs: "Videos" und "Strecken"
+- Vercel Blob mit Präfixen `strecken/` und `routen/`
+- Datei-Browser zeigt zwei Tabs: "Strecken" und "Routen"
 - Dateityp wird bei Erstellung festgelegt und kann nicht geändert werden
 
 ## Modi
 
-- **Lokaler Modus**: Wie bisher — Dateien laden/speichern über lokales Dateisystem
+- **Lokaler Modus**: Dateien laden/speichern über lokales Dateisystem
 - **Cloud-Modus**: Nach PIN-Anmeldung — Dateien werden auf Vercel Blob gespeichert, Auto-Save aktiv

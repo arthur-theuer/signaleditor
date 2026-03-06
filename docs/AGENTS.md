@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Signaleditor is a SvelteKit web app for editing Swiss railway signal data files. It manages two data types — **Video** (camera-based signal recordings) and **Strecke** (route-based signal data) — each containing ordered lists of entries: signals, nodes (Knoten), notes (Notiz), junctions (Abzweigung), and imports.
+Signaleditor is a SvelteKit web app for editing Swiss railway signal data files. It manages two data types — **Strecke** (a single video-based signal segment) and **Route** (multiple Strecken combined via imports + optional manual signals) — each containing ordered lists of entries: signals, nodes (Knoten), notes (Notiz), junctions (Abzweigung), and imports.
 
 Data is stored as YAML files. The app supports local file import/export and cloud storage via Vercel Blob (PIN-authenticated).
 
@@ -33,8 +33,8 @@ Data is stored as YAML files. The app supports local file import/export and clou
 
 ### Components (`src/components/`)
 
-- `Toolbar.svelte` — sticky header toolbar with icon buttons (undo/redo, upload, download, save, lock), text buttons (Neues Video, Neue Strecke, Dateien), toggle buttons (Signaldatei, Meldungen), save status indicator
-- `Datenpanel.svelte` — meta fields form (streckennummer/linie, von, via, nach, name, video)
+- `Toolbar.svelte` — sticky header toolbar with icon buttons (undo/redo, upload, download, save, lock), text buttons (Neue Strecke, Neue Route, Dateien), toggle buttons (Signaldatei, Meldungen), save status indicator
+- `Datenpanel.svelte` — meta fields form (strecke/linie, von, via, nach, name)
 - `Signalpanel.svelte` — signal list CSS grid container with subgrid rows, drag-and-drop, keyboard navigation, row management
 - `Signalzeile.svelte` — single signal row: renders 2-4 `Signalzelle` components, manages alt toggles and signal change side effects
 - `Signalzelle.svelte` — signal cell with type-ahead input, abbreviation overlays (container query), dropdown, and deferred bahnhof reveal
@@ -62,7 +62,7 @@ Data is stored as YAML files. The app supports local file import/export and clou
 
 ### Libraries (`src/lib/`)
 
-- `types.ts` — data types (Editordaten, Videodaten, Streckendaten, Eintrag variants, type guards)
+- `types.ts` — data types (Editordaten, Streckendaten, Routendaten, Eintrag variants, type guards)
 - `signals.ts` — signal logic (autofill, row emptiness checks, signal type detection)
 - `signals.config.ts` — signal registry (signal definitions with all properties)
 - `constants.ts` — signal enums, abbreviation maps, station data re-export
@@ -129,7 +129,7 @@ Rule: placeholder/example text uses `--color-text-muted`. When a value resolves 
 Two shared classes in `components.css`:
 
 **`.btn`** — button hover/focus/disabled states:
-- `border: var(--card-border)`, `border-radius: var(--radius-card)`, `background: var(--color-bg-raised)`
+- `border: var(--border-subtle)`, `border-radius: var(--radius-card)`, `background: var(--color-bg-raised)`
 - Hover: `outline: 2px solid currentColor; outline-offset: -2px`
 - Focus-visible: `outline: 2px solid var(--color-focus)`
 - Disabled: `color: var(--color-text-muted)`, no hover effect

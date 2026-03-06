@@ -78,7 +78,7 @@
     display: flex;
     align-items: center;
     height: var(--spacing-unit);
-    border: var(--card-border);
+    border: var(--border-subtle);
     border-radius: var(--radius-container);
     background: var(--color-bg-raised);
     flex-shrink: 0;

@@ -1,7 +1,7 @@
 import type { Signaleintrag } from './types';
 import { SIGNALTYPEN, MELDUNGEN } from './constants';
 
-export function erkenneSignaltyp(signal: string): [boolean, string | null] {
+export function detectSignaltyp(signal: string): [boolean, string | null] {
   const istVorsignal = signal.includes('Vorsignal') || signal.includes('Wiederholungssignal');
   for (const [begriff, signaltyp] of SIGNALTYPEN) {
     if (signal.includes(begriff)) {
@@ -22,7 +22,7 @@ export type MeldungResult = {
   error: string | null;
 };
 
-export function meldungAusSignaleintrag(eintrag: Signaleintrag): MeldungResult {
+export function buildMeldung(eintrag: Signaleintrag): MeldungResult {
   const signale: string[] = [];
   if (eintrag.signal_1) signale.push(eintrag.signal_1);
   if (eintrag.signal_2) signale.push(eintrag.signal_2);
@@ -37,7 +37,7 @@ export function meldungAusSignaleintrag(eintrag: Signaleintrag): MeldungResult {
   let mainTyp: string | null = null;
 
   for (const s of signale) {
-    const [istVorsignal, typ] = erkenneSignaltyp(s);
+    const [istVorsignal, typ] = detectSignaltyp(s);
     if (!typ) continue;
     mainTyp = typ;
     if (istVorsignal) {
@@ -55,7 +55,7 @@ export function meldungAusSignaleintrag(eintrag: Signaleintrag): MeldungResult {
   if (eintrag.signal_2b) altSignale.push(eintrag.signal_2b);
 
   for (const s of altSignale) {
-    const [istVorsignal, typ] = erkenneSignaltyp(s);
+    const [istVorsignal, typ] = detectSignaltyp(s);
     if (!typ) continue;
     if (istVorsignal) {
       const altMeldung = MELDUNGEN[typ].replace('{bahnhof}', bahnhof);

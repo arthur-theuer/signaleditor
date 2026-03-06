@@ -136,7 +136,7 @@
   .daten-section {
     margin-bottom: var(--spacing-page);
     background: var(--color-bg);
-    border: var(--card-border);
+    border: var(--border-subtle);
     border-radius: var(--radius-container);
   }
   .daten-fields {
@@ -157,7 +157,7 @@
     flex: 1;
     min-width: 0;
     background: var(--color-bg-raised);
-    border: var(--card-border);
+    border: var(--cell-border);
     border-radius: var(--radius-card);
   }
   @media (min-width: 640px) {

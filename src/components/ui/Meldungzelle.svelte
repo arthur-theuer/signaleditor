@@ -55,12 +55,12 @@
     justify-content: center;
     padding: 0 var(--spacing-cell);
     background: var(--color-bg-raised);
-    border: var(--card-border);
+    border: var(--cell-border);
     border-radius: var(--radius-card);
     text-align: center;
   }
   .meldung-inner.muted {
-    border-color: var(--color-border);
+    border: var(--border-subtle);
     background: var(--color-bg);
   }
   .meldung-inner.error {

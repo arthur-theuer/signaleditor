@@ -19,7 +19,7 @@ Legend: ✅ = ported, ❌ = missing, ⚠️ = partial
 | 9 | Toolbar: "Kilometer" toggle (red/green) | ✅ | |
 | 10 | Toolbar: "Signaldatei" toggle (shows YAML panel) | ✅ | |
 | 11 | Toolbar: "Meldungen" toggle (shows meldungen panel) | ✅ | |
-| 12 | Meta section: 4 fields (ID, Name, Linie, Videos) | ✅ | |
+| 12 | Meta section: fields (Strecke/Linie, Von, Nach, Via, Name) | ✅ | |
 | 13 | Meta section: header "Strecke" | ✅ | |
 | 14 | Signals container: header "Signale" | ✅ | |
 | 15 | Meldungen panel: header "Meldungen" | ✅ | |

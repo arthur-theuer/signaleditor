@@ -1,17 +1,10 @@
 import { json } from '@sveltejs/kit';
-import { env } from '$env/dynamic/private';
+import { checkPin } from '$lib/server/auth';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ request }) => {
   const { pin } = await request.json();
-
-  if (!env.EDITOR_PIN) {
-    return json({ error: 'Server PIN not configured' }, { status: 500 });
-  }
-
-  if (pin !== env.EDITOR_PIN) {
-    return json({ error: 'Invalid PIN' }, { status: 401 });
-  }
-
+  const error = checkPin(pin);
+  if (error) return error;
   return json({ ok: true });
 };

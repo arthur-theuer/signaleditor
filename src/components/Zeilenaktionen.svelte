@@ -62,22 +62,22 @@
   }
 
   /* Wide: show inline buttons, hide ellipsis and expandable actions */
-  :global(.ellipsis-btn) {
-    display: none !important;
+  .signal-actions :global(.ellipsis-btn) {
+    display: none;
   }
-  :global(.action-btn) {
-    display: none !important;
+  .signal-actions :global(.action-btn) {
+    display: none;
   }
 
   @media (max-width: 639px) {
-    :global(.wide-btn) {
-      display: none !important;
+    .signal-actions :global(.wide-btn) {
+      display: none;
     }
-    :global(.ellipsis-btn) {
-      display: flex !important;
+    .signal-actions :global(.ellipsis-btn) {
+      display: flex;
     }
-    :global(.action-btn) {
-      display: flex !important;
+    .signal-actions :global(.action-btn) {
+      display: flex;
     }
   }
 </style>
