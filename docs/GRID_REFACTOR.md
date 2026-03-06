@@ -7,10 +7,10 @@ Each step is independently shippable — verify before moving to the next.
 
 ```
 .signals-container                       (App.svelte, overflow: hidden)
+  .header-row                            (flex row, outside grid)
+    .signale-header                      → flex: 1
+    [.meldungen-header]                  → width: calc(--mel-width + 3 * --spacing-card)
   .signal-list-inner                     (Signalpanel.svelte, display: grid)
-    .header-row                          (subgrid row, grid-column: 1 / -1)
-      .signale-header                    → [1 / g-mel] or [1 / -1]
-      [.meldungen-header]               → [mel / -1]
     Zwischenaktionen                     (grid-column: 1 / -1)
     .signal-row                          (subgrid, grid-column: 1 / -1)
       .signal-id                         → [id]
@@ -27,33 +27,24 @@ Each step is independently shippable — verify before moving to the next.
   Plusleiste                             (sibling of .signal-list-inner)
 ```
 
-Header content is passed from App.svelte to Signalpanel via a Svelte snippet.
-
 ## Column layout
+
+Single `grid-template-columns` definition with all named lines always present.
+Optional segments (`km`, `mel`) collapse to `0px` when inactive via CSS
+custom properties (`--_km`, `--_mel`, `--_km-gap`, `--_mel-gap`).
 
 No `column-gap` — spacing is handled by explicit gap columns.
 `--spacing-card` (4px) is the gap width. Double gaps at divider boundaries.
 
-### Base (no km, no mel)
+### Full template (all columns)
 
 ```
-[pad-l] [id] [g-id] [s1] [g-s1] [s1b] [g-s1b] [g-s2] [s2] [g-s2b] [s2b] [g-act] [act] [pad-r]
- 4px    unit  4px    1fr   4px    1fr    4px     4px    1fr   4px     1fr    4px    auto   4px
+[pad-l] [id] [g-id] [km] [g-km] [s1] [g-s1] [s1b] [g-s1b] [g-s2] [s2] [g-s2b] [s2b] [g-act] [act] [g-act-end] [g-mel] [mel] [pad-r]
+ 4px    unit  4px   _km  _km-gap 1fr   4px    1fr    4px     4px   1fr    4px    1fr    4px    auto   _mel-gap    _mel-gap _mel   4px
 ```
 
-### +km
-
-```
-[pad-l] [id] [g-id] [km]     [g-km] [s1] ... [act] [pad-r]
- 4px    unit  4px   km-width  4px    ...             4px
-```
-
-### +mel
-
-```
-... [act] [g-act-end] [g-mel] [mel]      [pad-r]
-    auto   4px         4px    mel-width    4px
-```
+- `_km` / `_km-gap`: `0px` by default, `var(--km-width)` / `var(--spacing-card)` when `.has-km`
+- `_mel` / `_mel-gap`: `0px` by default, `var(--mel-width)` / `var(--spacing-card)` when `.has-mel`
 
 ### Column naming
 
@@ -77,9 +68,6 @@ No `column-gap` — spacing is handled by explicit gap columns.
 | Non-signal rows | `s1 / g-act` |
 | `.signal-actions` | `act` |
 | `.meldung-col` | `mel` |
-| Header signale (no mel) | `1 / -1` |
-| Header signale (with mel) | `1 / g-mel` (padding-right: --spacing-card) |
-| Header meldungen | `g-mel / -1` |
 
 ## Completed steps
 
@@ -96,11 +84,13 @@ Removed individual cell borders. Added `border-bottom` on `.signal-row`.
 
 ### Grid architecture
 
-- Replaced `column-gap` with explicit gap columns
+- Single grid template with all named lines always present
+- Optional km/mel segments collapse to 0px via CSS custom properties
 - `pad-l`/`pad-r` are `var(--spacing-card)`
-- `--km-width` and `--mel-width` CSS variables reduce template duplication
+- `--km-width` and `--mel-width` CSS variables control optional column widths
+- `--mel-width` defined on `.signals-container` (shared with header)
 - `padding-block` on `.signal-row` for vertical spacing
-- Header row moved into grid via Svelte snippet (App.svelte → Signalpanel)
+- Header is a flex row outside the grid (in App.svelte)
 - Double gap columns at divider boundaries for future vertical separators
 
 ## Remaining steps

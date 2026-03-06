@@ -351,55 +351,36 @@
 
 <style>
   /* ── Grid container ── */
+  /* All named lines are always present. Optional km/mel segments collapse
+     to 0px when inactive, so grid-column references never hit implicit columns. */
   .signal-list-inner {
     --km-width: calc(1.5 * var(--spacing-unit));
+    --_km: 0px;
+    --_km-gap: 0px;
+    --_mel: 0px;
+    --_mel-gap: 0px;
     position: relative;
     overflow-anchor: none;
     display: grid;
     grid-template-columns:
       [pad-l] var(--spacing-card)
       [id] var(--spacing-unit) [g-id] var(--spacing-card)
+      [km] var(--_km) [g-km] var(--_km-gap)
       [s1] minmax(0, 1fr) [g-s1] var(--spacing-card) [s1b] minmax(0, 1fr)
       [g-s1b] var(--spacing-card) [g-s2] var(--spacing-card)
       [s2] minmax(0, 1fr) [g-s2b] var(--spacing-card) [s2b] minmax(0, 1fr)
       [g-act] var(--spacing-card) [act] auto
+      [g-act-end] var(--_mel-gap) [g-mel] var(--_mel-gap)
+      [mel] var(--_mel)
       [pad-r] var(--spacing-card);
   }
   .signal-list-inner.has-km {
-    grid-template-columns:
-      [pad-l] var(--spacing-card)
-      [id] var(--spacing-unit) [g-id] var(--spacing-card)
-      [km] var(--km-width) [g-km] var(--spacing-card)
-      [s1] minmax(0, 1fr) [g-s1] var(--spacing-card) [s1b] minmax(0, 1fr)
-      [g-s1b] var(--spacing-card) [g-s2] var(--spacing-card)
-      [s2] minmax(0, 1fr) [g-s2b] var(--spacing-card) [s2b] minmax(0, 1fr)
-      [g-act] var(--spacing-card) [act] auto
-      [pad-r] var(--spacing-card);
+    --_km: var(--km-width);
+    --_km-gap: var(--spacing-card);
   }
   .signal-list-inner.has-mel {
-    grid-template-columns:
-      [pad-l] var(--spacing-card)
-      [id] var(--spacing-unit) [g-id] var(--spacing-card)
-      [s1] minmax(0, 1fr) [g-s1] var(--spacing-card) [s1b] minmax(0, 1fr)
-      [g-s1b] var(--spacing-card) [g-s2] var(--spacing-card)
-      [s2] minmax(0, 1fr) [g-s2b] var(--spacing-card) [s2b] minmax(0, 1fr)
-      [g-act] var(--spacing-card) [act] auto
-      [g-act-end] var(--spacing-card) [g-mel] var(--spacing-card)
-      [mel] var(--mel-width)
-      [pad-r] var(--spacing-card);
-  }
-  .signal-list-inner.has-km.has-mel {
-    grid-template-columns:
-      [pad-l] var(--spacing-card)
-      [id] var(--spacing-unit) [g-id] var(--spacing-card)
-      [km] var(--km-width) [g-km] var(--spacing-card)
-      [s1] minmax(0, 1fr) [g-s1] var(--spacing-card) [s1b] minmax(0, 1fr)
-      [g-s1b] var(--spacing-card) [g-s2] var(--spacing-card)
-      [s2] minmax(0, 1fr) [g-s2b] var(--spacing-card) [s2b] minmax(0, 1fr)
-      [g-act] var(--spacing-card) [act] auto
-      [g-act-end] var(--spacing-card) [g-mel] var(--spacing-card)
-      [mel] var(--mel-width)
-      [pad-r] var(--spacing-card);
+    --_mel: var(--mel-width);
+    --_mel-gap: var(--spacing-card);
   }
 
 
@@ -416,10 +397,7 @@
     min-height: var(--spacing-unit);
     border-bottom: 1px solid var(--color-border);
   }
-  /* Force all children onto a single grid row */
-  .signal-row > :global(*) {
-    grid-row: 1;
-  }
+
 
   /* ── Cell placement ── */
   .signal-id {
