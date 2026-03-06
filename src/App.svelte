@@ -145,27 +145,28 @@
 
 <div class="main-content content-pad">
   <div class="signals-container">
-    <div class="header-row">
-      <div class="section-header signale-header">
-        Signale
-        <Symbolknopf
-          class="km-toggle"
-          color="red"
-          bordered
-          active={ed.showKm}
-          onclick={() => (ed.showKm = !ed.showKm)}
-          title="Kilometer ein-/ausblenden"
-        >
-          <RulerDimensionLine {...ICON} />
-        </Symbolknopf>
-      </div>
-      {#if ed.showMeldungen}
-        <div class="section-header meldungen-header">
-          Meldungen
+    <Signalpanel bind:signale={ed.data.signale} showKm={ed.showKm} {meldungen} onchange={() => ed.markDirty()}>
+      {#snippet header()}
+        <div class="section-header signale-header">
+          Signale
+          <Symbolknopf
+            class="km-toggle"
+            color="red"
+            bordered
+            active={ed.showKm}
+            onclick={() => (ed.showKm = !ed.showKm)}
+            title="Kilometer ein-/ausblenden"
+          >
+            <RulerDimensionLine {...ICON} />
+          </Symbolknopf>
         </div>
-      {/if}
-    </div>
-    <Signalpanel bind:signale={ed.data.signale} showKm={ed.showKm} {meldungen} onchange={() => ed.markDirty()} />
+        {#if ed.showMeldungen}
+          <div class="section-header meldungen-header">
+            Meldungen
+          </div>
+        {/if}
+      {/snippet}
+    </Signalpanel>
   </div>
 </div>
 
@@ -196,14 +197,9 @@
     border: var(--card-border);
     border-radius: var(--radius-container);
     container-type: inline-size;
-  }
-  .header-row {
-    display: flex;
+    overflow: hidden;
   }
   .signale-header {
-    flex: 1;
-    min-width: 0;
-    padding-right: var(--spacing-card);
     border-radius: var(--radius-container) var(--radius-container) 0 0;
   }
   .signale-header:not(:last-child) {
@@ -213,15 +209,8 @@
     margin-left: auto;
   }
   .meldungen-header {
-    flex-shrink: 0;
-    width: 220px;
     border-radius: 0 var(--radius-container) 0 0;
     border-left: 1px solid var(--color-border);
-  }
-  @media (min-width: 768px) {
-    .meldungen-header {
-      width: 280px;
-    }
   }
 
 </style>

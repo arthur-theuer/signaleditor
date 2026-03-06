@@ -29,17 +29,20 @@
   import Plusleiste from './Plusleiste.svelte';
   import Meldungzelle from './ui/Meldungzelle.svelte';
   import type { MeldungRow } from '../lib/reports';
+  import type { Snippet } from 'svelte';
 
   let {
     signale = $bindable(),
     showKm,
     meldungen,
     onchange,
+    header,
   }: {
     signale: Eintrag[];
     showKm: boolean;
     meldungen?: MeldungRow[];
     onchange: () => void;
+    header?: Snippet;
   } = $props();
 
   let usedImportFiles = $derived(
@@ -280,6 +283,11 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div bind:this={listEl} onkeydown={handleKeydown} class={['signal-list-inner', { 'has-km': showKm, 'has-mel': !!meldungen }]}>
+  {#if header}
+    <div class="header-row">
+      {@render header()}
+    </div>
+  {/if}
   {#each signale as eintrag, idx (eintrag.id)}
     <Zwischenaktionen
       onInsertSignal={() => insertSignalAt(idx)}
@@ -401,6 +409,20 @@
     }
   }
 
+  /* ── Header row ── */
+  .header-row {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+  }
+  .header-row :global(.signale-header) { grid-column: 1 / -1; }
+  .signal-list-inner.has-mel .header-row :global(.signale-header) { grid-column: 1 / mel; }
+  .header-row :global(.meldungen-header) {
+    grid-column: mel / -1;
+    margin-left: calc(-1 * var(--spacing-card));
+    padding-left: var(--spacing-card);
+  }
+
   /* Zwischenaktionen + drop indicator span all columns */
   .signal-list-inner :global(.insert-wrapper) { grid-column: 1 / -1; }
 
@@ -461,6 +483,8 @@
     display: flex;
     padding-left: var(--spacing-card);
     border-left: 1px solid var(--color-border);
+    margin-block: calc(-1 * var(--spacing-card));
+    padding-block: var(--spacing-card);
   }
 
   /* ── Drag state ── */

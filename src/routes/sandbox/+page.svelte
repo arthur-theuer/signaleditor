@@ -81,20 +81,19 @@
   <div class="preview">
     <!-- .signals-container -->
     <div class="signals-container" class:debug={show.container}>
-      <!-- .header-row -->
-      <div class="header-row" class:debug-header={show.header}>
-        <div class="section-header signale-header">Signale</div>
-        {#if showMel}
-          <div class="section-header meldungen-header">Meldungen</div>
-        {/if}
-      </div>
-
       <!-- .signal-list-inner (grid container) -->
         <div class="signal-list-inner"
           class:has-km={showKm}
           class:has-mel={showMel}
           class:debug-listInner={show.listInner}
         >
+          <!-- .header-row -->
+          <div class="header-row" class:debug-header={show.header}>
+            <div class="section-header signale-header">Signale</div>
+            {#if showMel}
+              <div class="section-header meldungen-header">Meldungen</div>
+            {/if}
+          </div>
           <!-- Grid column overlay -->
           {#if show.gridOverlay}
             <div class="grid-overlay">
@@ -304,7 +303,9 @@
     border-radius: 12px;
   }
   .header-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
   }
   .section-header {
     display: flex;
@@ -319,17 +320,18 @@
     border-radius: 12px 12px 0 0;
   }
   .signale-header {
-    flex: 1;
-    min-width: 0;
+    grid-column: 1 / -1;
   }
-  .signale-header:not(:last-child) {
+  .signal-list-inner.has-mel .signale-header {
+    grid-column: 1 / mel;
     border-radius: 12px 0 0 0;
   }
   .meldungen-header {
-    flex-shrink: 0;
-    width: 220px;
+    grid-column: mel / -1;
     border-radius: 0 12px 0 0;
     border-left: 1px solid #e0e0e0;
+    margin-left: -4px;
+    padding-left: 4px;
   }
   /* Grid container */
   .signal-list-inner {
@@ -481,8 +483,10 @@
   .meldung-col {
     grid-column: mel;
     display: flex;
-    padding: 2px 4px;
+    padding-left: 4px;
     border-left: 1px solid #e0e0e0;
+    margin-block: -4px;
+    padding-block: 4px;
   }
   .meldung-inner {
     flex: 1;
