@@ -17,6 +17,8 @@
   } from '../lib/types';
   import { autofillRow, isRowEmpty } from '../lib/signals';
   import { focusWithoutScroll } from '../lib/focus';
+  import { X } from 'lucide-svelte';
+  import { ICON } from '../lib/constants';
   import { DragDrop } from '../lib/useDragDrop.svelte';
   import Signalzeile from './Signalzeile.svelte';
   import Notizzeile from './Notizzeile.svelte';
@@ -341,7 +343,7 @@
     onAddImport={() => appendEntry(makeImport(signale.length))}
   />
   {#if meldungen && onCloseMeldungen}
-    <button class="close-mel-btn" onclick={onCloseMeldungen}>Schliessen</button>
+    <button class="close-mel-btn" onclick={onCloseMeldungen}><X {...ICON} />Schliessen</button>
   {/if}
 </div>
 
@@ -440,12 +442,17 @@
 
   /* Bottom row: Plusleiste + close button share a grid row */
   .signal-list-inner :global(.add-bar) {
-    grid-column: pad-l / g-mel;
+    grid-column: id / g-mel;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
   }
   .close-mel-btn {
     grid-column: mel;
-    padding: var(--spacing-cell);
-    margin-block: var(--spacing-card);
+    height: var(--spacing-unit);
+    margin-top: var(--spacing-card);
+    padding: 0 var(--spacing-cell);
+    gap: var(--spacing-sm);
     border: var(--border-subtle);
     border-radius: var(--radius-card);
     cursor: pointer;
