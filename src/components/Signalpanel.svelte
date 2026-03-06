@@ -422,19 +422,19 @@
 
   .signal-row :global(.km-cell) { grid-column: km; }
 
-  /* Signal cells: main signals span s+gap+sb, shrink to 1 when alt present */
-  .signal-row :global([data-field='signal_1'])  { grid-column: s1 / g-s1b; }
-  .signal-row :global([data-field='signal_2'])  { grid-column: s2 / g-act; }
+  /* Signal cells: main signals span s+gap+sb (3 cols), shrink to 1 when alt present */
+  .signal-row :global([data-field='signal_1'])  { grid-column: s1 / span 3; }
+  .signal-row :global([data-field='signal_2'])  { grid-column: s2 / span 3; }
   .signal-row:has(:global([data-field='signal_1b'])) :global([data-field='signal_1']) { grid-column: s1; }
   .signal-row :global([data-field='signal_1b']) { grid-column: s1b; }
   .signal-row:has(:global([data-field='signal_2b'])) :global([data-field='signal_2']) { grid-column: s2; }
   .signal-row :global([data-field='signal_2b']) { grid-column: s2b; }
 
-  /* Non-signal rows: span all signal columns, stop before act gap */
-  .signal-row :global(.note-cell)      { grid-column: s1 / g-act; }
-  .signal-row :global(.knoten-group)   { grid-column: s1 / g-act; }
-  .signal-row :global(.import-group)   { grid-column: s1 / g-act; }
-  .signal-row :global(.abzw-group)     { grid-column: s1 / g-act; }
+  /* Non-signal rows: span from s1 through s2b (8 cols) */
+  .signal-row :global(.note-cell)      { grid-column: s1 / span 8; }
+  .signal-row :global(.knoten-group)   { grid-column: s1 / span 8; }
+  .signal-row :global(.import-group)   { grid-column: s1 / span 8; }
+  .signal-row :global(.abzw-group)     { grid-column: s1 / span 8; }
 
   /* Actions always in the last signal column */
   .signal-row :global(.signal-actions) { grid-column: act; }
