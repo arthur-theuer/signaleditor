@@ -333,17 +333,17 @@
   {#if drag.indicatorY !== null}
     <div class="drop-indicator" style="top: {drag.indicatorY}px;"></div>
   {/if}
+  <Plusleiste
+    onAddSignal={addSignalWithAutofill}
+    onAddNotiz={() => appendEntry(makeNotiz(signale.length))}
+    onAddAbzweigung={() => appendEntry(makeAbzweigung(signale.length))}
+    onAddKnoten={() => appendEntry(makeKnoten(signale.length))}
+    onAddImport={() => appendEntry(makeImport(signale.length))}
+  />
   {#if meldungen && onCloseMeldungen}
     <button class="close-mel-btn" onclick={onCloseMeldungen}>Schliessen</button>
   {/if}
 </div>
-<Plusleiste
-  onAddSignal={addSignalWithAutofill}
-  onAddNotiz={() => appendEntry(makeNotiz(signale.length))}
-  onAddAbzweigung={() => appendEntry(makeAbzweigung(signale.length))}
-  onAddKnoten={() => appendEntry(makeKnoten(signale.length))}
-  onAddImport={() => appendEntry(makeImport(signale.length))}
-/>
 
 <style>
   /* ── Grid container ── */
@@ -426,7 +426,7 @@
   /* Non-signal rows: span all signal columns (s1 through s2b) */
   .signal-row :global(.note-cell)      { grid-column: s1 / g-act; }
   .signal-row :global(.knoten-group)   { grid-column: s1 / g-act; }
-  .signal-row :global(.import-group)   { grid-column: s1 / g-act; }
+  .signal-row :global(.import-group)   { grid-column: km / g-act; }
   .signal-row :global(.abzw-group)     { grid-column: s1 / g-act; }
 
   /* Actions always in the last signal column */
@@ -438,7 +438,10 @@
     display: flex;
   }
 
-  /* Close meldungen button */
+  /* Bottom row: Plusleiste + close button share a grid row */
+  .signal-list-inner :global(.add-bar) {
+    grid-column: pad-l / g-mel;
+  }
   .close-mel-btn {
     grid-column: mel;
     padding: var(--spacing-cell);
