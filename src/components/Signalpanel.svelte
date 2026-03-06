@@ -409,7 +409,7 @@
     color: var(--color-text-secondary);
     font-family: var(--font-mono);
     background: var(--color-bg-raised);
-    border: 1px solid var(--color-text-secondary);
+    border: var(--card-border);
     border-radius: var(--radius-card);
     cursor: grab;
   }

@@ -88,7 +88,7 @@
   --color-meldung-bahnhof-b: #f9a825;
 
   /* Composite tokens */
-  --card-border: 1px solid var(--color-border);
+  --card-border: 1px solid var(--color-text-secondary);
 
   /* Inset rails: vertical alignment from viewport edge */
   --inset-page: var(--spacing-page); /* 20px — container borders */
