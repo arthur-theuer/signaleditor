@@ -224,5 +224,4 @@
     border-radius: 0 var(--radius-container) 0 0;
     border-left: 1px solid var(--color-border);
   }
-
 </style>

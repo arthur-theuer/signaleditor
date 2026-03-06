@@ -51,7 +51,6 @@
     ),
   );
 
-  // Per-field-type tier tracking: each row reports a tier (0=full, 1=medium, 2=compact),
   let listEl: HTMLDivElement;
 
   // Drag-and-drop (mouse + touch)
@@ -383,7 +382,6 @@
     --_mel-gap: var(--spacing-card);
   }
 
-
   /* Zwischenaktionen + drop indicator span all columns */
   .signal-list-inner :global(.insert-wrapper) { grid-column: 1 / -1; }
 
@@ -397,7 +395,6 @@
     min-height: var(--spacing-unit);
     border-bottom: 1px solid var(--color-border);
   }
-
 
   /* ── Cell placement ── */
   .signal-id {

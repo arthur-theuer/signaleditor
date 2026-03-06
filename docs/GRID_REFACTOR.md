@@ -9,7 +9,7 @@ Each step is independently shippable — verify before moving to the next.
 .signals-container                       (App.svelte, overflow: hidden)
   .header-row                            (flex row, outside grid)
     .signale-header                      → flex: 1
-    [.meldungen-header]                  → width: calc(--mel-width + 3 * --spacing-card)
+    [.meldungen-header]                  → width: calc(--mel-width + 2 * --spacing-card)
   .signal-list-inner                     (Signalpanel.svelte, display: grid)
     Zwischenaktionen                     (grid-column: 1 / -1)
     .signal-row                          (subgrid, grid-column: 1 / -1)
@@ -34,7 +34,7 @@ Optional segments (`km`, `mel`) collapse to `0px` when inactive via CSS
 custom properties (`--_km`, `--_mel`, `--_km-gap`, `--_mel-gap`).
 
 No `column-gap` — spacing is handled by explicit gap columns.
-`--spacing-card` (4px) is the gap width. Double gaps at divider boundaries.
+`--spacing-card` (4px) is the gap width.
 
 ### Full template (all columns)
 
@@ -95,10 +95,10 @@ Removed individual cell borders. Added `border-bottom` on `.signal-row`.
 
 ### Step 3: Signal 1/2 divider
 
-Add visual separators at the double-gap boundaries (`g-s1b`/`g-s2` and
-`g-act-end`/`g-mel`). Approach TBD — pseudo-elements on 0-width columns
-caused layout issues in subgrid context. Consider dedicated divider `<div>`
-elements in the template instead.
+Add visual separators at the gap boundaries (`g-s1b` between signal groups,
+`g-mel` before meldung column). Approach TBD — pseudo-elements on 0-width
+columns caused layout issues in subgrid context. Consider dedicated divider
+`<div>` elements in the template instead.
 
 **Files:** Signalpanel.svelte
 
@@ -122,8 +122,7 @@ components.css
 ## Risks
 
 - **Vertical border continuity:** `padding-block` on `.signal-row` creates gaps
-  in vertical borders. Divider approach TBD — 0-width columns with pseudo-elements
-  caused subgrid layout issues.
+  in vertical borders. Divider approach TBD.
 - **Drag-and-drop:** Rows are subgrid elements. Tested and working.
 - **Container queries:** `.signals-container` uses `container-type: inline-size`.
   No conflict with grid.
