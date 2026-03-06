@@ -335,16 +335,18 @@
   {#if drag.indicatorY !== null}
     <div class="drop-indicator" style="top: {drag.indicatorY}px;"></div>
   {/if}
-  <Plusleiste
-    onAddSignal={addSignalWithAutofill}
-    onAddNotiz={() => appendEntry(makeNotiz(signale.length))}
-    onAddAbzweigung={() => appendEntry(makeAbzweigung(signale.length))}
-    onAddKnoten={() => appendEntry(makeKnoten(signale.length))}
-    onAddImport={() => appendEntry(makeImport(signale.length))}
-  />
-  {#if meldungen && onCloseMeldungen}
-    <button class="close-mel-btn" onclick={onCloseMeldungen}><X {...ICON} />Schliessen</button>
-  {/if}
+  <div class="bottom-row">
+    <Plusleiste
+      onAddSignal={addSignalWithAutofill}
+      onAddNotiz={() => appendEntry(makeNotiz(signale.length))}
+      onAddAbzweigung={() => appendEntry(makeAbzweigung(signale.length))}
+      onAddKnoten={() => appendEntry(makeKnoten(signale.length))}
+      onAddImport={() => appendEntry(makeImport(signale.length))}
+    />
+    {#if meldungen && onCloseMeldungen}
+      <button class="close-mel-btn" onclick={onCloseMeldungen}><X {...ICON} />Schliessen</button>
+    {/if}
+  </div>
 </div>
 
 <style>
@@ -440,15 +442,21 @@
     display: flex;
   }
 
-  /* Bottom row: Plusleiste + close button share a grid row */
-  .signal-list-inner :global(.add-bar) {
+  /* Bottom row: Plusleiste + close button */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    padding-block: var(--spacing-card);
+    align-items: stretch;
+  }
+  .bottom-row :global(.add-bar) {
     grid-column: id / g-mel;
-    margin: var(--spacing-card) 0;
+    margin: 0;
   }
   .close-mel-btn {
     grid-column: mel;
     height: var(--spacing-unit);
-    margin-block: var(--spacing-card);
     padding: 0 var(--spacing-cell);
     gap: var(--spacing-sm);
     border: var(--border-subtle);
