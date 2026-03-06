@@ -157,7 +157,7 @@
     flex: 1;
     min-width: 0;
     background: var(--color-bg-raised);
-    border: var(--cell-border);
+    border: var(--border-subtle);
     border-radius: var(--radius-card);
   }
   @media (min-width: 640px) {

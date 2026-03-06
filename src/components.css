@@ -98,7 +98,7 @@ button:hover:not(:disabled) svg {
 .row-cell {
   display: flex;
   background: var(--color-bg-raised);
-  border: var(--cell-border);
+  border: var(--border-subtle);
   border-radius: var(--radius-card);
   position: relative;
   flex: 1;

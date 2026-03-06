@@ -400,7 +400,7 @@
     color: var(--color-text-secondary);
     font-family: var(--font-mono);
     background: var(--color-bg-raised);
-    border: var(--cell-border);
+    border: var(--border-subtle);
     border-radius: var(--radius-card);
     cursor: grab;
   }
