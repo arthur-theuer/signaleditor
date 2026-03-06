@@ -418,7 +418,7 @@
     border-radius: var(--radius-container) 0 0 0;
   }
   .signale-header:last-child {
-    grid-column: pad-l / pad-r;
+    grid-column: 1 / -1;
     border-radius: var(--radius-container) var(--radius-container) 0 0;
   }
   .signale-header :global(.km-toggle) {
