@@ -284,7 +284,7 @@
 <div bind:this={listEl} onkeydown={handleKeydown} class="signal-list-inner" class:has-km={showKm} class:has-mel={!!meldungen}>
   {#each signale as eintrag, idx (eintrag.id)}
     <div
-      class="signal-row"
+      class="entry-row"
       class:drag-ready={drag.dragHandle === idx}
       class:dragging={drag.dragIdx === idx}
       data-row-index={idx}
@@ -386,7 +386,7 @@
   /* Drop indicator spans all columns */
 
   /* ── Subgrid rows ── */
-  .signal-row {
+  .entry-row {
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
@@ -417,24 +417,24 @@
     cursor: grabbing;
   }
 
-  .signal-row :global(.km-cell) { grid-column: km; }
+  .entry-row :global(.km-cell) { grid-column: km; }
 
   /* Signal cells: main signals span field+gap+alt (3 cols), shrink to 1 when alt present */
-  .signal-row :global([data-field='signal_1'])  { grid-column: s1 / g-s1b; }
-  .signal-row :global([data-field='signal_2'])  { grid-column: s2 / g-act; }
-  .signal-row:has(:global([data-field='signal_1b'])) :global([data-field='signal_1']) { grid-column: s1; }
-  .signal-row :global([data-field='signal_1b']) { grid-column: s1b; }
-  .signal-row:has(:global([data-field='signal_2b'])) :global([data-field='signal_2']) { grid-column: s2; }
-  .signal-row :global([data-field='signal_2b']) { grid-column: s2b; }
+  .entry-row :global([data-field='signal_1'])  { grid-column: s1 / g-s1b; }
+  .entry-row :global([data-field='signal_2'])  { grid-column: s2 / g-act; }
+  .entry-row:has(:global([data-field='signal_1b'])) :global([data-field='signal_1']) { grid-column: s1; }
+  .entry-row :global([data-field='signal_1b']) { grid-column: s1b; }
+  .entry-row:has(:global([data-field='signal_2b'])) :global([data-field='signal_2']) { grid-column: s2; }
+  .entry-row :global([data-field='signal_2b']) { grid-column: s2b; }
 
   /* Non-signal rows: span all signal columns (s1 through s2b) */
-  .signal-row :global(.note-cell)      { grid-column: s1 / g-act; }
-  .signal-row :global(.knoten-group)   { grid-column: s1 / g-act; }
-  .signal-row :global(.import-group)   { grid-column: km / g-act; }
-  .signal-row :global(.abzw-group)     { grid-column: s1 / g-act; }
+  .entry-row :global(.note-cell)      { grid-column: s1 / g-act; }
+  .entry-row :global(.knoten-group)   { grid-column: s1 / g-act; }
+  .entry-row :global(.import-group)   { grid-column: km / g-act; }
+  .entry-row :global(.abzw-group)     { grid-column: s1 / g-act; }
 
   /* Actions always in the last signal column */
-  .signal-row :global(.signal-actions) { grid-column: act; }
+  .entry-row :global(.signal-actions) { grid-column: act; }
 
   /* Meldung column */
   .meldung-col {
@@ -476,10 +476,10 @@
   }
 
   /* ── Drag state ── */
-  .signal-row.dragging {
+  .entry-row.dragging {
     opacity: 0.4;
   }
-  .signal-row.drag-ready :global(.signal-actions) {
+  .entry-row.drag-ready :global(.signal-actions) {
     visibility: hidden;
   }
   .drop-indicator {
