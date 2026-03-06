@@ -413,7 +413,7 @@
     grid-column: 1 / -1;
   }
   .signale-header {
-    grid-column: pad-l / g-mel;
+    grid-column: pad-l / mel;
     padding-inline: var(--spacing-card);
     border-radius: var(--radius-container) 0 0 0;
   }
