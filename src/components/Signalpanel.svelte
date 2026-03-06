@@ -416,6 +416,10 @@
     min-height: var(--spacing-unit);
     border-bottom: 1px solid var(--color-border);
   }
+  /* Force all children onto a single grid row */
+  .signal-row > :global(*) {
+    grid-row: 1;
+  }
 
   /* ── Cell placement ── */
   .signal-id {
