@@ -419,8 +419,11 @@
     grid-column: 1 / -1;
   }
   .header-row :global(.signale-header) { grid-column: 1 / -1; }
-  .signal-list-inner.has-mel .header-row :global(.signale-header) { grid-column: 1 / g-mel; }
-  .header-row :global(.meldungen-header) { grid-column: g-mel / -1; }
+  .signal-list-inner.has-mel .header-row :global(.signale-header) {
+    grid-column: 1 / g-mel;
+    padding-right: 0;
+  }
+  .header-row :global(.meldungen-header) { grid-column: mel / -1; }
 
   /* Zwischenaktionen + drop indicator span all columns */
   .signal-list-inner :global(.insert-wrapper) { grid-column: 1 / -1; }
@@ -467,18 +470,18 @@
   .signal-row:has(:global([data-field='signal_2b'])) :global([data-field='signal_2']) { grid-column: s2; }
   .signal-row :global([data-field='signal_2b']) { grid-column: s2b; }
 
-  /* Non-signal rows: span all signal columns */
-  .signal-row :global(.note-cell)      { grid-column: s1 / act; }
-  .signal-row :global(.knoten-group)   { grid-column: s1 / act; }
-  .signal-row :global(.import-group)   { grid-column: s1 / act; }
-  .signal-row :global(.abzw-group)     { grid-column: s1 / act; }
+  /* Non-signal rows: span all signal columns, stop before act gap */
+  .signal-row :global(.note-cell)      { grid-column: s1 / g-act; }
+  .signal-row :global(.knoten-group)   { grid-column: s1 / g-act; }
+  .signal-row :global(.import-group)   { grid-column: s1 / g-act; }
+  .signal-row :global(.abzw-group)     { grid-column: s1 / g-act; }
 
   /* Actions always in the last signal column */
   .signal-row :global(.signal-actions) { grid-column: act; }
 
   /* Meldung column */
   .meldung-col {
-    grid-column: mel / -1;
+    grid-column: mel;
     display: flex;
     border-left: 1px solid var(--color-border);
     margin-block: calc(-1 * var(--spacing-card));
