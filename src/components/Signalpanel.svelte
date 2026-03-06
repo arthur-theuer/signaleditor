@@ -357,35 +357,43 @@
     display: grid;
     column-gap: var(--spacing-card);
     grid-template-columns:
+      [pad-l] 0
       [id] var(--spacing-unit)
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-      [act] auto;
+      [act] auto
+      [pad-r] 0;
   }
   .signal-list-inner.has-km {
     grid-template-columns:
+      [pad-l] 0
       [id] var(--spacing-unit)
       [km] var(--km-width)
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-      [act] auto;
+      [act] auto
+      [pad-r] 0;
   }
   .signal-list-inner.has-mel {
     grid-template-columns:
+      [pad-l] 0
       [id] var(--spacing-unit)
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
       [act] auto
-      [mel] var(--mel-width);
+      [mel] var(--mel-width)
+      [pad-r] 0;
   }
   .signal-list-inner.has-km.has-mel {
     grid-template-columns:
+      [pad-l] 0
       [id] var(--spacing-unit)
       [km] var(--km-width)
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
       [act] auto
-      [mel] var(--mel-width);
+      [mel] var(--mel-width)
+      [pad-r] 0;
   }
   @media (min-width: 768px) {
     .signal-list-inner {
@@ -401,14 +409,15 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-    padding: var(--spacing-card);
+    padding-block: var(--spacing-card);
     align-items: stretch;
-    min-height: calc(var(--spacing-unit) + 2 * var(--spacing-card));
+    min-height: var(--spacing-unit);
     border-bottom: 1px solid var(--color-border);
   }
 
   /* ── Cell placement ── */
   .signal-id {
+    grid-column: id;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -426,6 +435,8 @@
   .signal-id:active {
     cursor: grabbing;
   }
+
+  .signal-row :global(.km-cell) { grid-column: km; }
 
   /* Signal cells: main signals span 2 cols, shrink to 1 when alt present */
   .signal-row :global([data-field='signal_1'])  { grid-column: s1 / span 2; }
@@ -462,8 +473,8 @@
   .drop-indicator {
     grid-column: 1 / -1;
     position: absolute;
-    left: var(--spacing-card);
-    right: var(--spacing-card);
+    left: 0;
+    right: 0;
     height: 0;
     z-index: 5;
     pointer-events: none;

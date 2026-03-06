@@ -98,6 +98,7 @@
           <!-- Grid column overlay -->
           {#if show.gridOverlay}
             <div class="grid-overlay">
+              <div class="grid-col grid-col-pad" style="grid-column: pad-l;"></div>
               <div class="grid-col" style="grid-column: id;">id</div>
               {#if showKm}<div class="grid-col" style="grid-column: km;">km</div>{/if}
               <div class="grid-col" style="grid-column: s1;">s1</div>
@@ -106,6 +107,7 @@
               <div class="grid-col" style="grid-column: s2b;">s2b</div>
               <div class="grid-col" style="grid-column: act;">act</div>
               {#if showMel}<div class="grid-col" style="grid-column: mel;">mel</div>{/if}
+              <div class="grid-col grid-col-pad" style="grid-column: pad-r;"></div>
             </div>
           {/if}
 
@@ -337,35 +339,43 @@
     display: grid;
     column-gap: 4px;
     grid-template-columns:
+      [pad-l] 0
       [id] 40px
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-      [act] auto;
+      [act] auto
+      [pad-r] 0;
   }
   .signal-list-inner.has-km {
     grid-template-columns:
+      [pad-l] 0
       [id] 40px
       [km] var(--km-width)
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
-      [act] auto;
+      [act] auto
+      [pad-r] 0;
   }
   .signal-list-inner.has-mel {
     grid-template-columns:
+      [pad-l] 0
       [id] 40px
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
       [act] auto
-      [mel] var(--mel-width);
+      [mel] var(--mel-width)
+      [pad-r] 0;
   }
   .signal-list-inner.has-km.has-mel {
     grid-template-columns:
+      [pad-l] 0
       [id] 40px
       [km] var(--km-width)
       [s1] minmax(0, 1fr) [s1b] minmax(0, 1fr)
       [s2] minmax(0, 1fr) [s2b] minmax(0, 1fr)
       [act] auto
-      [mel] var(--mel-width);
+      [mel] var(--mel-width)
+      [pad-r] 0;
   }
 
   .insert-wrapper {
@@ -385,14 +395,15 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-    padding: 4px;
+    padding-block: 4px;
     align-items: stretch;
-    min-height: 48px;
+    min-height: 40px;
     border-bottom: 1px solid #e0e0e0;
   }
 
   /* Cells */
   .signal-id {
+    grid-column: id;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -404,6 +415,7 @@
     border-radius: 8px;
   }
   .km-cell {
+    grid-column: km;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -520,6 +532,10 @@
     text-align: center;
     padding: 2px 0;
     font-family: ui-monospace, monospace;
+  }
+  .grid-col-pad {
+    background: none;
+    border: none;
   }
 
   /* ── Debug outlines ── */
