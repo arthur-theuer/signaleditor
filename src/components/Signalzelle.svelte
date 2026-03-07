@@ -2,7 +2,7 @@
   import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
   import { TypeAhead } from '../lib/useTypeAhead.svelte';
-  import { ICON, SIGNAL_ABBREV, SIGNAL_SHORT } from '../lib/constants';
+  import { ICON, SIGNAL_ABBREV } from '../lib/constants';
   import { withStableScroll } from '../lib/focus';
   import Signalname from './Signalname.svelte';
   import type { Eintrag } from '../lib/types';
@@ -69,7 +69,7 @@
     if (needsBahnhof && bahnhof) bahnhofRevealed = true;
   });
   let showBahnhof = $derived(needsBahnhof && bahnhofRevealed);
-  let shortLabel = $derived(showBahnhof ? (SIGNAL_SHORT[base] ?? abbrev(base)) : abbrev(base));
+  let shortLabel = $derived(abbrev(base));
 
   function handleKeydown(e: KeyboardEvent) {
     const result = typeAhead.handleKeydown(e);
@@ -100,44 +100,31 @@
   }
 </script>
 
-<div
-  class={['row-cell', { 'has-name': needsName && !disabled, 'has-bahnhof': showBahnhof && !disabled, disabled }]}
->
-  <div class="signal-input-wrapper hl-field">
-    <div class="signal-input-slot">
-      <input
-        type="text"
-        class="signal-input"
-        readonly
-        value={disabled ? '' : base}
-        placeholder={disabled ? '' : placeholder}
-        onkeydown={handleKeydown}
-        onfocus={handleSignalFocus}
-        onblur={typeAhead.reset}
-        tabindex={disabled ? -1 : 0}
-        autocomplete="none"
-        autocorrect="off"
-        spellcheck="false"
-      />
-      <div class={['signal-abbrev', { 'is-placeholder': !base }]}>{disabled ? '' : shortLabel || shortPlaceholder}</div>
-    </div>
-    {#if typeAhead.dropdownOpen && typeAhead.fuzzyMatches.length > 1}
-      <div class="dropdown">
-        {#each typeAhead.fuzzyMatches as match, i}
-          <div class={['dropdown-item', { active: i === typeAhead.dropdownIndex }]}>{match}</div>
-        {/each}
-      </div>
-    {/if}
+<div class={['row-cell signal-cell hl-field', { disabled }]}>
+  <div class="signal-input-slot">
+    <input
+      type="text"
+      class="signal-input"
+      readonly
+      value={disabled ? '' : base}
+      placeholder={disabled ? '' : placeholder}
+      onkeydown={handleKeydown}
+      onfocus={handleSignalFocus}
+      onblur={typeAhead.reset}
+      tabindex={disabled ? -1 : 0}
+      autocomplete="none"
+      autocorrect="off"
+      spellcheck="false"
+    />
+    <div class={['signal-abbrev', { 'is-placeholder': !base }]}>{disabled ? '' : shortLabel || shortPlaceholder}</div>
   </div>
-  <Signalname
-    {base}
-    value={value ?? ''}
-    bind:bahnhof
-    {showBahnhof}
-    onchange={handleNameChange}
-    onbahnhofchange={onchange}
-    onfocusin={handleNameFocus}
-  />
+  {#if typeAhead.dropdownOpen && typeAhead.fuzzyMatches.length > 1}
+    <div class="dropdown">
+      {#each typeAhead.fuzzyMatches as match, i}
+        <div class={['dropdown-item', { active: i === typeAhead.dropdownIndex }]}>{match}</div>
+      {/each}
+    </div>
+  {/if}
   {#if isMainSignal && onToggleAlt}
     <button
       class={['alt-toggle-btn', { active: isAltActive }]}
@@ -147,19 +134,21 @@
     >
   {/if}
 </div>
+{#if !disabled}
+  <Signalname
+    {base}
+    value={value ?? ''}
+    bind:bahnhof
+    {showBahnhof}
+    onchange={handleNameChange}
+    onbahnhofchange={onchange}
+    onfocusin={handleNameFocus}
+  />
+{/if}
 
 <style>
-  .signal-input-wrapper {
-    flex: 1;
-    display: flex;
-    min-width: 0;
-    height: 100%;
-    border-radius: var(--radius-inner);
+  .signal-cell {
     container-type: inline-size;
-  }
-  .has-name .signal-input-wrapper {
-    flex: 1;
-    border-radius: var(--radius-inner) 0 0 var(--radius-inner);
   }
   .signal-input {
     flex: 1;
@@ -181,7 +170,7 @@
     color: var(--color-text-muted);
   }
 
-  /* Dropdown items — container and radius-flattening in app.css (.dropdown) */
+  /* Dropdown items — container styles in components.css (.dropdown) */
   .dropdown-item {
     padding: var(--spacing-xs) var(--spacing-cell);
     font-size: var(--text-caption);
@@ -215,14 +204,15 @@
     cursor: pointer;
     opacity: 0;
   }
-  .row-cell:hover .alt-toggle-btn {
+  .signal-cell:hover .alt-toggle-btn {
     opacity: 0.6;
   }
-  .row-cell:hover .alt-toggle-btn:hover {
+  .signal-cell:hover .alt-toggle-btn:hover {
     opacity: 1;
   }
+  .signal-cell:hover .alt-toggle-btn.active,
   .alt-toggle-btn.active {
-    opacity: 0.4 !important;
+    opacity: 0.4;
     color: var(--color-text-muted);
   }
 
@@ -261,22 +251,5 @@
     .signal-abbrev {
       display: flex;
     }
-  }
-
-  /* Collapse signal enum when bahnhof is revealed */
-  .has-bahnhof .signal-input-wrapper {
-    flex: none;
-    width: calc(3ch + 2 * var(--spacing-cell));
-    font-family: var(--font-mono);
-    font-size: var(--text-input);
-  }
-  .has-bahnhof .signal-input {
-    color: transparent;
-  }
-  .has-bahnhof .signal-input::placeholder {
-    color: transparent;
-  }
-  .has-bahnhof .signal-abbrev {
-    display: flex;
   }
 </style>

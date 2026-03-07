@@ -50,7 +50,7 @@
   }
 </script>
 
-<div class="signal-group-1" class:has-alt={has1b}>
+<div class="signal-group-1">
   <Signalzelle
     bind:value={eintrag.signal_1}
     field="signal_1"
@@ -74,7 +74,7 @@
   {/if}
 </div>
 
-<div class="signal-group-2" class:has-alt={has2b}>
+<div class="signal-group-2">
   <Signalzelle
     bind:value={eintrag.signal_2}
     field="signal_2"
@@ -104,9 +104,6 @@
   .signal-group-2 {
     display: flex;
     min-width: 0;
-  }
-  .signal-group-1.has-alt,
-  .signal-group-2.has-alt {
     gap: var(--spacing-card);
   }
 </style>

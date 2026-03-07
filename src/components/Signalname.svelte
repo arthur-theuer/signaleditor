@@ -53,7 +53,7 @@
 </script>
 
 {#if needsName || stationName}
-  <div class={['name-wrapper hl-field', { 'has-bahnhof': showBahnhof }]} {onfocusin}>
+  <div class="row-cell name-cell hl-field" {onfocusin}>
     {#if useStationSearch}
       <Stationsfeld mode="name" bind:value={stationName} onchange={handleStationChange} placeholder="Name" />
     {:else}
@@ -72,7 +72,7 @@
 {/if}
 
 {#if showBahnhof}
-  <div class="bahnhof-wrapper hl-field">
+  <div class="row-cell bahnhof-cell hl-field">
     <input
       type="text"
       class="bahnhof-input"
@@ -88,19 +88,6 @@
 {/if}
 
 <style>
-  .name-wrapper {
-    display: flex;
-    flex: 1;
-    min-width: 0;
-    border-left: 1px solid var(--color-border);
-    background: transparent;
-    height: 100%;
-    border-radius: 0 var(--radius-inner) var(--radius-inner) 0;
-  }
-  .name-wrapper.has-bahnhof {
-    border-radius: 0;
-  }
-
   .name-input {
     flex: 1;
     min-width: 0;
@@ -120,25 +107,19 @@
     color: var(--color-text-muted);
   }
 
-  .bahnhof-wrapper {
-    display: flex;
-    border-left: 1px solid var(--color-border);
-    flex: 1;
-    border-radius: 0 var(--radius-inner) var(--radius-inner) 0;
+  .bahnhof-cell {
+    background: var(--color-highlight);
   }
   .bahnhof-input {
-    width: 100%;
     flex: 1;
+    min-width: 0;
     border: none;
-    background: var(--color-highlight);
+    background: transparent;
     padding: 0 var(--spacing-cell);
     font-size: var(--text-input);
     font-family: var(--font-mono);
-    box-sizing: border-box;
-    border-radius: inherit;
-  }
-  .bahnhof-input:focus {
     outline: none;
+    height: 100%;
   }
   .bahnhof-input::placeholder {
     color: var(--color-text-muted);
