@@ -195,6 +195,11 @@
   function handleSignalBlur() {
     signalFocused = false;
     closeDropdown();
+    query = '';
+    // Force-sync DOM input to the canonical value. Svelte's one-way
+    // value binding won't update if displayValue hasn't changed
+    // (e.g. base was already '' and user typed non-matching text).
+    if (inputEl) inputEl.value = base || '';
   }
 </script>
 

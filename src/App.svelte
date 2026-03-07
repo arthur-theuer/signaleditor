@@ -174,7 +174,8 @@
     border: var(--border-subtle);
     border-radius: var(--radius-container);
     container-type: inline-size;
-    overflow: hidden;
+    overflow-x: clip;
+    overflow-y: visible;
   }
   @media (min-width: 768px) {
     .signals-container {
