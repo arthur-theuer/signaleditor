@@ -7,30 +7,30 @@
     Knoteneintrag,
     Abzweigungseintrag,
     Importeintrag,
-  } from '../../lib/types';
+  } from '../lib/types';
   import {
     isSignaleintrag,
     isNotizeintrag,
     isKnoteneintrag,
     isAbzweigungseintrag,
     isImporteintrag,
-  } from '../../lib/types';
-  import { autofillRow, isRowEmpty } from '../../lib/signals';
-  import { focusWithoutScroll } from '../../lib/focus';
+  } from '../lib/types';
+  import { autofillRow, isRowEmpty } from '../lib/signals';
+  import { focusWithoutScroll } from '../lib/focus';
   import { RulerDimensionLine, X } from 'lucide-svelte';
-  import { ICON } from '../../lib/constants';
-  import Symbolknopf from '../ui/Symbolknopf.svelte';
-  import { DragDrop } from '../../lib/useDragDrop.svelte';
-  import Signalzeile from './Signalzeile.svelte';
-  import Notizzeile from './Notizzeile.svelte';
-  import Knotenzeile from './Knotenzeile.svelte';
-  import Abzweigungszeile from './Abzweigungszeile.svelte';
-  import Importzeile from './Importzeile.svelte';
-  import Kilometerzelle from './Kilometerzelle.svelte';
-  import Zeilenaktionen from './Zeilenaktionen.svelte';
-  import Plusleiste from './Plusleiste.svelte';
-  import Meldungzelle from '../ui/Meldungzelle.svelte';
-  import type { MeldungRow } from '../../lib/reports';
+  import { ICON } from '../lib/constants';
+  import Symbolknopf from './ui/Symbolknopf.svelte';
+  import { DragDrop } from '../lib/useDragDrop.svelte';
+  import Signalzeile from './rows/Signalzeile.svelte';
+  import Notizzeile from './rows/Notizzeile.svelte';
+  import Knotenzeile from './rows/Knotenzeile.svelte';
+  import Abzweigungszeile from './rows/Abzweigungszeile.svelte';
+  import Importzeile from './rows/Importzeile.svelte';
+  import Kilometerzelle from './rows/Kilometerzelle.svelte';
+  import Zeilenaktionen from './rows/Zeilenaktionen.svelte';
+  import Plusleiste from './rows/Plusleiste.svelte';
+  import Meldungzelle from './ui/Meldungzelle.svelte';
+  import type { MeldungRow } from '../lib/reports';
 
   let {
     signale = $bindable(),

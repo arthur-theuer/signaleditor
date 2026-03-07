@@ -10,7 +10,7 @@
   import { generiereAlleMeldungen } from './lib/reports';
   import Toolbar from './components/Toolbar.svelte';
   import Datenpanel from './components/Datenpanel.svelte';
-  import Signalpanel from './components/grid/Signalpanel.svelte';
+  import Signalpanel from './components/Signalpanel.svelte';
   import Codepanel from './components/Codepanel.svelte';
   import Dateibrowser from './components/Dateibrowser.svelte';
   // import Breakpoints from './components/debug/Breakpoints.svelte';
