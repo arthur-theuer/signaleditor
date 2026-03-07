@@ -102,7 +102,6 @@
 
 <div
   class={['row-cell', { 'has-name': needsName && !disabled, 'has-bahnhof': showBahnhof && !disabled, disabled }]}
-  data-field={field}
 >
   <div class="signal-input-wrapper hl-field">
     <div class="signal-input-slot">

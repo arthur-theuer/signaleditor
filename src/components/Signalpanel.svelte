@@ -387,9 +387,7 @@
       [pad-l] var(--spacing-card)
       [id] var(--spacing-unit) [g-id] var(--spacing-card)
       [km] var(--_km) [g-km] var(--_km-gap)
-      [s1] minmax(0, 1fr) [g-s1] var(--spacing-card) [s1b] minmax(0, 1fr)
-      [g-s1b] var(--spacing-card)
-      [s2] minmax(0, 1fr) [g-s2] var(--spacing-card) [s2b] minmax(0, 1fr)
+      [s1] minmax(0, 1fr) [g-s] var(--spacing-card) [s2] minmax(0, 1fr)
       [g-act] var(--spacing-card) [act] auto
       [g-mel] var(--_mel-gap)
       [mel] var(--_mel)
@@ -464,15 +462,11 @@
 
   .entry-row :global(.km-cell) { grid-column: km; }
 
-  /* Signal cells: main signals span field+gap+alt (3 cols), shrink to 1 when alt present */
-  .entry-row :global([data-field='signal_1'])  { grid-column: s1 / g-s1b; }
-  .entry-row :global([data-field='signal_2'])  { grid-column: s2 / g-act; }
-  .entry-row:has(:global([data-field='signal_1b'])) :global([data-field='signal_1']) { grid-column: s1; }
-  .entry-row :global([data-field='signal_1b']) { grid-column: s1b; }
-  .entry-row:has(:global([data-field='signal_2b'])) :global([data-field='signal_2']) { grid-column: s2; }
-  .entry-row :global([data-field='signal_2b']) { grid-column: s2b; }
+  /* Signal groups */
+  .entry-row :global(.signal-group-1) { grid-column: s1; }
+  .entry-row :global(.signal-group-2) { grid-column: s2; }
 
-  /* Non-signal rows: span all signal columns (s1 through s2b) */
+  /* Non-signal rows: span all signal columns */
   .entry-row :global(.note-cell)      { grid-column: s1 / g-act; }
   .entry-row :global(.knoten-group)   { grid-column: s1 / g-act; }
   .entry-row :global(.import-group)   { grid-column: km / g-act; }

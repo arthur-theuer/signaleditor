@@ -50,53 +50,52 @@
   }
 </script>
 
-<!-- signal_1 -->
-<Signalzelle
-  bind:value={eintrag.signal_1}
-  field="signal_1"
-  {rowIdx}
-  {signale}
-  bind:bahnhof={eintrag.bahnhof}
-  isMainSignal={true}
-  isAltActive={has1b}
-  onToggleAlt={() => toggleAlt(1)}
-  onchange={handleSignalChange}
-/>
-
-<!-- signal_1b (alt) -->
-{#if has1b}
+<div class="signal-group-1" class:has-alt={has1b}>
   <Signalzelle
-    bind:value={eintrag.signal_1b}
-    field="signal_1b"
+    bind:value={eintrag.signal_1}
+    field="signal_1"
     {rowIdx}
     {signale}
     bind:bahnhof={eintrag.bahnhof}
-    {onchange}
+    isMainSignal={true}
+    isAltActive={has1b}
+    onToggleAlt={() => toggleAlt(1)}
+    onchange={handleSignalChange}
   />
-{/if}
+  {#if has1b}
+    <Signalzelle
+      bind:value={eintrag.signal_1b}
+      field="signal_1b"
+      {rowIdx}
+      {signale}
+      bind:bahnhof={eintrag.bahnhof}
+      {onchange}
+    />
+  {/if}
+</div>
 
-<!-- signal_2 -->
-<Signalzelle
-  bind:value={eintrag.signal_2}
-  field="signal_2"
-  {rowIdx}
-  {signale}
-  bind:bahnhof={eintrag.bahnhof}
-  isMainSignal={!signal2Disabled}
-  isAltActive={has2b}
-  disabled={signal2Disabled}
-  onToggleAlt={() => toggleAlt(2)}
-  {onchange}
-/>
-
-<!-- signal_2b (alt) -->
-{#if has2b}
+<div class="signal-group-2" class:has-alt={has2b}>
   <Signalzelle
-    bind:value={eintrag.signal_2b}
-    field="signal_2b"
+    bind:value={eintrag.signal_2}
+    field="signal_2"
     {rowIdx}
     {signale}
     bind:bahnhof={eintrag.bahnhof}
+    isMainSignal={!signal2Disabled}
+    isAltActive={has2b}
+    disabled={signal2Disabled}
+    onToggleAlt={() => toggleAlt(2)}
     {onchange}
   />
-{/if}
+  {#if has2b}
+    <Signalzelle
+      bind:value={eintrag.signal_2b}
+      field="signal_2b"
+      {rowIdx}
+      {signale}
+      bind:bahnhof={eintrag.bahnhof}
+      {onchange}
+    />
+  {/if}
+</div>
+
