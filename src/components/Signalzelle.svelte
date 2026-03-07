@@ -142,6 +142,7 @@
     if (e.key === 'Tab') {
       if (dropdownOpen && matches.length > 0) {
         e.preventDefault();
+        e.stopPropagation();
         withStableScroll(() => setSignal(matches[dropdownIndex]));
         closeDropdown();
         tick().then(() => {
