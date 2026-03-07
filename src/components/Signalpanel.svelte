@@ -409,7 +409,7 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-    padding-block-end: 2px;
+    padding-block-end: var(--spacing-half-card);
   }
   .signale-header {
     grid-column: g-li / mel;
@@ -434,7 +434,7 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-    padding-block: 2px;
+    padding-block: var(--spacing-half-card);
     align-items: stretch;
     min-height: var(--spacing-unit);
   }
@@ -487,7 +487,7 @@
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
     padding-block: var(--spacing-card);
-    padding-block-start: 2px;
+    padding-block-start: var(--spacing-half-card);
     align-items: stretch;
   }
   .bottom-row :global(.add-bar) {
