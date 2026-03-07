@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { Search } from 'lucide-svelte';
-  import { ICON } from '../../lib/constants';
   import { search, highlight, codeForName, stationName, type Result } from '../../lib/station-search';
 
   let {
@@ -102,9 +100,6 @@
   autocorrect="off"
   spellcheck="false"
 />
-{#if mode === 'code' && !valid}
-  <span class="search-icon"><Search {...ICON} /></span>
-{/if}
 {#if open && results.length > 0}
   <div class="dropdown">
     {#each results as entry, i}
@@ -139,21 +134,6 @@
   }
   .search-field.has-value {
     color: var(--color-text-secondary);
-  }
-
-  /* Search icon (code mode only) */
-  .search-icon {
-    position: absolute;
-    right: var(--spacing-cell);
-    top: 0;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    color: var(--color-text-muted);
-    pointer-events: none;
-  }
-  .search-field:focus ~ .search-icon :global(svg) {
-    stroke-width: 3;
   }
 
   /* Dropdown items — container styles in components.css (.dropdown) */
