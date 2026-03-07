@@ -16,7 +16,6 @@ export type Import = {
 
 export type Signaleintrag = {
   id: number;
-  _key?: number;
   km?: number;
   signal_1: string;
   signal_1b?: string;
@@ -27,28 +26,24 @@ export type Signaleintrag = {
 
 export type Notizeintrag = {
   id: number;
-  _key?: number;
   km?: number;
   notiz: string;
 };
 
 export type Knoteneintrag = {
   id: number;
-  _key?: number;
   km?: number;
   knoten: string;
 };
 
 export type Abzweigungseintrag = {
   id: number;
-  _key?: number;
   km?: number;
   abzweigung: Abzweigung;
 };
 
 export type Importeintrag = {
   id: number;
-  _key?: number;
   km?: number;
   import: Import;
 };

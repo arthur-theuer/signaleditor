@@ -1,7 +1,5 @@
 <script lang="ts">
   import { tick } from 'svelte';
-  import { slide } from 'svelte/transition';
-  import { flip } from 'svelte/animate';
   import type {
     Eintrag,
     Signaleintrag,
@@ -49,17 +47,6 @@
     onToggleKm: () => void;
     onCloseMeldungen?: () => void;
   } = $props();
-
-  // Stable keys for {#each} — never reindexed, survives reorder/delete.
-  // id stays sequential for YAML/reports; _key is for DOM identity only.
-  let nextKey = 0;
-  function ensureKeys() {
-    for (const entry of signale) {
-      if (entry._key == null) entry._key = nextKey++;
-    }
-  }
-  // Stamp keys before first render and whenever signale changes
-  $effect.pre(() => { ensureKeys(); });
 
   let usedImportFiles = $derived(
     new Set(
@@ -200,17 +187,16 @@
 
   function clearRow(idx: number) {
     const entry = signale[idx];
-    const key = entry._key;
     if (isNotizeintrag(entry)) {
-      signale[idx] = { ...makeNotiz(entry.id), _key: key };
+      signale[idx] = makeNotiz(entry.id);
     } else if (isKnoteneintrag(entry)) {
-      signale[idx] = { ...makeKnoten(entry.id), _key: key };
+      signale[idx] = makeKnoten(entry.id);
     } else if (isAbzweigungseintrag(entry)) {
-      signale[idx] = { ...makeAbzweigung(entry.id), _key: key };
+      signale[idx] = makeAbzweigung(entry.id);
     } else if (isImporteintrag(entry)) {
-      signale[idx] = { ...makeImport(entry.id), _key: key };
+      signale[idx] = makeImport(entry.id);
     } else {
-      signale[idx] = { id: entry.id, _key: key, signal_1: '', signal_2: '' } as Signaleintrag;
+      signale[idx] = { id: entry.id, signal_1: '', signal_2: '' } as Signaleintrag;
     }
     onchange();
     focusRowField(idx);
@@ -278,16 +264,16 @@
   }
 
   function makeNotiz(idx: number): Notizeintrag {
-    return { id: idx, _key: nextKey++, notiz: '' };
+    return { id: idx, notiz: '' };
   }
   function makeAbzweigung(idx: number): Abzweigungseintrag {
-    return { id: idx, _key: nextKey++, abzweigung: { strecke: '', richtung: '', von_nach: '', links: '', rechts: '' } };
+    return { id: idx, abzweigung: { strecke: '', richtung: '', von_nach: '', links: '', rechts: '' } };
   }
   function makeKnoten(idx: number): Knoteneintrag {
-    return { id: idx, _key: nextKey++, knoten: '' };
+    return { id: idx, knoten: '' };
   }
   function makeImport(idx: number): Importeintrag {
-    return { id: idx, _key: nextKey++, import: { datei: '' } };
+    return { id: idx, import: { datei: '' } };
   }
 
   async function appendEntry(entry: Eintrag) {
@@ -319,7 +305,7 @@
       <div class="section-header meldungen-header">Meldungen</div>
     {/if}
   </div>
-  {#each signale as eintrag, idx (eintrag._key)}
+  {#each signale as eintrag, idx (eintrag.id)}
     <div
       class="entry-row"
       class:drag-ready={drag.dragHandle === idx}
@@ -331,8 +317,6 @@
       ondragover={(e: DragEvent) => drag.handleDragOver(e, idx)}
       ondragleave={(e: DragEvent) => drag.handleDragLeave(e, idx)}
       ondrop={(e: DragEvent) => drag.handleDrop(e)}
-      transition:slide={{ duration: 100 }}
-      animate:flip={{ duration: 100 }}
     >
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <div
