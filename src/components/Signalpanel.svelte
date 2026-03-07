@@ -229,9 +229,6 @@
     const fields = getFocusableFields(rowEl);
     const currentFieldIdx = fields.indexOf(target);
 
-    // DEBUG — remove after diagnosing tab issue
-    console.log('[Tab]', { rowIdx, currentFieldIdx, fieldCount: fields.length, targetClass: target.className, fields: fields.map(f => f.className), targetInDOM: document.contains(target) });
-
     if (!e.shiftKey) {
       if (currentFieldIdx === -1 || currentFieldIdx === fields.length - 1) {
         // Tab on last field (or field no longer in DOM) → next row or add new
