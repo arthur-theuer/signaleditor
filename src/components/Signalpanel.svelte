@@ -385,11 +385,11 @@
     display: grid;
     grid-template-columns:
       [g-l] var(--spacing-card)
-      [id] var(--spacing-unit) [g-id] var(--spacing-card)
-      [km] var(--_km) [g-km] var(--_km-gap)
-      [s1] minmax(0, 1fr) [g-s1] var(--spacing-card) [s2] minmax(0, 1fr)
-      [g-act] var(--spacing-card) [act] auto
-      [g-mel] var(--_mel-gap)
+      [id] var(--spacing-unit) [g-ik] var(--spacing-card)
+      [km] var(--_km) [g-ks] var(--_km-gap)
+      [s1] minmax(0, 1fr) [g-ss] var(--spacing-card) [s2] minmax(0, 1fr)
+      [g-sa] var(--spacing-card) [act] auto
+      [g-am] var(--_mel-gap)
       [mel] var(--_mel)
       [g-r] var(--spacing-card);
   }
@@ -409,6 +409,7 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
+    padding-block-end: 2px;
   }
   .signale-header {
     grid-column: g-l / mel;
@@ -433,10 +434,9 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-    padding-block: var(--spacing-card);
+    padding-block: 2px;
     align-items: stretch;
     min-height: var(--spacing-unit);
-    border-bottom: 1px solid var(--color-border);
   }
 
   /* ── Cell placement ── */
@@ -467,10 +467,10 @@
   .entry-row :global(.signal-group-2) { grid-column: s2; }
 
   /* Non-signal rows: span all signal columns */
-  .entry-row :global(.note-cell)      { grid-column: s1 / g-act; }
-  .entry-row :global(.knoten-group)   { grid-column: s1 / g-act; }
-  .entry-row :global(.import-group)   { grid-column: km / g-act; }
-  .entry-row :global(.abzw-group)     { grid-column: s1 / g-act; }
+  .entry-row :global(.note-cell)      { grid-column: s1 / g-sa; }
+  .entry-row :global(.knoten-group)   { grid-column: s1 / g-sa; }
+  .entry-row :global(.import-group)   { grid-column: km / g-sa; }
+  .entry-row :global(.abzw-group)     { grid-column: s1 / g-sa; }
 
   /* Actions always in the last signal column */
   .entry-row :global(.signal-actions) { grid-column: act; }
@@ -486,11 +486,12 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-    padding-block: var(--spacing-card);
+    padding-block: 2px;
+    border-top: 1px solid var(--color-border);
     align-items: stretch;
   }
   .bottom-row :global(.add-bar) {
-    grid-column: id / g-mel;
+    grid-column: id / g-am;
     margin: 0;
   }
   .close-mel-btn {
