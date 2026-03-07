@@ -487,7 +487,7 @@
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
     padding-block: var(--spacing-card);
-    border-top: 1px solid var(--color-border);
+    padding-block-start: 2px;
     align-items: stretch;
   }
   .bottom-row :global(.add-bar) {
