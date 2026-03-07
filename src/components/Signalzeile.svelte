@@ -99,3 +99,14 @@
   {/if}
 </div>
 
+<style>
+  .signal-group-1,
+  .signal-group-2 {
+    display: flex;
+    min-width: 0;
+  }
+  .signal-group-1.has-alt,
+  .signal-group-2.has-alt {
+    gap: var(--spacing-card);
+  }
+</style>
