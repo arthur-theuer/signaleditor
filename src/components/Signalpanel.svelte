@@ -17,7 +17,7 @@
   } from '../lib/types';
   import { autofillRow, isRowEmpty } from '../lib/signals';
   import { focusWithoutScroll } from '../lib/focus';
-  import { X, RulerDimensionLine } from 'lucide-svelte';
+  import { RulerDimensionLine } from 'lucide-svelte';
   import { ICON } from '../lib/constants';
   import Symbolknopf from './ui/Symbolknopf.svelte';
   import { DragDrop } from '../lib/useDragDrop.svelte';
@@ -29,6 +29,7 @@
   import Kilometerzelle from './Kilometerzelle.svelte';
   import Zeilenaktionen from './Zeilenaktionen.svelte';
   import Plusleiste from './Plusleiste.svelte';
+  import Schliessenknopf from './Schliessenknopf.svelte';
   import Meldungzelle from './ui/Meldungzelle.svelte';
   import type { MeldungRow } from '../lib/reports';
 
@@ -165,11 +166,14 @@
     focusRowField(idx);
   }
 
-  function insertAt(idx: number, entry: Eintrag) {
-    if (showKm && idx > 0) {
-      const prev = signale[idx - 1];
-      if (prev.km !== undefined) entry.km = parseFloat((prev.km + 0.1).toFixed(1));
+  function autofillKm(entry: Eintrag, prevEntry?: Eintrag) {
+    if (showKm && prevEntry?.km !== undefined) {
+      entry.km = parseFloat((prevEntry.km + 0.1).toFixed(1));
     }
+  }
+
+  function insertAt(idx: number, entry: Eintrag) {
+    autofillKm(entry, signale[idx - 1]);
     signale = [...signale.slice(0, idx), entry, ...signale.slice(idx)];
     reindex();
     onchange();
@@ -184,17 +188,16 @@
 
   function clearRow(idx: number) {
     const entry = signale[idx];
-    const id = entry.id;
     if (isNotizeintrag(entry)) {
-      signale[idx] = { id, notiz: '' };
+      signale[idx] = makeNotiz(entry.id);
     } else if (isKnoteneintrag(entry)) {
-      signale[idx] = { id, knoten: '' };
+      signale[idx] = makeKnoten(entry.id);
     } else if (isAbzweigungseintrag(entry)) {
-      signale[idx] = { id, abzweigung: { strecke: '', richtung: '', von_nach: '', links: '', rechts: '' } };
+      signale[idx] = makeAbzweigung(entry.id);
     } else if (isImporteintrag(entry)) {
-      signale[idx] = { id, import: { datei: '' } };
+      signale[idx] = makeImport(entry.id);
     } else {
-      signale[idx] = { id, signal_1: '', signal_2: '' } as Signaleintrag;
+      signale[idx] = { id: entry.id, signal_1: '', signal_2: '' } as Signaleintrag;
     }
     onchange();
     focusRowField(idx);
@@ -272,10 +275,7 @@
   }
 
   async function appendEntry(entry: Eintrag) {
-    if (showKm && signale.length > 0) {
-      const prev = signale[signale.length - 1];
-      if (prev.km !== undefined) entry.km = parseFloat((prev.km + 0.1).toFixed(1));
-    }
+    autofillKm(entry, signale[signale.length - 1]);
     signale = [...signale, entry];
     reindex();
     onchange();
@@ -365,7 +365,7 @@
       onAddImport={() => appendEntry(makeImport(signale.length))}
     />
     {#if meldungen && onCloseMeldungen}
-      <button class="close-mel-btn" onclick={onCloseMeldungen}><X {...ICON} />Schliessen</button>
+      <Schliessenknopf onclick={onCloseMeldungen} />
     {/if}
   </div>
 </div>
@@ -375,7 +375,6 @@
   /* All named lines are always present. Optional km/mel segments collapse
      to 0px when inactive, so grid-column references never hit implicit columns. */
   .signal-list-inner {
-    --km-width: calc(1.5 * var(--spacing-unit));
     --_km: 0px;
     --_km-gap: 0px;
     --_mel: 0px;
@@ -394,15 +393,13 @@
       [g-mr] var(--spacing-card);
   }
   .signal-list-inner.has-km {
-    --_km: var(--km-width);
+    --_km: var(--spacing-km);
     --_km-gap: var(--spacing-card);
   }
   .signal-list-inner.has-mel {
     --_mel: var(--mel-width);
     --_mel-gap: var(--spacing-card);
   }
-
-  /* Drop indicator spans all columns */
 
   /* ── Header row ── */
   .header-row {
@@ -412,13 +409,12 @@
     padding-block-end: var(--spacing-half-card);
   }
   .signale-header {
-    grid-column: g-li / mel;
-    padding-inline: var(--spacing-card);
-    border-radius: var(--radius-container) 0 0 0;
-  }
-  .signale-header:last-child {
     grid-column: 1 / -1;
-    border-radius: var(--radius-container) var(--radius-container) 0 0;
+    padding-inline: var(--spacing-card);
+  }
+  .signale-header:not(:last-child) {
+    grid-column: g-li / mel;
+    border-radius: var(--radius-container) 0 0 0;
   }
   .signale-header :global(.km-toggle) {
     margin-left: auto;
@@ -494,25 +490,8 @@
     grid-column: id / g-am;
     margin: 0;
   }
-  .close-mel-btn {
+  .bottom-row :global(.close-mel-btn) {
     grid-column: mel;
-    height: var(--spacing-unit);
-    padding: 0 var(--spacing-cell);
-    gap: var(--spacing-sm);
-    border: var(--border-subtle);
-    border-radius: var(--radius-card);
-    cursor: pointer;
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--text-input);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-red-bg);
-    color: var(--color-red);
-  }
-  .close-mel-btn:hover {
-    outline: 2px solid var(--color-red);
-    outline-offset: -2px;
   }
 
   /* ── Drag state ── */
