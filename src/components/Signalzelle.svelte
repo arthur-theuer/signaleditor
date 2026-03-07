@@ -1,8 +1,9 @@
 <script lang="ts">
+  import { tick } from 'svelte';
   import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
   import { filterEnum } from '../lib/signalSearch';
-  import { ICON, SIGNAL_ABBREV } from '../lib/constants';
+  import { ICON } from '../lib/constants';
   import { withStableScroll } from '../lib/focus';
   import Signalname from './Signalname.svelte';
   import type { Eintrag } from '../lib/types';
@@ -36,14 +37,9 @@
   let needsBahnhof = $derived(signalNeedsBahnhof(base));
   let enumList = $derived(getEnumForField(field, rowIdx, signale));
 
-  function abbrev(s: string): string {
-    return SIGNAL_ABBREV[s] ?? s;
-  }
-
   let fieldNum = $derived(field.replace('signal_', ''));
   let isAlt = $derived(field.endsWith('b'));
   let placeholder = $derived(isAlt ? `Signal ${fieldNum}` : `Signal ${fieldNum}${isAltActive ? 'a' : ''}`);
-  let shortPlaceholder = $derived(isAlt ? `S${fieldNum}` : `S${fieldNum}${isAltActive ? 'a' : ''}`);
 
   // Search state — follows Stationsfeld pattern: one-way value, manual oninput
   let inputEl: HTMLInputElement | undefined = $state();
@@ -62,7 +58,6 @@
   });
   let showBahnhof = $derived(needsBahnhof && bahnhofRevealed);
   let showExtras = $derived(!disabled);
-  let shortLabel = $derived(abbrev(base));
 
   function setSignal(newBase: string) {
     const oldName = extractName(value ?? '');
@@ -146,9 +141,17 @@
 
     if (e.key === 'Tab') {
       if (dropdownOpen && matches.length > 0) {
+        e.preventDefault();
         withStableScroll(() => setSignal(matches[dropdownIndex]));
+        closeDropdown();
+        tick().then(() => {
+          const nameInput = inputEl?.closest('.signal-cell')?.nextElementSibling?.querySelector('input');
+          if (nameInput instanceof HTMLElement) nameInput.focus();
+          else inputEl?.blur();
+        });
+      } else {
+        closeDropdown();
       }
-      closeDropdown();
       return;
     }
 
@@ -191,7 +194,6 @@
 </script>
 
 <div class={['row-cell signal-cell hl-field', { disabled }]}>
-  <div class="signal-input-slot">
     <input
       bind:this={inputEl}
       type="text"
@@ -208,9 +210,7 @@
       autocorrect="off"
       spellcheck="false"
     />
-    <div class={['signal-abbrev', { 'is-placeholder': !base }]}>{disabled ? '' : shortLabel || shortPlaceholder}</div>
-  </div>
-  {#if dropdownOpen && matches.length > 1}
+  {#if dropdownOpen && matches.length > 0}
     <div class="dropdown">
       {#each matches as match, i}
         <div class={['dropdown-item', { active: i === dropdownIndex }]}>{match}</div>
@@ -239,9 +239,6 @@
 {/if}
 
 <style>
-  .signal-cell {
-    container-type: inline-size;
-  }
   .signal-input {
     flex: 1;
     border: none;
@@ -304,40 +301,5 @@
     color: var(--color-text-muted);
   }
 
-  /* Input + abbreviation overlay share the same flex slot */
-  .signal-input-slot {
-    flex: 1;
-    position: relative;
-    display: flex;
-    min-width: 0;
-  }
-  .signal-abbrev {
-    position: absolute;
-    inset: 0;
-    background: transparent;
-    padding: 0 var(--spacing-cell);
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
-    display: none;
-    align-items: center;
-    pointer-events: none;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .signal-abbrev.is-placeholder {
-    color: var(--color-text-muted);
-  }
 
-  @container (max-width: 170px) {
-    .signal-input {
-      color: transparent;
-    }
-    .signal-input::placeholder {
-      color: transparent;
-    }
-    .signal-abbrev {
-      display: flex;
-    }
-  }
 </style>
