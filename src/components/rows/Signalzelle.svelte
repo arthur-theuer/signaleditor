@@ -83,6 +83,8 @@
   }
 
   function handleInput() {
+    query = query.trimStart();
+    if (inputEl && inputEl.value !== query) inputEl.value = query;
     if (!query) {
       withStableScroll(() => {
         value = '';
@@ -169,6 +171,7 @@
           onchange();
           query = '';
         });
+        if (inputEl) inputEl.value = '';
       }
       return;
     }
