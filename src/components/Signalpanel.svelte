@@ -1,5 +1,7 @@
 <script lang="ts">
   import { tick } from 'svelte';
+  import { slide } from 'svelte/transition';
+  import { flip } from 'svelte/animate';
   import type {
     Eintrag,
     Signaleintrag,
@@ -317,6 +319,8 @@
       ondragover={(e: DragEvent) => drag.handleDragOver(e, idx)}
       ondragleave={(e: DragEvent) => drag.handleDragLeave(e, idx)}
       ondrop={(e: DragEvent) => drag.handleDrop(e)}
+      transition:slide={{ duration: 150 }}
+      animate:flip={{ duration: 150 }}
     >
       <!-- svelte-ignore a11y_no_static_element_interactions -->
       <div
