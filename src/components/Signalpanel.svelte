@@ -384,14 +384,14 @@
     overflow-anchor: none;
     display: grid;
     grid-template-columns:
-      [g-l] var(--spacing-card)
+      [g-li] var(--spacing-card)
       [id] var(--spacing-unit) [g-ik] var(--spacing-card)
       [km] var(--_km) [g-ks] var(--_km-gap)
       [s1] minmax(0, 1fr) [g-ss] var(--spacing-card) [s2] minmax(0, 1fr)
       [g-sa] var(--spacing-card) [act] auto
       [g-am] var(--_mel-gap)
       [mel] var(--_mel)
-      [g-r] var(--spacing-card);
+      [g-mr] var(--spacing-card);
   }
   .signal-list-inner.has-km {
     --_km: var(--km-width);
@@ -412,7 +412,7 @@
     padding-block-end: 2px;
   }
   .signale-header {
-    grid-column: g-l / mel;
+    grid-column: g-li / mel;
     padding-inline: var(--spacing-card);
     border-radius: var(--radius-container) 0 0 0;
   }
@@ -486,7 +486,7 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
-    padding-block: 2px;
+    padding-block: var(--spacing-card);
     border-top: 1px solid var(--color-border);
     align-items: stretch;
   }
