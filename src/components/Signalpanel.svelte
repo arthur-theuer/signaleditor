@@ -384,14 +384,14 @@
     overflow-anchor: none;
     display: grid;
     grid-template-columns:
-      [pad-l] var(--spacing-card)
+      [g-l] var(--spacing-card)
       [id] var(--spacing-unit) [g-id] var(--spacing-card)
       [km] var(--_km) [g-km] var(--_km-gap)
-      [s1] minmax(0, 1fr) [g-s] var(--spacing-card) [s2] minmax(0, 1fr)
+      [s1] minmax(0, 1fr) [g-s1] var(--spacing-card) [s2] minmax(0, 1fr)
       [g-act] var(--spacing-card) [act] auto
       [g-mel] var(--_mel-gap)
       [mel] var(--_mel)
-      [pad-r] var(--spacing-card);
+      [g-r] var(--spacing-card);
   }
   .signal-list-inner.has-km {
     --_km: var(--km-width);
@@ -411,7 +411,7 @@
     grid-column: 1 / -1;
   }
   .signale-header {
-    grid-column: pad-l / mel;
+    grid-column: g-l / mel;
     padding-inline: var(--spacing-card);
     border-radius: var(--radius-container) 0 0 0;
   }
