@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
-  import { TypeAhead } from '../lib/useTypeAhead.svelte';
+  import { filterEnum } from '../lib/signalSearch';
   import { ICON, SIGNAL_ABBREV } from '../lib/constants';
   import { withStableScroll } from '../lib/focus';
   import Signalname from './Signalname.svelte';
@@ -45,10 +45,23 @@
   let placeholder = $derived(isAlt ? `Signal ${fieldNum}` : `Signal ${fieldNum}${isAltActive ? 'a' : ''}`);
   let shortPlaceholder = $derived(isAlt ? `S${fieldNum}` : `S${fieldNum}${isAltActive ? 'a' : ''}`);
 
-  const typeAhead = new TypeAhead(
-    () => enumList,
-    () => base,
-  );
+  // Search state — owned by this component, not derived
+  let query = $state('');
+  let matches: string[] = $state([]);
+  let dropdownOpen = $state(false);
+  let dropdownIndex = $state(0);
+
+  // Deferred reveal: the bahnhof field only appears once a bahnhof value exists
+  // or the name field is focused (see handleNameFocus). Prevents layout shift
+  // during signal selection where needsBahnhof flickers.
+  let bahnhofRevealed = $state(false);
+  $effect(() => {
+    if (needsBahnhof && bahnhof) bahnhofRevealed = true;
+  });
+  let signalFocused = $state(false);
+  let showBahnhof = $derived(needsBahnhof && bahnhofRevealed);
+  let showExtras = $derived(!signalFocused && !disabled);
+  let shortLabel = $derived(abbrev(base));
 
   function setSignal(newBase: string) {
     const oldName = extractName(value ?? '');
@@ -61,42 +74,99 @@
     onchange();
   }
 
-  // Deferred reveal: the bahnhof field only appears once a bahnhof value exists
-  // or the name field is focused (see handleNameFocus). Prevents layout shift
-  // during type-ahead signal selection where needsBahnhof flickers.
-  let bahnhofRevealed = $state(false);
-  $effect(() => {
-    if (needsBahnhof && bahnhof) bahnhofRevealed = true;
-  });
-  let signalFocused = $state(false);
-  let showBahnhof = $derived(needsBahnhof && bahnhofRevealed);
-  let showExtras = $derived(!signalFocused && !disabled);
-  let shortLabel = $derived(abbrev(base));
+  function closeDropdown() {
+    dropdownOpen = false;
+    dropdownIndex = 0;
+    matches = [];
+  }
 
-  function handleKeydown(e: KeyboardEvent) {
-    const result = typeAhead.handleKeydown(e);
-    if (result === null) return;
-    withStableScroll(() => {
-      if (result === '') {
+  function handleInput() {
+    if (!query) {
+      withStableScroll(() => {
         value = '';
         bahnhofRevealed = false;
         onchange();
-      } else {
-        setSignal(result);
-      }
-    });
-  }
-
-  function handleInput(e: Event) {
-    const query = (e.target as HTMLInputElement).value;
-    const result = typeAhead.handleInput(query);
-    if (result !== null) {
-      setSignal(result);
+      });
+      closeDropdown();
+      return;
+    }
+    matches = filterEnum(enumList, query);
+    if (matches.length > 0) {
+      dropdownIndex = 0;
+      dropdownOpen = true;
+    } else {
+      closeDropdown();
     }
   }
 
-  /** Display value: show query while searching, otherwise the signal base */
-  let displayValue = $derived(typeAhead.query || base);
+  function handleKeydown(e: KeyboardEvent) {
+    const currentIdx = base ? enumList.indexOf(base) : -1;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (dropdownOpen && matches.length > 0) {
+        dropdownIndex = (dropdownIndex + 1) % matches.length;
+        query = matches[dropdownIndex];
+        setSignal(matches[dropdownIndex]);
+      } else {
+        const next = enumList[(currentIdx + 1) % enumList.length];
+        withStableScroll(() => {
+          setSignal(next);
+          query = next;
+        });
+      }
+      return;
+    }
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (dropdownOpen && matches.length > 0) {
+        dropdownIndex = (dropdownIndex - 1 + matches.length) % matches.length;
+        query = matches[dropdownIndex];
+        setSignal(matches[dropdownIndex]);
+      } else {
+        const prev = enumList[(currentIdx - 1 + enumList.length) % enumList.length];
+        withStableScroll(() => {
+          setSignal(prev);
+          query = prev;
+        });
+      }
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      if (dropdownOpen) {
+        e.preventDefault();
+        closeDropdown();
+        query = base;
+      }
+      return;
+    }
+
+    if (e.key === 'Tab') {
+      if (dropdownOpen) {
+        closeDropdown();
+        query = base;
+      }
+      return;
+    }
+
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      if (dropdownOpen) {
+        closeDropdown();
+        query = base;
+      } else {
+        withStableScroll(() => {
+          value = '';
+          bahnhofRevealed = false;
+          onchange();
+          query = '';
+        });
+      }
+      return;
+    }
+  }
 
   function handleNameChange(newName: string) {
     value = newName ? `${base} ${newName}` : base;
@@ -109,11 +179,13 @@
 
   function handleSignalFocus() {
     signalFocused = true;
+    query = base;
   }
 
   function handleSignalBlur() {
     signalFocused = false;
-    typeAhead.reset();
+    closeDropdown();
+    query = base;
   }
 </script>
 
@@ -122,23 +194,24 @@
     <input
       type="text"
       class="signal-input"
-      value={disabled ? '' : displayValue}
+      bind:value={query}
       placeholder={disabled ? '' : placeholder}
       oninput={handleInput}
       onkeydown={handleKeydown}
       onfocus={handleSignalFocus}
       onblur={handleSignalBlur}
       tabindex={disabled ? -1 : 0}
+      {disabled}
       autocomplete="off"
       autocorrect="off"
       spellcheck="false"
     />
     <div class={['signal-abbrev', { 'is-placeholder': !base }]}>{disabled ? '' : shortLabel || shortPlaceholder}</div>
   </div>
-  {#if typeAhead.dropdownOpen && typeAhead.fuzzyMatches.length > 1}
+  {#if dropdownOpen && matches.length > 1}
     <div class="dropdown">
-      {#each typeAhead.fuzzyMatches as match, i}
-        <div class={['dropdown-item', { active: i === typeAhead.dropdownIndex }]}>{match}</div>
+      {#each matches as match, i}
+        <div class={['dropdown-item', { active: i === dropdownIndex }]}>{match}</div>
       {/each}
     </div>
   {/if}
