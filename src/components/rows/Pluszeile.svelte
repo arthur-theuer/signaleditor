@@ -41,7 +41,7 @@
     gap: var(--spacing-card);
     margin: var(--spacing-card) var(--spacing-card);
   }
-  /* Extends .btn — plusleiste-specific overrides */
+  /* Extends .btn — pluszeile-specific overrides */
   .add-bar button {
     flex: 1;
     min-width: 0;

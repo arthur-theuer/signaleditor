@@ -28,7 +28,7 @@
   import Importzeile from './rows/Importzeile.svelte';
   import Kilometerzelle from './rows/Kilometerzelle.svelte';
   import Zeilenaktionen from './rows/Zeilenaktionen.svelte';
-  import Plusleiste from './rows/Plusleiste.svelte';
+  import Pluszeile from './rows/Pluszeile.svelte';
   import Meldungzelle from './ui/Meldungzelle.svelte';
   import type { MeldungRow } from '../lib/reports';
 
@@ -359,7 +359,7 @@
     <div class="drop-indicator" style="top: {drag.indicatorY}px;"></div>
   {/if}
   <div class="bottom-row">
-    <Plusleiste
+    <Pluszeile
       onAddSignal={addSignalWithAutofill}
       onAddNotiz={() => appendEntry(makeNotiz(signale.length))}
       onAddAbzweigung={() => appendEntry(makeAbzweigung(signale.length))}
@@ -481,7 +481,7 @@
     display: flex;
   }
 
-  /* Bottom row: Plusleiste + close button */
+  /* Bottom row: Pluszeile + close button */
   .bottom-row {
     display: grid;
     grid-template-columns: subgrid;
