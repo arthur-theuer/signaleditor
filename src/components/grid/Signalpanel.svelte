@@ -7,20 +7,20 @@
     Knoteneintrag,
     Abzweigungseintrag,
     Importeintrag,
-  } from '../lib/types';
+  } from '../../lib/types';
   import {
     isSignaleintrag,
     isNotizeintrag,
     isKnoteneintrag,
     isAbzweigungseintrag,
     isImporteintrag,
-  } from '../lib/types';
-  import { autofillRow, isRowEmpty } from '../lib/signals';
-  import { focusWithoutScroll } from '../lib/focus';
-  import { RulerDimensionLine } from 'lucide-svelte';
-  import { ICON } from '../lib/constants';
-  import Symbolknopf from './ui/Symbolknopf.svelte';
-  import { DragDrop } from '../lib/useDragDrop.svelte';
+  } from '../../lib/types';
+  import { autofillRow, isRowEmpty } from '../../lib/signals';
+  import { focusWithoutScroll } from '../../lib/focus';
+  import { RulerDimensionLine, X } from 'lucide-svelte';
+  import { ICON } from '../../lib/constants';
+  import Symbolknopf from '../ui/Symbolknopf.svelte';
+  import { DragDrop } from '../../lib/useDragDrop.svelte';
   import Signalzeile from './Signalzeile.svelte';
   import Notizzeile from './Notizzeile.svelte';
   import Knotenzeile from './Knotenzeile.svelte';
@@ -29,9 +29,8 @@
   import Kilometerzelle from './Kilometerzelle.svelte';
   import Zeilenaktionen from './Zeilenaktionen.svelte';
   import Plusleiste from './Plusleiste.svelte';
-  import Schliessenknopf from './Schliessenknopf.svelte';
-  import Meldungzelle from './ui/Meldungzelle.svelte';
-  import type { MeldungRow } from '../lib/reports';
+  import Meldungzelle from '../ui/Meldungzelle.svelte';
+  import type { MeldungRow } from '../../lib/reports';
 
   let {
     signale = $bindable(),
@@ -368,7 +367,9 @@
       onAddImport={() => appendEntry(makeImport(signale.length))}
     />
     {#if meldungen && onCloseMeldungen}
-      <Schliessenknopf onclick={onCloseMeldungen} />
+      <Symbolknopf color="red" bordered label="Schliessen" onclick={onCloseMeldungen} class="close-mel-btn">
+        <X {...ICON} />
+      </Symbolknopf>
     {/if}
   </div>
 </div>

@@ -1,12 +1,12 @@
 <script lang="ts">
   import { CloudDownload } from 'lucide-svelte';
-  import type { Importeintrag, Eintrag } from '../lib/types';
-  import { isSignaleintrag, isNotizeintrag, isAbzweigungseintrag, isKnoteneintrag } from '../lib/types';
-  import { ICON, STATIONEN } from '../lib/constants';
-  import { resolveImport, cacheImport } from '../lib/sources';
-  import { parseYAMLContent } from '../lib/yaml';
-  import Dateibrowser from './Dateibrowser.svelte';
-  import Importinfo from './ui/Importinfo.svelte';
+  import type { Importeintrag, Eintrag } from '../../lib/types';
+  import { isSignaleintrag, isNotizeintrag, isAbzweigungseintrag, isKnoteneintrag } from '../../lib/types';
+  import { ICON, STATIONEN } from '../../lib/constants';
+  import { resolveImport, cacheImport } from '../../lib/sources';
+  import { parseYAMLContent } from '../../lib/yaml';
+  import Dateibrowser from '../Dateibrowser.svelte';
+  import Importinfo from '../ui/Importinfo.svelte';
 
   let {
     eintrag = $bindable(),

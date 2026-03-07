@@ -1,7 +1,7 @@
 <script lang="ts">
   import { CirclePlus } from 'lucide-svelte';
   import { on } from 'svelte/events';
-  import { ICON } from '../lib/constants';
+  import { ICON } from '../../lib/constants';
   import Plusleiste from './Plusleiste.svelte';
 
   let {

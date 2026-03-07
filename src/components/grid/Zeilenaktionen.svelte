@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Eraser, Trash2, EllipsisVertical } from 'lucide-svelte';
   import { on } from 'svelte/events';
-  import { ICON } from '../lib/constants';
-  import Symbolknopf from './ui/Symbolknopf.svelte';
+  import { ICON } from '../../lib/constants';
+  import Symbolknopf from '../ui/Symbolknopf.svelte';
 
   let {
     ondelete,

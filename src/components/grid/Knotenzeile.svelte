@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { Knoteneintrag } from '../lib/types';
-  import { stationName } from '../lib/station-search';
-  import Stationsfeld from './ui/Stationsfeld.svelte';
+  import type { Knoteneintrag } from '../../lib/types';
+  import { stationName } from '../../lib/station-search';
+  import Stationsfeld from '../ui/Stationsfeld.svelte';
 
   let {
     eintrag = $bindable(),

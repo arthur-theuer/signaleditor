@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Signaleintrag, Eintrag } from '../lib/types';
-  import { isWiederholungssignal, isVorsignal, extractSignalBase } from '../lib/signals';
+  import type { Signaleintrag, Eintrag } from '../../lib/types';
+  import { isWiederholungssignal, isVorsignal, extractSignalBase } from '../../lib/signals';
   import Signalzelle from './Signalzelle.svelte';
 
   let {

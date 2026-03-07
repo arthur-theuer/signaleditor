@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Notizeintrag } from '../lib/types';
+  import type { Notizeintrag } from '../../lib/types';
 
   let {
     eintrag = $bindable(),

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { DiamondPlus, SquarePen, Share2, Crosshair, FilePlus } from 'lucide-svelte';
-  import { ICON } from '../lib/constants';
+  import { ICON } from '../../lib/constants';
 
   let {
     onAddSignal,

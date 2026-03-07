@@ -1,11 +1,11 @@
 <script lang="ts">
   import { Diff } from 'lucide-svelte';
-  import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
-  import { filterEnum } from '../lib/signalSearch';
-  import { ICON } from '../lib/constants';
-  import { withStableScroll } from '../lib/focus';
+  import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../../lib/signals';
+  import { filterEnum } from '../../lib/signalSearch';
+  import { ICON } from '../../lib/constants';
+  import { withStableScroll } from '../../lib/focus';
   import Signalname from './Signalname.svelte';
-  import type { Eintrag } from '../lib/types';
+  import type { Eintrag } from '../../lib/types';
 
   let {
     value = $bindable(),

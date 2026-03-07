@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Abzweigungseintrag, AbzweigungPfeil } from '../lib/types';
+  import type { Abzweigungseintrag, AbzweigungPfeil } from '../../lib/types';
 
   let {
     eintrag = $bindable(),

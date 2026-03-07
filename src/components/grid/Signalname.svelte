@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { extractName, signalNeedsName, signalNeedsStationSearch } from '../lib/signals';
-  import Stationsfeld from './ui/Stationsfeld.svelte';
+  import { extractName, signalNeedsName, signalNeedsStationSearch } from '../../lib/signals';
+  import Stationsfeld from '../ui/Stationsfeld.svelte';
 
   let {
     base,
