@@ -1,6 +1,9 @@
 /**
- * Type-ahead selection logic for cycling through an enum list
- * with prefix-anchored fuzzy matching and dropdown state.
+ * Search-based signal selection with dropdown and arrow cycling.
+ *
+ * The input value is visible to the user (no hidden buffer).
+ * Typing filters the enum list; arrow keys cycle without dropdown
+ * when no search query is active.
  */
 
 /** Prefix-anchored fuzzy: first char must match at index 0 */
@@ -25,14 +28,20 @@ function prefixFirst(matches: string[], query: string): string[] {
 }
 
 export class TypeAhead {
-  buffer = $state('');
+  query = $state('');
   dropdownOpen = $state(false);
   dropdownIndex = $state(0);
-  private timeout: ReturnType<typeof setTimeout> | undefined;
   private getEnumList: () => readonly string[];
   private getCurrentBase: () => string;
 
-  fuzzyMatches = $derived(this.buffer ? prefixFirst(this.getEnumList().filter((s) => fuzzyMatch(s, this.buffer)), this.buffer) : []);
+  fuzzyMatches = $derived(
+    this.query
+      ? prefixFirst(
+          this.getEnumList().filter((s) => fuzzyMatch(s, this.query)),
+          this.query,
+        )
+      : [],
+  );
 
   constructor(getEnumList: () => readonly string[], getCurrentBase: () => string) {
     this.getEnumList = getEnumList;
@@ -40,20 +49,35 @@ export class TypeAhead {
   }
 
   reset = () => {
-    this.buffer = '';
+    this.query = '';
     this.dropdownOpen = false;
     this.dropdownIndex = 0;
-    clearTimeout(this.timeout);
   };
 
-  private startCooldown() {
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => this.reset(), 2000);
-  }
+  /**
+   * Handle input event — user typed or deleted characters.
+   * Returns the top match to select, or null if no match.
+   */
+  handleInput = (query: string): string | null => {
+    this.query = query;
+    if (!query) {
+      this.dropdownOpen = false;
+      this.dropdownIndex = 0;
+      return null;
+    }
+    const matches = this.fuzzyMatches;
+    if (matches.length > 0) {
+      this.dropdownIndex = 0;
+      this.dropdownOpen = true;
+      return matches[0];
+    }
+    this.dropdownOpen = false;
+    return null;
+  };
 
   /**
    * Handle a keydown event on the signal input.
-   * Returns the new signal base to select, or null if no change.
+   * Returns the new signal base to select, '' to clear, or null for no change.
    */
   handleKeydown = (e: KeyboardEvent): string | null => {
     const enumList = this.getEnumList();
@@ -64,10 +88,8 @@ export class TypeAhead {
       e.preventDefault();
       if (this.dropdownOpen && this.fuzzyMatches.length > 0) {
         this.dropdownIndex = (this.dropdownIndex + 1) % this.fuzzyMatches.length;
-        this.startCooldown();
         return this.fuzzyMatches[this.dropdownIndex];
       } else {
-        this.reset();
         return enumList[(currentIdx + 1) % enumList.length];
       }
     }
@@ -76,10 +98,8 @@ export class TypeAhead {
       e.preventDefault();
       if (this.dropdownOpen && this.fuzzyMatches.length > 0) {
         this.dropdownIndex = (this.dropdownIndex - 1 + this.fuzzyMatches.length) % this.fuzzyMatches.length;
-        this.startCooldown();
         return this.fuzzyMatches[this.dropdownIndex];
       } else {
-        this.reset();
         return enumList[(currentIdx - 1 + enumList.length) % enumList.length];
       }
     }
@@ -99,38 +119,6 @@ export class TypeAhead {
         return null;
       }
       return '';
-    }
-
-    if (e.key === 'Backspace') {
-      e.preventDefault();
-      if (this.buffer.length > 1) {
-        this.buffer = this.buffer.slice(0, -1);
-        const matches = prefixFirst(enumList.filter((s) => fuzzyMatch(s, this.buffer)), this.buffer);
-        if (matches.length > 0) {
-          this.dropdownIndex = 0;
-          this.dropdownOpen = matches.length > 1;
-          this.startCooldown();
-          return matches[0];
-        }
-        this.startCooldown();
-      } else {
-        this.reset();
-      }
-      return null;
-    }
-
-    if (e.key.length === 1 && e.key.match(/[a-zA-Z\-]/)) {
-      e.preventDefault();
-      this.buffer += e.key.toLowerCase();
-      const matches = prefixFirst(enumList.filter((s) => fuzzyMatch(s, this.buffer)), this.buffer);
-      if (matches.length > 0) {
-        this.dropdownIndex = 0;
-        this.dropdownOpen = matches.length > 1;
-        this.startCooldown();
-        return matches[0];
-      }
-      this.startCooldown();
-      return null;
     }
 
     return null;

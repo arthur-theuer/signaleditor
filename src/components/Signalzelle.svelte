@@ -68,7 +68,9 @@
   $effect(() => {
     if (needsBahnhof && bahnhof) bahnhofRevealed = true;
   });
+  let signalFocused = $state(false);
   let showBahnhof = $derived(needsBahnhof && bahnhofRevealed);
+  let showExtras = $derived(!signalFocused && !disabled);
   let shortLabel = $derived(abbrev(base));
 
   function handleKeydown(e: KeyboardEvent) {
@@ -85,6 +87,17 @@
     });
   }
 
+  function handleInput(e: Event) {
+    const query = (e.target as HTMLInputElement).value;
+    const result = typeAhead.handleInput(query);
+    if (result !== null) {
+      setSignal(result);
+    }
+  }
+
+  /** Display value: show query while searching, otherwise the signal base */
+  let displayValue = $derived(typeAhead.query || base);
+
   function handleNameChange(newName: string) {
     value = newName ? `${base} ${newName}` : base;
     onchange();
@@ -94,9 +107,13 @@
     if (needsBahnhof) bahnhofRevealed = true;
   }
 
-  function handleSignalFocus(e: FocusEvent) {
-    const input = e.target as HTMLInputElement;
-    requestAnimationFrame(() => input.setSelectionRange(0, 0));
+  function handleSignalFocus() {
+    signalFocused = true;
+  }
+
+  function handleSignalBlur() {
+    signalFocused = false;
+    typeAhead.reset();
   }
 </script>
 
@@ -105,14 +122,14 @@
     <input
       type="text"
       class="signal-input"
-      readonly
-      value={disabled ? '' : base}
+      value={disabled ? '' : displayValue}
       placeholder={disabled ? '' : placeholder}
+      oninput={handleInput}
       onkeydown={handleKeydown}
       onfocus={handleSignalFocus}
-      onblur={typeAhead.reset}
+      onblur={handleSignalBlur}
       tabindex={disabled ? -1 : 0}
-      autocomplete="none"
+      autocomplete="off"
       autocorrect="off"
       spellcheck="false"
     />
@@ -134,7 +151,7 @@
     >
   {/if}
 </div>
-{#if !disabled}
+{#if showExtras}
   <Signalname
     {base}
     value={value ?? ''}
@@ -157,11 +174,7 @@
     padding: 0 var(--spacing-cell);
     font-size: var(--text-input);
     font-family: var(--font-mono);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    user-select: none;
-    caret-color: transparent;
+    min-width: 0;
   }
   .signal-input:focus {
     outline: none;
