@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { tick } from 'svelte';
   import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../lib/signals';
   import { filterEnum } from '../lib/signalSearch';
@@ -41,7 +40,7 @@
   let isAlt = $derived(field.endsWith('b'));
   let placeholder = $derived(isAlt ? `Signal ${fieldNum}` : `Signal ${fieldNum}${isAltActive ? 'a' : ''}`);
 
-  // Search state — follows Stationsfeld pattern: one-way value, manual oninput
+  // Search state
   let inputEl: HTMLInputElement | undefined = $state();
   let query = $state('');
   let matches: string[] = $state([]);
@@ -49,15 +48,22 @@
   let dropdownIndex = $state(0);
   let displayValue = $derived(dropdownOpen ? query : base || '');
 
-  // Deferred reveal: the bahnhof field only appears once a bahnhof value exists
-  // or the name field is focused (see handleNameFocus). Prevents layout shift
-  // during signal selection where needsBahnhof flickers.
+  // Name/bahnhof are hidden while the signal input is focused.
+  // Set to false in the Tab keydown handler (before the event bubbles
+  // to Signalpanel) so that name/bahnhof render in time for
+  // Signalpanel's tick()-deferred field query.
+  let signalFocused = $state(false);
+
+  // Deferred reveal: bahnhof field only appears once a bahnhof value
+  // exists or the name field is focused (see handleNameFocus). Prevents
+  // layout shift during arrow-key cycling where needsBahnhof flickers.
   let bahnhofRevealed = $state(false);
   $effect(() => {
     if (needsBahnhof && bahnhof) bahnhofRevealed = true;
   });
-  let showBahnhof = $derived(needsBahnhof && bahnhofRevealed);
-  let showExtras = $derived(!disabled);
+
+  let showBahnhof = $derived(needsBahnhof && bahnhofRevealed && !signalFocused);
+  let showExtras = $derived(!disabled && !signalFocused);
 
   function setSignal(newBase: string) {
     const oldName = extractName(value ?? '');
@@ -141,18 +147,13 @@
 
     if (e.key === 'Tab') {
       if (dropdownOpen && matches.length > 0) {
-        e.preventDefault();
-        e.stopPropagation();
         withStableScroll(() => setSignal(matches[dropdownIndex]));
-        closeDropdown();
-        tick().then(() => {
-          const nameInput = inputEl?.closest('.signal-cell')?.nextElementSibling?.querySelector('input');
-          if (nameInput instanceof HTMLElement) nameInput.focus();
-          else inputEl?.blur();
-        });
-      } else {
-        closeDropdown();
       }
+      closeDropdown();
+      // Reveal name/bahnhof before the event bubbles to Signalpanel,
+      // so its tick()-deferred field query finds them in the DOM.
+      signalFocused = false;
+      // Don't preventDefault — let Signalpanel handle navigation.
       return;
     }
 
@@ -183,13 +184,13 @@
   }
 
   function handleSignalFocus() {
+    signalFocused = true;
     query = base;
-    dropdownOpen = true;
-    dropdownIndex = 0;
     inputEl?.select();
   }
 
   function handleSignalBlur() {
+    signalFocused = false;
     closeDropdown();
   }
 </script>

@@ -207,25 +207,34 @@
     signale.forEach((s, i) => (s.id = i));
   }
 
-  // Tab navigation handler — delegated at list level
-  // Explicitly manages all Tab presses to ensure correct field order,
-  // since native Tab can skip buttons inside component boundaries.
-  function handleKeydown(e: KeyboardEvent) {
+  // Tab navigation handler — delegated at list level.
+  // Uses tick() before querying fields so that child components
+  // (e.g. Signalzelle setting signalFocused=false) can update
+  // the DOM before we determine the next focusable field.
+  async function handleKeydown(e: KeyboardEvent) {
     if (e.key !== 'Tab') return;
 
     const target = e.target as HTMLElement;
     const rowEl = target.closest<HTMLElement>('[data-row-index]');
     if (!rowEl) return;
 
+    // preventDefault must be synchronous — before the await.
+    e.preventDefault();
+
+    // Let Svelte flush state changes from child keydown handlers
+    // (e.g. Signalzelle revealing name/bahnhof fields).
+    await tick();
+
     const rowIdx = parseInt(rowEl.dataset.rowIndex!);
     const fields = getFocusableFields(rowEl);
     const currentFieldIdx = fields.indexOf(target);
-    if (currentFieldIdx === -1) return;
+
+    // DEBUG — remove after diagnosing tab issue
+    console.log('[Tab]', { rowIdx, currentFieldIdx, fieldCount: fields.length, targetClass: target.className, fields: fields.map(f => f.className), targetInDOM: document.contains(target) });
 
     if (!e.shiftKey) {
-      if (currentFieldIdx === fields.length - 1) {
-        // Tab on last field in row → next row or add new
-        e.preventDefault();
+      if (currentFieldIdx === -1 || currentFieldIdx === fields.length - 1) {
+        // Tab on last field (or field no longer in DOM) → next row or add new
         const isLastRow = rowIdx === signale.length - 1;
         if (isLastRow) {
           addSignalWithAutofill();
@@ -241,20 +250,17 @@
         }
       } else {
         // Tab on middle field → next field in same row
-        e.preventDefault();
         focusWithoutScroll(fields[currentFieldIdx + 1]);
         scrollRowIntoView(rowIdx);
       }
     } else {
-      if (currentFieldIdx === 0) {
-        // Shift+Tab on first field → previous row
+      if (currentFieldIdx <= 0) {
+        // Shift+Tab on first field (or field no longer in DOM) → previous row
         if (rowIdx > 0) {
-          e.preventDefault();
           focusRowField(rowIdx - 1, true);
         }
       } else {
         // Shift+Tab on middle field → previous field in same row
-        e.preventDefault();
         focusWithoutScroll(fields[currentFieldIdx - 1]);
         scrollRowIntoView(rowIdx);
       }
