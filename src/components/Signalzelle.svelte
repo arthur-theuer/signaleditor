@@ -45,11 +45,13 @@
   let placeholder = $derived(isAlt ? `Signal ${fieldNum}` : `Signal ${fieldNum}${isAltActive ? 'a' : ''}`);
   let shortPlaceholder = $derived(isAlt ? `S${fieldNum}` : `S${fieldNum}${isAltActive ? 'a' : ''}`);
 
-  // Search state — owned by this component, not derived
+  // Search state — follows Stationsfeld pattern: one-way value, manual oninput
+  let inputEl: HTMLInputElement | undefined = $state();
   let query = $state('');
   let matches: string[] = $state([]);
   let dropdownOpen = $state(false);
   let dropdownIndex = $state(0);
+  let displayValue = $derived(dropdownOpen ? query : base || '');
 
   // Deferred reveal: the bahnhof field only appears once a bahnhof value exists
   // or the name field is focused (see handleNameFocus). Prevents layout shift
@@ -58,9 +60,8 @@
   $effect(() => {
     if (needsBahnhof && bahnhof) bahnhofRevealed = true;
   });
-  let signalFocused = $state(false);
   let showBahnhof = $derived(needsBahnhof && bahnhofRevealed);
-  let showExtras = $derived(!signalFocused && !disabled);
+  let showExtras = $derived(!disabled);
   let shortLabel = $derived(abbrev(base));
 
   function setSignal(newBase: string) {
@@ -135,19 +136,19 @@
     }
 
     if (e.key === 'Enter') {
-      if (dropdownOpen) {
+      if (dropdownOpen && matches.length > 0) {
         e.preventDefault();
+        withStableScroll(() => setSignal(matches[dropdownIndex]));
         closeDropdown();
-        query = base;
       }
       return;
     }
 
     if (e.key === 'Tab') {
-      if (dropdownOpen) {
-        closeDropdown();
-        query = base;
+      if (dropdownOpen && matches.length > 0) {
+        withStableScroll(() => setSignal(matches[dropdownIndex]));
       }
+      closeDropdown();
       return;
     }
 
@@ -178,25 +179,26 @@
   }
 
   function handleSignalFocus() {
-    signalFocused = true;
     query = base;
+    dropdownOpen = true;
+    dropdownIndex = 0;
+    inputEl?.select();
   }
 
   function handleSignalBlur() {
-    signalFocused = false;
     closeDropdown();
-    query = base;
   }
 </script>
 
 <div class={['row-cell signal-cell hl-field', { disabled }]}>
   <div class="signal-input-slot">
     <input
+      bind:this={inputEl}
       type="text"
       class="signal-input"
-      bind:value={query}
+      value={displayValue}
       placeholder={disabled ? '' : placeholder}
-      oninput={handleInput}
+      oninput={(e) => { query = (e.target as HTMLInputElement).value; handleInput(); }}
       onkeydown={handleKeydown}
       onfocus={handleSignalFocus}
       onblur={handleSignalBlur}
