@@ -66,7 +66,6 @@
 .row-cell:has(.dropdown) {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  z-index: 3;
 }
 
 /* Lucide icons: thicken stroke on hover (1px → 2px effective at 16px/24 viewBox) */

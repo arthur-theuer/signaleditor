@@ -62,8 +62,9 @@
     if (needsBahnhof && bahnhof) bahnhofRevealed = true;
   });
 
-  let showBahnhof = $derived(needsBahnhof && bahnhofRevealed && !signalFocused);
-  let showExtras = $derived(!disabled && !signalFocused);
+  let currentName = $derived(extractName(value ?? ''));
+  let showBahnhof = $derived(needsBahnhof && bahnhofRevealed && (!signalFocused || !!bahnhof));
+  let showExtras = $derived(!disabled && (!signalFocused || !!currentName || !!bahnhof));
 
   function setSignal(newBase: string) {
     const oldName = extractName(value ?? '');
@@ -223,7 +224,11 @@
   {#if dropdownOpen && matches.length > 0}
     <div class="dropdown">
       {#each matches as match, i}
-        <div class={['dropdown-item', { active: i === dropdownIndex }]}>{match}</div>
+        <div
+          class={['dropdown-item', { active: i === dropdownIndex }]}
+          onmousedown={(e) => { e.preventDefault(); withStableScroll(() => setSignal(match)); closeDropdown(); }}
+          onmouseenter={() => dropdownIndex = i}
+        >{match}</div>
       {/each}
     </div>
   {/if}
