@@ -75,8 +75,8 @@
   // Focusable field selector matching the original
   const FOCUSABLE_SELECTOR = [
     '.signal-input',
-    '.name-wrapper .name-input',
-    '.bahnhof-wrapper .bahnhof-input',
+    '.name-cell .name-input',
+    '.bahnhof-cell .bahnhof-input',
     '.km-cell .km-input',
     '.note-input',
     '.abzweigung-btn',
