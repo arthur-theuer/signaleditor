@@ -94,6 +94,21 @@ button:hover:not(:disabled) svg {
   color: var(--color-meldung-bahnhof-b);
 }
 
+/* Base input inside a row-cell: reset + shared typography */
+.cell-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  background: transparent;
+  padding: 0 var(--spacing-cell);
+  font-size: var(--text-input);
+  font-family: var(--font-mono);
+}
+.cell-input::placeholder {
+  color: var(--color-text-muted);
+}
+
 /* Base row-cell: shared by all row type components */
 .row-cell {
   display: flex;

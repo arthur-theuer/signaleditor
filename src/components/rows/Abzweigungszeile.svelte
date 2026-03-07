@@ -85,7 +85,7 @@
   <div class="row-cell abzweigung-cell abzweigung-text-cell hl-field">
     <input
       type="text"
-      class="abzweigung-strecke"
+      class="abzweigung-strecke cell-input"
       bind:value={eintrag.abzweigung.strecke}
       oninput={onchange}
       placeholder="Nummer"
@@ -110,7 +110,7 @@
   <div class="row-cell abzweigung-cell abzweigung-text-cell hl-field">
     <input
       type="text"
-      class="abzweigung-richtung"
+      class="abzweigung-richtung cell-input"
       bind:value={eintrag.abzweigung.richtung}
       oninput={onchange}
       placeholder="Richtung"
@@ -169,17 +169,7 @@
   }
   .abzweigung-strecke,
   .abzweigung-richtung {
-    flex: 1;
-    min-width: 0;
-    padding: 0 var(--spacing-cell);
-    border: none;
-    background: transparent;
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
-    color: var(--color-text);
     text-align: center;
-    width: 100%;
-    height: 100%;
   }
   .abzweigung-strecke::placeholder,
   .abzweigung-richtung::placeholder {

@@ -59,7 +59,7 @@
     {:else}
       <input
         type="text"
-        class="name-input"
+        class="name-input cell-input"
         value={stationName}
         oninput={handleNameInput}
         placeholder="Name"
@@ -75,7 +75,7 @@
   <div class="row-cell bahnhof-cell hl-field">
     <input
       type="text"
-      class="bahnhof-input"
+      class="bahnhof-input cell-input"
       value={bahnhof || ''}
       oninput={handleBahnhofInput}
       onfocus={handleBahnhofFocus}
@@ -89,39 +89,13 @@
 
 <style>
   .name-input {
-    flex: 1;
-    min-width: 0;
-    border: none;
-    background: transparent;
-    padding: 0 var(--spacing-cell);
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
-    color: var(--color-text-secondary);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    outline: none;
-    height: 100%;
-  }
-  .name-input::placeholder {
-    color: var(--color-text-muted);
   }
 
   .bahnhof-cell {
     background: var(--color-highlight);
   }
-  .bahnhof-input {
-    flex: 1;
-    min-width: 0;
-    border: none;
-    background: transparent;
-    padding: 0 var(--spacing-cell);
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
-    outline: none;
-    height: 100%;
-  }
-  .bahnhof-input::placeholder {
-    color: var(--color-text-muted);
-  }
+  /* bahnhof-input: base styles from .cell-input */
 </style>

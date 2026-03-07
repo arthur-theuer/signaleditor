@@ -50,7 +50,7 @@
 <div class="row-cell km-cell hl-field">
   <input
     type="text"
-    class="km-input"
+    class="km-input cell-input"
     value={kmVal}
     oninput={handleInput}
     onkeydown={handleKeydown}
@@ -62,19 +62,9 @@
 </div>
 
 <style>
-  /* Extends .row-cell — km-specific overrides only */
   .km-input {
-    flex: 1;
     padding: 0 var(--spacing-md);
-    border: none;
-    background: transparent;
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
     text-align: center;
-    width: 100%;
-    box-sizing: border-box;
   }
-  .km-input:focus {
-    outline: none;
-  }
+  /* outline: none handled by .hl-field > input in components.css */
 </style>

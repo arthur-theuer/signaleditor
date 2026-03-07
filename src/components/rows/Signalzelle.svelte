@@ -199,7 +199,7 @@
     <input
       bind:this={inputEl}
       type="text"
-      class="signal-input"
+      class="signal-input cell-input"
       value={displayValue}
       placeholder={disabled ? '' : placeholder}
       oninput={(e) => { query = (e.target as HTMLInputElement).value; handleInput(); }}
@@ -241,21 +241,7 @@
 {/if}
 
 <style>
-  .signal-input {
-    flex: 1;
-    border: none;
-    background: transparent;
-    padding: 0 var(--spacing-cell);
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
-    min-width: 0;
-  }
-  .signal-input:focus {
-    outline: none;
-  }
-  .signal-input::placeholder {
-    color: var(--color-text-muted);
-  }
+  /* outline: none handled by .hl-field > input in components.css */
 
   /* Dropdown items — container styles in components.css (.dropdown) */
   .dropdown-item {

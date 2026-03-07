@@ -86,7 +86,7 @@
 <input
   bind:this={inputEl}
   type="text"
-  class={['search-field', { 'name-input': mode === 'name', 'has-value': valid && !open }]}
+  class={['search-field cell-input', { 'name-input': mode === 'name', 'has-value': valid && !open }]}
   value={displayValue}
   oninput={(e) => {
     query = (e.target as HTMLInputElement).value;
@@ -118,19 +118,10 @@
 
 <style>
   .search-field {
-    flex: 1;
-    min-width: 0;
-    border: none;
-    background: transparent;
-    padding: 0 var(--spacing-cell);
-    font-size: var(--text-input);
-    font-family: var(--font-mono);
     color: var(--color-text-muted);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    outline: none;
-    height: 100%;
   }
   .search-field.has-value {
     color: var(--color-text-secondary);
