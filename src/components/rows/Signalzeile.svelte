@@ -34,12 +34,12 @@
   function handleSignalChange() {
     if (isWiederholungssignal(eintrag.signal_1)) {
       eintrag.signal_2 = '';
-      delete eintrag.signal_1b;
-      delete eintrag.signal_2b;
+      eintrag.signal_1b = undefined;
+      eintrag.signal_2b = undefined;
       eintrag.bahnhof = undefined;
     } else if (isVorsignal(eintrag.signal_1)) {
       eintrag.signal_2 = '';
-      delete eintrag.signal_2b;
+      eintrag.signal_2b = undefined;
     }
     // Block chain: clear Block-Vorsignal from signal_2 when signal_1 is no longer Blocksignal
     const base = extractSignalBase(eintrag.signal_1) || '';

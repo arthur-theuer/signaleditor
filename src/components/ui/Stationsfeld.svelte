@@ -46,10 +46,8 @@
   }
 
   function handleBlur() {
-    setTimeout(() => {
-      open = false;
-      query = '';
-    }, 150);
+    open = false;
+    query = '';
   }
 
   function handleInput() {
@@ -105,7 +103,7 @@
     {#each results as entry, i}
       <button
         class={['dropdown-item', { active: i === activeIndex }]}
-        onmousedown={() => select(entry)}
+        onmousedown={(e) => { e.preventDefault(); select(entry); }}
         onmouseenter={() => (activeIndex = i)}
         tabindex={-1}
       >
