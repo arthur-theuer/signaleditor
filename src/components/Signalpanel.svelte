@@ -367,7 +367,7 @@
       onAddImport={() => appendEntry(makeImport(signale.length))}
     />
     {#if meldungen && onCloseMeldungen}
-      <Symbolknopf color="red" bordered label="Schliessen" onclick={onCloseMeldungen} class="close-mel-btn">
+      <Symbolknopf label="Schliessen" onclick={onCloseMeldungen} class="close-mel-btn">
         <X {...ICON} />
       </Symbolknopf>
     {/if}
@@ -496,6 +496,8 @@
   }
   .bottom-row :global(.close-mel-btn) {
     grid-column: mel;
+    background: var(--color-red-bg);
+    color: var(--color-red);
   }
 
   /* ── Drag state ── */
