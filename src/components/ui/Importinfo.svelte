@@ -95,7 +95,7 @@
     display: block;
   }
 
-  @container (min-width: 300px) {
+  @container (min-width: 400px) {
     .tier-medium {
       display: block;
     }
@@ -104,7 +104,7 @@
     }
   }
 
-  @container (min-width: 420px) {
+  @container (min-width: 500px) {
     .tier-full {
       display: block;
     }
