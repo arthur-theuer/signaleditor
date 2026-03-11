@@ -1,7 +1,9 @@
-import type { Eintrag, Import, Editordaten } from './types';
-import { isImporteintrag, isKnoteneintrag } from './types';
+import type { Eintrag, Import, Editordaten, Signaleintrag } from './types';
+import { isImporteintrag, isKnoteneintrag, isSignaleintrag } from './types';
 import { parseYAMLContent, extractYAMLFromHTML } from './yaml';
 import { loadFile } from './api';
+import { isVorsignal, isWiederholungssignal, extractSignalBase, extractName } from './signals';
+import { VORSIGNAL_TO_HAUPTSIGNAL, HAUPTSIGNAL_TO_VORSIGNAL } from './constants';
 
 const importCache: Record<string, Editordaten> = {};
 
@@ -172,9 +174,17 @@ export async function autoStitchImporte(
   }
 }
 
+export type ResolveFlat = {
+  signale: Eintrag[];
+  /** Indices into signale that were auto-adjusted during stitch validation */
+  stitchOverrides: Set<number>;
+};
+
 /** Flatten signale by resolving imp entries, deduplicating shared knoten at stitch boundaries */
-export async function resolveSignaleForMeldungen(signale: Eintrag[]): Promise<Eintrag[]> {
+export async function resolveSignaleForMeldungen(signale: Eintrag[]): Promise<ResolveFlat> {
   const flat: Eintrag[] = [];
+  const stitchKnotenIndices: number[] = [];
+
   for (const sig of signale) {
     if (isImporteintrag(sig)) {
       const res = await resolveImport(sig.import);
@@ -186,6 +196,7 @@ export async function resolveSignaleForMeldungen(signale: Eintrag[]): Promise<Ei
             const prev = flat[flat.length - 1];
             if (isKnoteneintrag(prev) && prev.knoten === s.knoten) {
               if (!prev.km && s.km) prev.km = s.km;
+              stitchKnotenIndices.push(flat.length - 1);
               continue;
             }
           }
@@ -196,5 +207,96 @@ export async function resolveSignaleForMeldungen(signale: Eintrag[]): Promise<Ei
       flat.push(sig);
     }
   }
-  return flat;
+
+  const stitchOverrides = adjustVorsignaleAtStitchPoints(flat, stitchKnotenIndices);
+  return { signale: flat, stitchOverrides };
+}
+
+/**
+ * At each stitch-point Knoten, compare the Vorsignal before it with the
+ * Hauptsignal after it. If they don't match, adjust the Vorsignal (and
+ * its alternate) to correspond to the actual Hauptsignal.
+ * Returns the set of flat-array indices that were modified.
+ */
+function adjustVorsignaleAtStitchPoints(flat: Eintrag[], stitchIndices: number[]): Set<number> {
+  const overrides = new Set<number>();
+
+  for (const knotenIdx of stitchIndices) {
+    // Find last Signaleintrag before the Knoten (skip non-signal, Wiederholungssignal)
+    let beforeIdx = -1;
+    for (let i = knotenIdx - 1; i >= 0; i--) {
+      const s = flat[i];
+      if (!isSignaleintrag(s)) continue;
+      if (isWiederholungssignal(s.signal_1)) continue;
+      beforeIdx = i;
+      break;
+    }
+    if (beforeIdx === -1) continue;
+
+    const before = flat[beforeIdx] as Signaleintrag;
+
+    // Determine which field holds the Vorsignal
+    const vsField: 'signal_2' | 'signal_1' | null =
+      before.signal_2 && isVorsignal(before.signal_2)
+        ? 'signal_2'
+        : isVorsignal(before.signal_1)
+          ? 'signal_1'
+          : null;
+    if (!vsField) continue;
+
+    // Find first Signaleintrag after the Knoten
+    let afterIdx = -1;
+    for (let i = knotenIdx + 1; i < flat.length; i++) {
+      const s = flat[i];
+      if (!isSignaleintrag(s)) continue;
+      if (isWiederholungssignal(s.signal_1)) continue;
+      afterIdx = i;
+      break;
+    }
+    if (afterIdx === -1) continue;
+
+    const after = flat[afterIdx] as Signaleintrag;
+    const hauptBase = extractSignalBase(after.signal_1);
+    if (!hauptBase) continue;
+
+    // Check if current Vorsignal already predicts this Hauptsignal
+    const currentVsBase = extractSignalBase(before[vsField]!);
+    if (!currentVsBase) continue;
+    const predicted = VORSIGNAL_TO_HAUPTSIGNAL[currentVsBase];
+    if (predicted && predicted.signal === hauptBase) continue; // already correct
+
+    // Look up the correct Vorsignal for this Hauptsignal
+    const correctVs = HAUPTSIGNAL_TO_VORSIGNAL[hauptBase];
+    if (!correctVs) continue;
+
+    // Build the replacement Vorsignal with name from the Hauptsignal
+    const hauptName = correctVs.keepName ? extractName(after.signal_1) : '';
+    const newVsValue = hauptName ? `${correctVs.vorsignal} ${hauptName}` : correctVs.vorsignal;
+
+    // Clone entry to avoid mutating import cache
+    const cloned: Signaleintrag = { ...before };
+    cloned[vsField] = newVsValue;
+
+    // Adjust alternate field too
+    const altField = vsField === 'signal_2' ? 'signal_2b' : 'signal_1b';
+    const afterAlt = after.signal_1b;
+    if (afterAlt && cloned[altField] !== undefined) {
+      const altHauptBase = extractSignalBase(afterAlt);
+      if (altHauptBase) {
+        const altCorrectVs = HAUPTSIGNAL_TO_VORSIGNAL[altHauptBase];
+        if (altCorrectVs) {
+          const altName = altCorrectVs.keepName ? extractName(afterAlt) : '';
+          cloned[altField] = altName ? `${altCorrectVs.vorsignal} ${altName}` : altCorrectVs.vorsignal;
+        }
+      }
+    } else if (!afterAlt && cloned[altField]) {
+      // After has no alternate Hauptsignal, clear the alternate Vorsignal
+      cloned[altField] = undefined;
+    }
+
+    flat[beforeIdx] = cloned;
+    overrides.add(beforeIdx);
+  }
+
+  return overrides;
 }

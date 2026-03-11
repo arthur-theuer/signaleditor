@@ -24,9 +24,11 @@ export type MeldungRow = {
   knoten?: string;
   abzweigung?: string;
   import?: string;
+  /** True when the Vorsignal was auto-adjusted at a stitch boundary */
+  stitchOverride?: boolean;
 };
 
-export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
+export function generiereAlleMeldungen(signale: Eintrag[], stitchOverrides?: Set<number>): MeldungRow[] {
   const meldungen: MeldungRow[] = [];
   let bahnhofFarbschalter = true;
   let imBahnhof = true;
@@ -53,7 +55,9 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
     }
   }
 
-  for (const sig of signale) {
+  for (let sigIdx = 0; sigIdx < signale.length; sigIdx++) {
+    const sig = signale[sigIdx];
+    const isOverride = stitchOverrides?.has(sigIdx) ?? false;
     if (isNotizeintrag(sig)) {
       meldungen.push({
         id: sig.id,
@@ -129,6 +133,7 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
         signal_2_display: s2Display,
         segments: [],
         error: result.error,
+        stitchOverride: isOverride || undefined,
       });
       continue;
     }
@@ -146,6 +151,7 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
       signal_2_display: s2Display,
       segments: coloredSegments,
       error: null,
+      stitchOverride: isOverride || undefined,
     });
   }
 
@@ -153,8 +159,8 @@ export function generiereAlleMeldungen(signale: Eintrag[]): MeldungRow[] {
 }
 
 export async function generiereAlleMeldungenResolved(signale: Eintrag[]): Promise<MeldungRow[]> {
-  const resolved = await resolveSignaleForMeldungen(signale);
-  return generiereAlleMeldungen(resolved);
+  const { signale: resolved, stitchOverrides } = await resolveSignaleForMeldungen(signale);
+  return generiereAlleMeldungen(resolved, stitchOverrides);
 }
 
 export async function downloadMeldungenHTML(data: Editordaten, yamlContent: string): Promise<void> {
@@ -206,7 +212,8 @@ export async function downloadMeldungenHTML(data: Editordaten, yamlContent: stri
             )
             .join('<br>');
 
-      return `<tr>${idCell}${kmCell}<td class="signal">${esc(m.signal_1_display)}</td><td class="signal">${esc(m.signal_2_display)}</td><td class="meldung">${meldungCell}</td></tr>`;
+      const trAttr = m.stitchOverride ? ' class="stitch-override" title="Vorsignal automatisch angepasst"' : '';
+      return `<tr${trAttr}>${idCell}${kmCell}<td class="signal">${esc(m.signal_1_display)}</td><td class="signal">${esc(m.signal_2_display)}</td><td class="meldung">${meldungCell}</td></tr>`;
     })
     .filter(Boolean)
     .join('\n');
@@ -226,6 +233,7 @@ th{background:#fafafa;font-weight:600}
 .col-id,.col-km,.meldung{text-align:center}
 .col-km{color:#999}
 .signal{color:#666}
+.stitch-override .signal{background:#fff3e0}
 </style>
 </head>
 <body>

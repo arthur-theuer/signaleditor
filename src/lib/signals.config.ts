@@ -150,6 +150,10 @@ export const VORSIGNAL_TO_HAUPTSIGNAL: Record<string, { signal: string; keepName
   REGISTRY.filter((s) => s.hauptsignal).map((s) => [s.name, s.hauptsignal!]),
 );
 
+export const HAUPTSIGNAL_TO_VORSIGNAL: Record<string, { vorsignal: string; keepName: boolean }> = Object.fromEntries(
+  REGISTRY.filter((s) => s.hauptsignal).map((s) => [s.hauptsignal!.signal, { vorsignal: s.name, keepName: s.hauptsignal!.keepName }]),
+);
+
 /**
  * Ordered keyword→typ pairs for substring matching in detectSignaltyp.
  * Sorted by keyword length descending so longer/more-specific keywords
