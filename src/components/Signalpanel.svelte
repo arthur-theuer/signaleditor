@@ -17,7 +17,7 @@
   } from '../lib/types';
   import { autofillRow, isRowEmpty } from '../lib/signals';
   import { focusWithoutScroll } from '../lib/focus';
-  import { RulerDimensionLine, X } from 'lucide-svelte';
+  import { RulerDimensionLine, X, DiamondPlus, Megaphone } from 'lucide-svelte';
   import { ICON } from '../lib/constants';
   import Symbolknopf from './ui/Symbolknopf.svelte';
   import { DragDrop } from '../lib/useDragDrop.svelte';
@@ -289,6 +289,7 @@
 <div bind:this={listEl} onkeydown={handleKeydown} class="signal-list-inner" class:has-km={showKm} class:has-mel={!!meldungen}>
   <div class="header-row">
     <div class="section-header signale-header">
+      <DiamondPlus {...ICON} />
       <span>Signale</span>
       <Symbolknopf
         class="km-toggle"
@@ -302,7 +303,7 @@
       </Symbolknopf>
     </div>
     {#if meldungen}
-      <div class="section-header meldungen-header">Meldungen</div>
+      <div class="section-header meldungen-header"><Megaphone {...ICON} /> Meldungen</div>
     {/if}
   </div>
   {#each signale as eintrag, idx (eintrag.id)}
@@ -415,6 +416,7 @@
   .signale-header {
     grid-column: 1 / -1;
     padding-inline: var(--spacing-card);
+    padding-left: var(--spacing-cell);
   }
   .signale-header:not(:last-child) {
     grid-column: g-li / mel;
