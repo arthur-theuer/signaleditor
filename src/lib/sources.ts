@@ -174,10 +174,12 @@ export async function autoStitchImporte(
   }
 }
 
+export type StitchOverrideField = 'signal_1' | 'signal_2';
+
 export type ResolveFlat = {
   signale: Eintrag[];
-  /** Indices into signale that were auto-adjusted during stitch validation */
-  stitchOverrides: Set<number>;
+  /** Map from flat-array index to the signal field that was overridden */
+  stitchOverrides: Map<number, StitchOverrideField>;
 };
 
 /** Flatten signale by resolving imp entries, deduplicating shared knoten at stitch boundaries */
@@ -216,10 +218,10 @@ export async function resolveSignaleForMeldungen(signale: Eintrag[]): Promise<Re
  * At each stitch-point Knoten, compare the Vorsignal before it with the
  * Hauptsignal after it. If they don't match, adjust the Vorsignal (and
  * its alternate) to correspond to the actual Hauptsignal.
- * Returns the set of flat-array indices that were modified.
+ * Returns a map from flat-array index to the overridden field.
  */
-function adjustVorsignaleAtStitchPoints(flat: Eintrag[], stitchIndices: number[]): Set<number> {
-  const overrides = new Set<number>();
+function adjustVorsignaleAtStitchPoints(flat: Eintrag[], stitchIndices: number[]): Map<number, StitchOverrideField> {
+  const overrides = new Map<number, StitchOverrideField>();
 
   for (const knotenIdx of stitchIndices) {
     // Find last Signaleintrag before the Knoten (skip non-signal, Wiederholungssignal)
@@ -295,7 +297,7 @@ function adjustVorsignaleAtStitchPoints(flat: Eintrag[], stitchIndices: number[]
     }
 
     flat[beforeIdx] = cloned;
-    overrides.add(beforeIdx);
+    overrides.set(beforeIdx, vsField);
   }
 
   return overrides;
