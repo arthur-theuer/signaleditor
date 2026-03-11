@@ -628,6 +628,11 @@
   }
   .insert-panel :global(.add-bar) {
     margin: 0;
+    flex-wrap: nowrap;
+  }
+  .insert-panel :global(.add-bar button) {
+    flex: none;
+    field-sizing: content;
   }
 
   /* ── Drag state ── */
