@@ -283,6 +283,9 @@
     flex: none;
     text-align: center;
   }
+  .signal-cell.short .alt-toggle-btn {
+    display: none;
+  }
 
   .alt-toggle-btn {
     position: absolute;
