@@ -568,6 +568,17 @@
     height: 0;
     overflow: visible;
     cursor: pointer;
+    position: relative;
+  }
+  /* Invisible hover zone overlapping adjacent row padding */
+  .insert-trigger::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(-1 * var(--spacing-half-card));
+    height: calc(2 * var(--spacing-half-card));
+    z-index: 1;
   }
   .insert-line-cell {
     grid-column: 1 / -1;
@@ -586,9 +597,6 @@
   }
   .insert-icon {
     grid-column: g-ss;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: relative;
     z-index: 2;
     color: var(--color-focus);
@@ -599,6 +607,8 @@
     line-height: 0;
     padding: 1px;
     transform: translateY(-50%);
+    width: max-content;
+    justify-self: center;
   }
   .insert-trigger:hover .insert-line,
   .insert-trigger:hover .insert-icon {
