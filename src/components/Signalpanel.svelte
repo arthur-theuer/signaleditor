@@ -341,7 +341,7 @@
     {#if idx > 0}
       <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
       <div class="insert-trigger" onclick={(e) => openInsertPanel(idx, e.currentTarget as HTMLElement)}>
-        <div class="insert-line"></div>
+        <div class="insert-line-cell"><div class="insert-line"></div></div>
         <div class="insert-icon"><CirclePlus size={ICON.size} strokeWidth={3} /></div>
       </div>
     {/if}
@@ -562,17 +562,22 @@
 
   /* ── Insert trigger (between rows) ── */
   .insert-trigger {
-    grid-column: id / g-sa;
-    position: relative;
-    height: var(--spacing-card);
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    height: 0;
+    overflow: visible;
     cursor: pointer;
+  }
+  .insert-line-cell {
+    grid-column: 1 / -1;
+    position: relative;
   }
   .insert-line {
     position: absolute;
     left: 0;
     right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: -1px;
     height: 2px;
     border-radius: 1px;
     background: var(--color-focus);
@@ -580,10 +585,12 @@
     transition: opacity 0.15s;
   }
   .insert-icon {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    grid-column: g-ss;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
     color: var(--color-focus);
     background: var(--color-bg);
     border-radius: 50%;
@@ -591,6 +598,7 @@
     transition: opacity 0.15s;
     line-height: 0;
     padding: 1px;
+    transform: translateY(-50%);
   }
   .insert-trigger:hover .insert-line,
   .insert-trigger:hover .insert-icon {
