@@ -9,7 +9,6 @@ type SignalKind = 'haupt' | 'vor' | 'wdh';
 type SignalDef = {
   name: string;
   kind: SignalKind;
-  abbrev: string;
   short?: string;
   needsName?: boolean;
   needsStationSearch?: boolean;
@@ -25,35 +24,31 @@ const REGISTRY: SignalDef[] = [
   {
     name: 'Abschnitteinfahr-Vorsignal',
     kind: 'vor',
-    abbrev: 'Abschnitteinfahr-VS',
     hauptsignal: { signal: 'Abschnitteinfahrsignal', keepName: false },
     meldung: { typ: 'einfahrabschnitt', keyword: 'Abschnitteinfahr', text: 'Einfahrabschnitt offen/zu!' },
   },
   {
     name: 'Abschnittausfahr-Vorsignal',
     kind: 'vor',
-    abbrev: 'Abschnittausfahr-VS',
     hauptsignal: { signal: 'Abschnittausfahrsignal', keepName: false },
     meldung: { typ: 'ausfahrabschnitt', keyword: 'Abschnittausfahr', text: 'Ausfahrabschnitt offen/zu!' },
   },
   {
     name: 'Abschnitt-Vorsignal',
     kind: 'vor',
-    abbrev: 'Abschnitt-VS',
     hauptsignal: { signal: 'Abschnittsignal', keepName: false },
     meldung: { typ: 'abschnitt', keyword: 'Abschnitt', text: 'Abschnitt offen/zu!' },
   },
   {
     name: 'Ausfahr-Vorsignal',
     kind: 'vor',
-    abbrev: 'Ausfahr-VS',
     hauptsignal: { signal: 'Ausfahrsignal', keepName: false },
     meldung: { typ: 'ausfahrt', keyword: 'Ausfahr', text: 'Ausfahrt offen/zu!' },
   },
   {
     name: 'Block-Vorsignal zu',
     kind: 'vor',
-    abbrev: 'Block-VS zu',
+    short: 'Block-VS zu',
     needsName: true,
     hauptsignal: { signal: 'Blocksignal', keepName: true },
     meldung: { typ: 'block', keyword: 'Block', text: 'Block offen/zu!' },
@@ -61,7 +56,6 @@ const REGISTRY: SignalDef[] = [
   {
     name: 'Einfahr-Vorsignal',
     kind: 'vor',
-    abbrev: 'Einfahr-VS',
     short: 'EVS',
     needsName: true,
     needsStationSearch: true,
@@ -72,7 +66,7 @@ const REGISTRY: SignalDef[] = [
   {
     name: 'Vorsignal zu Spurwechsel',
     kind: 'vor',
-    abbrev: 'VS zu Spw.',
+    short: 'VS zu Spw.',
     needsName: true,
     hauptsignal: { signal: 'Spurwechsel', keepName: true },
     meldung: { typ: 'spurwechsel', keyword: 'Spurwechsel', text: 'Spurwechsel offen/zu!' },
@@ -82,7 +76,6 @@ const REGISTRY: SignalDef[] = [
   {
     name: 'Wiederholungssignal',
     kind: 'wdh',
-    abbrev: 'Wiederholungss.',
     meldung: { typ: 'wiederholung', keyword: 'Wiederholungs', text: 'Wiederholung offen/zu!' },
   },
 
@@ -90,38 +83,34 @@ const REGISTRY: SignalDef[] = [
   {
     name: 'Abschnitteinfahrsignal',
     kind: 'haupt',
-    abbrev: 'Abschnitteinfahrs.',
     meldung: { typ: 'einfahrabschnitt', keyword: 'Abschnitteinfahr', text: 'Einfahrabschnitt offen/zu!' },
   },
   {
     name: 'Abschnittausfahrsignal',
     kind: 'haupt',
-    abbrev: 'Abschnittausfahrs.',
     meldung: { typ: 'ausfahrabschnitt', keyword: 'Abschnittausfahr', text: 'Ausfahrabschnitt offen/zu!' },
   },
   {
     name: 'Abschnittsignal',
     kind: 'haupt',
-    abbrev: 'Abschnitts.',
     meldung: { typ: 'abschnitt', keyword: 'Abschnitt', text: 'Abschnitt offen/zu!' },
   },
   {
     name: 'Ausfahrsignal',
     kind: 'haupt',
-    abbrev: 'Ausfahrs.',
     meldung: { typ: 'ausfahrt', keyword: 'Ausfahr', text: 'Ausfahrt offen/zu!' },
   },
   {
     name: 'Blocksignal',
     kind: 'haupt',
-    abbrev: 'Blocks.',
+    short: 'Blocks.',
     needsName: true,
     meldung: { typ: 'block', keyword: 'Block', text: 'Block offen/zu!' },
   },
   {
     name: 'Einfahrsignal',
     kind: 'haupt',
-    abbrev: 'Einfahrs.',
+    short: 'Einfahrs.',
     needsName: true,
     needsStationSearch: true,
     meldung: { typ: 'einfahrt', keyword: 'Einfahr', text: '{bahnhof} offen/zu!' },
@@ -129,7 +118,7 @@ const REGISTRY: SignalDef[] = [
   {
     name: 'Spurwechsel',
     kind: 'haupt',
-    abbrev: 'Spw.',
+    short: 'Spw.',
     needsName: true,
     meldung: { typ: 'spurwechsel', keyword: 'Spurwechsel', text: 'Spurwechsel offen/zu!' },
   },
@@ -146,8 +135,6 @@ export const SIGNAL_ENUM = [
   ...REGISTRY.filter((s) => s.kind === 'wdh').map((s) => s.name),
   ...HAUPTSIGNAL_ENUM,
 ] as readonly string[];
-
-export const SIGNAL_ABBREV: Record<string, string> = Object.fromEntries(REGISTRY.map((s) => [s.name, s.abbrev]));
 
 export const SIGNAL_SHORT: Record<string, string> = Object.fromEntries(
   REGISTRY.filter((s) => s.short).map((s) => [s.name, s.short!]),
