@@ -2,7 +2,7 @@
   import { Diff } from 'lucide-svelte';
   import { extractSignalBase, extractName, signalNeedsName, signalNeedsBahnhof, getEnumForField } from '../../lib/signals';
   import { filterEnum } from '../../lib/signalSearch';
-  import { ICON } from '../../lib/constants';
+  import { ICON, SIGNAL_SHORT } from '../../lib/constants';
   import { withStableScroll } from '../../lib/focus';
   import Signalname from './Signalname.svelte';
   import type { Eintrag } from '../../lib/types';
@@ -46,7 +46,9 @@
   let matches: string[] = $state([]);
   let dropdownOpen = $state(false);
   let dropdownIndex = $state(0);
-  let displayValue = $derived(dropdownOpen ? query : base || '');
+  let shortForm = $derived(SIGNAL_SHORT[base] || '');
+  let useShort = $derived(!signalFocused && !disabled && !!shortForm);
+  let displayValue = $derived(dropdownOpen ? query : useShort ? shortForm : base || '');
 
   // Name/bahnhof are hidden while the signal input is focused.
   // Set to false in the Tab keydown handler (before the event bubbles
@@ -190,7 +192,9 @@
   function handleSignalFocus() {
     signalFocused = true;
     query = base;
-    inputEl?.select();
+    // Defer select so Svelte can update the DOM value first
+    // (e.g. when transitioning from short form "EVS" to full name).
+    requestAnimationFrame(() => inputEl?.select());
   }
 
   function handleSignalBlur() {
@@ -200,11 +204,11 @@
     // Force-sync DOM input to the canonical value. Svelte's one-way
     // value binding won't update if displayValue hasn't changed
     // (e.g. base was already '' and user typed non-matching text).
-    if (inputEl) inputEl.value = base || '';
+    if (inputEl) inputEl.value = shortForm || base || '';
   }
 </script>
 
-<div class={['row-cell signal-cell hl-field', { disabled }]}>
+<div class={['row-cell signal-cell hl-field', { disabled, short: useShort }]}>
     <input
       bind:this={inputEl}
       type="text"
@@ -269,6 +273,15 @@
   }
   .dropdown-item.active {
     background: var(--color-focus-bg);
+  }
+
+  .signal-cell.short {
+    flex: none;
+  }
+  .signal-cell.short .signal-input {
+    field-sizing: content;
+    flex: none;
+    text-align: center;
   }
 
   .alt-toggle-btn {
