@@ -622,7 +622,7 @@
     margin: 0;
     padding: var(--spacing-card);
     border: var(--border-subtle);
-    border-radius: var(--radius-card);
+    border-radius: var(--radius-container);
     background: var(--color-bg-raised);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
@@ -633,6 +633,13 @@
   .insert-panel :global(.add-bar button) {
     flex: none;
     field-sizing: content;
+    container-type: normal;
+  }
+  .insert-panel :global(.add-bar .tier-full) {
+    display: inline;
+  }
+  .insert-panel :global(.add-bar .tier-medium) {
+    display: none;
   }
 
   /* ── Drag state ── */
