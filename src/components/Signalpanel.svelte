@@ -17,7 +17,7 @@
   } from '../lib/types';
   import { autofillRow, isRowEmpty } from '../lib/signals';
   import { focusWithoutScroll } from '../lib/focus';
-  import { RulerDimensionLine, X, DiamondPlus, Megaphone } from 'lucide-svelte';
+  import { RulerDimensionLine, X, DiamondPlus, Megaphone, CirclePlus } from 'lucide-svelte';
   import { ICON } from '../lib/constants';
   import Symbolknopf from './ui/Symbolknopf.svelte';
   import { DragDrop } from '../lib/useDragDrop.svelte';
@@ -70,6 +70,37 @@
       onchange();
     },
   );
+
+  // ── Insert panel (between-row insertion) ──
+  let insertPanel: { idx: number; x: number; y: number } | null = $state(null);
+  let panelEl: HTMLDivElement;
+
+  function openInsertPanel(idx: number, triggerEl: HTMLElement) {
+    const rect = triggerEl.getBoundingClientRect();
+    insertPanel = {
+      idx,
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+    };
+    requestAnimationFrame(() => panelEl?.showPopover());
+  }
+
+  function closeInsertPanel() {
+    insertPanel = null;
+    panelEl?.hidePopover();
+  }
+
+  $effect(() => {
+    if (!insertPanel) return;
+    const onScroll = () => closeInsertPanel();
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeInsertPanel(); };
+    window.addEventListener('scroll', onScroll, { capture: true });
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('scroll', onScroll, { capture: true });
+      window.removeEventListener('keydown', onKey);
+    };
+  });
 
   // Focusable field selector matching the original
   const FOCUSABLE_SELECTOR = [
@@ -307,6 +338,13 @@
     {/if}
   </div>
   {#each signale as eintrag, idx (eintrag.id)}
+    {#if idx > 0}
+      <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+      <div class="insert-trigger" onclick={(e) => openInsertPanel(idx, e.currentTarget as HTMLElement)}>
+        <div class="insert-line"></div>
+        <div class="insert-icon"><CirclePlus size={ICON.size} strokeWidth={3} /></div>
+      </div>
+    {/if}
     <div
       class="entry-row"
       class:drag-ready={drag.dragHandle === idx}
@@ -356,6 +394,25 @@
       {/if}
     </div>
   {/each}
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div
+    class="insert-panel"
+    popover="manual"
+    bind:this={panelEl}
+    style={insertPanel ? `left: ${insertPanel.x}px; top: ${insertPanel.y}px` : ''}
+    onmouseleave={closeInsertPanel}
+  >
+    {#if insertPanel}
+      <Pluszeile
+        onAddSignal={() => { const i = insertPanel!.idx; closeInsertPanel(); insertSignalAt(i); }}
+        onAddNotiz={() => { const i = insertPanel!.idx; closeInsertPanel(); insertAt(i, makeNotiz(i)); }}
+        onAddAbzweigung={() => { const i = insertPanel!.idx; closeInsertPanel(); insertAt(i, makeAbzweigung(i)); }}
+        onAddKnoten={() => { const i = insertPanel!.idx; closeInsertPanel(); insertAt(i, makeKnoten(i)); }}
+        onAddImport={() => { const i = insertPanel!.idx; closeInsertPanel(); insertAt(i, makeImport(i)); }}
+      />
+    {/if}
+  </div>
+
   {#if drag.indicatorY !== null}
     <div class="drop-indicator" style="top: {drag.indicatorY}px;"></div>
   {/if}
@@ -501,6 +558,58 @@
     grid-column: mel;
     background: var(--color-red-bg);
     color: var(--color-red);
+  }
+
+  /* ── Insert trigger (between rows) ── */
+  .insert-trigger {
+    grid-column: id / g-sa;
+    position: relative;
+    height: var(--spacing-card);
+    cursor: pointer;
+  }
+  .insert-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 2px;
+    border-radius: 1px;
+    background: var(--color-focus);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .insert-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-focus);
+    background: var(--color-bg);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.15s;
+    line-height: 0;
+    padding: 1px;
+  }
+  .insert-trigger:hover .insert-line,
+  .insert-trigger:hover .insert-icon {
+    opacity: 1;
+  }
+
+  /* ── Insert panel (floating popover) ── */
+  .insert-panel {
+    position: fixed;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    padding: var(--spacing-card);
+    border: var(--border-subtle);
+    border-radius: var(--radius-card);
+    background: var(--color-bg-raised);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  .insert-panel :global(.add-bar) {
+    margin: 0;
   }
 
   /* ── Drag state ── */
