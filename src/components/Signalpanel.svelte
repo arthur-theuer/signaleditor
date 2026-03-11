@@ -428,6 +428,7 @@
   .meldungen-header {
     grid-column: mel / -1;
     padding-inline: var(--spacing-card);
+    padding-left: calc(var(--spacing-cell) - var(--spacing-card));
     border-radius: 0 var(--radius-container) 0 0;
   }
 
