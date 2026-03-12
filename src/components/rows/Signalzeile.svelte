@@ -31,7 +31,13 @@
     onchange();
   }
 
+  let prevBase = extractSignalBase(eintrag.signal_1) || '';
+
   function handleSignalChange() {
+    const base = extractSignalBase(eintrag.signal_1) || '';
+    const typeChanged = base !== prevBase;
+    prevBase = base;
+
     if (isWiederholungssignal(eintrag.signal_1)) {
       eintrag.signal_2 = '';
       eintrag.signal_1b = undefined;
@@ -41,9 +47,8 @@
       eintrag.signal_2 = '';
       eintrag.signal_2b = undefined;
     }
-    // Block chain: clear Block-Vorsignal from signal_2 when signal_1 is no longer Blocksignal
-    const base = extractSignalBase(eintrag.signal_1) || '';
-    if (!base.startsWith('Blocksignal') && extractSignalBase(eintrag.signal_2 || '') === 'Block-Vorsignal zu') {
+    // Block chain: clear Block-Vorsignal from signal_2 when signal_1 type changes away from Blocksignal
+    if (typeChanged && !base.startsWith('Blocksignal') && extractSignalBase(eintrag.signal_2 || '') === 'Block-Vorsignal zu') {
       eintrag.signal_2 = '';
     }
     onchange();
