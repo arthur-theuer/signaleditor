@@ -188,6 +188,17 @@ function findPrevSignal(signale: Eintrag[], rowIdx: number): Signaleintrag | nul
   return null;
 }
 
+/** Find the next Signaleintrag, skipping non-signal and Wiederholungssignal rows */
+function findNextSignal(signale: Eintrag[], rowIdx: number): Signaleintrag | null {
+  for (let i = rowIdx + 1; i < signale.length; i++) {
+    const s = signale[i];
+    if (!isSignaleintrag(s)) continue;
+    if (isWiederholungssignal(s.signal_1)) continue;
+    return s;
+  }
+  return null;
+}
+
 /**
  * Validate a signal row against its context.
  * Returns true for each field that has an error.
@@ -244,6 +255,47 @@ export function validateRow(eintrag: Signaleintrag, signale: Eintrag[], rowIdx: 
           if (predicted && predicted.signal !== base1b) {
             result.signal_1b = true;
           }
+        }
+      }
+    }
+  }
+
+  // --- Forward validation: flag Vorsignal when next Hauptsignal confirms mismatch ---
+  const next = findNextSignal(signale, rowIdx);
+  if (next && next.signal_1) {
+    const nextBase = extractSignalBase(next.signal_1);
+
+    // Check main Vorsignal (signal_2 first, then signal_1 if standalone)
+    const vsField = eintrag.signal_2 && isVorsignal(eintrag.signal_2)
+      ? 'signal_2' as const
+      : isVorsignal(eintrag.signal_1)
+        ? 'signal_1' as const
+        : null;
+
+    if (vsField && nextBase) {
+      const vsBase = extractSignalBase(eintrag[vsField]!);
+      if (vsBase) {
+        const predicted = VORSIGNAL_TO_HAUPTSIGNAL[vsBase];
+        if (predicted && predicted.signal !== nextBase) {
+          result[vsField] = true;
+        }
+      }
+    }
+
+    // Check alternate Vorsignal
+    const vsAltField = eintrag.signal_2b && isVorsignal(eintrag.signal_2b)
+      ? 'signal_2b' as const
+      : eintrag.signal_1b && isVorsignal(eintrag.signal_1b)
+        ? 'signal_1b' as const
+        : null;
+
+    if (vsAltField && next.signal_1b) {
+      const nextAltBase = extractSignalBase(next.signal_1b);
+      const vsAltBase = extractSignalBase(eintrag[vsAltField]!);
+      if (vsAltBase && nextAltBase) {
+        const predicted = VORSIGNAL_TO_HAUPTSIGNAL[vsAltBase];
+        if (predicted && predicted.signal !== nextAltBase) {
+          result[vsAltField] = true;
         }
       }
     }
