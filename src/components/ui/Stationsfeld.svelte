@@ -122,7 +122,7 @@
     text-overflow: ellipsis;
   }
   .search-field.has-value {
-    color: var(--color-text-secondary);
+    color: var(--color-text);
   }
 
   /* Dropdown items — container styles in components.css (.dropdown) */

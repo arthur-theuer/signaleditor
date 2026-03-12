@@ -198,6 +198,7 @@
     min-width: 0;
     padding: 0 var(--spacing-cell);
     border: none;
+    background: transparent;
     font-size: var(--text-input);
     font-family: var(--font-mono);
     height: var(--spacing-unit);
