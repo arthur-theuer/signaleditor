@@ -12,6 +12,7 @@
   } = $props();
 
   let name = $derived(stationName(eintrag.knoten));
+  let error = $derived(!!eintrag.knoten && !name);
   let inputEl: HTMLInputElement | undefined = $state();
 </script>
 
@@ -19,7 +20,7 @@
   <div class="row-cell knoten-code-cell" onclick={() => inputEl?.focus()}>
     <span class={['knoten-code', { valid: !!name }]}>{eintrag.knoten || 'Code'}</span>
   </div>
-  <div class="row-cell knoten-search-cell hl-field">
+  <div class={['row-cell knoten-search-cell hl-field', { error }]}>
     <Stationsfeld mode="code" bind:value={eintrag.knoten} bind:inputEl placeholder="z.B. Zürich" {onchange} />
   </div>
 </div>
