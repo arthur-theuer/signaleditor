@@ -7,6 +7,7 @@
     value,
     bahnhof = $bindable(),
     showBahnhof,
+    error = false,
     onchange,
     onbahnhofchange,
     onfocusin,
@@ -15,6 +16,7 @@
     value: string;
     bahnhof?: string;
     showBahnhof: boolean;
+    error?: boolean;
     onchange: (name: string) => void;
     onbahnhofchange: () => void;
     onfocusin?: () => void;
@@ -53,7 +55,7 @@
 </script>
 
 {#if needsName || stationName}
-  <div class="row-cell name-cell hl-field" {onfocusin}>
+  <div class={['row-cell name-cell hl-field', { error }]} {onfocusin}>
     {#if useStationSearch}
       <Stationsfeld mode="name" bind:value={stationName} onchange={handleStationChange} placeholder="Name" />
     {:else}

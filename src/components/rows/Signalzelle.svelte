@@ -16,6 +16,8 @@
     isMainSignal = false,
     isAltActive = false,
     disabled = false,
+    error = false,
+    nameError = false,
     onToggleAlt,
     onchange,
   }: {
@@ -27,6 +29,8 @@
     isMainSignal?: boolean;
     isAltActive?: boolean;
     disabled?: boolean;
+    error?: boolean;
+    nameError?: boolean;
     onToggleAlt?: () => void;
     onchange: () => void;
   } = $props();
@@ -208,7 +212,7 @@
   }
 </script>
 
-<div class={['row-cell signal-cell hl-field', { disabled, short: useShort }]}>
+<div class={['row-cell signal-cell hl-field', { disabled, short: useShort, error }]}>
     <input
       bind:this={inputEl}
       type="text"
@@ -251,6 +255,7 @@
     value={value ?? ''}
     bind:bahnhof
     {showBahnhof}
+    error={nameError}
     onchange={handleNameChange}
     onbahnhofchange={onchange}
     onfocusin={handleNameFocus}

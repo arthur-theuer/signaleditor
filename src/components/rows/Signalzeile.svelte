@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Signaleintrag, Eintrag } from '../../lib/types';
-  import { isWiederholungssignal, isVorsignal, extractSignalBase } from '../../lib/signals';
+  import { isWiederholungssignal, isVorsignal, extractSignalBase, validateRow } from '../../lib/signals';
   import Signalzelle from './Signalzelle.svelte';
 
   let {
@@ -20,6 +20,7 @@
   let signal2Disabled = $derived(isWdh || isVs);
   let has1b = $derived(!isWdh && eintrag.signal_1b !== undefined);
   let has2b = $derived(!signal2Disabled && eintrag.signal_2b !== undefined);
+  let validation = $derived(validateRow(eintrag, signale, rowIdx));
 
   function toggleAlt(mainNum: 1 | 2) {
     const altField = `signal_${mainNum}b` as 'signal_1b' | 'signal_2b';
@@ -66,6 +67,8 @@
     isAltActive={has1b}
     onToggleAlt={() => toggleAlt(1)}
     onchange={handleSignalChange}
+    error={validation.signal_1}
+    nameError={validation.name_1}
   />
   {#if has1b}
     <Signalzelle
@@ -75,6 +78,8 @@
       {signale}
       bind:bahnhof={eintrag.bahnhof}
       {onchange}
+      error={validation.signal_1b}
+      nameError={validation.name_1b}
     />
   {/if}
 </div>
@@ -91,6 +96,7 @@
     disabled={signal2Disabled}
     onToggleAlt={() => toggleAlt(2)}
     {onchange}
+    error={validation.signal_2}
   />
   {#if has2b}
     <Signalzelle
@@ -100,6 +106,7 @@
       {signale}
       bind:bahnhof={eintrag.bahnhof}
       {onchange}
+      error={validation.signal_2b}
     />
   {/if}
 </div>

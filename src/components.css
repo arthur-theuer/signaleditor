@@ -34,6 +34,11 @@
   position: relative;
   cursor: pointer;
 }
+.hl-field.error {
+  outline: 2px solid var(--color-red);
+  outline-offset: -2px;
+  z-index: 1;
+}
 .hl-field:focus-within {
   outline: 2px solid var(--color-focus);
   outline-offset: -2px;
