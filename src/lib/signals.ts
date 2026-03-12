@@ -219,8 +219,9 @@ export function validateRow(eintrag: Signaleintrag, signale: Eintrag[], rowIdx: 
 
   const prev = findPrevSignal(signale, rowIdx);
 
-  // --- Signal type mismatch: check signal_1 against previous row's Vorsignal ---
-  if (prev && eintrag.signal_1) {
+  // --- Backward validation: check signal_1 against previous row's Vorsignal ---
+  // Only applies when signal_1 is a Hauptsignal (not itself a Vorsignal)
+  if (prev && eintrag.signal_1 && !isVorsignal(eintrag.signal_1)) {
     const base1 = extractSignalBase(eintrag.signal_1);
     // Find the Vorsignal in the previous row (signal_2 first, then signal_1)
     const prevVs = prev.signal_2 && isVorsignal(prev.signal_2)
@@ -239,8 +240,8 @@ export function validateRow(eintrag: Signaleintrag, signale: Eintrag[], rowIdx: 
       }
     }
 
-    // Check signal_1b against previous row's alternate Vorsignal
-    if (eintrag.signal_1b) {
+    // Check signal_1b against previous row's alternate Vorsignal (skip if signal_1b is a Vorsignal)
+    if (eintrag.signal_1b && !isVorsignal(eintrag.signal_1b)) {
       const base1b = extractSignalBase(eintrag.signal_1b);
       const prevVsAlt = prev.signal_2b && isVorsignal(prev.signal_2b)
         ? prev.signal_2b
