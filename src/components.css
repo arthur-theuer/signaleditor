@@ -35,7 +35,8 @@
   cursor: pointer;
 }
 .hl-field.error {
-  outline: 2px solid var(--color-red);
+  color: var(--color-red);
+  outline: 2px solid currentColor;
   outline-offset: -2px;
   z-index: 1;
 }
