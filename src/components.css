@@ -60,6 +60,7 @@
   z-index: 2;
   background: var(--color-bg-raised);
   border: var(--border-subtle);
+  border-top: none;
   border-radius: 0 0 var(--radius-card) var(--radius-card);
   overflow: hidden;
 }
