@@ -18,16 +18,6 @@
   let query = $state('');
   let open = $state(false);
   let activeIndex = $state(0);
-  let dropdownEl: HTMLDivElement | undefined = $state();
-
-  let showDropdown = $derived(open && results.length > 0);
-  $effect(() => {
-    if (showDropdown) {
-      dropdownEl?.showPopover();
-    } else {
-      dropdownEl?.hidePopover();
-    }
-  });
 
   let resolvedName = $derived(mode === 'code' ? stationName(value) : '');
   let valid = $derived(mode === 'code' ? !!resolvedName : !!codeForName(value));
@@ -108,23 +98,21 @@
   autocorrect="off"
   spellcheck="false"
 />
-<div
-  class="dropdown"
-  popover="manual"
-  bind:this={dropdownEl}
->
-  {#each results as entry, i}
-    <button
-      class={['dropdown-item', { active: i === activeIndex }]}
-      onmousedown={(e) => { e.preventDefault(); select(entry); }}
-      onmouseenter={() => (activeIndex = i)}
-      tabindex={-1}
-    >
-      <span class="item-name">{@html highlight(entry.name, entry.nameIndices)}</span>
-      <span class="item-code">{@html highlight(entry.code, entry.codeIndices)}</span>
-    </button>
-  {/each}
-</div>
+{#if open && results.length > 0}
+  <div class="dropdown">
+    {#each results as entry, i}
+      <button
+        class={['dropdown-item', { active: i === activeIndex }]}
+        onmousedown={(e) => { e.preventDefault(); select(entry); }}
+        onmouseenter={() => (activeIndex = i)}
+        tabindex={-1}
+      >
+        <span class="item-name">{@html highlight(entry.name, entry.nameIndices)}</span>
+        <span class="item-code">{@html highlight(entry.code, entry.codeIndices)}</span>
+      </button>
+    {/each}
+  </div>
+{/if}
 
 <style>
   .search-field {
@@ -137,11 +125,7 @@
     color: var(--color-text);
   }
 
-  .dropdown {
-    inset: unset;
-    margin: 0;
-  }
-
+  /* Dropdown items — container styles in components.css (.dropdown) */
   .dropdown-item {
     display: flex;
     align-items: center;

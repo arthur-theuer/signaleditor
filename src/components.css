@@ -65,19 +65,11 @@
 }
 /* .dropdown-item.active is in each component's scoped CSS — global rule
    can't override scoped background due to equal specificity + CSS order. */
-:has(> .dropdown:not([popover])) {
+:has(> .dropdown) {
   border-bottom-left-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
-:has(> .dropdown:popover-open) {
-  border-bottom-left-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
-}
-.row-cell:has(.dropdown:not([popover])) {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-.row-cell:has(.dropdown:popover-open) {
+.row-cell:has(.dropdown) {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
