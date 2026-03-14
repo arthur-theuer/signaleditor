@@ -22,10 +22,14 @@
 
   let showDropdown = $derived(open && results.length > 0);
   $effect(() => {
+    // Set anchor-name on the parent cell so the dropdown matches its width
+    const parent = inputEl?.closest('.hl-field') as HTMLElement | null;
     if (showDropdown) {
+      parent?.style.setProperty('anchor-name', '--station-anchor');
       dropdownEl?.showPopover();
     } else {
       dropdownEl?.hidePopover();
+      parent?.style.removeProperty('anchor-name');
     }
   });
 
@@ -128,7 +132,6 @@
 
 <style>
   .search-field {
-    anchor-name: --station-anchor;
     color: var(--color-text-muted);
     overflow: hidden;
     white-space: nowrap;
@@ -144,8 +147,8 @@
     margin: 0;
     position-anchor: --station-anchor;
     top: anchor(bottom);
-    left: anchor(left);
-    right: anchor(right);
+    left: calc(anchor(left) - 1px);
+    width: calc(anchor-size(width) + 2px);
     position-try-fallbacks: flip-block;
     background: var(--color-bg-raised);
     border: var(--border-subtle);
