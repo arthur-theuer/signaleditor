@@ -18,6 +18,16 @@
   let query = $state('');
   let open = $state(false);
   let activeIndex = $state(0);
+  let dropdownEl: HTMLDivElement | undefined = $state();
+
+  let showDropdown = $derived(open && results.length > 0);
+  $effect(() => {
+    if (showDropdown) {
+      dropdownEl?.showPopover();
+    } else {
+      dropdownEl?.hidePopover();
+    }
+  });
 
   let resolvedName = $derived(mode === 'code' ? stationName(value) : '');
   let valid = $derived(mode === 'code' ? !!resolvedName : !!codeForName(value));
@@ -98,24 +108,27 @@
   autocorrect="off"
   spellcheck="false"
 />
-{#if open && results.length > 0}
-  <div class="dropdown">
-    {#each results as entry, i}
-      <button
-        class={['dropdown-item', { active: i === activeIndex }]}
-        onmousedown={(e) => { e.preventDefault(); select(entry); }}
-        onmouseenter={() => (activeIndex = i)}
-        tabindex={-1}
-      >
-        <span class="item-name">{@html highlight(entry.name, entry.nameIndices)}</span>
-        <span class="item-code">{@html highlight(entry.code, entry.codeIndices)}</span>
-      </button>
-    {/each}
-  </div>
-{/if}
+<div
+  class="dropdown"
+  popover="manual"
+  bind:this={dropdownEl}
+>
+  {#each results as entry, i}
+    <button
+      class={['dropdown-item', { active: i === activeIndex }]}
+      onmousedown={(e) => { e.preventDefault(); select(entry); }}
+      onmouseenter={() => (activeIndex = i)}
+      tabindex={-1}
+    >
+      <span class="item-name">{@html highlight(entry.name, entry.nameIndices)}</span>
+      <span class="item-code">{@html highlight(entry.code, entry.codeIndices)}</span>
+    </button>
+  {/each}
+</div>
 
 <style>
   .search-field {
+    anchor-name: --station-anchor;
     color: var(--color-text-muted);
     overflow: hidden;
     white-space: nowrap;
@@ -125,7 +138,21 @@
     color: var(--color-text);
   }
 
-  /* Dropdown items — container styles in components.css (.dropdown) */
+  .dropdown {
+    position: fixed;
+    inset: unset;
+    margin: 0;
+    position-anchor: --station-anchor;
+    top: anchor(bottom);
+    left: anchor(left);
+    right: anchor(right);
+    position-try-fallbacks: flip-block;
+    background: var(--color-bg-raised);
+    border: var(--border-subtle);
+    border-radius: 0 0 var(--radius-card) var(--radius-card);
+    overflow: hidden;
+  }
+
   .dropdown-item {
     display: flex;
     align-items: center;
